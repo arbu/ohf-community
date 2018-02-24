@@ -6,6 +6,7 @@ use App\Person;
 use App\Role;
 use App\Task;
 use App\User;
+use App\Volunteer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
