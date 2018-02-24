@@ -521,6 +521,37 @@ class ContextMenuComposer {
                         'authorized' => true
                     ]
                 ];
+            //
+            // Voluneers
+            //
+            case 'volunteers.showProfile':
+                return [
+                    'action' => [
+                        'url' => route('volunteers.editProfile'),
+                        'caption' => 'Edit Profile',
+                        'icon' => 'pencil',
+                        'icon_floating' => 'pencil',
+                        'authorized' => true,
+                    ]
+                ];
+            case 'volunteers.editProfile':
+                return [
+                    'back' => [
+                        'url' => route('volunteers.showProfile'),
+                        'caption' => 'Cancel',
+                        'icon' => 'times-circle',
+                        'authorized' => true,
+                    ]
+                ];
+            case 'volunteers.createTrip':
+                return [
+                    'back' => [
+                        'url' => route('volunteers.showProfile'),
+                        'caption' => 'Cancel',
+                        'icon' => 'times-circle',
+                        'authorized' => true,
+                    ]
+                ];
         }
         return [];
     }

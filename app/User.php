@@ -53,4 +53,11 @@ class User extends Authenticatable
         return $this->hasMany('App\Transaction');
     }
 
+    /**
+     * Get the volunteer record associated with the user.
+     */
+    public function volunteer()
+    {
+        return $this->hasOne('App\Volunteer');
+    }
 }

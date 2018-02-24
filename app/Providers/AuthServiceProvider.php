@@ -19,6 +19,7 @@ class AuthServiceProvider extends ServiceProvider
         'App\Task' => 'App\Policies\TaskPolicy',
         'App\CalendarEvent' => 'App\Policies\CalendarEventPolicy',
         \App\CalendarResource::class => \App\Policies\Calendar\ResourcePolicy::class,
+        'App\Volunteer' => 'App\Policies\VolunteerPolicy',
     ];
 
     /**

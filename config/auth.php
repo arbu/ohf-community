@@ -115,5 +115,6 @@ return [
         'calendar.events.manage' => 'Calendar: Edit and delete all events',
         'calendar.resources.manage' => 'Calendar: Manage resources',
         'app.changelogs.view' => 'View application changelogs',
+        'volunteers.manage' => 'Manage volunteers',
     ]
 ];
