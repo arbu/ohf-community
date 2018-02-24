@@ -30,6 +30,7 @@ class HomeController extends Controller
     public function index()
     {
         $widgetClasses = [
+            \App\Widgets\VolunteerProfileWidget::class,
             \App\Widgets\PersonsWidget::class,
             \App\Widgets\BankWidget::class,
             \App\Widgets\ReportingWidget::class,
