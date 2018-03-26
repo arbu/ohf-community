@@ -15,14 +15,17 @@ class CreateVolunteersTable extends Migration
     {
         Schema::create('volunteers', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('address')->nullable();
+            $table->string('first_name');
+            $table->string('last_name');
+            $table->string('street')->nullable();
             $table->string('zip')->nullable();
             $table->string('city')->nullable();
             $table->string('country')->nullable();
             $table->string('nationality')->nullable();
-            $table->date('birthdate')->nullable();
+            $table->date('date_of_birth')->nullable();
             $table->enum('gender', ['male', 'female'])->nullable();
             $table->string('phone')->nullable();
+            $table->string('whatsapp')->nullable();
             $table->string('skype')->nullable();
             $table->string('passport_no')->nullable();
             $table->text('qualifications')->nullable();

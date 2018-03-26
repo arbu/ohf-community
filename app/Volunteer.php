@@ -3,9 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Iatstuti\Database\Support\NullableFields;
+use Carbon\Carbon;
 
 class Volunteer extends Model
 {
+    use NullableFields;
+
     /**
      * Get the user account to which the volunteer entity belongs
      */
@@ -19,9 +23,9 @@ class Volunteer extends Model
         return $this->hasMany('App\Trip');
     }
 
-    public function fullAddress()
+    public function getAddressAttribute()
     {
-        $str = $this->address;
+        $str = $this->street;
         $str .= ', ';
         $str .= $this->zip;
         $str .= ' ';
@@ -32,4 +36,9 @@ class Volunteer extends Model
         }
         return $str;
     }
+
+    public function getAgeAttribute() {
+        return isset($this->date_of_birth) ? (new Carbon($this->date_of_birth))->age : null;
+    }
+
 }

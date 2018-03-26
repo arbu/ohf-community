@@ -205,15 +205,19 @@ Route::group(['middleware' => 'language'], function () {
     });
 
     // Volunteers
-    Route::get('/volunteers', 'Volunteering\VolunteersController@index')->name('volunteers.index');
-    Route::get('/volunteers/create', 'Volunteering\VolunteersController@create')->name('volunteers.create');
-    Route::get('/volunteers/{volunteer}', 'Volunteering\VolunteersController@show')->name('volunteers.show');
-    
-    Route::get('/volunteer', 'VolunteersController@showProfile')->name('volunteers.showProfile');
-    Route::get('/volunteer/edit', 'VolunteersController@editProfile')->name('volunteers.editProfile');
-    Route::post('/volunteer/edit', 'VolunteersController@updateProfile')->name('volunteers.updateProfile');
-    Route::get('/volunteer/trip/apply', 'VolunteersController@createTrip')->name('volunteers.createTrip');
-    Route::post('/volunteer/trip/apply', 'VolunteersController@storeTrip')->name('volunteers.storeTrip');
+    Route::group(['middleware' => ['auth']], function () {
+
+        // Manage volunteers
+        Route::get('/volunteers', 'Volunteering\VolunteersController@index')->name('volunteers.index');
+        Route::get('/volunteers/{volunteer}', 'Volunteering\VolunteersController@show')->name('volunteers.show');
+        Route::get('/volunteers/{volunteer}/vcard', 'Volunteering\VolunteersController@vcard')->name('volunteers.vcard');
+        
+        Route::get('/volunteer', 'VolunteersController@showProfile')->name('volunteers.showProfile');
+        Route::get('/volunteer/edit', 'VolunteersController@editProfile')->name('volunteers.editProfile');
+        Route::post('/volunteer/edit', 'VolunteersController@updateProfile')->name('volunteers.updateProfile');
+        Route::get('/volunteer/trip/apply', 'VolunteersController@createTrip')->name('volunteers.createTrip');
+        Route::post('/volunteer/trip/apply', 'VolunteersController@storeTrip')->name('volunteers.storeTrip');
+    });
 
     Auth::routes();
     Route::get('/userPrivacyPolicy', 'PrivacyPolicy@userPolicy')->name('userPrivacyPolicy');

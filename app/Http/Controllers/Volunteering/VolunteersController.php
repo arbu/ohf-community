@@ -9,14 +9,13 @@ use App\Util\CountriesExtended;
 use App\Volunteer;
 use App\Trip;
 use Illuminate\Support\Facades\Auth;
+use JeroenDesloovere\VCard\VCard;
 
 class VolunteersController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
+    /**
+     * List volunteers
+     */
     function index() {
         $this->authorize('list', Volunteer::class);
 
@@ -26,12 +25,9 @@ class VolunteersController extends Controller
         ]);
     }
 
-    function create() {
-        $this->authorize('create', Volunteer::class);
-
-        return view('volunteers.create', [ ]);
-    }
-
+    /**
+     * Show volunteer
+     */
     function show(Volunteer $volunteer) {
         $this->authorize('view', $volunteer);
 
@@ -40,6 +36,23 @@ class VolunteersController extends Controller
         ]);
     }
 
+    /**
+     * Download vcard
+     */
+    function vcard(Volunteer $volunteer) {
+        $this->authorize('view', $volunteer);
+
+        // define vcard
+        $vcard = new VCard();
+        $vcard->addName($volunteer->last_name, $volunteer->first_name, '', '', '');
+        $vcard->addEmail($volunteer->user->email);
+        $vcard->addPhoneNumber($volunteer->phone, 'HOME');
+        $vcard->addBirthday($volunteer->date_of_birth);
+        $vcard->addAddress(null, null, $volunteer->street, $volunteer->city, null, $volunteer->zip, $volunteer->country, 'HOME;POSTAL');
+
+        // return vcard as a download
+        return $vcard->download();
+    }
 
 
     function showProfile() {
