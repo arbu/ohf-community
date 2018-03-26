@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', __('volunteering.view_volunteer'))
+@section('title', $volunteer->name . ' - ' .__('volunteering.volunteer')) {{-- __('volunteering.view_volunteer') --}}
 
 @section('content')
 
@@ -8,22 +8,39 @@
         <li class="list-group-item">
             <div class="row">
                 <div class="col-sm-2 d-none d-md-block">@lang('people.person')</div>
-                <div class="col-sm">
+                <div class="col-sm-auto">
                     @isset($volunteer->gender)
                         @if($volunteer->gender == 'female')@icon(female) 
                         @elseif($volunteer->gender == 'male')@icon(male) 
                         @endif
-                    @endisset                    
-                    {{ $volunteer->name }}, 
-                    {{ $volunteer->nationality }}, 
-                    {{ $volunteer->date_of_birth }} ({{ $volunteer->age }})
+                    @endisset               
+                    {{ $volunteer->name }}
                 </div>
+                @isset($volunteer->date_of_birth)
+                    <div class="col-sm-auto">
+                        {{ $volunteer->date_of_birth }} ({{ $volunteer->age }}) 
+                    </div>
+                @endisset
+                @isset($volunteer->nationality)
+                    <div class="col-sm-auto">
+                        {{ $volunteer->nationality }}
+                    </div>
+                @endisset
+                @isset($volunteer->passport_no)
+                    <div class="col-sm-auto">
+                        {{ $volunteer->passport_no }}
+                    </div>
+                @endisset
             </div>
         </li>
         <li class="list-group-item">
             <div class="row">
                 <div class="col-sm-2 d-none d-md-block">@lang('app.address')</div>
-                <div class="col-sm">{{ $volunteer->address }}</div>
+                <div class="col-sm">
+                    {{ $volunteer->street }}<br>
+                    {{ $volunteer->zip }} {{ $volunteer->city }}<br>
+                    {{ $volunteer->country }}<br>
+                </div>
             </div>
         </li>
         <li class="list-group-item">
