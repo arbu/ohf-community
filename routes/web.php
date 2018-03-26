@@ -209,6 +209,7 @@ Route::group(['middleware' => 'language'], function () {
 
         // Manage volunteers
         Route::get('/volunteers', 'Volunteering\VolunteersController@index')->name('volunteers.index');
+        Route::get('/volunteers/export', 'Volunteering\VolunteersController@export')->name('volunteers.export');
         Route::get('/volunteers/{volunteer}', 'Volunteering\VolunteersController@show')->name('volunteers.show');
         Route::get('/volunteers/{volunteer}/vcard', 'Volunteering\VolunteersController@vcard')->name('volunteers.vcard');
         

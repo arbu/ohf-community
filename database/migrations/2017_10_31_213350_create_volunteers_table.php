@@ -28,6 +28,7 @@ class CreateVolunteersTable extends Migration
             $table->string('whatsapp')->nullable();
             $table->string('skype')->nullable();
             $table->string('passport_no')->nullable();
+            $table->string('profession')->nullable();
             $table->text('qualifications')->nullable();
             $table->text('language_skills')->nullable();
             $table->text('experiences')->nullable();

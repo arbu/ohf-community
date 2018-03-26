@@ -30,6 +30,8 @@ class VolunteersSeeder extends Seeder
             'phone' => '+491234567890',
             'whatsapp' => '+491234567890',
             'skype' => 'hans.muster',
+            'profession' => 'Teacher',
+            'passport_no' => 'C1234567',
             'user_id' => $user->id,
         ]);
     }

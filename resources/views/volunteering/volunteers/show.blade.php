@@ -4,41 +4,56 @@
 
 @section('content')
 
-    {{-- Personal information --}}
-    <div class="card mb-4">
-        <div class="card-header">Personal Information</div>
-        <div class="card-body">
-            <div class="row mb-3">
-                <div class="col-sm-2 d-none d-md-block">Person</div>
-                <div class="col-sm">{{ $volunteer->user->name }}, {{ $volunteer->nationality }}, {{ $volunteer->birthdate }}, {{ $volunteer->gender }}</div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-sm-2 d-none d-md-block">@lang('people.person')</div>
+                <div class="col-sm">
+                    @isset($volunteer->gender)
+                        @if($volunteer->gender == 'female')@icon(female) 
+                        @elseif($volunteer->gender == 'male')@icon(male) 
+                        @endif
+                    @endisset                    
+                    {{ $volunteer->name }}, 
+                    {{ $volunteer->nationality }}, 
+                    {{ $volunteer->date_of_birth }} ({{ $volunteer->age }})
+                </div>
             </div>
-            <div class="row mb-3">
-                <div class="col-sm-2 d-none d-md-block">Address</div>
-                <div class="col-sm">{{ $volunteer->address }}, {{ $volunteer->zip }} {{ $volunteer->city }}, {{ $volunteer->country }}</div>
+        </li>
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-sm-2 d-none d-md-block">@lang('app.address')</div>
+                <div class="col-sm">{{ $volunteer->address }}</div>
             </div>
+        </li>
+        <li class="list-group-item">
             <div class="row align-items-center">
-                <div class="col-sm-2 d-none d-md-block">Communication</div>
+                <div class="col-sm-2 d-none d-md-block">@lang('app.communication')</div>
                 <div class="col-sm">
                     <div class="row">
                         <div class="col-md-auto mb-3 mb-md-0">
-                            <a href="mailto:{{ $volunteer->user->email }}" class="btn btn-light btn-block">@icon(envelope) {{ $volunteer->user->email }}</a>
+                            <a href="{{ email_url($volunteer->user->email) }}" class="btn btn-light btn-block">@icon(envelope) {{ $volunteer->user->email }}</a>
                         </div>
-                        <div class="col-md-auto mb-3 mb-md-0">
-                            <a href="tel:{{ $volunteer->phone }}" class="btn btn-light btn-block">@icon(phone) {{ $volunteer->phone }}</a>
-                        </div>
-                        <div class="col-md-auto mb-3 mb-md-0">
-                            <a href="https://api.whatsapp.com/send?phone={{ preg_replace('/^\+/', '', $volunteer->phone) }}" class="btn btn-light btn-block">@icon(whatsapp) {{ $volunteer->phone }}</a>
-                        </div>
-                        @if( !empty($volunteer->skype) )
-                            <div class="col-md-auto">
-                                <a href="skype:{{ $volunteer->skype }}" class="btn btn-light btn-block">@icon(skype) {{ $volunteer->skype }}</a>
+                        @isset($volunteer->phone)
+                            <div class="col-md-auto mb-3 mb-md-0">
+                                <a href="{{ phone_url($volunteer->phone) }}" class="btn btn-light btn-block">@icon(phone) {{ $volunteer->phone }}</a>
                             </div>
-                        @endif
+                        @endisset
+                        @isset($volunteer->whatsapp)
+                            <div class="col-md-auto mb-3 mb-md-0">
+                                <a href="{{ whatsapp_url($volunteer->whatsapp) }}" class="btn btn-light btn-block">@icon(whatsapp) {{ $volunteer->whatsapp }}</a>
+                            </div>
+                        @endisset
+                        @isset($volunteer->skype)
+                            <div class="col-md-auto">
+                                <a href="{{ skype_call_url($volunteer->skype) }}" class="btn btn-light btn-block">@icon(skype) {{ $volunteer->skype }}</a>
+                            </div>
+                        @endisset
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </li>
+    </ul>
 
 @endsection
 

@@ -10,6 +10,7 @@ use App\Volunteer;
 use App\Trip;
 use Illuminate\Support\Facades\Auth;
 use JeroenDesloovere\VCard\VCard;
+use Carbon\Carbon;
 
 class VolunteersController extends Controller
 {
@@ -23,8 +24,31 @@ class VolunteersController extends Controller
             'volunteers' => Volunteer
                 ::orderBy('first_name', 'asc')
                 ->orderBy('last_name', 'asc')
-                ->paginate()
+                ->paginate(),
         ]);
+    }
+
+    /**
+     * Export volunteers
+     */
+    function export() {
+        $this->authorize('list', Volunteer::class);
+
+        \Excel::create('OHF_Community_Volunteers_' . Carbon::now()->toDateString(), function($excel) {
+            $excel->sheet(__('volunteering.volunteers'), function($sheet) {
+                $sheet->setOrientation('landscape');
+                $sheet->freezeFirstRow();
+                $sheet->loadView('volunteering.volunteers.export',[
+                    'volunteers' => Volunteer
+                        ::orderBy('first_name', 'asc')
+                        ->orderBy('last_name', 'asc')
+                        ->get(),
+                ]);
+            });
+            // $excel->getActiveSheet()->setAutoFilter(
+            //     $excel->getActiveSheet()->calculateWorksheetDimension()
+            // );
+        })->export('xlsx');
     }
 
     /**

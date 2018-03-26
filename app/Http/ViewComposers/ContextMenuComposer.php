@@ -9,6 +9,7 @@ use App\User;
 use App\Donor;
 use App\Donation;
 use App\CouponType;
+use App\Volunteer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
@@ -710,9 +711,57 @@ class ContextMenuComposer {
                         'authorized' => true
                     ]
                 ];
+
             //
             // Voluneers
             //
+            case 'volunteers.index':
+                return [
+                    // 'action' => [
+                    //     'url' => route('volunteers.create'),
+                    //     'caption' => __('app.add'),
+                    //     'icon' => 'plus-circle',
+                    //     'icon_floating' => 'plus',
+                    //     'authorized' => Auth::user()->can('create', Volunteer::class)
+                    // ],
+                    'export' => [
+                        'url' => route('volunteers.export'),
+                        'caption' => __('app.export'),
+                        'icon' => 'download',
+                        'authorized' => Auth::user()->can('list', Volunteer::class)
+                    ]
+                ];
+            case 'volunteers.show':
+                $volunteer = $view->getData()['volunteer'];
+                return [
+                    // 'action' => [
+                    //     'url' => route('volunteers.edit', $volunteer),
+                    //     'caption' => __('app.edit'),
+                    //     'icon' => 'pencil',
+                    //     'icon_floating' => 'pencil',
+                    //     'authorized' => Auth::user()->can('update', $volunteer)
+                    // ],
+                    'volunteers' => [
+                        'url' => route('volunteers.vcard', $volunteer),
+                        'caption' => __('app.export'),
+                        'icon' => 'vcard',
+                        'authorized' => Auth::user()->can('view', $volunteer)
+                    ],
+                    // 'delete' => [
+                    //     'url' => route('volunteers.destroy', $volunteer),
+                    //     'caption' => __('app.delete'),
+                    //     'icon' => 'trash',
+                    //     'authorized' => Auth::user()->can('delete', $volunteer),
+                    //     'confirmation' => __('volunteering.confirm_delete_volunteer')
+                    // ],
+                    'back' => [
+                        'url' => route('volunteers.index'),
+                        'caption' => __('app.close'),
+                        'icon' => 'times-circle',
+                        'authorized' => Auth::user()->can('list', Donor::class)
+                    ]
+                ];
+
             case 'volunteers.showProfile':
                 return [
                     'action' => [

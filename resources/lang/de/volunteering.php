@@ -8,4 +8,7 @@ return [
     'whatsapp' => 'WhatsApp',
     'skype' => 'Skype',
     'view_volunteer' => 'Volunteer betrachten',
+    'passort_no' => 'Passnummer',
+    'profession' => 'Beruf',
+    'driver' => 'Fahrer',
 ];
