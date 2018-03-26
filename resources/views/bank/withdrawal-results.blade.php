@@ -1,8 +1,8 @@
-@extends('layouts.app')
+@extends('bank.layout')
 
-@section('title', 'Bank')
+@section('title', __('people.bank'))
 
-@section('content')
+@section('wrapped-content')
 
     @include('bank.person-search')
 
@@ -28,14 +28,12 @@
 
 @section('script')
     var csrfToken = '{{ csrf_token() }}';
-    var storeTransactionUrl = '{{ route('bank.storeTransaction') }}';
-    var giveBoutiqueCouponUrl = '{{ route('bank.giveBoutiqueCoupon') }}';
-    var resetBoutiqueCouponUrl = '{{ route('bank.resetBoutiqueCoupon') }}';
-    var giveDiapersCouponUrl = '{{ route('bank.giveDiapersCoupon') }}';
-    var resetDiapersCouponUrl = '{{ route('bank.resetDiapersCoupon') }}';
+    var handoutCouponUrl = '{{ route('bank.handoutCoupon') }}';
+    var undoHandoutCouponUrl = '{{ route('bank.undoHandoutCoupon') }}';
     var updateGenderUrl = '{{ route('bank.updateGender') }}';
     var updateDateOfBirthUrl = '{{ route('bank.updateDateOfBirth') }}';
     var registerCardUrl = '{{ route('bank.registerCard') }}';
+    var undoLabel = '@lang('app.undo')';
 @endsection
 
 @section('footer')

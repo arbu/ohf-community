@@ -6,6 +6,7 @@ use App\Http\Requests\StoreUser;
 use App\Http\Requests\UpdateUser;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Config;
 use App\User;
 use App\Role;
 
@@ -69,7 +70,8 @@ class UserController extends ParentController
     public function show(User $user)
     {
         return view('users.show', [
-            'user' => $user
+            'user' => $user,
+            'permissions' => Config::get('auth.permissions'),
         ]);
     }
 
@@ -111,7 +113,7 @@ class UserController extends ParentController
         return redirect()->route('users.show', $user)
             ->with('info', __('app.no_changes_made'));
     }
-
+    
     /**
      * Remove the specified resource from storage.
      *
@@ -123,5 +125,47 @@ class UserController extends ParentController
         $user->delete();
         return redirect()->route('users.index')
             ->with('success', __('app.user_deleted'));
+    }
+
+    /**
+     * Lists all permissions
+     */
+    public function permissions()
+    {
+        return view('users.permissions', [
+            'permissions' => Config::get('auth.permissions')
+        ]);
+    }
+
+    /**
+     * Lists all permissions
+     */
+    public function sensitiveDataReport()
+    {
+        $permissions = Config::get('auth.permissions');
+        return view('reporting.privacy', [
+            'permissions' => Config::get('auth.permissions'),
+            'users' => User::orderBy('name')
+                ->get()
+                ->filter(function($u) use($permissions) {
+                    return $u->isSuperAdmin() || $u->permissions()->contains(function($p) use($permissions) {
+                        return isset($permissions[$p->key]) && $permissions[$p->key]['sensitive'];
+                    });
+                })
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  User $user
+     * @return \Illuminate\Http\Response
+     */
+    public function disable2FA(User $user)
+    {
+        $user->tfa_secret = null;
+        $user->save();
+        return redirect()->route('users.show', $user)
+            ->with('success', __('userprofile.tfa_disabled'));
     }
 }

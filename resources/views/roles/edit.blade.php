@@ -27,15 +27,17 @@
                 <div class="card">
                     <div class="card-header">@lang('app.permissions')</div>
                     <div class="card-body">
-
-                        @forelse ($permissions as $k => $v)
-                            <label>
-                                {{ Form::checkbox('permissions[]', $k, $role->permissions->contains(function ($value, $key) use ($k) { return $value->key == $k; })) }} {{ $v }}
-                            </label><br>
-                        @empty
+                        {{ Form::bsCheckboxList('permissions[]', collect($permissions)
+                            ->mapWithKeys(function($item, $key){
+                                return [$key => __('permissions.' . $key)];
+                            })
+                            ->toArray(), 
+                        $role->permissions
+                            ->pluck('key')
+                            ->toArray()) }}
+                        @empty($permissions)
                             <em>@lang('app.no_permissions')</em>
-                        @endforelse
-
+                        @endempty
                     </div>
                 </div>
             </div>

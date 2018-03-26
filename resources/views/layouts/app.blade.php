@@ -21,22 +21,22 @@
                     </header>
 
                     {{-- Content --}}
-                    <article class="site-content container-fluid pt-3">
+                    <article class="site-content container-fluid {{ $content_padding ?? 'pt-3' }}">
 
                         {{-- Success message --}}
                         @if (session('success'))
-                            <div class="alert alert-success alert-dismissible fade show">
-                                @icon(check) {{ session('success') }}
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
+                            <div class="snack-message"><span class="pr-1">@icon(check-square-o)</span> {{ session('success') }}</div>
                         @endif
 
                         {{-- Info message --}}
                         @if (session('info'))
-                            <div class="alert alert-info alert-dismissible fade show">
-                                @icon(info-circle) {{ session('info') }}
+                            <div class="snack-message">{{ session('info') }}</div>
+                        @endif
+
+                        {{-- Error message --}}
+                        @if (session('error'))
+                            <div class="alert alert-danger alert-dismissible fade show">
+                                @icon(warning) {{ session('error') }}
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -85,7 +85,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">QR Code Scanner</h5>
+              <h5 class="modal-title" id="exampleModalLabel">@lang('people.qr_code_scanner')</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>

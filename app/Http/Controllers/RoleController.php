@@ -135,4 +135,14 @@ class RoleController extends ParentController
         return redirect()->route('roles.index')
             ->with('success', __('app.role_deleted'));
     }
+
+    /**
+     * Lists all permissions
+     */
+    public function permissions()
+    {
+        return view('roles.permissions', [
+            'permissions' => Config::get('auth.permissions')
+        ]);
+    }
 }

@@ -6,6 +6,9 @@ use App\Person;
 use App\Role;
 use App\Task;
 use App\User;
+use App\Donor;
+use App\Donation;
+use App\CouponType;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
@@ -47,19 +50,13 @@ class ContextMenuComposer {
                 return [
                     [
                         'url' => route('people.duplicates'),
-                        'caption' => 'Find duplicates',
+                        'caption' => __('people.find_duplicates'),
                         'icon' => 'exchange',
                         'authorized' => Auth::user()->can('cleanup', Person::class)
                     ],                    
                     [
-                        'url' => route('people.export'),
-                        'caption' => 'Export',
-                        'icon' => 'download',
-                        'authorized' => Auth::user()->can('list', Person::class)
-                    ],
-                    [
                         'url' => route('people.import'),
-                        'caption' => 'Import',
+                        'caption' => __('app.import'),
                         'icon' => 'upload',
                         'authorized' => Auth::user()->can('create', Person::class)
                     ],
@@ -69,21 +66,33 @@ class ContextMenuComposer {
                 return [
                     [
                         'url' => route('bank.export'),
-                        'caption' => 'Export',
+                        'caption' => __('app.export'),
                         'icon' => 'download',
-                        'authorized' => Auth::user()->can('list', Person::class)
+                        'authorized' => Auth::user()->can('export', Person::class)
                     ],
                     [
                         'url' => route('bank.import'),
-                        'caption' => 'Import',
+                        'caption' => __('app.import'),
                         'icon' => 'upload',
                         'authorized' => Auth::user()->can('create', Person::class)
                     ],
                     [
                         'url' => route('bank.maintenance'),
-                        'caption' => 'Maintenance',
+                        'caption' => __('app.maintenance'),
                         'icon' => 'eraser',
                         'authorized' => Auth::user()->can('cleanup', Person::class)
+                    ],
+                    [
+                        'url' => route('coupons.index'),
+                        'caption' => __('people.coupons'),
+                        'icon' => 'ticket',
+                        'authorized' => Gate::allows('configure-bank')
+                    ],
+                    [
+                        'url' => route('bank.settings'),
+                        'caption' => __('app.settings'),
+                        'icon' => 'cogs',
+                        'authorized' => Gate::allows('configure-bank')
                     ],
                 ];
         }
@@ -107,6 +116,15 @@ class ContextMenuComposer {
                         'authorized' => true
                     ]
                 ];
+            case 'userprofile.view2FA':
+                return [
+                    'back' => [
+                        'url' => route('userprofile'),
+                        'caption' => __('app.cancel'),
+                        'icon' => 'times-circle',
+                        'authorized' => true,
+                    ]
+                ];
 
             //
             // Users
@@ -120,11 +138,11 @@ class ContextMenuComposer {
                         'icon_floating' => 'plus',
                         'authorized' => Auth::user()->can('create', User::class)
                     ],
-                    'roles' => [
-                        'url' => route('roles.index'),
-                        'caption' => __('app.manage_roles'),
-                        'icon' => 'tags',
-                        'authorized' => Auth::user()->can('list', Role::class)
+                    'permissions' => [
+                        'url' => route('users.permissions'),
+                        'caption' => __('app.permissions'),
+                        'icon' => 'key',
+                        'authorized' => Gate::allows('view-usermgmt-reports')
                     ]
                 ];
             case 'users.create':
@@ -170,6 +188,15 @@ class ContextMenuComposer {
                         'authorized' => Auth::user()->can('view', $user)
                     ]
                 ];
+            case 'users.permissions':
+                return [
+                    'back' => [
+                        'url' => url()->previous(),
+                        'caption' => __('app.close'),
+                        'icon' => 'times-circle',
+                        'authorized' => Auth::user()->can('list', User::class)
+                    ]
+                ];
             //
             // Roles
             //
@@ -182,11 +209,11 @@ class ContextMenuComposer {
                         'icon_floating' => 'plus',
                         'authorized' => Auth::user()->can('create', Role::class)
                     ],
-                    'users' => [
-                        'url' => route('users.index'),
-                        'caption' => __('app.manage_users'),
-                        'icon' => 'users',
-                        'authorized' => Auth::user()->can('list', User::class)
+                    'permissions' => [
+                        'url' => route('roles.permissions'),
+                        'caption' => __('app.permissions'),
+                        'icon' => 'key',
+                        'authorized' => Gate::allows('view-usermgmt-reports')
                     ]
                 ];
             case 'roles.create':
@@ -232,6 +259,15 @@ class ContextMenuComposer {
                         'authorized' => Auth::user()->can('view', $role)
                     ]
                 ];
+            case 'roles.permissions':
+                return [
+                    'back' => [
+                        'url' => url()->previous(),
+                        'caption' => __('app.close'),
+                        'icon' => 'times-circle',
+                        'authorized' => Auth::user()->can('list', Role::class)
+                    ]
+                ];
 
             //
             // People
@@ -240,16 +276,22 @@ class ContextMenuComposer {
                 return [
                     'action' => [
                         'url' => route('people.create'),
-                        'caption' => 'Register',
+                        'caption' => __('app.register'),
                         'icon' => 'plus-circle',
                         'icon_floating' => 'plus',
                         'authorized' => Auth::user()->can('create', Person::class)
                     ],
                     'report'=> [
                         'url' => route('reporting.people'),
-                        'caption' => 'Report',
+                        'caption' => __('app.report'),
                         'icon' => 'line-chart',
                         'authorized' => Gate::allows('view-people-reports')
+                    ],
+                    'export' => [
+                        'url' => route('people.export'),
+                        'caption' => __('app.export'),
+                        'icon' => 'download',
+                        'authorized' => Auth::user()->can('export', Person::class)
                     ],
                 ];
             case 'people.create':
@@ -273,7 +315,7 @@ class ContextMenuComposer {
                     ],
                     'relations' => [
                         'url' => route('people.relations', $person),
-                        'caption' => 'Relations',
+                        'caption' => __('people.relationships'),
                         'icon' => 'users',
                         'authorized' => Auth::user()->can('update', $person)
                     ],
@@ -337,76 +379,55 @@ class ContextMenuComposer {
             //
             // Bank
             //
-            case 'bank.index':
-                return [
-                    'settings' => [
-                        'url' => route('bank.settings'),
-                        'caption' => 'Settings',
-                        'icon' => 'cogs',
-                        'authorized' => Gate::allows('configure-bank')
-                    ],
-                ];
             case 'bank.withdrawal':
             case 'bank.withdrawalSearch':
                 return [
                     'action' => [
                         'url' => route('people.create'),
-                        'caption' => 'Register',
+                        'caption' => __('app.register'),
                         'icon' => 'plus-circle',
                         'icon_floating' => 'plus',
                         'authorized' => Auth::user()->can('create', Person::class)
                     ],
                     'transactions' => [
                         'url' => route('bank.withdrawalTransactions'),
-                        'caption' => 'Transactions',
+                        'caption' => __('app.transactions'),
                         'icon' => 'list',
+                        'authorized' => Gate::allows('do-bank-withdrawals')
+                    ],
+                    'codecard' => [
+                        'url' => route('bank.prepareCodeCard'),
+                        'caption' => __('people.code_card'),
+                        'icon' => 'qrcode',
                         'authorized' => Gate::allows('do-bank-withdrawals')
                     ],
                     'report'=> [
                         'url' => route('reporting.bank.withdrawals'),
-                        'caption' => 'Report',
+                        'caption' => __('app.report'),
                         'icon' => 'line-chart',
                         'authorized' => Gate::allows('view-bank-reports')
-                    ],
-                    'deposit' => [
-                        'url' => route('bank.deposit'),
-                        'caption' => 'Deposit',
-                        'icon' => 'money',
-                        'authorized' => Gate::allows('do-bank-deposits')
-                    ],
-                    'back' => [
-                        'url' => route('bank.index'),
-                        'caption' => __('app.close'),
-                        'icon' => 'times-circle',
-                        'authorized' => Gate::allows('view-bank-index')
-                    ],
+                    ]
                 ];
             case 'bank.deposit':
                 return [
+                    'transactions' => [
+                        'url' => route('bank.depositTransactions'),
+                        'caption' => __('app.transactions'),
+                        'icon' => 'list',
+                        'authorized' => Gate::allows('do-bank-deposits')
+                    ],                    
                     'report'=> [
                         'url' => route('reporting.bank.deposits'),
-                        'caption' => 'Report',
+                        'caption' => __('app.report'),
                         'icon' => 'line-chart',
                         'authorized' => Gate::allows('view-bank-reports')
                     ],                    
-                    'withdrawal' => [
-                        'url' => route('bank.withdrawal'),
-                        'caption' => 'Withdrawal',
-                        'icon' => 'id-card',
-                        'authorized' => Gate::allows('do-bank-withdrawals')
-                    ],
-                    'back' => [
-                        'url' => route('bank.index'),
-                        'caption' => __('app.close'),
-                        'icon' => 'times-circle',
-                        'authorized' => Gate::allows('view-bank-index')
-                    ],
                 ];
             case 'bank.prepareCodeCard':
                 return [
                     'back' => [
                         'url' => route('bank.index'),
-                        'caption' => __('app.cancel'),
+                        'caption' => __('app.close'),
                         'icon' => 'times-circle',
                         'authorized' => Gate::allows('view-bank-index')
                     ]
@@ -429,6 +450,15 @@ class ContextMenuComposer {
                         'authorized' => Gate::allows('do-bank-withdrawals')
                     ]
                 ];
+            case 'bank.depositTransactions':
+                return [
+                    'back' => [
+                        'url' => route('bank.deposit'),
+                        'caption' => __('app.close'),
+                        'icon' => 'times-circle',
+                        'authorized' => Gate::allows('do-bank-deposits')
+                    ]
+                ];
             case 'bank.maintenance':
                 return [
                     'back' => [
@@ -439,12 +469,73 @@ class ContextMenuComposer {
                     ]
                 ];
             case 'bank.import':
+            case 'bank.export':
                 return [
                     'back' => [
                         'url' => route('bank.withdrawal'),
                         'caption' => __('app.cancel'),
                         'icon' => 'times-circle',
                         'authorized' => Gate::allows('do-bank-withdrawals')
+                    ]
+                ];
+
+            case 'coupons.index':
+                return [
+                    'action' => [
+                        'url' => route('coupons.create'),
+                        'caption' => __('app.add'),
+                        'icon' => 'plus-circle',
+                        'icon_floating' => 'plus',
+                        'authorized' => Auth::user()->can('create', CouponType::class)
+                    ],
+                    'back' => [
+                        'url' => route('bank.withdrawal'),
+                        'caption' => __('app.close'),
+                        'icon' => 'times-circle',
+                        'authorized' => Gate::allows('do-bank-withdrawals')
+                    ]
+                ];
+            case 'coupons.create':
+                return [
+                    'back' => [
+                        'url' => route('coupons.index'),
+                        'caption' => __('app.cancel'),
+                        'icon' => 'times-circle',
+                        'authorized' => Auth::user()->can('list', CouponType::class)
+                    ]
+                ];
+            case 'coupons.show':
+                $coupon = $view->getData()['coupon'];
+                return [
+                    'action' => [
+                        'url' => route('coupons.edit', $coupon),
+                        'caption' => __('app.edit'),
+                        'icon' => 'pencil',
+                        'icon_floating' => 'pencil',
+                        'authorized' => Auth::user()->can('update', $coupon)
+                    ],
+                    'delete' => [
+                        'url' => route('coupons.destroy', $coupon),
+                        'caption' => __('app.delete'),
+                        'icon' => 'trash',
+                        'authorized' => Auth::user()->can('delete', $coupon),
+                        'confirmation' => __('people.confirm_delete_coupon')
+                    ],
+                    'back' => [
+                        'url' => route('coupons.index'),
+                        'caption' => __('app.close'),
+                        'icon' => 'times-circle',
+                        'authorized' => Auth::user()->can('list', CouponType::class)
+                    ]
+                ];
+            case 'coupons.edit':
+                $coupon = $view->getData()['coupon'];
+                return [
+                    'back' => [
+                        'url' => route('coupons.show', $coupon),
+                        'caption' => __('app.cancel'),
+                        'icon' => 'times-circle',
+                        'authorized' => Auth::user()->can('view', $coupon)
                     ]
                 ];
 
@@ -456,7 +547,7 @@ class ContextMenuComposer {
                 return [
                     'report'=> [
                         'url' => route('reporting.articles', $project),
-                        'caption' => 'Report',
+                        'caption' => __('app.report'),
                         'icon' => 'line-chart',
                         'authorized' => true // TODO
                     ],
@@ -484,13 +575,111 @@ class ContextMenuComposer {
                         'authorized' => Gate::allows('use-logistics')
                     ]
                 ];
-            
+
+            //
+            // Donations : Donors
+            //
+            case 'donors.index':
+                return [
+                    'action' => [
+                        'url' => route('donors.create'),
+                        'caption' => __('app.add'),
+                        'icon' => 'plus-circle',
+                        'icon_floating' => 'plus',
+                        'authorized' => Auth::user()->can('create', Donor::class)
+                    ],
+                    'export' => [
+                        'url' => route('donors.export'),
+                        'caption' => __('app.export'),
+                        'icon' => 'download',
+                        'authorized' => Auth::user()->can('list', Donor::class)
+                    ]
+                ];
+            case 'donors.create':
+                return [
+                    'back' => [
+                        'url' => route('donors.index'),
+                        'caption' => __('app.cancel'),
+                        'icon' => 'times-circle',
+                        'authorized' => Auth::user()->can('create', Donor::class)
+                    ]
+                ];
+            case 'donors.show':
+                $donor = $view->getData()['donor'];
+                return [
+                    'action' => [
+                        'url' => route('donors.edit', $donor),
+                        'caption' => __('app.edit'),
+                        'icon' => 'pencil',
+                        'icon_floating' => 'pencil',
+                        'authorized' => Auth::user()->can('update', $donor)
+                    ],
+                    'export' => [
+                        'url' => route('donations.export', $donor),
+                        'caption' => __('app.export'),
+                        'icon' => 'download',
+                        'authorized' => Auth::user()->can('list', Donation::class) && $donor->donations()->count() > 0
+                    ],
+                    'delete' => [
+                        'url' => route('donors.destroy', $donor),
+                        'caption' => __('app.delete'),
+                        'icon' => 'trash',
+                        'authorized' => Auth::user()->can('delete', $donor),
+                        'confirmation' => __('donations.confirm_delete_donor')
+                    ],
+                    'back' => [
+                        'url' => route('donors.index'),
+                        'caption' => __('app.close'),
+                        'icon' => 'times-circle',
+                        'authorized' => Auth::user()->can('list', Donor::class)
+                    ]
+                ];
+            case 'donors.edit':
+                $donor = $view->getData()['donor'];
+                return [
+                    'back' => [
+                        'url' => route('donors.show', $donor),
+                        'caption' => __('app.cancel'),
+                        'icon' => 'times-circle',
+                        'authorized' => Auth::user()->can('view', $donor)
+                    ]
+                ];
+            case 'donations.create':
+                $donor = $view->getData()['donor'];
+                return [
+                    'back' => [
+                        'url' => route('donors.show', $donor),
+                        'caption' => __('app.cancel'),
+                        'icon' => 'times-circle',
+                        'authorized' => Auth::user()->can('view', $donor)
+                    ]
+                ];
+            case 'donations.edit':
+                $donor = $view->getData()['donor'];
+                $donation = $view->getData()['donation'];
+                return [
+                    'delete' => [
+                        'url' => route('donations.destroy', [$donor, $donation]),
+                        'caption' => __('app.delete'),
+                        'icon' => 'trash',
+                        'authorized' => Auth::user()->can('delete', $donation),
+                        'confirmation' => __('donations.confirm_delete_donation')
+                    ],
+                    'back' => [
+                        'url' => route('donors.show', $donor),
+                        'caption' => __('app.close'),
+                        'icon' => 'times-circle',
+                        'authorized' => Auth::user()->can('view', $donor)
+                    ]
+                ];
+
             //
             // Reporting
             //
             case 'reporting.people':
             case 'reporting.bank.withdrawals':
             case 'reporting.bank.deposits':
+            case 'reporting.privacy':
                 return [
                     'back' => [
                         'url' => url()->previous(),

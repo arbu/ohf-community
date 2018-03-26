@@ -11,6 +11,9 @@
 // Font Awesome
 @import "node_modules/font-awesome/scss/font-awesome";
 
+// Snackbar
+@import "node_modules/node-snackbar/src/sass/snackbar";
+
 /*
 * Side navigation
  */
@@ -147,6 +150,10 @@
   box-shadow: 0 6px 10px 0 rgba(0,0,0,0.14),0 1px 18px 0 rgba(0,0,0,0.12),0 3px 5px -1px rgba(0,0,0,0.2);
 }
 
+.floating-action-button-elevated {
+  bottom: 4.5em;
+}
+
 /*
 * Filter
 */
@@ -175,3 +182,81 @@
 .autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
 .autocomplete-group { padding: 2px 5px; }
 .autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
+
+/*
+* Snackbar
+*/
+.snack-message {
+  display: none;
+}
+
+.snackbar-container .action {
+  font-weight: bold;
+}
+
+.snackbar-container.success .action {
+  color: theme-color("success");
+}
+
+.snackbar-container.info .action {
+  color: theme-color("info");
+}
+
+.snackbar-container.warning .action {
+  color: theme-color("warning");
+}
+
+/**
+* CSS columns
+*/
+
+.columns-3 {
+  column-count: 1;
+}
+
+@include media-breakpoint-up(md) {
+  .columns-3 {
+    column-count: 2;
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  .columns-3 {
+    column-count: 3;
+  }
+}
+
+/**
+* Tables
+*/
+.table td.fit, 
+.table th.fit {
+    white-space: nowrap;
+    width: 1%;
+}
+
+/**
+* Calendar
+*/
+
+.fc-today {
+  background:#fcf8e3;
+}
+
+/*
+* Tabs
+*/
+.tab-active, .tab-active:hover {
+  text-decoration: none;
+  border-bottom: 4px solid theme-color("primary");
+  background: theme-color("light");
+  color: black;
+}
+
+.tab-inactive, .tab-inactive:hover {
+  text-decoration: none;
+  border-bottom: 4px solid theme-color("light");
+  background: theme-color("light");
+  color: theme-color("dark");
+}
+

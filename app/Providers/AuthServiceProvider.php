@@ -19,7 +19,10 @@ class AuthServiceProvider extends ServiceProvider
         'App\Task' => 'App\Policies\TaskPolicy',
         'App\CalendarEvent' => 'App\Policies\CalendarEventPolicy',
         \App\CalendarResource::class => \App\Policies\Calendar\ResourcePolicy::class,
-        'App\Volunteer' => 'App\Policies\VolunteerPolicy',
+        \App\Donor::class => \App\Policies\Donations\DonorPolicy::class,
+        \App\Donation::class => \App\Policies\Donations\DonationPolicy::class,
+        \App\CouponType::class => \App\Policies\People\Bank\CouponTypePolicy::class,
+        \App\Volunteer::class => \App\Policies\VolunteerPolicy::class,
     ];
 
     /**
@@ -37,12 +40,14 @@ class AuthServiceProvider extends ServiceProvider
             'do-bank-deposits' => 'bank.deposits.do',
             'view-bank-reports' => 'bank.statistics.view',
             'view-people-reports' => 'people.reports.view',
-            'view-reports' => ['people.reports.view', 'bank.statistics.view'],
+            'view-reports' => ['people.reports.view', 'bank.statistics.view', 'kitchen.reports.view', 'app.usermgmt.view'],
+            'view-usermgmt-reports' => 'app.usermgmt.view',
             'configure-bank' => 'bank.configure',
             'use-logistics' => 'logistics.use',
             'view-kitchen-reports' => 'kitchen.reports.view',
             'view-calendar' => 'calendar.events.view',
             'view-changelogs' => 'app.changelogs.view',
+            'view-logs' => 'app.logs.view',
         ];
         foreach ($simple_permission_gate_mappings as $gate => $permission) {
             Gate::define($gate, function ($user) use($permission) {

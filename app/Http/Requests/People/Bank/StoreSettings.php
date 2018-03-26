@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\People\Bank;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreTransactionSettings extends FormRequest
+class StoreSettings extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,9 +25,6 @@ class StoreTransactionSettings extends FormRequest
     {
         return [
             'people_results_per_page' => 'required|numeric',
-			'transaction_default_value' => 'required|numeric',
-			'single_transaction_max_amount' => 'required|numeric',
-            'boutique_threshold_days' => 'required|numeric',
             'frequent_visitor_weeks' => 'required|numeric',
             'frequent_visitor_threshold' => 'required|numeric',
         ];

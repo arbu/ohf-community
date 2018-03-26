@@ -6,6 +6,7 @@ use App\Person;
 use App\Role;
 use App\Task;
 use App\User;
+use App\Donor;
 use App\Volunteer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -69,6 +70,13 @@ class NavigationComposer {
                     'authorized' => Gate::allows('use-logistics')
                 ],
                 [
+                    'route' => 'donors.index',
+                    'caption' => __('donations.donations'),
+                    'icon' => 'handshake-o',
+                    'active' => 'donations/donors*',
+                    'authorized' => Auth::user()->can('list', Donor::class),
+                ],
+                [
                     'route' => 'calendar',
                     'caption' => 'Calendar',
                     'icon' => 'calendar',
@@ -92,18 +100,18 @@ class NavigationComposer {
                 ],
                 [
                     'route' => 'users.index',
-                    'caption' => __('app.users'),
+                    'caption' => __('app.users_and_roles'),
                     'icon' => 'users',
-                    'active' => 'users*',
-                    'authorized' => Auth::user()->can('list', User::class)
+                    'active' => ['users*', 'roles*'],
+                    'authorized' => Auth::user()->can('list', User::class) || Auth::user()->can('list', Role::class)
                 ],
                 [
-                    'route' => 'roles.index',
-                    'caption' => __('app.roles'),
-                    'icon' => 'tags',
-                    'active' => 'roles*',
-                    'authorized' => Auth::user()->can('list', Role::class)
-                ]
+                    'route' => 'logviewer.index',
+                    'caption' => __('app.logviewer'),
+                    'icon' => 'file-text-o',
+                    'active' => 'logviewer*',
+                    'authorized' => Gate::allows('view-logs'),
+                ],
             ];
             $view->with('nav', $nav);
         }

@@ -29,6 +29,41 @@ function scanQR(callback) {
 	});
 }
 
+var Snackbar = require('node-snackbar');
+function showSnackbar(text, actionText, actionClass, callback) {
+	var args = {
+		text: text,
+		duration: 3000,
+		pos: 'bottom-center',
+		actionText: actionText ? actionText : null,
+		actionTextColor: null,
+		customClass: actionClass ? actionClass : null, 
+	};
+	if (callback) {
+		args['onActionClick'] = callback;
+		args['duration'] = 5000;
+	}
+	Snackbar.show(args);
+}
+
+function ajaxError(jqXHR, textStatus) {
+	var message;
+	if (jqXHR.responseJSON.message) {
+		if (jqXHR.responseJSON.errors) {
+			message = "";
+			var errors = jqXHR.responseJSON.errors;
+			Object.keys(errors).forEach(function(key) {
+				message += errors[key] + "\n";
+			});
+		} else {
+			message = jqXHR.responseJSON.message;
+		}
+	} else {
+		message = textStatus + ': ' + jqXHR.responseText;
+	}
+	alert(message);
+}
+
 $(function(){
 
 	// Scan QR code card and search for the number
@@ -53,48 +88,21 @@ $(function(){
 				"card_no": content,
 			}, function(data) {
 				resultElem.html('<strong>' + content.substr(0,7) + '</strong>');
+				showSnackbar(data.message);
 			})
-			.fail(function(jqXHR, textStatus) {
-				var msg = jqXHR.responseJSON.message ? jqXHR.responseJSON.message : jqXHR.responseText;
-				alert('Error: ' + msg);
-			});
+			.fail(ajaxError);
 		});
 	});
 
-	// Drachma
-	$('.give-cash').on('click', executeTransaction);
-	$('.undo-transaction').on('click', undoTransaction);
-
-	// Boutique
-	$('.give-boutique-coupon').on('click', giveBoutiqueCoupon);
-	$('.undo-boutique').on('click', resetBoutiqueCoupon);
-
-	// Diapers
-	$('.give-diapers-coupon').on('click', giveDiapersCoupon);
-	$('.undo-diapers').on('click', resetDiapersCoupon);
-
+	// Coupon
+	$('.give-coupon').on('click', handoutCoupon);
+	
 	// Gender
 	$('.choose-gender').on('click', selectGender);
 
 	// Date of birth
 	$('.choose-date-of-birth').on('click', selectDateOfBirth);
 });
-
-function executeTransaction() {
-	var person = $(this).attr('data-person');
-	var value = $(this).attr('data-value');
-	var resultElem = $(this).parent();
-	storeTransaction(person, value, resultElem);
-	enableFilterSelect();
-}
-
-function undoTransaction() {
-	var person = $(this).attr('data-person');
-	var value = $(this).attr('data-value');
-	var resultElem = $(this).parent();
-	storeTransaction(person, - value, resultElem);
-	enableFilterSelect();
-}
 
 function enableFilterSelect() {
 	$('#filter').off('click');
@@ -103,53 +111,58 @@ function enableFilterSelect() {
 	});
 }
 
-function storeTransaction(personId, value, resultElem) {
-	resultElem.html('<i class="fa fa-spinner fa-spin">');
-	$.post( storeTransactionUrl, {
+function handoutCoupon(){
+	var btn = $(this);
+	var person = btn.data('person');
+	var couponType = btn.data('coupon');
+	var amount = btn.data('amount');
+	var label = $(this).html();
+	btn.attr('disabled', 'disabled');
+	$.post(handoutCouponUrl, {
 		"_token": csrfToken,
-		"person_id": personId,
-		"value": value
+		"person_id": person,
+		"coupon_type_id": couponType,
+		"amount": amount
 	}, function(data) {
-		if (data.today > 0) {
-			resultElem.html(data.today + ' ')
-				.append($('<small>')
-					.addClass('text-muted')
-					.attr('title', data.date)
-					.text('registered ' + data.dateDiff))
-				.append(' ')
-				.append($('<a>')
-					.attr('href', 'javascript:;')
-					.addClass('undo-transaction')
-					.attr('title', 'Undo')
-					.attr('data-person', personId)
-					.attr('data-value', value)
-					.on('click', undoTransaction)
-					.append($('<i>').addClass("fa fa-undo")));
-		} else {
-			resultElem.empty();
-			if (data.age === null || data.age >= 12) {
-				resultElem.append($('<button>')
-					.addClass('btn btn-primary btn-sm give-cash')
-					.attr('data-person', personId)
-					.attr('data-value', 2)
-					.on('click', executeTransaction)
-					.text(2))
-					.append(' ');
-			}
-			if (data.age === null || data.age < 12) {
-				resultElem.append($('<button>')
-					.attr('type', 'button')
-					.addClass('btn btn-primary btn-sm give-cash')
-					.attr('data-person', personId)
-					.attr('data-value', 1)
-					.on('click', executeTransaction)
-					.text(1));
-			}
-		}
+		btn.append(' (' + data.countdown + ')');
+		btn.off('click').on('click', undoHandoutCoupon);
+		showSnackbar(data.message, undoLabel, 'warning', function(element){
+			$(element).css('opacity', 0);
+			btn.click();
+			enableFilterSelect();
+		});
+
+		btn.removeClass('btn-primary').addClass('btn-secondary');
+		enableFilterSelect();
 	})
-	.fail(function(jqXHR, textStatus) {
-		alert(textStatus + ': ' + jqXHR.responseJSON);
-	});
+	.fail(ajaxError)
+	.always(function() {
+		btn.removeAttr('disabled');
+	});	
+}
+
+function undoHandoutCoupon(){
+	var btn = $(this);
+	var person = btn.data('person');
+	var couponType = btn.data('coupon');
+	var label = $(this).html();
+	btn.attr('disabled', 'disabled');
+	$.post(undoHandoutCouponUrl, {
+		"_token": csrfToken,
+		"person_id": person,
+		"coupon_type_id": couponType
+	}, function(data) {
+		btn.html(btn.html().substring(0, btn.html().lastIndexOf(" (")));
+		btn.off('click').on('click', handoutCoupon);
+		showSnackbar(data.message);
+
+		btn.removeClass('btn-secondary').addClass('btn-primary');
+		enableFilterSelect();
+	})
+	.fail(ajaxError)
+	.always(function() {
+		btn.removeAttr('disabled');
+	});	
 }
 
 function selectGender() {
@@ -167,11 +180,10 @@ function selectGender() {
 		} else if (value == 'f') {
 			resultElem.html('<i class="fa fa-female">');
 		}
+		showSnackbar(data.message);
 		enableFilterSelect();
 	})
-	.fail(function(jqXHR, textStatus) {
-		alert(textStatus);
-	});
+	.fail(ajaxError);
 }
 
 function selectDateOfBirth() {
@@ -192,7 +204,7 @@ function selectDateOfBirth() {
 				isEnter = (evt.keyCode == 13);
 			}
 			if (isEnter && dateSelect.val().match('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')) {
-				storeDateOfBirth(person, dateSelect.val(), resultElem);
+				storeDateOfBirth(person, dateSelect, resultElem);
 			}
 		});
 	resultElem.empty()
@@ -203,7 +215,7 @@ function selectDateOfBirth() {
 			.addClass('btn btn-primary btn-sm')
 			.on('click', function(){
 				if (dateSelect.val().match('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')) {
-					storeDateOfBirth(person, dateSelect.val(), resultElem);
+					storeDateOfBirth(person, dateSelect, resultElem);
 				} else {
 					dateSelect.focus();
 				}
@@ -235,17 +247,19 @@ function selectDateOfBirth() {
 	dateSelect.focus();
 }
 
-function storeDateOfBirth(person, value, resultElem) {
+function storeDateOfBirth(person, dateSelect, resultElem) {
 	$.post(updateDateOfBirthUrl, {
 		"_token": csrfToken,
 		"person_id":person,
-		'date_of_birth': value
+		'date_of_birth': dateSelect.val()
 	}, function(data) {
 		resultElem.html(data.date_of_birth + ' (age ' + data.age + ')');
+		showSnackbar(data.message);
 		enableFilterSelect();
 	})
-	.fail(function(jqXHR, textStatus) {
-		alert(textStatus + ': ' + jqXHR.responseJSON);
+	.fail(function(jqXHR, textStatus){
+		ajaxError(jqXHR, textStatus);
+		dateSelect.select();
 	});	
 }
 
@@ -262,99 +276,4 @@ function getTodayDate() {
 		mm='0'+mm;
 	} 
 	return yyyy + '-' + mm + '-' + dd;
-}
-
-function giveBoutiqueCoupon() {
-	var person = $(this).attr('data-person');
-	var resultElem = $(this).parent();
-	//var name = resultElem.parents('.card').find('.card-header strong').text();
-	resultElem.html('<i class="fa fa-spinner fa-spin">');
-	$.post( giveBoutiqueCouponUrl, {
-		"_token": csrfToken,
-		"person_id": person
-	}, function(data) {
-		resultElem.html(data.countdown)
-			.append(' ')
-			.append($('<a>')
-				.attr('href', 'javascript:;')
-				.addClass('undo-boutique')
-				.attr('title', 'Undo')
-				.attr('data-person', person)
-				.on('click', resetBoutiqueCoupon)
-				.append($('<i>').addClass("fa fa-undo")));
-		enableFilterSelect();
-	})
-	.fail(function(jqXHR, textStatus) {
-		alert(textStatus);
-	});
-}
-
-function resetBoutiqueCoupon() {
-	var person = $(this).attr('data-person');
-	var resultElem = $(this).parent();
-	resultElem.html('<i class="fa fa-spinner fa-spin">');
-	$.post( resetBoutiqueCouponUrl, {
-		"_token": csrfToken,
-		"person_id": person
-	}, function(data) {
-		resultElem.empty()
-			.append($('<button>')
-				.attr('type', 'button')
-				.attr('data-person', person)
-				.attr('type', 'button')
-				.on('click', giveBoutiqueCoupon)
-				.addClass('btn btn-primary btn-sm give-boutique-coupon')
-				.text('Coupon'));
-		enableFilterSelect();
-	})
-	.fail(function(jqXHR, textStatus) {
-		alert(textStatus);
-	});
-}
-
-function giveDiapersCoupon(){
-	var person = $(this).attr('data-person');
-	var resultElem = $(this).parent();
-	resultElem.html('<i class="fa fa-spinner fa-spin">');
-	$.post( giveDiapersCouponUrl, {
-		"_token": csrfToken,
-		"person_id": person
-	}, function(data) {
-		resultElem.html(data.countdown)			
-			.append(' ')
-			.append($('<a>')
-				.attr('href', 'javascript:;')
-				.addClass('undo-diapers')
-				.attr('title', 'Undo')
-				.attr('data-person', person)
-				.on('click', resetDiapersCoupon)
-				.append($('<i>').addClass("fa fa-undo")));
-		enableFilterSelect();
-	})
-	.fail(function(jqXHR, textStatus) {
-		alert(textStatus);
-	});
-}
-
-function resetDiapersCoupon() {
-	var person = $(this).attr('data-person');
-	var resultElem = $(this).parent();
-	resultElem.html('<i class="fa fa-spinner fa-spin">');
-	$.post( resetDiapersCouponUrl, {
-		"_token": csrfToken,
-		"person_id": person
-	}, function(data) {
-		resultElem.empty()
-			.append($('<button>')
-				.attr('type', 'button')
-				.attr('data-person', person)
-				.attr('type', 'button')
-				.on('click', giveDiapersCoupon)
-				.addClass('btn btn-primary btn-sm give-diapers-coupon')
-				.text('Coupon'));
-		enableFilterSelect();
-	})
-	.fail(function(jqXHR, textStatus) {
-		alert(textStatus);
-	});
 }

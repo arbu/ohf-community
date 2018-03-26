@@ -28,9 +28,6 @@
                             </div>
                         </div>
 
-                        @if ( App\User::count() > 1 )
-                            {{ Form::bsCheckbox('is_super_admin', null, null, __('app.this_user_is_admin')) }}
-                        @endif
 
                     </div>
                 </div>
@@ -40,13 +37,15 @@
                 <div class="card">
                     <div class="card-header">@lang('app.roles')</div>
                     <div class="card-body">
-                        @forelse ($roles as $role)
-                            <label>
-                                {{ Form::checkbox('roles[]', $role->id) }} {{ $role->name }}
-                            </label><br>
-                        @empty
+                        {{ Form::bsCheckboxList('roles[]', $roles->mapWithKeys(function($role){return [ $role->id => $role->name ];}), null) }}
+                        @empty($roles)
                             <em>@lang('app.no_roles')</em>
-                        @endforelse
+                        @endempty
+                        @if ( App\User::count() > 1 )
+                            <hr>
+                            {{ Form::bsCheckbox('is_super_admin', null, null, __('app.this_user_is_admin')) }}
+                        @endif
+
                     </div>
                 </div>
             </div>

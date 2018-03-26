@@ -6,17 +6,17 @@ use App\Util\CountriesExtended;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Person;
-use App\Transaction;
+use App\CouponHandout;
 use App\Http\Requests\StorePerson;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\LabelAlignment;
 use Illuminate\Support\Facades\DB;
 use Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Config;
 
 class PeopleController extends ParentController
 {
-    const DEFAULT_RESULTS_PER_PAGE = 15;
     const filter_fields = ['name', 'family_name', 'police_no', 'case_no', 'medical_no', 'registration_no', 'section_card_no', 'temp_no', 'remarks', 'nationality', 'languages', 'skills', 'date_of_birth'];
 
     /**
@@ -58,7 +58,7 @@ class PeopleController extends ParentController
 		$person->name = $request->name;
         $person->family_name = $request->family_name;
         $person->gender = $request->gender;
-		$person->date_of_birth = !empty($request->date_of_birth) ? $request->date_of_birth : null;
+		$person->date_of_birth = $request->date_of_birth;
 		$person->police_no = !empty($request->police_no) ? $request->police_no : null;
 		$person->case_no = !empty($request->case_no) ? $request->case_no : null;
         $person->medical_no = !empty($request->medical_no) ? $request->medical_no : null;
@@ -69,6 +69,7 @@ class PeopleController extends ParentController
         $person->nationality = !empty($request->nationality) ? $request->nationality : null;
 		$person->languages = !empty($request->languages) ? $request->languages : null;
         $person->skills = !empty($request->skills) ? $request->skills : null;
+        $person->worker = isset($request->worker);
 		$person->save();
 
         $redirectFilter[] = $person->search;
@@ -80,7 +81,7 @@ class PeopleController extends ParentController
                     $child->name = $request->child_name[$i];
                     $child->family_name = $request->child_family_name[$i];
                     $child->gender = $request->child_gender[$i];
-                    $child->date_of_birth = !empty($request->child_date_of_birth[$i]) ? $request->child_date_of_birth[$i] : null;
+                    $child->date_of_birth = $request->child_date_of_birth[$i];
 
                     $child->police_no = !empty($request->police_no) ? $request->police_no : null;
                     $child->case_no = !empty($request->case_no) ? $request->case_no : null;
@@ -114,9 +115,6 @@ class PeopleController extends ParentController
     public function show(Person $person) {
         return view('people.show', [
             'person' => $person,
-            'transactions' => $person->transactions()
-                ->orderBy('created_at', 'desc')
-                ->paginate(),
         ]);
     }
 
@@ -138,7 +136,7 @@ class PeopleController extends ParentController
         $person->name = $request->name;
         $person->family_name = $request->family_name;
         $person->gender = $request->gender;
-        $person->date_of_birth = !empty($request->date_of_birth) ? $request->date_of_birth : null;
+        $person->date_of_birth = $request->date_of_birth;
         $person->police_no = !empty($request->police_no) ? $request->police_no : null;
         $person->case_no = !empty($request->case_no) ? $request->case_no : null;
         $person->medical_no = !empty($request->medical_no) ? $request->medical_no : null;
@@ -149,6 +147,7 @@ class PeopleController extends ParentController
         $person->nationality = !empty($request->nationality) ? $request->nationality : null;
         $person->languages = !empty($request->languages) ? $request->languages : null;
         $person->skills = !empty($request->skills) ? $request->skills : null;
+        $person->worker = isset($request->worker);
         $person->save();
         return redirect()->route('people.show', $person)
                 ->with('success', 'Person has been updated!');
@@ -382,30 +381,11 @@ class PeopleController extends ParentController
 
                 // TODO partner merge
 
-                // Merge boutique coupon
-                $master->boutique_coupon = $persons->pluck('boutique_coupon')
-                    ->push($master->boutique_coupon)
-                    ->filter(function($e) {
-                        return $e != null;
-                    })
-                    ->sort()
-                    ->last();
-
-                // Merge diapers coupon
-                $master->diapers_coupon = $persons->pluck('diapers_coupon')
-                    ->push($master->diapers_coupon)
-                    ->filter(function($e) {
-                        return $e != null;
-                    })
-                    ->sort()
-                    ->last();
-                
-                // Merge transactions
-                Transaction::whereIn('transactionable_id', $persons->pluck('id')->toArray())
-                    ->where('transactionable_type', 'App\Person')
+                // Merge coupon handouts
+                CouponHandout::whereIn('person_id', $persons->pluck('id')->toArray())
                     ->get()
                     ->each(function($e) use($master) {
-                        $e->transactionable_id = $master->id;
+                        $e->person_id = $master->id;
                         $e->save();
                     });
 
@@ -463,17 +443,17 @@ class PeopleController extends ParentController
         return $q
             ->orderBy('family_name', 'asc')
             ->orderBy('name', 'asc')
-            ->paginate(\Setting::get('people.results_per_page', self::DEFAULT_RESULTS_PER_PAGE));
+            ->paginate(\Setting::get('people.results_per_page', Config::get('bank.results_per_page')));
 	}
 
     public function export() {
-        $this->authorize('list', Person::class);
+        $this->authorize('export', Person::class);
 
-        \Excel::create('OHF_Community_' . Carbon::now()->toDateString(), function($excel) {
-            $dm = Carbon::create();
-            $excel->sheet($dm->format('F Y'), function($sheet) use($dm) {
+        \Excel::create('People_' . Carbon::now()->toDateString(), function($excel) {
+            $excel->sheet(__('people.people'), function($sheet) {
                 $persons = Person::orderBy('name', 'asc')
                     ->orderBy('family_name', 'asc')
+                    ->orderBy('name', 'asc')
                     ->get();
                 $sheet->setOrientation('landscape');
                 $sheet->freezeFirstRow();
@@ -481,7 +461,7 @@ class PeopleController extends ParentController
                     'persons' => $persons
                 ]);
             });
-        })->export('xls');
+        })->export('xlsx');
     }
 
     function import() {
@@ -500,6 +480,7 @@ class PeopleController extends ParentController
         
         \Excel::selectSheets()->load($file, function($reader) {
             
+            /** TODO */
             DB::table('transactions')->delete();
             DB::table('persons')->delete();
 

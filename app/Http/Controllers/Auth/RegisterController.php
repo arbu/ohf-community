@@ -6,6 +6,9 @@ use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\UserRegistered;
 
 class RegisterController extends Controller
 {
@@ -53,7 +56,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|string|min:6|pwned|confirmed',
         ]);
     }
 
@@ -65,11 +68,20 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
 			'is_super_admin' => User::count() == 0,
         ]);
+        Log::notice('New user registered.', [
+            'user_id' => $user->id,
+            'user_name' => $user->name,
+            'email' => $user->email,
+            'client_ip' => request()->ip(),
+        ]);
+        $admins = User::where('is_super_admin', true)->get();
+        Mail::to($admins)->send(new UserRegistered($user));
+        return $user;
     }
 }
