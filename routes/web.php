@@ -205,9 +205,9 @@ Route::group(['middleware' => 'language'], function () {
     });
 
     // Volunteers
-    Route::get('/volunteers', 'VolunteersController@index')->name('volunteers.index');
-    Route::get('/volunteers/create', 'VolunteersController@create')->name('volunteers.create');
-    Route::get('/volunteers/{volunteer}', 'VolunteersController@show')->name('volunteers.show');
+    Route::get('/volunteers', 'Volunteering\VolunteersController@index')->name('volunteers.index');
+    Route::get('/volunteers/create', 'Volunteering\VolunteersController@create')->name('volunteers.create');
+    Route::get('/volunteers/{volunteer}', 'Volunteering\VolunteersController@show')->name('volunteers.show');
     
     Route::get('/volunteer', 'VolunteersController@showProfile')->name('volunteers.showProfile');
     Route::get('/volunteer/edit', 'VolunteersController@editProfile')->name('volunteers.editProfile');

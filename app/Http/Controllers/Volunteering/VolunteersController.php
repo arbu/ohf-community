@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Volunteering;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreVolunteerProfile;
 use App\Http\Requests\StoreTrip;
 use App\Util\CountriesExtended;

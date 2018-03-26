@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Volunteers')
+@section('title', __('volunteering.volunteers'))
 
 @section('buttons')
     @can('create', App\Volunteer::class)
@@ -14,11 +14,11 @@
         <table class="table table-sm table-bordered table-striped table-hover table-responsive-md">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Address</th>
-                    <th>E-Mail</th>
-                    <th>Phone</th>
-                    <th>Registered</th>
+                    <th>@lang('app.name')</th>
+                    <th>@lang('app.address')</th>
+                    <th>@lang('app.email')</th>
+                    <th>@lang('app.phone')</th>
+                    <th>@lang('app.registered')</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,11 +44,11 @@
                 @endforeach
             </tbody>
         </table>
-        {{ $volunteers->links('vendor.pagination.bootstrap-4') }}
+        {{ $volunteers->links() }}
  
     @else
 		<div class="alert alert-info">
-            <i class="fa fa-info-circle"></i> No volunteers found.
+            <i class="fa fa-info-circle"></i> @lang('volunteering.no_volunteers_found')
         </div>
 	@endif
 	

@@ -122,4 +122,6 @@ return [
     'enabled' => 'Aktiviert',
     'updated_by' => 'aktualisiert von',
     'undo' => 'Rückgängig',
+    'address' => 'Adresse',
+    'phone' => 'Telefon',
 ];

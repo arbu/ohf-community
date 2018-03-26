@@ -57,7 +57,7 @@ class NavigationComposer {
                 ],
                 [
                     'route' => 'volunteers.index',
-                    'caption' => 'Volunteers',
+                    'caption' => __('volunteering.volunteers'),
                     'icon' => 'heart',
                     'active' => 'volunteers*',
                     'authorized' => Auth::user()->can('list', Volunteer::class)
