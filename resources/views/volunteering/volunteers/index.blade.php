@@ -2,12 +2,6 @@
 
 @section('title', __('volunteering.volunteers'))
 
-@section('buttons')
-    @can('create', App\Volunteer::class)
-        <a href="{{ route('volunteers.create') }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Register</a>
-    @endcan
-@endsection
-
 @section('content')
 
     @if( ! $volunteers->isEmpty() )
@@ -17,6 +11,8 @@
                     <th>@lang('app.name')</th>
                     <th>@lang('app.address')</th>
                     <th>@lang('people.date_of_birth')</th>
+                    <th>@lang('people.age')</th>
+                    <th>@lang('people.gender')</th>
                     <th>@lang('app.email')</th>
                     <th>@lang('app.phone')</th>
                     <th>@lang('volunteering.whatsapp')</th>
@@ -27,10 +23,18 @@
                 @foreach ($volunteers as $volunteer)
                     <tr>
                         <td>
-                            <a href="{{ route('volunteers.show', $volunteer) }}" title="View volunteer">{{ $volunteer->user->name }}</a>
+                            <a href="{{ route('volunteers.show', $volunteer) }}" title="View volunteer">{{ $volunteer->name }}</a>
                         </td>
                         <td>{{ $volunteer->address }}</td>
-                        <td>{{ $volunteer->date_of_birth }} ({{ $volunteer->age }})</td>
+                        <td>{{ $volunteer->date_of_birth }}</td>
+                        <td>{{ $volunteer->age }}</td>
+                        <td>
+                            @if(isset($volunteer->gender))
+                                @if($volunteer->gender == 'female')@icon(female) 
+                                @elseif($volunteer->gender == 'male')@icon(male) 
+                                @endif
+                            @endif
+                        </td>
                         <td>
                             <a href="mailto:{{ $volunteer->user->email }}"><i class="fa fa-envelope-o"></i></a>
                             {{ $volunteer->user->email }}

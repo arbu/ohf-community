@@ -19,8 +19,10 @@ class VolunteersController extends Controller
     function index() {
         $this->authorize('list', Volunteer::class);
 
-        return view('volunteers.index', [
-            'volunteers' => Volunteer::orderBy('created_at', 'desc')
+        return view('volunteering.volunteers.index', [
+            'volunteers' => Volunteer
+                ::orderBy('first_name', 'asc')
+                ->orderBy('last_name', 'asc')
                 ->paginate()
         ]);
     }
@@ -31,7 +33,7 @@ class VolunteersController extends Controller
     function show(Volunteer $volunteer) {
         $this->authorize('view', $volunteer);
 
-        return view('volunteers.show', [
+        return view('volunteering.volunteers.show', [
             'volunteer' => $volunteer
         ]);
     }

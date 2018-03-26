@@ -7,4 +7,5 @@ return [
     'no_volunteers_found' => 'Keine Volunteers gefunden.',
     'whatsapp' => 'WhatsApp',
     'skype' => 'Skype',
+    'view_volunteer' => 'Volunteer betrachten',
 ];
