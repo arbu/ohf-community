@@ -212,6 +212,8 @@ Route::group(['middleware' => 'language'], function () {
         Route::get('/volunteers/export', 'Volunteering\VolunteersController@export')->name('volunteers.export');
         Route::get('/volunteers/{volunteer}', 'Volunteering\VolunteersController@show')->name('volunteers.show');
         Route::get('/volunteers/{volunteer}/vcard', 'Volunteering\VolunteersController@vcard')->name('volunteers.vcard');
+        Route::get('/volunteers/{volunteer}/document', 'Volunteering\VolunteersController@document')->name('volunteers.document');
+        Route::post('/volunteers/{volunteer}/document', 'Volunteering\VolunteersController@uploadDocument')->name('volunteers.uploadDocument');
         
         Route::get('/volunteer', 'VolunteersController@showProfile')->name('volunteers.showProfile');
         Route::get('/volunteer/edit', 'VolunteersController@editProfile')->name('volunteers.editProfile');

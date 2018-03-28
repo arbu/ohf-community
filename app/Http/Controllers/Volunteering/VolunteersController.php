@@ -11,9 +11,18 @@ use App\Trip;
 use Illuminate\Support\Facades\Auth;
 use JeroenDesloovere\VCard\VCard;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class VolunteersController extends Controller
 {
+    private static $documentTypes = [
+        'portrait',
+        'driving_licence',
+        'passport',
+        'criminal_record',
+    ];
+
     /**
      * List volunteers
      */
@@ -29,7 +38,7 @@ class VolunteersController extends Controller
     }
 
     /**
-     * Export volunteers
+     * Export list of volunteers
      */
     function export() {
         $this->authorize('list', Volunteer::class);
@@ -58,7 +67,8 @@ class VolunteersController extends Controller
         $this->authorize('view', $volunteer);
 
         return view('volunteering.volunteers.show', [
-            'volunteer' => $volunteer
+            'volunteer' => $volunteer,
+            'documentTypes' => self::$documentTypes,
         ]);
     }
 
@@ -78,6 +88,30 @@ class VolunteersController extends Controller
 
         // return vcard as a download
         return $vcard->download();
+    }
+
+    function document(Volunteer $volunteer, Request $request) {
+        $this->authorize('view', $volunteer);
+
+        $type = $request->type;
+        return Storage::download($volunteer->$type);
+    }
+
+    function uploadDocument(Volunteer $volunteer, Request $request) {
+        $this->authorize('update', $volunteer);
+
+        $type = $request->type;
+        $file = $request->file('file')->store('volunteers');
+
+        if ($volunteer->$type != null) {
+            Storage::delete($volunteer->$type);
+        }
+
+        $volunteer->$type = $file;
+        $volunteer->save();
+
+        return redirect()->route('volunteers.show', $volunteer)
+            ->with('success', __('volunteering.document_has_been_uploaded', ['document' => __('volunteering.' . $type)]));
     }
 
 

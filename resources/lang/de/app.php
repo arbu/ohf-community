@@ -137,4 +137,6 @@ return [
     'date_of_birth' => 'Geburtsdatum',
     'age' => 'Alter',
     'gender' => 'Geschlecht',
+    'not_specified' => 'Nicht angegeben',
+    'documents' => 'Dokumente',
 ];
