@@ -23,6 +23,8 @@ return [
     'other' => 'Sonstiges',
     'document_missing' => 'Dokument fehlt',
     'document_has_been_uploaded' => ':document wurde hochgeladen.',
+    'document_has_been_removed' => ':document wurde entfernt.',
+    'really_delete_document' => 'Soll das Dokument ":document" wirklich entfernt werden?',
     'no_documents_uploaded_yet' => 'Bisher wurden noch keine Dokumente hochgeladen.',
     'upload_document' => 'Dokument hochladen',
 ];

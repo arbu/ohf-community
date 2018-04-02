@@ -134,7 +134,11 @@
                                     @can('update', $volunteer)
                                         <div class="card-footer">
                                             <a href="{{ route('volunteers.document', [$volunteer, $document]) }}" class="btn btn-primary btn-sm">@lang('app.download')</a>
-                                            <a href="" class="text-danger btn btn-link btn-sm pull-right">@lang('app.delete')</a>
+                                            <form method="POST" action="{{ route('volunteers.deleteDocument', [$volunteer, $document]) }}" class="d-inline">
+                                                {{ csrf_field() }}
+                                                {{ method_field('DELETE') }}
+                                                {{ Form::button(__('app.delete'), [ 'type' => 'submit', 'class' => 'text-danger btn btn-link btn-sm pull-right delete-confirmation', 'data-confirmation' => __('volunteering.really_delete_document', ['document' => __('volunteering.' . $document->type)]) ] ) }}
+                                            </form>
                                         </div>
                                     @endcan
                                 </div>
@@ -148,9 +152,7 @@
                             <div class="card mb-4">
                                 <div class="card-header">@lang('volunteering.upload_document')</div>
                                 <div class="card-body">
-                                    <div class="form-group">
-                                        {{ Form::file('file', null, [ 'class' => 'form-control-file'  ]) }}
-                                    </div>
+                                    {{ Form::bsFile('file', [], __('app.choose_file')) }}
                                     {{ Form::bsSelect('type', \App\VolunteerDocument::types(), null, [], __('app.type')) }}
                                     {{ Form::bsTextarea('remarks', null, [ 'rows' => 2 ], __('app.remarks')) }}
                                     {{ Form::bsSubmitButton(__('app.upload'), 'upload') }}

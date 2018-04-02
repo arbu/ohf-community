@@ -148,4 +148,5 @@ return [
     'documents' => 'Dokumente',
     'download' => 'Herunterladen',
     'upload' => 'Hochladen',
+    'choose_file' => 'Datei wählen',
 ];

@@ -111,12 +111,21 @@ class VolunteersController extends Controller
         $volunteer->documents()->save($document);
 
         return redirect()->route('volunteers.show', $volunteer)
-            ->with('success', __('volunteering.document_has_been_uploaded', ['document' => __('volunteering.' . $request->type)]));
+            ->with('success', __('volunteering.document_has_been_uploaded', ['document' => __('volunteering.' . $document->type)]));
     }
 
-        // if ($volunteer->$type != null) {
-        //     Storage::delete($volunteer->$type);
-        // }
+    function deleteDocument(Volunteer $volunteer, VolunteerDocument $document) {
+        $this->authorize('update', $volunteer);
+
+        Storage::delete($document->file);
+        $document->delete();
+
+        return redirect()->route('volunteers.show', $volunteer)
+            ->with('success', __('volunteering.document_has_been_removed', ['document' => __('volunteering.' . $document->type)]));
+    }
+    
+
+    
 
     function showProfile() {
         $volunteer = Auth::user()->volunteer;

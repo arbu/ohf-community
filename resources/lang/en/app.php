@@ -148,4 +148,5 @@ return [
     'documents' => 'Documents',
     'download' => 'Download',
     'upload' => 'Upload',
+    'choose_file' => 'Choose file',
  ];

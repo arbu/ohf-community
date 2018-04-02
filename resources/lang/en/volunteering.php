@@ -23,6 +23,8 @@ return [
     'other' => 'Other',
     'document_missing' => 'Document missing',
     'document_has_been_uploaded' => ':document has been uploaded.',
+    'document_has_been_removed' => ':document has been removed.',
+    'really_delete_document' => 'Do you really want to remove the :document document?',
     'no_documents_uploaded_yet' => 'No documents have been uploaded yet.',
     'upload_document' => 'Upload document',
 ];
