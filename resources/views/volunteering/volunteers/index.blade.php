@@ -1,8 +1,8 @@
-@extends('layouts.app')
+@extends('volunteering.layout')
 
 @section('title', __('volunteering.volunteers'))
 
-@section('content')
+@section('wrapped-content')
 
     @if( ! $volunteers->isEmpty() )
         <table class="table table-sm table-bordered table-striped table-hover table-responsive-md">

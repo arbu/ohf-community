@@ -213,9 +213,17 @@ Route::group(['middleware' => 'language'], function () {
         Route::get('/volunteers/{volunteer}', 'Volunteering\VolunteersController@show')->name('volunteers.show');
         Route::get('/volunteers/{volunteer}/vcard', 'Volunteering\VolunteersController@vcard')->name('volunteers.vcard');
 
-        Route::get('/volunteers/{volunteer}/document/{document}', 'Volunteering\VolunteersController@document')->name('volunteers.document');
-        Route::post('/volunteers/{volunteer}/document', 'Volunteering\VolunteersController@uploadDocument')->name('volunteers.uploadDocument');
-        Route::delete('/volunteers/{volunteer}/document/{document}', 'Volunteering\VolunteersController@deleteDocument')->name('volunteers.deleteDocument');
+        // Documents
+        Route::get('/volunteers/{volunteer}/document/{document}', 'Volunteering\DocumentsController@download')->name('volunteering.documents.download');
+        Route::post('/volunteers/{volunteer}/document', 'Volunteering\DocumentsController@store')->name('volunteering.documents.store');
+        Route::delete('/volunteers/{volunteer}/document/{document}', 'Volunteering\DocumentsController@destroy')->name('volunteering.documents.destroy');
+
+        // Trips
+        Route::get('/volunteering/trips', 'Volunteering\TripsController@index')->name('volunteering.trips.index');
+
+        // Jobs
+        Route::get('/volunteering/jobs', 'Volunteering\JobsController@index')->name('volunteering.jobs.index');
+
         
         Route::get('/volunteer', 'VolunteersController@showProfile')->name('volunteers.showProfile');
         Route::get('/volunteer/edit', 'VolunteersController@editProfile')->name('volunteers.editProfile');
