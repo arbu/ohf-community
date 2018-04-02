@@ -25,7 +25,7 @@ class UploadVolunteerDocument extends FormRequest
     public function rules()
     {
         return [
-            'file' => 'required|file|mimes:jpeg,bmp,png,pdf|max:' . (8 * 1024),
+            'file' => 'required|file|mimes:jpeg,bmp,png,pdf|max:' . (16 * 1024),
             'type' => 'required|in:' . implode(',', array_keys(VolunteerDocument::types())),
             'remarkts' => 'nullable|string',
         ];
