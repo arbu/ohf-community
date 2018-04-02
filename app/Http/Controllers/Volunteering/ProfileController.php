@@ -55,7 +55,7 @@ class ProfileController extends Controller
             return redirect()->route('volunteering.profile.edit');
         }
         
-        return view('volunteers.createTrip', [
+        return view('volunteering.profile.createTrip', [
             'type_of_work' => [
                 'Activities',
                 'Building',

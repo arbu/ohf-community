@@ -1,11 +1,11 @@
 @extends('layouts.tabbed_view', [ 
     'nav_elements' => [
         [
-            'url' => route('volunteers.index'),
+            'url' => route('volunteering.volunteers.index'),
             'label' => __('volunteering.volunteers'),
             'icon' => 'user',
             'active' => function($currentRouteName) {
-                return $currentRouteName == 'volunteers.index';
+                return $currentRouteName == 'volunteering.volunteers.index';
             },
             'authorized' => Auth::user()->can('list', \App\Volunteer::class),
         ],

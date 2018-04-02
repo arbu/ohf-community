@@ -28,7 +28,7 @@ class DocumentsController extends Controller
 
         $volunteer->documents()->save($document);
 
-        return redirect()->route('volunteers.show', $volunteer)
+        return redirect()->route('volunteering.volunteers.show', $volunteer)
             ->with('success', __('volunteering.document_has_been_uploaded', ['document' => __('volunteering.' . $document->type)]));
     }
 
@@ -38,7 +38,7 @@ class DocumentsController extends Controller
         // File is deleted by VolunteerDocument::deleting event automatically
         $document->delete();
 
-        return redirect()->route('volunteers.show', $volunteer)
+        return redirect()->route('volunteering.volunteers.show', $volunteer)
             ->with('success', __('volunteering.document_has_been_removed', ['document' => __('volunteering.' . $document->type)]));
     }
 

@@ -23,7 +23,7 @@
                 @foreach ($volunteers as $volunteer)
                     <tr>
                         <td>
-                            <a href="{{ route('volunteers.show', $volunteer) }}">{{ $volunteer->name }}</a>
+                            <a href="{{ route('volunteering.volunteers.show', $volunteer) }}">{{ $volunteer->name }}</a>
                         </td>
                         <td>{{ $volunteer->address }}</td>
                         <td>{{ $volunteer->date_of_birth }}</td>

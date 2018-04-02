@@ -44,7 +44,7 @@
     <div class="card mb-4">
         <div class="card-header">
             My Trips
-            <a href="{{ route('volunteers.createTrip') }}" class="pull-right">Apply for a new trip</a>
+            <a href="{{ route('volunteering.profile.createTrip') }}" class="pull-right">Apply for a new trip</a>
         </div>
         <div class="card-body py-0 px-1">
             @if( $volunteer->trips()->count() > 0 )
@@ -70,7 +70,7 @@
                         <em>You do not have any trips planned so far.</em>
                     </div>
                     <div class="col-sm-auto">
-                        <a href="{{ route('volunteers.createTrip') }}" class="btn btn-primary">@icon(plane) Apply for trip</a>
+                        <a href="{{ route('volunteering.profile.createTrip') }}" class="btn btn-primary">@icon(plane) Apply for trip</a>
                     </div>
                 </div>
             @endif
