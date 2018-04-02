@@ -16,6 +16,36 @@
                 </thead>
                 <tbody>
                 @foreach($transactions as $transaction)
+                    @php
+                        $date = null;
+                        if (isset($transaction->getModified()['date']['new'])) {
+                            $date = new Carbon\Carbon($transaction->getModified()['date']['new']['date'], $transaction->getModified()['date']['new']['timezone']);
+                        } else if (isset($transaction->getModified()['date']['old'])) {
+                            $date = new Carbon\Carbon($transaction->getModified()['date']['old']);
+                        }
+
+                        $person = null;
+                        if (isset($transaction->getModified()['person_id']['new'])) {
+                            $person = \App\Person::find($transaction->getModified()['person_id']['new']);
+                        } else if (isset($transaction->getModified()['person_id']['old'])) {
+                            $person = \App\Person::find($transaction->getModified()['person_id']['old']);
+                        }
+
+                        $amount_diff = 0;
+                        if (isset($transaction->getModified()['amount']['new'])) {
+                            $amount_diff += $transaction->getModified()['amount']['new'] ;
+                        }
+                        if (isset($transaction->getModified()['amount']['old'])) {
+                            $amount_diff -= $transaction->getModified()['amount']['old'];
+                        }
+
+                        $coupon = null;
+                        if (isset($transaction->getModified()['coupon_type_id']['new'])) {
+                            $coupon = \App\CouponType::find($transaction->getModified()['coupon_type_id']['new']);
+                        } else if (isset($transaction->getModified()['coupon_type_id']['old'])) {
+                            $coupon = \App\CouponType::find($transaction->getModified()['coupon_type_id']['old']);
+                        }
+                    @endphp
                     <tr>
                         <td title="{{ $transaction->created_at }}">
                             {{ $transaction->created_at->diffForHumans() }}
@@ -23,24 +53,37 @@
                                 <small class="text-muted">by {{ $transaction->user->name }}</small>
                             @endisset
                         </td>
-                        <td>{{ $transaction->date }}</td>
                         <td>
-                            @if($transaction->person != null)
-                                <a href="{{ route('people.show', $transaction->person) }}">{{ $transaction->person->family_name }} {{ $transaction->person->name }}</a>
-                                @if($transaction->person->gender == 'f')@icon(female) 
-                                @elseif($transaction->person->gender == 'm')@icon(male) 
+                            @isset($date)
+                                {{ $date->toDateString() }}
+                            @else
+                                <em>@lang('app.not_found')</em>
+                            @endisset
+                        </td>
+                        <td>
+                            @isset($person)
+                                <a href="{{ route('people.show', $person) }}">{{ $person->family_name }} {{ $person->name }}</a>
+                                @if($person->gender == 'f')@icon(female) 
+                                @elseif($person->gender == 'm')@icon(male) 
                                 @endif
-                                @if(isset($transaction->person->date_of_birth))
-                                    {{ $transaction->person->date_of_birth }} (@lang('people.age_n', [ 'age' => $transaction->person->age]))
+                                @if(isset($person->date_of_birth))
+                                    {{ $person->date_of_birth }} (@lang('people.age_n', [ 'age' => $person->age]))
                                 @endif
-                                @if(isset($transaction->person->nationality))
-                                    {{ $transaction->person->nationality }}
+                                @if(isset($person->nationality))
+                                    {{ $person->nationality }}
                                 @endif
                             @else
-                                <em>@lang('people.person_deleted')</em>
-                            @endif
+                                <em>@lang('app.not_found')</em>
+                            @endisset
                         </td>
-                        <td>{{ $transaction->amount }} {{ $transaction->couponType->name }}</td>
+                        <td>
+                            @isset($coupon)
+                                {{ $amount_diff }}
+                                {{ $coupon->name }}
+                            @else
+                                <em>@lang('app.not_found')</em>
+                            @endisset
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>
