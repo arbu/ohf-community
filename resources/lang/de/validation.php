@@ -148,7 +148,9 @@ return [
         'available' => 'verfügbar',
         'size' => 'Größe',
         'date_of_birth' => 'Geburtsdatum',
+        'birthdate' => 'Geburtsdatum',
         'amount' => 'Betrag',
         'file' => 'Datei',
+        'street' => 'Strasse',
     ],
 ];

@@ -14,7 +14,7 @@
         <p>Please fill in the form below to complete your voulnteer profile:</p>
     @endif
 
-    {!! Form::model(Auth::user()->volunteer, ['route' => ['volunteers.updateProfile']]) !!}
+    {!! Form::model(Auth::user()->volunteer, ['route' => ['volunteering.profile.update']]) !!}
 
         <div class="card mb-4">
             <div class="card-header">Personal Information</div>
@@ -27,7 +27,7 @@
                 </div>
                 <div class="form-row">
                     <div class="col-md">
-                        {{ Form::bsText('address', null, [ 'required' ]) }}
+                        {{ Form::bsText('street', null, [ 'required' ], __('app.street')) }}
                     </div>
                     <div class="col-md-1">
                         {{ Form::bsText('zip', null, [ 'required' ], 'ZIP') }}
@@ -36,7 +36,7 @@
                         {{ Form::bsText('city', null, [ 'required' ]) }}
                     </div>
                     <div class="col-md">
-                        {{ Form::bsText('country', null, [ 'required', 'id' => 'country', 'autocomplete' => 'off']) }}
+                        {{ Form::bsText('country', null, [ 'required', 'id' => 'country', 'autocomplete' => 'off', 'rel' => 'autocomplete', 'data-autocomplete-source' => json_encode(array_values($countries))]) }}
                     </div>
                 </div>
                 <div class="form-row">
@@ -44,18 +44,18 @@
                         {{ Form::bsText('nationality', null, [ 'required' ], null, 'According to your passport / ID card') }}
                     </div>
                     <div class="col-md">
-                        {{ Form::bsText('birthdate', null, [ 'required', 'id' => 'birthdate' ], null, 'YYYY-MM-DD') }}
+                        {{ Form::bsText('date_of_birth', null, [ 'required' ], __('app.date_of_birth'), 'YYYY-MM-DD') }}
                     </div>
                     <div class="col-md-auto pl-md-3">
-                        <p>Gender</p>
+                        <p>@lang('app.gender')</p>
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
-                                {{ Form::radio('gender', 'male', null, [ 'class' => 'form-check-input' ]) }} Male
+                                {{ Form::radio('gender', 'male', null, [ 'class' => 'form-check-input' ]) }} @lang('people.male')
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
-                                {{ Form::radio('gender', 'female', null, [ 'class' => 'form-check-input' ]) }} Female
+                                {{ Form::radio('gender', 'female', null, [ 'class' => 'form-check-input' ]) }} @lang('people.female')
                             </label>
                         </div>
 						@if ($errors->has('gender'))
@@ -97,15 +97,4 @@
 @endsection
 
 @section('script')
-    $(function(){
-        $('#country').typeahead({
-            source: [ @foreach($countries as $country) '{!! $country !!}', @endforeach ]
-        });
-        /*
-        $('#birthdate').datepicker({
-            autoclose: true,
-            format: "yyyy-mm-dd"
-        });
-        */
-    });
 @endsection

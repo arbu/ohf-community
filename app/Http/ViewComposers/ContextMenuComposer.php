@@ -762,20 +762,20 @@ class ContextMenuComposer {
                     ]
                 ];
 
-            case 'volunteers.showProfile':
+            case 'volunteering.profile.show':
                 return [
                     'action' => [
-                        'url' => route('volunteers.editProfile'),
+                        'url' => route('volunteering.profile.edit'),
                         'caption' => 'Edit Profile',
                         'icon' => 'pencil',
                         'icon_floating' => 'pencil',
                         'authorized' => true,
                     ]
                 ];
-            case 'volunteers.editProfile':
+            case 'volunteering.profile.edit':
                 return [
                     'back' => [
-                        'url' => route('volunteers.showProfile'),
+                        'url' => route('volunteering.profile.show'),
                         'caption' => 'Cancel',
                         'icon' => 'times-circle',
                         'authorized' => true,
@@ -784,7 +784,7 @@ class ContextMenuComposer {
             case 'volunteers.createTrip':
                 return [
                     'back' => [
-                        'url' => route('volunteers.showProfile'),
+                        'url' => route('volunteering.profile.show'),
                         'caption' => 'Cancel',
                         'icon' => 'times-circle',
                         'authorized' => true,

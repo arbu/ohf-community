@@ -225,11 +225,12 @@ Route::group(['middleware' => 'language'], function () {
         Route::get('/volunteering/jobs', 'Volunteering\JobsController@index')->name('volunteering.jobs.index');
 
         
-        Route::get('/volunteer', 'VolunteersController@showProfile')->name('volunteers.showProfile');
-        Route::get('/volunteer/edit', 'VolunteersController@editProfile')->name('volunteers.editProfile');
-        Route::post('/volunteer/edit', 'VolunteersController@updateProfile')->name('volunteers.updateProfile');
-        Route::get('/volunteer/trip/apply', 'VolunteersController@createTrip')->name('volunteers.createTrip');
-        Route::post('/volunteer/trip/apply', 'VolunteersController@storeTrip')->name('volunteers.storeTrip');
+        Route::get('/volunteer', 'Volunteering\ProfileController@show')->name('volunteering.profile.show');
+        Route::get('/volunteer/edit', 'Volunteering\ProfileController@edit')->name('volunteering.profile.edit');
+        Route::post('/volunteer/edit', 'Volunteering\ProfileController@update')->name('volunteering.profile.update');
+
+        Route::get('/volunteer/trip/apply', 'Volunteering\ProfileController@createTrip')->name('volunteers.createTrip');
+        Route::post('/volunteer/trip/apply', 'Volunteering\ProfileController@storeTrip')->name('volunteers.storeTrip');
     });
 
     Auth::routes();
