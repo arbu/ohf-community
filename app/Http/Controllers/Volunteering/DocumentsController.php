@@ -35,7 +35,7 @@ class DocumentsController extends Controller
     function destroy(Volunteer $volunteer, VolunteerDocument $document) {
         $this->authorize('update', $volunteer);
 
-        Storage::delete($document->file);
+        // File is deleted by VolunteerDocument::deleting event automatically
         $document->delete();
 
         return redirect()->route('volunteers.show', $volunteer)
