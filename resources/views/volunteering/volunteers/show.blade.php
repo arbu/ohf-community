@@ -18,13 +18,13 @@
                         @endif
                     @endisset
                     @isset($volunteer->date_of_birth)
-                            {{ $volunteer->date_of_birth }} ({{ $volunteer->age }}) 
+                        {{ $volunteer->date_of_birth }} ({{ $volunteer->age }})<br>
                     @endisset
                     @isset($volunteer->nationality)
-                            {{ $volunteer->nationality }}
+                        {{ $volunteer->nationality }}<br>
                     @endisset
                     @isset($volunteer->passport_no)
-                            {{ $volunteer->passport_no }}
+                        {{ $volunteer->passport_no }}<br>
                     @endisset
 
                     <hr>
@@ -56,8 +56,8 @@
             @php
                 $qualifications = [
                     __('volunteering.professions') => $volunteer->professions,
-                    __('volunteering.other_skills') => $volunteer->other_skills,
                     __('volunteering.language_skills') => $volunteer->language_skills,
+                    __('volunteering.other_skills') => $volunteer->other_skills,
                     __('volunteering.previous_experience') => $volunteer->previous_experience,
                 ]
             @endphp
