@@ -146,4 +146,6 @@ return [
     'gender' => 'Gender',
     'not_specified' => 'Not specified',
     'documents' => 'Documents',
+    'download' => 'Download',
+    'upload' => 'Upload',
  ];

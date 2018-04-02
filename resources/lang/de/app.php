@@ -146,4 +146,6 @@ return [
     'gender' => 'Geschlecht',
     'not_specified' => 'Nicht angegeben',
     'documents' => 'Dokumente',
+    'download' => 'Herunterladen',
+    'upload' => 'Hochladen',
 ];

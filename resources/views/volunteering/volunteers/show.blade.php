@@ -114,32 +114,44 @@
                 <div class="col-sm-2 d-none d-md-block">@lang('app.documents')</div>
                 <div class="col-sm">
                     @if(count($volunteer->documents) > 0)
-                        <ul class="list-group">
+                        <div class="card-deck">
                             @foreach($volunteer->documents as $document)
-                                <li class="list-group-item">
-                                    <a href="{{ route('volunteers.document', [$volunteer, $document]) }}">@lang('volunteering.' . $document->type)</a>
-                                    <small>{{ $document->created_at->toDateString() }}</small>
-                                    {!! nl2br(e($document->remarks)) !!}
-                                    {{-- <a href="" class="pull-right text-danger">Delete</a> --}}
-                                </li>
+                                <div class="card mb-4" style="max-width: 18rem;">
+                                    <img class="card-img-top" src="{{ base64_img(Storage::get($document->file)) }}" alt="@lang('volunteering.' . $document->type)">
+                                    <div class="card-body">
+                                        <h5 class="card-title">@lang('volunteering.' . $document->type)</h5>
+                                        @isset($document->remarks)
+                                            <p class="card-text">{!! nl2br(e($document->remarks)) !!}</p>
+                                        @endisset
+                                        <p class="card-text"><small class="text-muted">Uploaded {{ $document->created_at->toDateString() }}</small></p>
+                                    </div>
+                                    @can('update', $volunteer)
+                                        <div class="card-footer">
+                                            <a href="{{ route('volunteers.document', [$volunteer, $document]) }}" class="btn btn-primary btn-sm">@lang('app.download')</a>
+                                            <a href="" class="text-danger btn btn-link btn-sm pull-right">@lang('app.delete')</a>
+                                        </div>
+                                    @endcan
+                                </div>
                             @endforeach
-                        </ul>
+                        </div>
                     @else
                         <p><em>@lang('volunteering.no_documents_uploaded_yet')</em></p>
                     @endif
-                    {!! Form::open(['route' => ['volunteers.uploadDocument', $volunteer], 'files' => true]) !!}
-                        <div class="card my-4">
-                            <div class="card-header">@lang('volunteering.upload_document')</div>
-                            <div class="card-body">
-                                <div class="form-group">
-                                    {{ Form::file('file', null, [ 'class' => 'form-control-file'  ]) }}
+                    @can('update', $volunteer)
+                        {!! Form::open(['route' => ['volunteers.uploadDocument', $volunteer], 'files' => true]) !!}
+                            <div class="card mb-4">
+                                <div class="card-header">@lang('volunteering.upload_document')</div>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        {{ Form::file('file', null, [ 'class' => 'form-control-file'  ]) }}
+                                    </div>
+                                    {{ Form::bsSelect('type', \App\VolunteerDocument::types(), null, [], __('app.type')) }}
+                                    {{ Form::bsTextarea('remarks', null, [ 'rows' => 2 ], __('app.remarks')) }}
+                                    {{ Form::bsSubmitButton(__('app.upload'), 'upload') }}
                                 </div>
-                                {{ Form::bsSelect('type', \App\VolunteerDocument::types(), null, [], __('app.type')) }}
-                                {{ Form::bsTextarea('remarks', null, [ 'rows' => 2 ], __('app.remarks')) }}
-                                {{ Form::bsSubmitButton('Import', 'upload') }}
                             </div>
-                        </div>
-                    {!! Form::close() !!}                    
+                        {!! Form::close() !!}
+                    @endcan       
                 </div>
             </div>
         </li>

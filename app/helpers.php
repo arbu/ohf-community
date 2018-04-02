@@ -823,3 +823,9 @@ if (! function_exists('skype_call_url')) {
         return 'skype:' . $name . '?call';
     }
 }
+
+if (! function_exists('base64_img')) {
+    function base64_img($content) {
+        return 'data:image/png;base64,' . base64_encode($content);
+    }
+}
