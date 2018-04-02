@@ -152,7 +152,7 @@
                             <div class="card mb-4">
                                 <div class="card-header">@lang('volunteering.upload_document')</div>
                                 <div class="card-body">
-                                    {{ Form::bsFile('file', [], __('app.choose_file')) }}
+                                    {{ Form::bsFile('file', [ 'accept' => '.jgp,.jpeg,.bmp,.png,.pdf' ], __('app.choose_file')) }}
                                     {{ Form::bsSelect('type', \App\VolunteerDocument::types(), null, [], __('app.type')) }}
                                     {{ Form::bsTextarea('remarks', null, [ 'rows' => 2 ], __('app.remarks')) }}
                                     {{ Form::bsSubmitButton(__('app.upload'), 'upload') }}
@@ -168,5 +168,12 @@
 @endsection
 
 @section('script')
+
+        $('input[type="file"].custom-file-input').on('change',function(){
+            //get the file name
+            var fileName = $(this).val();
+            //replace the "Choose a file" label
+            $(this).next('.custom-file-label').html(fileName.replace(/^.*[\\\/]/, ''));
+        })
 
 @endsection
