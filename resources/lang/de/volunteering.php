@@ -19,6 +19,10 @@ return [
     'driving_licence' => 'Fahrzeugführerschein',
     'passport' => 'Reisepass',
     'criminal_record' => 'Strafregisterauszug',
+    'id_card' => 'ID Karte',
+    'other' => 'Sonstiges',
     'document_missing' => 'Dokument fehlt',
     'document_has_been_uploaded' => ':document wurde hochgeladen.',
+    'no_documents_uploaded_yet' => 'Bisher wurden noch keine Dokumente hochgeladen.',
+    'upload_document' => 'Dokument hochladen',
 ];

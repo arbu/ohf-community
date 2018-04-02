@@ -16,7 +16,7 @@
             <th>@lang('volunteering.whatsapp')</th>
             <th>@lang('volunteering.skype')</th>
             <th>@lang('volunteering.passort_no')</th>
-            <th>@lang('volunteering.profession')</th>
+            <th>@lang('volunteering.professions')</th>
             <th>@lang('volunteering.driver')</th>
         </tr>
     </thead>
@@ -44,7 +44,7 @@
                 <td>{{ $volunteer->whatsapp }}</td>
                 <td>{{ $volunteer->skype }}</td>
                 <td>{{ $volunteer->passport_no }}</td>
-                <td>{{ $volunteer->profession }}</td>
+                <td>{{ $volunteer->professions }}</td>
                 <td>@if($volunteer->driving_licence != null) @lang('app.yes') @else @lang('app.no') @endif</td>
             </tr>
         @endforeach

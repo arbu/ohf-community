@@ -7,12 +7,14 @@ use App\Http\Requests\StoreVolunteerProfile;
 use App\Http\Requests\StoreTrip;
 use App\Util\CountriesExtended;
 use App\Volunteer;
+use App\VolunteerDocument;
 use App\Trip;
 use Illuminate\Support\Facades\Auth;
 use JeroenDesloovere\VCard\VCard;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\Volunteering\UploadVolunteerDocument;
 
 class VolunteersController extends Controller
 {
@@ -90,30 +92,31 @@ class VolunteersController extends Controller
         return $vcard->download();
     }
 
-    function document(Volunteer $volunteer, Request $request) {
+    function document(Volunteer $volunteer, VolunteerDocument $document) {
         $this->authorize('view', $volunteer);
 
-        $type = $request->type;
-        return Storage::download($volunteer->$type);
+        $name = $volunteer->name . ' - ' . __('volunteering.' . $document->type) . ' - ' . $document->created_at->toDateString() . '.' . $document->extension;
+        return Storage::download($document->file, $name);
     }
 
-    function uploadDocument(Volunteer $volunteer, Request $request) {
+    function uploadDocument(Volunteer $volunteer, UploadVolunteerDocument $request) {
         $this->authorize('update', $volunteer);
 
-        $type = $request->type;
-        $file = $request->file('file')->store('volunteers');
+        $document = new VolunteerDocument();
+        $document->type = $request->type;
+        $document->remarks = $request->remarks;
+        $document->file = $request->file('file')->store('volunteers');
+        $document->extension = $request->file('file')->extension();
 
-        if ($volunteer->$type != null) {
-            Storage::delete($volunteer->$type);
-        }
-
-        $volunteer->$type = $file;
-        $volunteer->save();
+        $volunteer->documents()->save($document);
 
         return redirect()->route('volunteers.show', $volunteer)
-            ->with('success', __('volunteering.document_has_been_uploaded', ['document' => __('volunteering.' . $type)]));
+            ->with('success', __('volunteering.document_has_been_uploaded', ['document' => __('volunteering.' . $request->type)]));
     }
 
+        // if ($volunteer->$type != null) {
+        //     Storage::delete($volunteer->$type);
+        // }
 
     function showProfile() {
         $volunteer = Auth::user()->volunteer;

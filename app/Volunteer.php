@@ -10,6 +10,17 @@ class Volunteer extends Model
 {
     use NullableFields;
 
+    protected $nullable = [
+        'phone',
+        'whatsapp',
+        'skype',
+        'passport_no',
+        'professions',
+        'language_skills',
+        'other_skills',
+        'previous_experience',
+    ];
+
     /**
      * Get the user account to which the volunteer entity belongs
      */
@@ -21,6 +32,11 @@ class Volunteer extends Model
 	public function trips()
     {
         return $this->hasMany('App\Trip');
+    }
+
+	public function documents()
+    {
+        return $this->hasMany('App\VolunteerDocument');
     }
 
     public function getNameAttribute()

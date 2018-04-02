@@ -78,51 +78,31 @@
         </li>
 
         {{-- Qualifications --}}
+        @php
+            $qualifications = [
+                __('volunteering.professions') => $volunteer->professions,
+                __('volunteering.other_skills') => $volunteer->other_skills,
+                __('volunteering.language_skills') => $volunteer->language_skills,
+                __('volunteering.previous_experience') => $volunteer->previous_experience,
+            ]
+        @endphp
         <li class="list-group-item">
             <div class="row">
                 <div class="col-sm-2 d-none d-md-block">@lang('volunteering.qualifications')</div>
                 <div class="col-sm">
-                    <table class="table">
+                    <table>
+                        @foreach($qualifications as $k => $v)
                         <tr>
-                            <th class="fit">@lang('volunteering.professions')</th>
-                            <td>
-                                @isset($volunteer->professions)
-                                    {{ $volunteer->professions }}
+                            <th class="fit align-top d-block d-sm-table-cell pb-sm-2 pr-sm-4">{{ $k }}</th>
+                            <td class="d-block d-sm-table-cell pb-2">
+                                @isset($v)
+                                    {{ $v }}
                                 @else
                                     <em>@lang('app.not_specified')</em>
                                 @endisset  
                             </td>
                         </tr>
-                        <tr>
-                            <th class="fit">@lang('volunteering.other_skills')</th>
-                            <td>
-                                @isset($volunteer->other_skills)
-                                    {!! nl2br(e($volunteer->other_skills)) !!}
-                                @else
-                                    <em>@lang('app.not_specified')</em>
-                                @endisset    
-                            </td>
-                        </tr>
-                        <tr>
-                            <th class="fit">@lang('volunteering.language_skills')</th>
-                            <td>
-                                @isset($volunteer->language_skills)
-                                    {!! nl2br(e($volunteer->language_skills)) !!}
-                                @else
-                                    <em>@lang('app.not_specified')</em>
-                                @endisset    
-                            </td>
-                        </tr>
-                        <tr>
-                            <th class="fit">@lang('volunteering.previous_experience')</th>
-                            <td>
-                                @isset($volunteer->previous_experience)
-                                    {!! nl2br(e($volunteer->previous_experience)) !!}
-                                @else
-                                    <em>@lang('app.not_specified')</em>
-                                @endisset
-                            </td>
-                        </tr>
+                        @endforeach
                     </table>
                 </div>
             </div>
@@ -133,25 +113,33 @@
             <div class="row">
                 <div class="col-sm-2 d-none d-md-block">@lang('app.documents')</div>
                 <div class="col-sm">
-                    @foreach($documentTypes as $documentType)
-                        <div class="row mb-3">
-                            <div class="col-sm-4 col-lg-3">@lang('volunteering.'.$documentType)</div>
-                            <div class="col">
-                                @isset($volunteer->$documentType)
-                                    <a href="{{ route('volunteers.document', $volunteer) }}?type={{ $documentType }}" class="btn btn-light btn-block">@lang('app.download')</a>
-                                @else
-                                    <em>@lang('volunteering.document_missing').</em>
-                                @endisset
-                            </div>
-                            <div class="col-sm-auto">
-                                {!! Form::open(['route' => ['volunteers.uploadDocument', $volunteer], 'files' => true]) !!}
+                    @if(count($volunteer->documents) > 0)
+                        <ul class="list-group">
+                            @foreach($volunteer->documents as $document)
+                                <li class="list-group-item">
+                                    <a href="{{ route('volunteers.document', [$volunteer, $document]) }}">@lang('volunteering.' . $document->type)</a>
+                                    <small>{{ $document->created_at->toDateString() }}</small>
+                                    {!! nl2br(e($document->remarks)) !!}
+                                    {{-- <a href="" class="pull-right text-danger">Delete</a> --}}
+                                </li>
+                            @endforeach
+                        </ul>
+                    @else
+                        <p><em>@lang('volunteering.no_documents_uploaded_yet')</em></p>
+                    @endif
+                    {!! Form::open(['route' => ['volunteers.uploadDocument', $volunteer], 'files' => true]) !!}
+                        <div class="card my-4">
+                            <div class="card-header">@lang('volunteering.upload_document')</div>
+                            <div class="card-body">
+                                <div class="form-group">
                                     {{ Form::file('file', null, [ 'class' => 'form-control-file'  ]) }}
-                                    {{ Form::hidden('type', $documentType) }}
-                                    <button type="submit" value="{{ $documentType }}" class="btn btn-primary btn-sm">@lang('app.upload')</button>
-                                {!! Form::close() !!}
+                                </div>
+                                {{ Form::bsSelect('type', \App\VolunteerDocument::types(), null, [], __('app.type')) }}
+                                {{ Form::bsTextarea('remarks', null, [ 'rows' => 2 ], __('app.remarks')) }}
+                                {{ Form::bsSubmitButton('Import', 'upload') }}
                             </div>
                         </div>
-                    @endforeach
+                    {!! Form::close() !!}                    
                 </div>
             </div>
         </li>
