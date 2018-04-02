@@ -27,4 +27,6 @@ return [
     'really_delete_document' => 'Soll das Dokument ":document" wirklich entfernt werden?',
     'no_documents_uploaded_yet' => 'Bisher wurden noch keine Dokumente hochgeladen.',
     'upload_document' => 'Dokument hochladen',
+    'trips' => 'Einsätze',
+    'no_trips_until_now' => 'Keine Einsätze bis jetzt.',
 ];

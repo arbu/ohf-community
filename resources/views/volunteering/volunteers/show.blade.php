@@ -78,14 +78,12 @@
                     </dl>
                 </div>
             </div>
-
-
             
         </div>
         <div class="col-sm">
 
             {{-- Documents --}}
-            <h4 class="card-title">@lang('app.documents')</h4>
+            <h4 class="mb-3">@lang('app.documents')</h4>
             <div class="card-deck">
                 @foreach($volunteer->documents as $document)
                     <div class="card mb-4" style="max-width: 18rem;">
@@ -118,16 +116,20 @@
                 @can('update', $volunteer)
                     <div class="card mb-4" style="max-width: 18rem;">
                         <div class="card-body text-center align-items-center d-flex justify-content-center">
-                            <a class="display-3 text-primary my-5" href="javascript:;" onclick="$('#resourceModal').modal('show');">@icon(upload)</a>
+                            <a class="display-3 text-primary my-5" href="javascript:;" id="upload_document_btn">@icon(upload)</a>
                         </div>
                     </div>                    
                 @endcan
             </div>
             @cannot('update', $volunteer)
                 @if(count($volunteer->documents) == 0)
-                <p><em>@lang('volunteering.no_documents_uploaded_yet')</em></p>
+                    <p><em>@lang('volunteering.no_documents_uploaded_yet')</em></p>
                 @endif
             @endcannot
+
+            {{-- Trips --}}
+            <h4 class="mb-3">@lang('volunteering.trips')</h4>
+            <p><em>@lang('volunteering.no_trips_until_now')</em></p>
 
         </div>
     </div>
@@ -147,8 +149,8 @@
                         </div>
                         <div class="modal-body pb-0">
                             {{ Form::bsFile('file', [ 'accept' => '.jpg,.jpeg,.bmp,.png,.pdf' ], __('app.choose_file')) }}
-                            {{ Form::bsSelect('type', \App\VolunteerDocument::types(), null, [], __('app.type')) }}
-                            {{ Form::bsTextarea('remarks', null, [ 'rows' => 2 ], __('app.remarks')) }}
+                            {{ Form::bsSelect('type', \App\VolunteerDocument::types(), null, [ 'id' => 'type' ], __('app.type')) }}
+                            {{ Form::bsTextarea('remarks', null, [ 'rows' => 2, 'id' => 'remarks' ], __('app.remarks')) }}
                         </div>
                         <div class="modal-footer">
                             {{ Form::bsSubmitButton(__('app.upload'), 'upload') }}
@@ -161,5 +163,13 @@
 @endsection
 
 @section('script')
-    
+    $(function(){
+        $('#upload_document_btn').on('click', function(){
+            $('#resourceModal').modal('show');
+            $('#file').click();
+        });
+        $('#file').on('change',function(){
+            $('#type').focus();
+        });
+    });
 @endsection

@@ -27,4 +27,6 @@ return [
     'really_delete_document' => 'Do you really want to remove the :document document?',
     'no_documents_uploaded_yet' => 'No documents have been uploaded yet.',
     'upload_document' => 'Upload document',
+    'trips' => 'Trips',
+    'no_trips_until_now' => 'No trips until now.',
 ];
