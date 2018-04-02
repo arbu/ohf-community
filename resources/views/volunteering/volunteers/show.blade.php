@@ -117,7 +117,13 @@
                         <div class="card-deck">
                             @foreach($volunteer->documents as $document)
                                 <div class="card mb-4" style="max-width: 18rem;">
-                                    <img class="card-img-top" src="{{ base64_img(Storage::get($document->file)) }}" alt="@lang('volunteering.' . $document->type)">
+                                    @if($document->extension == 'png' || $document->extension == 'jpeg')
+                                        <img class="card-img-top" src="{{ base64_img(Storage::get($document->file)) }}" alt="@lang('volunteering.' . $document->type)">
+                                    @elseif($document->extension == 'pdf')
+                                        <p class="card-text bg-info text-light text-center lead py-5">@icon(file-pdf-o) PDF</p>
+                                    @else
+                                        <p class="card-text bg-info text-light text-center lead py-5">@icon(file-o) {{ $document->extension }}</p>
+                                    @endif
                                     <div class="card-body">
                                         <h5 class="card-title">@lang('volunteering.' . $document->type)</h5>
                                         @isset($document->remarks)
