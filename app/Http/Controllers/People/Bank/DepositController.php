@@ -9,6 +9,7 @@ use App\Project;
 use App\CouponReturn;
 use App\CouponType;
 use Carbon\Carbon;
+use OwenIt\Auditing\Models\Audit;
 
 class DepositController extends Controller
 {
@@ -37,24 +38,39 @@ class DepositController extends Controller
                 })
                 ->toArray();
 
-        $todaysReturns = [];
-        CouponReturn
-                ::where('date', Carbon::today())
-                ->orderBy('created_at', 'DESC')
-                ->get()
-                ->each(function($e) use(&$todaysReturns) {
-                    $todaysReturns[$e->project->name][] = [
-                        'amount' => $e->amount . ' ' . $e->couponType->name,
-                        'author' => $e->user->name,
-                        'date' => $e->created_at->diffForHumans(),
-                    ];
-                });
+        $audits = CouponReturn
+            ::whereDate('updated_at', Carbon::today())
+            ->get()
+            ->filter(function($e){
+                return $e->audits->count() > 0;
+            })
+            ->flatMap(function($e){
+                return $e->audits
+                    ->filter(function($audit) {
+                        return $audit->created_at->isToday();
+                    })
+                    ->map(function($audit) use($e) {
+                        $amount_diff = $audit->getModified()['amount']['new'] ;
+                        if (isset($audit->getModified()['amount']['old'])) {
+                            $amount_diff -= $audit->getModified()['amount']['old'];
+                        }
+                        return [
+                            'user' => $audit->user != null ? $audit->user->name : null,
+                            'created_at' => $audit->created_at,
+                            'project' => $e->project->name,
+                            'coupon' => $e->couponType->name,
+                            'amount_diff' => $amount_diff,
+                            'date' => $e->date,
+                        ];
+                    });
+            })
+            ->sortByDesc('created_at');
 
         return view('bank.deposit.index', [
             'projects' => $projects,
             'couponTypes' => $couponTypes,
             'selectedCouponType' => count($couponTypes) > 0 ? array_keys($couponTypes)[0] : null,
-            'todaysReturns' => $todaysReturns,
+            'audits' => $audits,
         ]);
     }
 
@@ -94,11 +110,11 @@ class DepositController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function transactions() {
-        $transactions = CouponReturn
-            ::orderBy('created_at', 'DESC')
-            ->with(['user', 'project', 'couponType'])
-            ->paginate(250);
-        
+        $transactions = Audit
+            ::where('auditable_type', 'App\CouponReturn')
+            ->orderBy('created_at', 'DESC')
+            ->paginate(50);
+
         return view('bank.deposit.transactions', [
             'transactions' => $transactions,
         ]);
