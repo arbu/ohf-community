@@ -82,6 +82,10 @@
         </div>
         <div class="col-sm">
 
+            {{-- Trips --}}
+            <h4 class="mb-3">@lang('volunteering.trips')</h4>
+            <p><em>@lang('volunteering.no_trips_until_now')</em></p>
+
             {{-- Documents --}}
             <h4 class="mb-3">@lang('app.documents')</h4>
             <div class="card-deck">
@@ -127,10 +131,6 @@
                 @endif
             @endcannot
 
-            {{-- Trips --}}
-            <h4 class="mb-3">@lang('volunteering.trips')</h4>
-            <p><em>@lang('volunteering.no_trips_until_now')</em></p>
-
         </div>
     </div>
 @endsection
@@ -171,5 +171,8 @@
         $('#file').on('change',function(){
             $('#type').focus();
         });
+        @if ($errors->has('file') || $errors->has('type') || $errors->has('remarks'))
+            $('#resourceModal').modal('show');
+        @endif
     });
 @endsection
