@@ -29,4 +29,5 @@ return [
     'upload_document' => 'Dokument hochladen',
     'trips' => 'Einsätze',
     'no_trips_until_now' => 'Keine Einsätze bis jetzt.',
+    'jobs' => 'Jobs',
 ];

@@ -3,6 +3,6 @@
         Volunteering
     </div>
     <div class="card-body">
-        <a href="{{ route('volunteers.updateProfile')  }}" class="btn btn-primary btn-block">Apply as a volunteer</a>
+        <a href="{{ route('volunteering.profile.edit')  }}" class="btn btn-primary btn-block">Apply as a volunteer</a>
     </div>
 </div>

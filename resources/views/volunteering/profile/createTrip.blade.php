@@ -4,7 +4,7 @@
 
 @section('content')
 
-    {!! Form::open(['route' => ['volunteers.storeTrip']]) !!}
+    {!! Form::open(['route' => ['volunteering.profile.storeTrip']]) !!}
 
         <div class="card mb-4">
             <div class="card-header">Journey</div>

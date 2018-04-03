@@ -29,4 +29,5 @@ return [
     'upload_document' => 'Upload document',
     'trips' => 'Trips',
     'no_trips_until_now' => 'No trips until now.',
+    'jobs' => 'Jobs',
 ];

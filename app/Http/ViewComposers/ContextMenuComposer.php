@@ -715,7 +715,7 @@ class ContextMenuComposer {
             //
             // Voluneers
             //
-            case 'volunteers.index':
+            case 'volunteering.volunteers.index':
                 return [
                     // 'action' => [
                     //     'url' => route('volunteers.create'),
@@ -725,13 +725,13 @@ class ContextMenuComposer {
                     //     'authorized' => Auth::user()->can('create', Volunteer::class)
                     // ],
                     'export' => [
-                        'url' => route('volunteers.export'),
+                        'url' => route('volunteering.volunteers.export'),
                         'caption' => __('app.export'),
                         'icon' => 'download',
                         'authorized' => Auth::user()->can('list', Volunteer::class)
                     ]
                 ];
-            case 'volunteers.show':
+            case 'volunteering.volunteers.show':
                 $volunteer = $view->getData()['volunteer'];
                 return [
                     // 'action' => [
@@ -742,7 +742,7 @@ class ContextMenuComposer {
                     //     'authorized' => Auth::user()->can('update', $volunteer)
                     // ],
                     'volunteers' => [
-                        'url' => route('volunteers.vcard', $volunteer),
+                        'url' => route('volunteering.volunteers.vcard', $volunteer),
                         'caption' => __('app.export'),
                         'icon' => 'vcard',
                         'authorized' => Auth::user()->can('view', $volunteer)
@@ -755,36 +755,36 @@ class ContextMenuComposer {
                     //     'confirmation' => __('volunteering.confirm_delete_volunteer')
                     // ],
                     'back' => [
-                        'url' => route('volunteers.index'),
+                        'url' => route('volunteering.volunteers.index'),
                         'caption' => __('app.close'),
                         'icon' => 'times-circle',
                         'authorized' => Auth::user()->can('list', Donor::class)
                     ]
                 ];
 
-            case 'volunteers.showProfile':
+            case 'volunteering.profile.show':
                 return [
                     'action' => [
-                        'url' => route('volunteers.editProfile'),
+                        'url' => route('volunteering.profile.edit'),
                         'caption' => 'Edit Profile',
                         'icon' => 'pencil',
                         'icon_floating' => 'pencil',
                         'authorized' => true,
                     ]
                 ];
-            case 'volunteers.editProfile':
+            case 'volunteering.profile.edit':
                 return [
                     'back' => [
-                        'url' => route('volunteers.showProfile'),
+                        'url' => route('volunteering.profile.show'),
                         'caption' => 'Cancel',
                         'icon' => 'times-circle',
                         'authorized' => true,
                     ]
                 ];
-            case 'volunteers.createTrip':
+            case 'volunteering.profile.createTrip':
                 return [
                     'back' => [
-                        'url' => route('volunteers.showProfile'),
+                        'url' => route('volunteering.profile.show'),
                         'caption' => 'Cancel',
                         'icon' => 'times-circle',
                         'authorized' => true,

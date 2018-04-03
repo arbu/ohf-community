@@ -103,8 +103,8 @@
                         </div>
                         @can('update', $volunteer)
                             <div class="card-footer">
-                                <a href="{{ route('volunteers.document', [$volunteer, $document]) }}" class="btn btn-primary btn-sm">@lang('app.download')</a>
-                                <form method="POST" action="{{ route('volunteers.deleteDocument', [$volunteer, $document]) }}" class="d-inline">
+                                <a href="{{ route('volunteering.documents.download', [$volunteer, $document]) }}" class="btn btn-primary btn-sm">@lang('app.download')</a>
+                                <form method="POST" action="{{ route('volunteering.documents.destroy', [$volunteer, $document]) }}" class="d-inline">
                                     {{ csrf_field() }}
                                     {{ method_field('DELETE') }}
                                     {{ Form::button(__('app.delete'), [ 'type' => 'submit', 'class' => 'text-danger btn btn-link btn-sm pull-right delete-confirmation', 'data-confirmation' => __('volunteering.really_delete_document', ['document' => __('volunteering.' . $document->type)]) ] ) }}
@@ -140,7 +140,7 @@
         <div class="modal" id="resourceModal" tabindex="-1" role="dialog" aria-labelledby="resourceModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
-                    {!! Form::open(['route' => ['volunteers.uploadDocument', $volunteer], 'files' => true]) !!}
+                    {!! Form::open(['route' => ['volunteering.documents.store', $volunteer], 'files' => true]) !!}
                         <div class="modal-header">
                             <h5 class="modal-title" id="resourceModalLabel">@lang('volunteering.upload_document')</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">

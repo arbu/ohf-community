@@ -208,20 +208,29 @@ Route::group(['middleware' => 'language'], function () {
     Route::group(['middleware' => ['auth']], function () {
 
         // Manage volunteers
-        Route::get('/volunteers', 'Volunteering\VolunteersController@index')->name('volunteers.index');
-        Route::get('/volunteers/export', 'Volunteering\VolunteersController@export')->name('volunteers.export');
-        Route::get('/volunteers/{volunteer}', 'Volunteering\VolunteersController@show')->name('volunteers.show');
-        Route::get('/volunteers/{volunteer}/vcard', 'Volunteering\VolunteersController@vcard')->name('volunteers.vcard');
+        Route::get('/volunteering/volunteers', 'Volunteering\VolunteersController@index')->name('volunteering.volunteers.index');
+        Route::get('/volunteering/volunteers/export', 'Volunteering\VolunteersController@export')->name('volunteering.volunteers.export');
+        Route::get('/volunteering/volunteers/{volunteer}', 'Volunteering\VolunteersController@show')->name('volunteering.volunteers.show');
+        Route::get('/volunteering/volunteers/{volunteer}/vcard', 'Volunteering\VolunteersController@vcard')->name('volunteering.volunteers.vcard');
 
-        Route::get('/volunteers/{volunteer}/document/{document}', 'Volunteering\VolunteersController@document')->name('volunteers.document');
-        Route::post('/volunteers/{volunteer}/document', 'Volunteering\VolunteersController@uploadDocument')->name('volunteers.uploadDocument');
-        Route::delete('/volunteers/{volunteer}/document/{document}', 'Volunteering\VolunteersController@deleteDocument')->name('volunteers.deleteDocument');
+        // Documents
+        Route::get('/volunteering/volunteers/{volunteer}/document/{document}', 'Volunteering\DocumentsController@download')->name('volunteering.documents.download');
+        Route::post('/volunteering/volunteers/{volunteer}/document', 'Volunteering\DocumentsController@store')->name('volunteering.documents.store');
+        Route::delete('/volunteering/volunteers/{volunteer}/document/{document}', 'Volunteering\DocumentsController@destroy')->name('volunteering.documents.destroy');
+
+        // Trips
+        Route::get('/volunteering/trips', 'Volunteering\TripsController@index')->name('volunteering.trips.index');
+
+        // Jobs
+        Route::get('/volunteering/jobs', 'Volunteering\JobsController@index')->name('volunteering.jobs.index');
+
         
-        Route::get('/volunteer', 'VolunteersController@showProfile')->name('volunteers.showProfile');
-        Route::get('/volunteer/edit', 'VolunteersController@editProfile')->name('volunteers.editProfile');
-        Route::post('/volunteer/edit', 'VolunteersController@updateProfile')->name('volunteers.updateProfile');
-        Route::get('/volunteer/trip/apply', 'VolunteersController@createTrip')->name('volunteers.createTrip');
-        Route::post('/volunteer/trip/apply', 'VolunteersController@storeTrip')->name('volunteers.storeTrip');
+        Route::get('/volunteering/profile', 'Volunteering\ProfileController@show')->name('volunteering.profile.show');
+        Route::get('/volunteering/profile/edit', 'Volunteering\ProfileController@edit')->name('volunteering.profile.edit');
+        Route::post('/volunteering/profile/edit', 'Volunteering\ProfileController@update')->name('volunteering.profile.update');
+
+        Route::get('/volunteering/profile/trip/apply', 'Volunteering\ProfileController@createTrip')->name('volunteering.profile.createTrip');
+        Route::post('/volunteering/profile/trip/apply', 'Volunteering\ProfileController@storeTrip')->name('volunteering.profile.storeTrip');
     });
 
     Auth::routes();

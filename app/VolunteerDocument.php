@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Iatstuti\Database\Support\NullableFields;
 use App\Util\ListEnumValues;
+use Illuminate\Support\Facades\Storage;
 
 class VolunteerDocument extends Model
 {
@@ -14,6 +15,14 @@ class VolunteerDocument extends Model
     protected $nullable = [
         'remarks',
     ];
+
+    public static function boot () {
+        parent::boot();
+        
+        self::deleting(function ($document) {
+            Storage::delete($document->file);
+        });
+    }
 
     public function volunteer()
     {

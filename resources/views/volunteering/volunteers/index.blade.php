@@ -1,8 +1,8 @@
-@extends('layouts.app')
+@extends('volunteering.layout')
 
 @section('title', __('volunteering.volunteers'))
 
-@section('content')
+@section('wrapped-content')
 
     @if( ! $volunteers->isEmpty() )
         <table class="table table-sm table-bordered table-striped table-hover table-responsive-md">
@@ -23,7 +23,7 @@
                 @foreach ($volunteers as $volunteer)
                     <tr>
                         <td>
-                            <a href="{{ route('volunteers.show', $volunteer) }}">{{ $volunteer->name }}</a>
+                            <a href="{{ route('volunteering.volunteers.show', $volunteer) }}">{{ $volunteer->name }}</a>
                         </td>
                         <td>{{ $volunteer->address }}</td>
                         <td>{{ $volunteer->date_of_birth }}</td>

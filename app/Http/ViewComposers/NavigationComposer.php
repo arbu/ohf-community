@@ -56,7 +56,7 @@ class NavigationComposer {
                     'authorized' => Gate::allows('view-bank-index')
                 ],
                 [
-                    'route' => 'volunteers.index',
+                    'route' => 'volunteering.volunteers.index',
                     'caption' => __('volunteering.volunteers'),
                     'icon' => 'heart',
                     'active' => 'volunteers*',
