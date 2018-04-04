@@ -45,4 +45,5 @@ return [
     'my_volunteer_profile' => 'Mein Volunteer-Profil',
     'apply_as_a_volunteer' => 'Bewirb dich als Volunteer',
     'about_you' => 'Über dich',
+    'volunteer_coordination' => 'Freiwilligenkoordination',
 ];

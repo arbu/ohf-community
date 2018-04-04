@@ -1,6 +1,6 @@
 @extends('volunteering.layout')
 
-@section('title', __('volunteering.volunteers'))
+@section('title', __('volunteering.volunteer_coordination'))
 
 @section('wrapped-content')
 

@@ -45,4 +45,5 @@ return [
     'my_volunteer_profile' => 'My Volunteer Profile',
     'apply_as_a_volunteer' => 'Apply as a volunteer',
     'about_you' => 'About you',
+    'volunteer_coordination' => 'Volunteer Coordination',
 ];
