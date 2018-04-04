@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Volunteering;
 
 use App\VolunteerJob;
 use App\VolunteerJobCategory;
-use Illuminate\Http\Request;
+use App\Http\Requests\Volunteering\StoreVolunteerJob;
 use App\Http\Controllers\Controller;
 
 class JobsController extends Controller
@@ -47,10 +47,10 @@ class JobsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\Volunteering\StoreVolunteerJob  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreVolunteerJob $request)
     {
         $this->authorize('create', VolunteerJob::class);
 
@@ -102,11 +102,11 @@ class JobsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\Volunteering\StoreVolunteerJob  $request
      * @param  \App\VolunteerJob  $volunteerJob
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, VolunteerJob $job)
+    public function update(StoreVolunteerJob $request, VolunteerJob $job)
     {
         $this->authorize('update', $job);
 

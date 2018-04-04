@@ -13,7 +13,7 @@
                     <div class="col-md">
                         {{ Form::bsSelect('category', $categories, null, [ 'required' ], __('app.category')) }}
                     </div>
-                    <div class="col-md">
+                    <div class="col-md-2">
                         {{ Form::bsNumber('order', \App\VolunteerJob::count(), [ 'required', 'min' => 0 ], __('app.order')) }}
                     </div>
                 </div>
