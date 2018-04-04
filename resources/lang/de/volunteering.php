@@ -57,4 +57,11 @@ return [
     'confirm_delete_job' => 'Soll dieser Job wirklich gelöscht werden?',
     'available_dates' => 'Einstiegszeitraum',
     'minimum_stay' => 'Mindestaufenthaltsdauer',
+    'job_categories' => 'Job-Kategorien',
+    'create_category' => 'Kategorie erstellen',
+    'category_created' => 'Kategorie wurde erstellt',
+    'edit_category' => 'Kategorie bearbeiten',
+    'category_updated' => ' Kategorie wurde aktualisert',
+    'confirm_delete_category' => 'Soll diese Kategorie und alle damit verbundenen Jobs wirklich gelöscht werden?',
+    'category_deleted' => 'Kategorie wurde gelöscht',
 ];

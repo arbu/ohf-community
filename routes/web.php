@@ -222,6 +222,16 @@ Route::group(['middleware' => 'language'], function () {
         Route::get('/volunteering/trips', 'Volunteering\TripsController@index')->name('volunteering.trips.index');
 
         // Jobs
+        Route::resource('volunteering/jobs/categories', 'Volunteering\JobCategoriesController')->except([
+            'show',
+        ])->names([
+            'index' => 'volunteering.jobs.categories.index',
+            'create' => 'volunteering.jobs.categories.create',
+            'store' => 'volunteering.jobs.categories.store',
+            'edit' => 'volunteering.jobs.categories.edit',
+            'update' => 'volunteering.jobs.categories.update',
+            'destroy' => 'volunteering.jobs.categories.destroy',
+        ]);
         Route::resource('volunteering/jobs', 'Volunteering\JobsController')->names([
             'index' => 'volunteering.jobs.index',
             'create' => 'volunteering.jobs.create',

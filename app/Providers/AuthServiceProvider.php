@@ -24,6 +24,7 @@ class AuthServiceProvider extends ServiceProvider
         \App\CouponType::class => \App\Policies\People\Bank\CouponTypePolicy::class,
         \App\Volunteer::class => \App\Policies\Volunteering\VolunteerPolicy::class,
         \App\VolunteerJob::class => \App\Policies\Volunteering\VolunteerJobPolicy::class,
+        \App\VolunteerJobCategory::class => \App\Policies\Volunteering\VolunteerJobCategoryPolicy::class,
     ];
 
     /**

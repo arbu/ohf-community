@@ -11,6 +11,7 @@ use App\Donation;
 use App\CouponType;
 use App\Volunteer;
 use App\VolunteerJob;
+use App\VolunteerJobCategory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
@@ -803,7 +804,13 @@ class ContextMenuComposer {
                         'icon' => 'plus-circle',
                         'icon_floating' => 'plus',
                         'authorized' => Auth::user()->can('create', VolunteerJob::class)
-                    ]
+                    ],
+                    'categories' => [
+                        'url' => route('volunteering.jobs.categories.index'),
+                        'caption' => __('app.categories'),
+                        'icon' => 'folder-open-o',
+                        'authorized' => Auth::user()->can('list', VolunteerJobCategory::class)
+                    ],
                 ];
             case 'volunteering.jobs.create':
                 return [
@@ -847,7 +854,51 @@ class ContextMenuComposer {
                         'icon' => 'times-circle',
                         'authorized' => Auth::user()->can('view', $job)
                     ]
-                ];            
+                ];
+
+            // Categories
+            case 'volunteering.jobs.categories.index':
+                return [
+                    'action' => [
+                        'url' => route('volunteering.jobs.categories.create'),
+                        'caption' => __('app.add'),
+                        'icon' => 'plus-circle',
+                        'icon_floating' => 'plus',
+                        'authorized' => Auth::user()->can('create', VolunteerJobCategory::class)
+                    ],
+                    'back' => [
+                        'url' => route('volunteering.jobs.index'),
+                        'caption' => __('app.close'),
+                        'icon' => 'times-circle',
+                        'authorized' => Auth::user()->can('list', VolunteerJob::class)
+                    ],
+                ];
+            case 'volunteering.jobs.categories.create':
+                return [
+                    'back' => [
+                        'url' => route('volunteering.jobs.categories.index'),
+                        'caption' => __('app.cancel'),
+                        'icon' => 'times-circle',
+                        'authorized' => Auth::user()->can('create', VolunteerJobCategory::class)
+                    ]
+                ];
+            case 'volunteering.jobs.categories.edit':
+                $category = $view->getData()['category'];
+                return [
+                    'delete' => [
+                        'url' => route('volunteering.jobs.categories.destroy', $category),
+                        'caption' => __('app.delete'),
+                        'icon' => 'trash',
+                        'authorized' => Auth::user()->can('delete', $category),
+                        'confirmation' => __('volunteering.confirm_delete_category')
+                    ],
+                    'back' => [
+                        'url' => route('volunteering.jobs.categories.index'),
+                        'caption' => __('app.cancel'),
+                        'icon' => 'times-circle',
+                        'authorized' => Auth::user()->can('view', $category)
+                    ]
+                ];    
         }
         return [];
     }

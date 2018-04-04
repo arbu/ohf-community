@@ -57,4 +57,11 @@ return [
     'confirm_delete_job' => 'Really delete this job?',
     'available_dates' => 'Available dates',
     'minimum_stay' => 'Minimum stay',
+    'job_categories' => 'Job Categories',
+    'create_category' => 'Create Category',
+    'category_created' => 'Category created',
+    'edit_category' => 'Edit Category',
+    'category_updated' => 'Category updated',
+    'confirm_delete_category' => 'Really delete this category and all associated jobs?',
+    'category_deleted' => 'Category deleted',
 ];

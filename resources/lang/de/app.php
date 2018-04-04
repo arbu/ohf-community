@@ -151,6 +151,7 @@ return [
     'choose_file' => 'Datei wählen',
     'title' => 'Titel',
     'category' => 'Kategorie',
+    'categories' => 'Kategorien',
     'description' => 'Beschreibung',
     'requirements' => 'Anforderungen',
     'general' => 'Allgemeines',

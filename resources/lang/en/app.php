@@ -151,6 +151,7 @@ return [
     'choose_file' => 'Choose file',
     'title' => 'Title',
     'category' => 'Category',
+    'categories' => 'Categories',
     'description' => 'Description',
     'requirements' => 'Requirements',
     'general' => 'General',
