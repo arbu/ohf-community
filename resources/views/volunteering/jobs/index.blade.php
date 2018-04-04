@@ -18,12 +18,13 @@
                     <tr>
                         <td>
                             @foreach (language()->allowed() as $code => $name)
-                                <small class="text-muted d-block d-sm-inline">{{ $name }}:</small> <a href="{{ route('volunteering.jobs.show', $job) }}">{{ $job->title[$code] }}</a><br>
+                                <small class="text-muted d-block d-sm-inline">{{ $name }}:</small> 
+                                <a href="{{ route('volunteering.jobs.show', $job) }}">{{ $job->title[$code] ?? '-' }}</a><br>
                             @endforeach
                         </td>
                         <td>
                             @foreach (language()->allowed() as $code => $name)
-                                <small class="text-muted d-block d-sm-inline">{{ $name }}:</small> {{ $job->category->title[$code] }}<br>
+                                <small class="text-muted d-block d-sm-inline">{{ $name }}:</small> {{ $job->category->title[$code] ?? '-' }}<br>
                             @endforeach
                         </td>
                         <td class="d-none d-sm-table-cell">{{ $job->order }}</td>

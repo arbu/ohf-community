@@ -25,7 +25,7 @@
                         @foreach (language()->allowed() as $code => $name)
                         <div class="col-sm">
                             <small class="text-muted d-block d-sm-none mt-3">{{ $name }}:</small> 
-                                {{ $job->category->title[$code] }}
+                                {{ $job->category->title[$code] ?? '-' }}
                             </div>
                         @endforeach
                     </div>
@@ -47,7 +47,7 @@
                             @foreach (language()->allowed() as $code => $name)
                                 <div class="col-sm">
                                     <small class="text-muted d-block d-sm-none mt-3">{{ $name }}:</small> 
-                                    {{ $job->$v[$code] }}
+                                    {{ $job->$v[$code] ?? '-' }}
                                 </div>
                             @endforeach
                         </div>
