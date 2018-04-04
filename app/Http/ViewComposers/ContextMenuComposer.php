@@ -766,7 +766,7 @@ class ContextMenuComposer {
                 return [
                     'action' => [
                         'url' => route('volunteering.profile.edit'),
-                        'caption' => 'Edit Profile',
+                        'caption' => __('volunteering.edit_profile'),
                         'icon' => 'pencil',
                         'icon_floating' => 'pencil',
                         'authorized' => true,
@@ -776,7 +776,7 @@ class ContextMenuComposer {
                 return [
                     'back' => [
                         'url' => route('volunteering.profile.show'),
-                        'caption' => 'Cancel',
+                        'caption' => __('app.cancel'),
                         'icon' => 'times-circle',
                         'authorized' => true,
                     ]
@@ -785,7 +785,7 @@ class ContextMenuComposer {
                 return [
                     'back' => [
                         'url' => route('volunteering.profile.show'),
-                        'caption' => 'Cancel',
+                        'caption' => __('app.cancel'),
                         'icon' => 'times-circle',
                         'authorized' => true,
                     ]

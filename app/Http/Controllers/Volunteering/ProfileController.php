@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Volunteering;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreVolunteerProfile;
+use App\Http\Requests\Volunteering\StoreVolunteerProfile;
 use App\Http\Requests\StoreTrip;
 use App\Util\CountriesExtended;
 use Illuminate\Support\Facades\Auth;
@@ -25,7 +25,7 @@ class ProfileController extends Controller
 
     function edit() {
         return view('volunteering.profile.edit', [
-            'countries' => CountriesExtended::getList('en')
+            'countries' => CountriesExtended::getList('en') // TODO localize
         ]);
     }
 
@@ -35,14 +35,18 @@ class ProfileController extends Controller
             $volunteer = new Volunteer();
             Auth::user()->volunteer()->save($volunteer);
         }
+        $volunteer->first_name = $request->first_name;
+        $volunteer->last_name = $request->last_name;
         $volunteer->street = $request->street;
         $volunteer->zip = $request->zip;
         $volunteer->city = $request->city;
         $volunteer->country = $request->country;
         $volunteer->nationality = $request->nationality;
-        $volunteer->gender = $request->gender;
+        $volunteer->passport_no = $request->passport_no;
         $volunteer->date_of_birth = $request->date_of_birth;
+        $volunteer->gender = $request->gender;
         $volunteer->phone = $request->phone;
+        $volunteer->whatsapp = $request->whatsapp;
         $volunteer->skype = $request->skype;
         $volunteer->save();
 

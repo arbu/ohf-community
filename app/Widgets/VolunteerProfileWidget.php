@@ -9,7 +9,10 @@ class VolunteerProfileWidget implements Widget
 {
     function authorize(): bool
     {
-        return Auth::user()->volunteer == null;
+        $user = Auth::user();
+        return $user->volunteer == null 
+            && $user->roles()->count() == 0
+            && !$user->isSuperAdmin();
     }
 
     function view(): string
