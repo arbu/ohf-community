@@ -44,4 +44,5 @@ return [
     'edit_profile' => 'Profil bearbeiten',
     'my_volunteer_profile' => 'Mein Volunteer-Profil',
     'apply_as_a_volunteer' => 'Bewirb dich als Volunteer',
+    'about_you' => 'Über dich',
 ];

@@ -775,7 +775,7 @@ class ContextMenuComposer {
             case 'volunteering.profile.edit':
                 return [
                     'back' => [
-                        'url' => route('volunteering.profile.show'),
+                        'url' => route(Auth::user()->volunteer == null ? 'home' : 'volunteering.profile.show'),
                         'caption' => __('app.cancel'),
                         'icon' => 'times-circle',
                         'authorized' => true,
