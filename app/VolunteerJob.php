@@ -18,4 +18,9 @@ class VolunteerJob extends Model
         'minimum_stay' => 'array',
         'requirements' => 'array',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo('App\VolunteerJobCategory', 'volunteer_job_category_id');
+    }
 }

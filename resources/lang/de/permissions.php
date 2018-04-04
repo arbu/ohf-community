@@ -25,5 +25,6 @@ return [
     'app.usermgmt.roles.manage' => 'Benutzerverwaltung: Rollen erstellen, bearbeiten und löschen',
     'app.changelogs.view' => 'Änderungshistorie betrachten',
     'app.logs.view' => 'Logeinträge betrachten',
-    'volunteers.manage' => 'Freiwillige verwalten',
+    'volunteering.volunteers.manage' => 'Volunteering: Freiwillige verwalten',
+    'volunteering.jobs.manage' => 'Volunteering: Jobs verwalten',
 ];

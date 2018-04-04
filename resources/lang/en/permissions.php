@@ -25,5 +25,6 @@ return [
     'app.usermgmt.roles.manage' => 'User management: Create, edit and delete roles',
     'app.changelogs.view' => 'View application changelogs',
     'app.logs.view' => 'View applicaiton log files',
-    'volunteers.manage' => 'Manage volunteers',
+    'volunteering.volunteers.manage' => 'Volunteering: Manage volunteers',
+    'volunteering.jobs.manage' => 'Volunteering: Manage jobs',
 ];

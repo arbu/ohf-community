@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Policies;
+namespace App\Policies\Volunteering;
 
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -24,7 +24,7 @@ class VolunteerPolicy
      */
     public function list(User $user)
     {
-        return $user->hasPermission('volunteers.manage');
+        return $user->hasPermission('volunteering.volunteers.manage');
     }
 
     /**
@@ -36,7 +36,7 @@ class VolunteerPolicy
      */
     public function view(User $user, Volunteer $volunteer)
     {
-        return $user->hasPermission('volunteers.managee');
+        return $user->hasPermission('volunteering.volunteers.managee');
     }
 
     /**
@@ -47,7 +47,7 @@ class VolunteerPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermission('volunteers.managee');
+        return $user->hasPermission('volunteering.volunteers.managee');
     }
 
     /**
@@ -59,7 +59,7 @@ class VolunteerPolicy
      */
     public function update(User $user, Volunteer $volunteer)
     {
-        return $user->hasPermission('volunteers.manage');
+        return $user->hasPermission('volunteering.volunteers.manage');
     }
 
     /**
@@ -71,6 +71,6 @@ class VolunteerPolicy
      */
     public function delete(User $user, Volunteer $volunteer)
     {
-        return $user->hasPermission('volunteers.manage');
+        return $user->hasPermission('volunteering.volunteers.manage');
     }
 }

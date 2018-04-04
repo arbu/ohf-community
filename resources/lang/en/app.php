@@ -149,4 +149,8 @@ return [
     'download' => 'Download',
     'upload' => 'Upload',
     'choose_file' => 'Choose file',
+    'title' => 'Title',
+    'category' => 'Category',
+    'description' => 'Description',
+    'requirements' => 'Requirements',
  ];

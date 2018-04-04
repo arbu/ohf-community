@@ -149,4 +149,8 @@ return [
     'download' => 'Herunterladen',
     'upload' => 'Hochladen',
     'choose_file' => 'Datei wählen',
+    'title' => 'Titel',
+    'category' => 'Kategorie',
+    'description' => 'Beschreibung',
+    'requirements' => 'Anforderungen',
 ];

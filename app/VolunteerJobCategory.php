@@ -14,4 +14,14 @@ class VolunteerJobCategory extends Model
     protected $casts = [
         'title' => 'array',
     ];
+
+    public function jobs()
+    {
+        return $this->hasMany('App\VolunteerJob');
+    }
+
+    public function __toString()
+    {
+        return implode(' / ', $this->title);
+    }
 }

@@ -172,8 +172,11 @@ return [
         'app.logs.view' => [
             'sensitive' => true,
         ],
-        'volunteers.manage' => [
+        'volunteering.volunteers.manage' => [
             'sensitive' => true,
+        ],
+        'volunteering.jobs.manage' => [
+            'sensitive' => false,
         ],
     ]
 ];

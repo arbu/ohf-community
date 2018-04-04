@@ -10,6 +10,7 @@ use App\Donor;
 use App\Donation;
 use App\CouponType;
 use App\Volunteer;
+use App\VolunteerJob;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
@@ -790,6 +791,63 @@ class ContextMenuComposer {
                         'authorized' => true,
                     ]
                 ];
+
+            //
+            // Volunteer Jobs
+            // 
+            case 'volunteering.jobs.index':
+                return [
+                    'action' => [
+                        'url' => route('volunteering.jobs.create'),
+                        'caption' => __('app.add'),
+                        'icon' => 'plus-circle',
+                        'icon_floating' => 'plus',
+                        'authorized' => Auth::user()->can('create', VolunteerJob::class)
+                    ]
+                ];
+            case 'volunteering.jobs.create':
+                return [
+                    'back' => [
+                        'url' => route('volunteering.jobs.index'),
+                        'caption' => __('app.cancel'),
+                        'icon' => 'times-circle',
+                        'authorized' => Auth::user()->can('create', VolunteerJob::class)
+                    ]
+                ];
+            case 'volunteering.jobs.show':
+                $job = $view->getData()['job'];
+                return [
+                    'action' => [
+                        'url' => route('volunteering.jobs.edit', $job),
+                        'caption' => __('app.edit'),
+                        'icon' => 'pencil',
+                        'icon_floating' => 'pencil',
+                        'authorized' => Auth::user()->can('update', $job)
+                    ],
+                    'delete' => [
+                        'url' => route('volunteering.jobs.destroy', $job),
+                        'caption' => __('app.delete'),
+                        'icon' => 'trash',
+                        'authorized' => Auth::user()->can('delete', $job),
+                        'confirmation' => __('volunteering.confirm_delete_job')
+                    ],
+                    'back' => [
+                        'url' => route('volunteering.jobs.index'),
+                        'caption' => __('app.close'),
+                        'icon' => 'times-circle',
+                        'authorized' => Auth::user()->can('list', VolunteerJob::class)
+                    ]
+                ];
+            case 'volunteering.jobs.edit':
+                $job = $view->getData()['job'];
+                return [
+                    'back' => [
+                        'url' => route('volunteering.jobs.show', $job),
+                        'caption' => __('app.cancel'),
+                        'icon' => 'times-circle',
+                        'authorized' => Auth::user()->can('view', $job)
+                    ]
+                ];            
         }
         return [];
     }
