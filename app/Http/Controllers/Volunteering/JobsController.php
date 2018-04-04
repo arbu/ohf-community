@@ -40,10 +40,7 @@ class JobsController extends Controller
         $this->authorize('create', VolunteerJob::class);
 
         return view('volunteering.jobs.create', [
-            'categories' => VolunteerJobCategory
-                ::orderBy('order', 'asc')
-                ->orderBy('title', 'asc')
-                ->get(),
+            'categories' => self::getCategories(),
         ]);
     }
 
@@ -57,7 +54,18 @@ class JobsController extends Controller
     {
         $this->authorize('create', VolunteerJob::class);
 
-        //
+        $job = new VolunteerJob();
+        $job->title = $request->title;
+        $job->description = $request->description;
+        $job->available_dates = $request->available_dates;
+        $job->minimum_stay = $request->minimum_stay;
+        $job->requirements = $request->requirements;
+        $job->order = $request->order;
+        $job->category()->associate(VolunteerJobCategory::findOrFail($request->category));
+        $job->save();
+
+        return redirect()->route('volunteering.jobs.index')
+            ->with('success', __('volunteering.job_created'));
     }
 
     /**
@@ -87,10 +95,7 @@ class JobsController extends Controller
 
         return view('volunteering.jobs.edit', [
             'job' => $job,
-            'categories' => VolunteerJobCategory
-                ::orderBy('order', 'asc')
-                ->orderBy('title', 'asc')
-                ->get(),
+            'categories' => self::getCategories(),
         ]);
     }
 
@@ -105,7 +110,18 @@ class JobsController extends Controller
     {
         $this->authorize('update', $job);
 
-        //
+        $job->title = $request->title;
+        $job->description = $request->description;
+        $job->available_dates = $request->available_dates;
+        $job->minimum_stay = $request->minimum_stay;
+        $job->requirements = $request->requirements;
+        $job->order = $request->order;
+        $job->category()->dissociate();
+        $job->category()->associate(VolunteerJobCategory::findOrFail($request->category));
+        $job->save();
+
+        return redirect()->route('volunteering.jobs.show', $job)
+            ->with('success', __('volunteering.job_updated'));
     }
 
     /**
@@ -120,6 +136,18 @@ class JobsController extends Controller
 
         $job->delete();
 
-        //
+        return redirect()->route('volunteering.jobs.index')
+            ->with('success', __('volunteering.job_deleted'));
+    }
+
+    private static function getCategories() {
+        return VolunteerJobCategory
+            ::orderBy('order', 'asc')
+            ->orderBy('title', 'asc')
+            ->get()
+            ->mapWithKeys(function($e) {
+                return [ $e->id => implode(' / ', $e->title) ];
+            })
+            ->toArray();        
     }
 }

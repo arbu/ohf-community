@@ -153,4 +153,5 @@ return [
     'category' => 'Kategorie',
     'description' => 'Beschreibung',
     'requirements' => 'Anforderungen',
+    'general' => 'Allgemeines',
 ];

@@ -153,4 +153,5 @@ return [
     'category' => 'Category',
     'description' => 'Description',
     'requirements' => 'Requirements',
+    'general' => 'General',
  ];

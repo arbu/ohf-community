@@ -20,8 +20,4 @@ class VolunteerJobCategory extends Model
         return $this->hasMany('App\VolunteerJob');
     }
 
-    public function __toString()
-    {
-        return implode(' / ', $this->title);
-    }
 }

@@ -1,20 +1,20 @@
 @extends('layouts.app')
 
-@section('title', __('volunteering.edit_job'))
+@section('title', __('volunteering.create_job'))
 
 @section('content')
 
-    {!! Form::model($job, ['route' => ['volunteering.jobs.update', $job], 'method' => 'put']) !!}
+    {!! Form::open(['route' => ['volunteering.jobs.store'], 'method' => 'post']) !!}
 
         <div class="card mb-4">
             <div class="card-header">@lang('app.general')</div>
             <div class="card-body pb-1">
                 <div class="form-row">
                     <div class="col-md">
-                        {{ Form::bsSelect('category', $categories, $job->category->id, [ 'required' ], __('app.category')) }}
+                        {{ Form::bsSelect('category', $categories, null, [ 'required' ], __('app.category')) }}
                     </div>
                     <div class="col-md">
-                        {{ Form::bsNumber('order', null, [ 'required', 'min' => 0 ], __('app.order')) }}
+                        {{ Form::bsNumber('order', \App\VolunteerJob::count(), [ 'required', 'min' => 0 ], __('app.order')) }}
                     </div>
                 </div>
             </div>
@@ -48,7 +48,7 @@
             </div>
         @endforeach
 
-        <p>{{ Form::bsSubmitButton(__('app.update')) }}</p>
+        <p>{{ Form::bsSubmitButton(__('app.create')) }}</p>
 
     {!! Form::close() !!}
 
