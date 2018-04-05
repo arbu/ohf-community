@@ -210,6 +210,7 @@ Route::group(['middleware' => 'language'], function () {
         // Manage volunteers
         Route::get('/volunteering/volunteers', 'Volunteering\VolunteersController@index')->name('volunteering.volunteers.index');
         Route::get('/volunteering/volunteers/export', 'Volunteering\VolunteersController@export')->name('volunteering.volunteers.export');
+        Route::get('/volunteering/volunteers/filter', 'Volunteering\VolunteersController@filter')->name('volunteering.volunteers.filter');
         Route::get('/volunteering/volunteers/{volunteer}', 'Volunteering\VolunteersController@show')->name('volunteering.volunteers.show');
         Route::get('/volunteering/volunteers/{volunteer}/vcard', 'Volunteering\VolunteersController@vcard')->name('volunteering.volunteers.vcard');
 
@@ -219,7 +220,15 @@ Route::group(['middleware' => 'language'], function () {
         Route::delete('/volunteering/volunteers/{volunteer}/document/{document}', 'Volunteering\DocumentsController@destroy')->name('volunteering.documents.destroy');
 
         // Trips
-        Route::get('/volunteering/trips', 'Volunteering\TripsController@index')->name('volunteering.trips.index');
+        Route::resource('volunteering/trips', 'Volunteering\TripsController')->names([
+            'index' => 'volunteering.trips.index',
+            'create' => 'volunteering.trips.create',
+            'store' => 'volunteering.trips.store',
+            'show' => 'volunteering.trips.show',
+            'edit' => 'volunteering.trips.edit',
+            'update' => 'volunteering.trips.update',
+            'destroy' => 'volunteering.trips.destroy',
+        ]);
 
         // Jobs
         Route::resource('volunteering/jobs/categories', 'Volunteering\JobCategoriesController')->except([

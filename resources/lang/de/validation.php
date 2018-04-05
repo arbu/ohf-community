@@ -152,5 +152,7 @@ return [
         'amount' => 'Betrag',
         'file' => 'Datei',
         'street' => 'Strasse',
+        'arrival' => 'Ankunft',
+        'departure' => 'Abreise',
     ],
 ];

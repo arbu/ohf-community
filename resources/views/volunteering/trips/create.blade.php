@@ -1,55 +1,64 @@
 @extends('layouts.app')
 
-@section('title', __('volunteering.create_job'))
+@section('title', __('volunteering.register_trip'))
 
 @section('content')
 
-    {!! Form::open(['route' => ['volunteering.jobs.store'], 'method' => 'post']) !!}
-
-        <div class="card mb-4">
-            <div class="card-header">@lang('app.general')</div>
-            <div class="card-body pb-1">
-                <div class="form-row">
-                    <div class="col-md">
-                        {{ Form::bsSelect('category', $categories, null, [ 'required' ], __('app.category')) }}
-                    </div>
-                    <div class="col-md-2">
-                        {{ Form::bsNumber('order', \App\VolunteerJob::count(), [ 'required', 'min' => 0 ], __('app.order')) }}
-                    </div>
+    @if(count($jobs) > 0)
+        {!! Form::open(['route' => ['volunteering.trips.store'], 'method' => 'post']) !!}
+            {{ Form::bsText('volunteerSearch', null, [ 'required', 'placeholder' => __('volunteering.search_volunteer'), 'rel' => 'autocomplete', 'data-autocomplete-url' => route('volunteering.volunteers.filter'), 'data-autocomplete-update' => '#volunteer' ], __('volunteering.volunteer')) }}
+            {{ Form::hidden('volunteer', null, [ 'id' => 'volunteer' ]) }}
+            <div class="form-row">
+                <div class="col-sm">
+                    {{ Form::bsDate('arrival', Carbon\Carbon::today()->toDateString(), [ 'id' => 'arrival', 'required' ], __('volunteering.arrival')) }}
+                </div>
+                <div class="col-sm">
+                    {{ Form::bsDate('departure', Carbon\Carbon::today()->addWeeks(2)->toDateString(), [ 'id' => 'departure' ], __('volunteering.departure')) }}
+                </div>
+                <div class="col-sm">
+                    {{ Form::bsSelect('job', $jobs, null, [ 'required' ], __('volunteering.job')) }}
                 </div>
             </div>
+            <div class="form-row">
+                <div class="col-sm">
+                    {{ Form::bsTextarea('remarks', null, [ ], __('app.remarks')) }}
+                </div>
+            </div>            
+            <p>{{ Form::bsSubmitButton(__('app.register')) }}</p>
+        {!! Form::close() !!}
+    @else
+        <div class="alert alert-info">
+            <i class="fa fa-info-circle"></i> @lang('volunteering.no_jobs_found')
         </div>
-        
-        @foreach([
-            __('app.title') => 'title',
-            __('app.description') => 'description',
-            __('volunteering.available_dates') => 'available_dates',
-            __('volunteering.minimum_stay') => 'minimum_stay',
-            __('app.requirements') => 'requirements',
-        ] as $k => $v)
-            <div class="card mb-4">
-                <div class="card-header">{{ $k }}</div>
-                <div class="card-body pb-1">
-                    @foreach (language()->allowed() as $code => $name)
-                        <div class="form-row">
-                            <div class="col-sm-2 pb-2 pb-sm-0">
-                                {{ $name }}
-                            </div>
-                            <div class="col-sm">
-                                @if($v == 'description')
-                                    {{ Form::bsTextarea($v . '[' . $code . ']', null, [ 'required' ], '') }}
-                                @else
-                                    {{ Form::bsText($v . '[' . $code . ']', null, [ 'required' ], '') }}
-                                @endif
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        @endforeach
+        @can('create', \App\VolunteerJob::class)
+            <p><a href="{{ route('volunteering.jobs.create') }}" class="btn btn-primary">@icon(plus-circle) @lang('volunteering.create_job')</a></p>
+        @endcan
+    @endif
 
-        <p>{{ Form::bsSubmitButton(__('app.create')) }}</p>
+@endsection
 
-    {!! Form::close() !!}
+@section('script')
+    $(function(){
+        var arrival = $('#arrival');
+        var departure = $('#departure');
 
+        arrival.on('change', function(){
+            const arrivalDay = moment(arrival.val());
+            const departureDay = moment(departure.val());
+
+            {{-- const duration = moment.duration(departureDay.diff(arrivalDay)).days();
+            console.log(arrivalDay.format('YYYY-MM-DD'));
+            console.log(arrivalDay.add(2, 'days').format('YYYY-MM-DD'));
+            console.log(arrivalDay.add(14, 'days').format('YYYY-MM-DD')); --}}
+
+            departure.val(moment(arrivalDay).add(14, 'days').format('YYYY-MM-DD'));
+            departure.attr('min', moment(arrivalDay).add(1, 'days').format('YYYY-MM-DD'));
+        });
+
+        departure.attr('min', moment(arrival.val()).add(1, 'days').format('YYYY-MM-DD'));
+    });
+@endsection
+
+@section('footer')
+    <script src='{{ asset('js/moment-with-locales.min.js') }}'></script>
 @endsection

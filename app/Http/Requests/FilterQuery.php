@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Volunteering;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\VolunteerDocument;
 
-class UploadVolunteerDocument extends FormRequest
+class FilterQuery extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,10 +24,7 @@ class UploadVolunteerDocument extends FormRequest
     public function rules()
     {
         return [
-            'file' => 'required|file|mimes:jpeg,bmp,png,pdf|max:' . (16 * 1024),
-            'type' => 'required|in:' . implode(',', array_keys(VolunteerDocument::types())),
-            'remarks' => 'nullable|string',
+            'query' => 'nullable|string',
         ];
     }
-
 }

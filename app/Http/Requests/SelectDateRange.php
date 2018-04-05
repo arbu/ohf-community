@@ -49,6 +49,7 @@ class SelectDateRange extends FormRequest
             $to = new Carbon($this->to);
             if ($from->gte($to)) {
                 $validator->errors()->add('from', '"from" date must be before "to" date');
+                $validator->errors()->add('to', '"to" date must be after "from" date');
             }
         });
     }

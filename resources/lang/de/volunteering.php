@@ -72,4 +72,7 @@ return [
     'current_trips' => 'Aktuelle Einsätze',
     'upcoming_trips' => 'Zukünftige Einsätze',
     'past_trips' => 'Vergangene Einsätze',
+    'register_trip' => 'Einsatz registrieren',
+    'search_volunteer' => 'Volunteer suchen',
+    'trip_registered' => 'Einsatz registriert',
 ];

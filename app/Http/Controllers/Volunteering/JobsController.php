@@ -142,7 +142,8 @@ class JobsController extends Controller
             ->orderBy('title', 'asc')
             ->get()
             ->mapWithKeys(function($e) {
-                return [ $e->id => implode(' / ', $e->title) ];
+                $lang = \App::getLocale();
+                return [ $e->id => $e->title[$lang] ?? implode(' / ', $e->title) ];
             })
             ->toArray();        
     }

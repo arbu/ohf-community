@@ -20,7 +20,8 @@ class CreateVolunteerTripsTable extends Migration
             $table->unsignedInteger('volunteer_id');
             $table->unsignedInteger('job_id')->nullable();
             $table->boolean('need_accommodation')->default(false);
-            $table->text('remarks');
+            $table->enum('status', ['requested', 'approved', 'denied'])->default('requested');
+            $table->text('remarks')->nullable();
             $table->timestamps();
             $table->foreign('volunteer_id')->references('id')->on('volunteers')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('job_id')->references('id')->on('volunteer_jobs')->onDelete('set null')->onUpdate('cascade');

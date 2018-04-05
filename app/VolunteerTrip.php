@@ -4,9 +4,17 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Iatstuti\Database\Support\NullableFields;
 
 class VolunteerTrip extends Model
 {
+    use NullableFields;
+
+    protected $nullable = [
+        'remarks',
+        'departure',
+    ];
+
     public function volunteer()
     {
         return $this->belongsTo('App\Volunteer');

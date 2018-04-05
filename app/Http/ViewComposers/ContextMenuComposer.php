@@ -10,6 +10,7 @@ use App\Donor;
 use App\Donation;
 use App\CouponType;
 use App\Volunteer;
+use App\VolunteerTrip;
 use App\VolunteerJob;
 use App\VolunteerJobCategory;
 use Illuminate\Support\Facades\Auth;
@@ -793,6 +794,27 @@ class ContextMenuComposer {
                     ]
                 ];
 
+            // Trips
+            case 'volunteering.trips.index':
+                return [
+                    'action' => [
+                        'url' => route('volunteering.trips.create'),
+                        'caption' => __('app.register'),
+                        'icon' => 'plus-circle',
+                        'icon_floating' => 'plus',
+                        'authorized' => Auth::user()->can('create', VolunteerTrip::class)
+                    ],
+                ];
+            case 'volunteering.trips.create':
+                return [
+                    'back' => [
+                        'url' => route('volunteering.trips.index'),
+                        'caption' => __('app.cancel'),
+                        'icon' => 'times-circle',
+                        'authorized' => Auth::user()->can('list', VolunteerTrip::class)
+                    ]
+                ];
+
             //
             // Volunteer Jobs
             // 
@@ -818,7 +840,7 @@ class ContextMenuComposer {
                         'url' => route('volunteering.jobs.index'),
                         'caption' => __('app.cancel'),
                         'icon' => 'times-circle',
-                        'authorized' => Auth::user()->can('create', VolunteerJob::class)
+                        'authorized' => Auth::user()->can('list', VolunteerJob::class)
                     ]
                 ];
             case 'volunteering.jobs.show':
@@ -879,7 +901,7 @@ class ContextMenuComposer {
                         'url' => route('volunteering.jobs.categories.index'),
                         'caption' => __('app.cancel'),
                         'icon' => 'times-circle',
-                        'authorized' => Auth::user()->can('create', VolunteerJobCategory::class)
+                        'authorized' => Auth::user()->can('list', VolunteerJobCategory::class)
                     ]
                 ];
             case 'volunteering.jobs.categories.edit':

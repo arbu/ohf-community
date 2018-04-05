@@ -72,4 +72,7 @@ return [
     'current_trips' => 'Current trips',
     'upcoming_trips' => 'Upcoming trips',
     'past_trips' => 'Past trips',
+    'register_trip' => 'Register trip',
+    'search_volunteer' => 'Search volunteer',
+    'trip_registered' => 'Trip registered',
 ];
