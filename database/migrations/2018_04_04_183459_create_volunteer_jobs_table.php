@@ -21,7 +21,7 @@ class CreateVolunteerJobsTable extends Migration
         });
         Schema::create('volunteer_jobs', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('volunteer_job_category_id');
+            $table->unsignedInteger('category_id');
             $table->text('title');
             $table->text('description');
             $table->text('available_dates');
@@ -29,7 +29,7 @@ class CreateVolunteerJobsTable extends Migration
             $table->text('requirements');
             $table->unsignedInteger('order')->default(0);
             $table->timestamps();
-            $table->foreign('volunteer_job_category_id')->references('id')->on('volunteer_job_categories')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('category_id')->references('id')->on('volunteer_job_categories')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

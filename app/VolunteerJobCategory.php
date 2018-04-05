@@ -17,7 +17,7 @@ class VolunteerJobCategory extends Model
 
     public function jobs()
     {
-        return $this->hasMany('App\VolunteerJob');
+        return $this->hasMany('App\VolunteerJob', 'category_id');
     }
 
 }

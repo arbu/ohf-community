@@ -21,6 +21,6 @@ class VolunteerJob extends Model
 
     public function category()
     {
-        return $this->belongsTo('App\VolunteerJobCategory', 'volunteer_job_category_id');
+        return $this->belongsTo('App\VolunteerJobCategory', 'category_id');
     }
 }
