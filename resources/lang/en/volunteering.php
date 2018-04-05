@@ -64,4 +64,5 @@ return [
     'category_updated' => 'Category updated',
     'confirm_delete_category' => 'Really delete this category and all associated jobs?',
     'category_deleted' => 'Category deleted',
+    'no_categories_found' => 'No categories found.',
 ];

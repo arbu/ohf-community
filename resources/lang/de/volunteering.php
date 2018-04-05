@@ -64,4 +64,5 @@ return [
     'category_updated' => ' Kategorie wurde aktualisert',
     'confirm_delete_category' => 'Soll diese Kategorie und alle damit verbundenen Jobs wirklich gelöscht werden?',
     'category_deleted' => 'Kategorie wurde gelöscht',
+    'no_categories_found' => 'Keine Kategorien gefunden.',
 ];
