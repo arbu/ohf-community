@@ -19,7 +19,7 @@
                     {{ Form::bsSelect('job', $jobs, null, [ 'required' ], __('volunteering.job')) }}
                 </div>
             </div>
-            <p>{{ Form::bsCheckbox('need_accommodation', null, [], __('volunteering.needs_accommodation')) }}</p>
+            <p>{{ Form::bsCheckbox('need_accommodation', 1, null, __('volunteering.needs_accommodation')) }}</p>
             {{ Form::bsTextarea('remarks', null, [ ], __('app.remarks')) }}
             <p>{{ Form::bsSubmitButton(__('app.register')) }}</p>
         {!! Form::close() !!}

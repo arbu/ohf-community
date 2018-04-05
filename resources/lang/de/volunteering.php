@@ -76,4 +76,10 @@ return [
     'search_volunteer' => 'Volunteer suchen',
     'trip_registered' => 'Einsatz registriert',
     'needs_accommodation' => 'Benötigt Unterkunft',
+    'trip_details' => 'Einsatzdetails',
+    'confirm_delete_trip' => 'Soll der Einsatz gelöscht werden?',
+    'trip_updated' => 'Einsatz aktualisiert',
+    'trip_deleted' => 'Einsatz gelöscht',
+    'edit_trip' => 'Einsatz bearbeiten',
+    'departure_date_unspecified' => 'Abreisedatum nicht angegeben',
 ];

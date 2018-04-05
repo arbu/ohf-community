@@ -81,46 +81,71 @@ class TripsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\VolunteerTrip  $volunteerTrip
+     * @param  \App\VolunteerTrip  $trip
      * @return \Illuminate\Http\Response
      */
-    public function show(VolunteerTrip $volunteerTrip)
+    public function show(VolunteerTrip $trip)
     {
-        //
+        $this->authorize('view', $trip);
+
+        return view('volunteering.trips.show', [
+            'trip' => $trip,
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\VolunteerTrip  $volunteerTrip
+     * @param  \App\VolunteerTrip  $trip
      * @return \Illuminate\Http\Response
      */
-    public function edit(VolunteerTrip $volunteerTrip)
+    public function edit(VolunteerTrip $trip)
     {
-        //
+        $this->authorize('update', $trip);
+
+        return view('volunteering.trips.edit', [
+            'trip' => $trip,
+            'jobs' => self::getJobs(),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\VolunteerTrip  $volunteerTrip
+     * @param  \App\VolunteerTrip  $trip
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, VolunteerTrip $volunteerTrip)
+    public function update(Request $request, VolunteerTrip $trip)
     {
-        //
+        $this->authorize('update', VolunteerTrip::class);
+
+        $trip->arrival = $request->arrival;
+        $trip->departure = $request->departure;
+        $trip->need_accommodation = isset($request->need_accommodation);
+        $trip->remarks = $request->remarks;
+        $trip->job()->dissociate();
+        $trip->job()->associate(VolunteerJob::findOrFail($request->job));
+        $trip->save();
+
+        return redirect()->route('volunteering.trips.show', $trip)
+            ->with('success', __('volunteering.trip_updated'));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\VolunteerTrip  $volunteerTrip
+     * @param  \App\VolunteerTrip  $trip
      * @return \Illuminate\Http\Response
      */
-    public function destroy(VolunteerTrip $volunteerTrip)
+    public function destroy(VolunteerTrip $trip)
     {
-        //
+        $this->authorize('delete', $trip);
+
+        $trip->delete();
+
+        return redirect()->route('volunteering.trips.index')
+            ->with('success', __('volunteering.trip_deleted'));
     }
 
     private static function getJobs() {

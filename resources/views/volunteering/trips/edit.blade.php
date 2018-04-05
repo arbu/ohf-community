@@ -1,55 +1,59 @@
 @extends('layouts.app')
 
-@section('title', __('volunteering.edit_job'))
+@section('title', __('volunteering.edit_trip'))
 
 @section('content')
 
-    {!! Form::model($job, ['route' => ['volunteering.jobs.update', $job], 'method' => 'put']) !!}
+    {!! Form::model($trip, ['route' => ['volunteering.trips.update', $trip], 'method' => 'put']) !!}
 
-        <div class="card mb-4">
-            <div class="card-header">@lang('app.general')</div>
-            <div class="card-body pb-1">
+        @if(count($jobs) > 0)
+            {!! Form::open(['route' => ['volunteering.trips.store'], 'method' => 'post']) !!}
+                <p>@lang('volunteering.volunteer'): {{ $trip->volunteer->name }}, {{ $trip->volunteer->date_of_birth }}, {{ $trip->volunteer->nationality }}</p>
                 <div class="form-row">
-                    <div class="col-md">
-                        {{ Form::bsSelect('category', $categories, $job->category->id, [ 'required' ], __('app.category')) }}
+                    <div class="col-sm">
+                        {{ Form::bsDate('arrival', null, [ 'id' => 'arrival', 'required' ], __('volunteering.arrival')) }}
                     </div>
-                    <div class="col-md-2">
-                        {{ Form::bsNumber('order', null, [ 'required', 'min' => 0 ], __('app.order')) }}
+                    <div class="col-sm">
+                        {{ Form::bsDate('departure', null, [ 'id' => 'departure' ], __('volunteering.departure')) }}
+                    </div>
+                    <div class="col-sm">
+                        {{ Form::bsSelect('job', $jobs, null, [ 'required' ], __('volunteering.job')) }}
                     </div>
                 </div>
+                <p>{{ Form::bsCheckbox('need_accommodation', 1, null, __('volunteering.needs_accommodation')) }}</p>
+                {{ Form::bsTextarea('remarks', null, [ ], __('app.remarks')) }}
+                <p>{{ Form::bsSubmitButton(__('app.update')) }}</p>
+            {!! Form::close() !!}
+        @else
+            <div class="alert alert-info">
+                <i class="fa fa-info-circle"></i> @lang('volunteering.no_jobs_found')
             </div>
-        </div>
-        
-        @foreach([
-            __('app.title') => 'title',
-            __('app.description') => 'description',
-            __('volunteering.available_dates') => 'available_dates',
-            __('volunteering.minimum_stay') => 'minimum_stay',
-            __('app.requirements') => 'requirements',
-        ] as $k => $v)
-            <div class="card mb-4">
-                <div class="card-header">{{ $k }}</div>
-                <div class="card-body pb-1">
-                    @foreach (language()->allowed() as $code => $name)
-                        <div class="form-row">
-                            <div class="col-sm-2 pb-2 pb-sm-0">
-                                {{ $name }}
-                            </div>
-                            <div class="col-sm">
-                                @if($v == 'description')
-                                    {{ Form::bsTextarea($v . '[' . $code . ']', null, [ 'required' ], '') }}
-                                @else
-                                    {{ Form::bsText($v . '[' . $code . ']', null, [ 'required' ], '') }}
-                                @endif
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        @endforeach
-
-        <p>{{ Form::bsSubmitButton(__('app.update')) }}</p>
+            @can('create', \App\VolunteerJob::class)
+                <p><a href="{{ route('volunteering.jobs.create') }}" class="btn btn-primary">@icon(plus-circle) @lang('volunteering.create_job')</a></p>
+            @endcan
+        @endif
 
     {!! Form::close() !!}
 
+@endsection
+
+@section('script')
+    $(function(){
+        var arrival = $('#arrival');
+        var departure = $('#departure');
+
+        arrival.on('change', function(){
+            const arrivalDay = moment(arrival.val());
+            const departureDay = moment(departure.val());
+
+            departure.val(moment(arrivalDay).add(14, 'days').format('YYYY-MM-DD'));
+            departure.attr('min', moment(arrivalDay).add(1, 'days').format('YYYY-MM-DD'));
+        });
+
+        departure.attr('min', moment(arrival.val()).add(1, 'days').format('YYYY-MM-DD'));
+    });
+@endsection
+
+@section('footer')
+    <script src='{{ asset('js/moment-with-locales.min.js') }}'></script>
 @endsection

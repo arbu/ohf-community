@@ -814,6 +814,40 @@ class ContextMenuComposer {
                         'authorized' => Auth::user()->can('list', VolunteerTrip::class)
                     ]
                 ];
+            case 'volunteering.trips.show':
+                $trip = $view->getData()['trip'];
+                return [
+                    'action' => [
+                        'url' => route('volunteering.trips.edit', $trip),
+                        'caption' => __('app.edit'),
+                        'icon' => 'pencil',
+                        'icon_floating' => 'pencil',
+                        'authorized' => Auth::user()->can('update', $trip)
+                    ],
+                    'delete' => [
+                        'url' => route('volunteering.trips.destroy', $trip),
+                        'caption' => __('app.delete'),
+                        'icon' => 'trash',
+                        'authorized' => Auth::user()->can('delete', $trip),
+                        'confirmation' => __('volunteering.confirm_delete_trip')
+                    ],
+                    'back' => [
+                        'url' => route('volunteering.trips.index'),
+                        'caption' => __('app.close'),
+                        'icon' => 'times-circle',
+                        'authorized' => Auth::user()->can('list', VolunteerTrip::class)
+                    ]
+                ];
+            case 'volunteering.trips.edit':
+                $trip = $view->getData()['trip'];
+                return [
+                    'back' => [
+                        'url' => route('volunteering.trips.show', $trip),
+                        'caption' => __('app.cancel'),
+                        'icon' => 'times-circle',
+                        'authorized' => Auth::user()->can('view', $trip)
+                    ]
+                ];
 
             //
             // Volunteer Jobs

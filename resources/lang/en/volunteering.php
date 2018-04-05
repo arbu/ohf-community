@@ -76,4 +76,10 @@ return [
     'search_volunteer' => 'Search volunteer',
     'trip_registered' => 'Trip registered',
     'needs_accommodation' => 'Needs accommodation',
+    'trip_details' => 'Trip Details',
+    'confirm_delete_trip' => 'Really delete this trip?',
+    'trip_updated' => 'Trip updated',
+    'trip_deleted' => 'Trip deleted',
+    'edit_trip' => 'Edit trip',
+    'departure_date_unspecified' => 'Departure date unspecified',
 ];
