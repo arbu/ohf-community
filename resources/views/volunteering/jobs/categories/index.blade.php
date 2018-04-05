@@ -9,7 +9,7 @@
             <thead>
                 <tr>
                     <th>@lang('app.title')</th>
-                    <th class="d-none d-sm-table-cell">@lang('app.order')</th>
+                    <th class="d-none d-sm-table-cell fit">@lang('app.order')</th>
                 </tr>
             </thead>
             <tbody>
@@ -21,7 +21,7 @@
                                 <a href="{{ route('volunteering.jobs.categories.edit', $category) }}">{{ $category->title[$code] ?? '-' }}</a><br>
                             @endforeach
                         </td>
-                        <td class="d-none d-sm-table-cell">{{ $category->order }}</td>
+                        <td class="d-none d-sm-table-cell fit">{{ $category->order }}</td>
                     </tr>
                 @endforeach
             </tbody>

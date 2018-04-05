@@ -155,4 +155,5 @@ return [
     'description' => 'Description',
     'requirements' => 'Requirements',
     'general' => 'General',
+    'unspecified' => 'Unspecified',
  ];

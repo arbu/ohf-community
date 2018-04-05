@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use App\User;
 use App\Volunteer;
+use Carbon\Carbon;
 
 class VolunteersSeeder extends Seeder
 {
@@ -36,6 +37,9 @@ class VolunteersSeeder extends Seeder
             'previous_experience' => 'Teaching German courses in refugee reception centers.',
             'passport_no' => 'C1234567',
             'user_id' => $user->id,
+        ])->trips()->create([
+            'arrival' => Carbon::now()->subDays(7),
+            'departure' => Carbon::now()->addDays(5),
         ]);
     }
 }

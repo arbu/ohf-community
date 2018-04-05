@@ -65,4 +65,11 @@ return [
     'confirm_delete_category' => 'Really delete this category and all associated jobs?',
     'category_deleted' => 'Category deleted',
     'no_categories_found' => 'No categories found.',
+    'no_trips_found' => 'No trips found.',
+    'arrival' => 'Arrival',
+    'departure' => 'Deprature',
+    'duration_days' => 'Duration (days)',
+    'current_trips' => 'Current trips',
+    'upcoming_trips' => 'Upcoming trips',
+    'past_trips' => 'Past trips',
 ];

@@ -10,7 +10,7 @@
                 <tr>
                     <th>@lang('app.title')</th>
                     <th>@lang('app.category')</th>
-                    <th class="d-none d-sm-table-cell">@lang('app.order')</th>
+                    <th class="d-none d-sm-table-cell fit">@lang('app.order')</th>
                 </tr>
             </thead>
             <tbody>
@@ -27,7 +27,7 @@
                                 <small class="text-muted d-block d-sm-inline">{{ $name }}:</small> {{ $job->category->title[$code] ?? '-' }}<br>
                             @endforeach
                         </td>
-                        <td class="d-none d-sm-table-cell">{{ $job->order }}</td>
+                        <td class="d-none d-sm-table-cell fit">{{ $job->order }}</td>
                     </tr>
                 @endforeach
             </tbody>

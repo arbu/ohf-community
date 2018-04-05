@@ -65,4 +65,11 @@ return [
     'confirm_delete_category' => 'Soll diese Kategorie und alle damit verbundenen Jobs wirklich gelöscht werden?',
     'category_deleted' => 'Kategorie wurde gelöscht',
     'no_categories_found' => 'Keine Kategorien gefunden.',
+    'no_trips_found' => 'Keine Einsätze gefunden.',
+    'arrival' => 'Ankunft',
+    'departure' => 'Abreise',
+    'duration_days' => 'Dauer (Tage)',
+    'current_trips' => 'Aktuelle Einsätze',
+    'upcoming_trips' => 'Zukünftige Einsätze',
+    'past_trips' => 'Vergangene Einsätze',
 ];

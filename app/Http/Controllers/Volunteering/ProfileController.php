@@ -8,7 +8,7 @@ use App\Http\Requests\Volunteering\StoreVolunteerProfile;
 use App\Http\Requests\StoreTrip;
 use App\Util\CountriesExtended;
 use Illuminate\Support\Facades\Auth;
-use App\Trip;
+use App\VolunteerTrip;
 use App\Volunteer;
 
 class ProfileController extends Controller
@@ -71,7 +71,7 @@ class ProfileController extends Controller
     }
     
     function storeTrip(StoreTrip $request) {
-        $trip = new Trip();
+        $trip = new VolunteerTrip();
         $trip->arrival = $request->arrival;
         $trip->departure = $request->departure;
         Auth::user()->volunteer->trips()->save($trip);

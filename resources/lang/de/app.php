@@ -155,4 +155,5 @@ return [
     'description' => 'Beschreibung',
     'requirements' => 'Anforderungen',
     'general' => 'Allgemeines',
+    'unspecified' => 'Nicht angegeben',
 ];

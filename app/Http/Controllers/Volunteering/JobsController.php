@@ -23,10 +23,6 @@ class JobsController extends Controller
                 ::orderBy('order', 'asc')
                 ->orderBy('title', 'asc')
                 ->get(),
-            'categories' => VolunteerJobCategory
-                ::orderBy('order', 'asc')
-                ->orderBy('title', 'asc')
-                ->get(),
         ]);
     }
 
