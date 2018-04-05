@@ -68,6 +68,7 @@ class TripsController extends Controller
         $trip = new VolunteerTrip();
         $trip->arrival = $request->arrival;
         $trip->departure = $request->departure;
+        $trip->need_accommodation = isset($request->need_accommodation);
         $trip->remarks = $request->remarks;
         $trip->volunteer()->associate(Volunteer::findOrFail($request->volunteer));
         $trip->job()->associate(VolunteerJob::findOrFail($request->job));

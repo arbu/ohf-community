@@ -75,4 +75,5 @@ return [
     'register_trip' => 'Register trip',
     'search_volunteer' => 'Search volunteer',
     'trip_registered' => 'Trip registered',
+    'needs_accommodation' => 'Needs accommodation',
 ];

@@ -75,4 +75,5 @@ return [
     'register_trip' => 'Einsatz registrieren',
     'search_volunteer' => 'Volunteer suchen',
     'trip_registered' => 'Einsatz registriert',
+    'needs_accommodation' => 'Benötigt Unterkunft',
 ];

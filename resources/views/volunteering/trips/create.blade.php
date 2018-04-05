@@ -19,11 +19,8 @@
                     {{ Form::bsSelect('job', $jobs, null, [ 'required' ], __('volunteering.job')) }}
                 </div>
             </div>
-            <div class="form-row">
-                <div class="col-sm">
-                    {{ Form::bsTextarea('remarks', null, [ ], __('app.remarks')) }}
-                </div>
-            </div>            
+            <p>{{ Form::bsCheckbox('need_accommodation', null, [], __('volunteering.needs_accommodation')) }}</p>
+            {{ Form::bsTextarea('remarks', null, [ ], __('app.remarks')) }}
             <p>{{ Form::bsSubmitButton(__('app.register')) }}</p>
         {!! Form::close() !!}
     @else
@@ -45,11 +42,6 @@
         arrival.on('change', function(){
             const arrivalDay = moment(arrival.val());
             const departureDay = moment(departure.val());
-
-            {{-- const duration = moment.duration(departureDay.diff(arrivalDay)).days();
-            console.log(arrivalDay.format('YYYY-MM-DD'));
-            console.log(arrivalDay.add(2, 'days').format('YYYY-MM-DD'));
-            console.log(arrivalDay.add(14, 'days').format('YYYY-MM-DD')); --}}
 
             departure.val(moment(arrivalDay).add(14, 'days').format('YYYY-MM-DD'));
             departure.attr('min', moment(arrivalDay).add(1, 'days').format('YYYY-MM-DD'));
