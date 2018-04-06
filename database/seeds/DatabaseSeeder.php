@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ProjectsSeeder::class);
         $this->call(CalendarResourceSeeder::class);
         $this->call(CouponTypesSeeder::class);
+        $this->call(VolunteeringSeeder::class);
         $this->call(VolunteersSeeder::class);
     }
 }
