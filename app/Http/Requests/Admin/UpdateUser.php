@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use App\Role;
 
 class UpdateUser extends FormRequest
 {
@@ -33,7 +34,8 @@ class UpdateUser extends FormRequest
                 'max:255',
                 Rule::unique('users')->ignore($this->user->id),
             ],
-            'roles' => 'array',
+            'password' => 'nullable|string|min:6|pwned',
+            'roles' => 'array|in:' . Role::select('id')->get()->pluck('id')->implode(','),
         ];
     }
 }

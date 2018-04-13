@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Config;
+use App\User;
 
-class StoreUser extends FormRequest
+class StoreRole extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,16 +27,14 @@ class StoreUser extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|max:255',
-            'email' => [
+            'name' => [
                 'required',
                 'string',
-                'email',
                 'max:255',
-                Rule::unique('users'),
+                isset($this->role) ? Rule::unique('roles')->ignore($this->role->id) : Rule::unique('roles')
             ],
-            'password' => 'required|string|min:6|pwned',
-            'roles' => 'array',
+            'users' => 'array|in:' . User::select('id')->get()->pluck('id')->implode(','),
+            'permissions' => 'array|in:' . implode(',', array_keys(Config::get('auth.permissions'))),
         ];
     }
 }

@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use App\Role;
 
-class StoreRole extends FormRequest
+class StoreUser extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,12 +26,16 @@ class StoreRole extends FormRequest
     public function rules()
     {
         return [
-            'name' => [
+            'name' => 'required|string|max:255',
+            'email' => [
                 'required',
                 'string',
+                'email',
                 'max:255',
-                isset($this->role) ? Rule::unique('roles')->ignore($this->role->id) : Rule::unique('roles')
+                Rule::unique('users'),
             ],
+            'password' => 'required|string|min:6|pwned',
+            'roles' => 'array|in:' . Role::select('id')->get()->pluck('id')->implode(','),
         ];
     }
 }

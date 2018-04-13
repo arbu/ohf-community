@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\StoreUser;
-use App\Http\Requests\UpdateUser;
+use App\Http\Controllers\ParentController;
+use App\Http\Requests\Admin\StoreUser;
+use App\Http\Requests\Admin\UpdateUser;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Config;
@@ -45,7 +46,7 @@ class UserController extends ParentController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\Admin\StoreUser  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreUser $request)
@@ -69,9 +70,19 @@ class UserController extends ParentController
      */
     public function show(User $user)
     {
+        $current_permissions = $user->permissions()->pluck('key');
+        $permissions = [];
+        foreach (RoleController::getCategorizedPermissions() as $title => $elements) {
+            foreach($elements as $key => $label) {
+                if ($current_permissions->contains($key)) {
+                    $permissions[$title][] = $label;
+                }
+            }
+        }
+
         return view('users.show', [
             'user' => $user,
-            'permissions' => Config::get('auth.permissions'),
+            'permissions' => $permissions,
         ]);
     }
 
@@ -92,7 +103,7 @@ class UserController extends ParentController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\Admin\UpdateUser  $request
      * @param  User $user
      * @return \Illuminate\Http\Response
      */
@@ -133,7 +144,7 @@ class UserController extends ParentController
     public function permissions()
     {
         return view('users.permissions', [
-            'permissions' => Config::get('auth.permissions')
+            'permissions' => RoleController::getCategorizedPermissions(),
         ]);
     }
 
