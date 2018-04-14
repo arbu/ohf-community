@@ -53,7 +53,7 @@ return [
     'apply_as_a_volunteer' => 'Bewirb dich als Volunteer',
     'about_you' => 'Über dich',
     'volunteer_coordination' => 'Freiwilligenkoordination',
-    'no_jobs_found' => 'Keine Jobs gefunden',
+    'no_jobs_found' => 'Keine Jobs gefunden.',
     'confirm_delete_job' => 'Soll dieser Job wirklich gelöscht werden?',
     'available_dates' => 'Einstiegszeitraum',
     'minimum_stay' => 'Mindestaufenthaltsdauer',

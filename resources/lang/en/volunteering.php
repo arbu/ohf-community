@@ -53,7 +53,7 @@ return [
     'apply_as_a_volunteer' => 'Apply as a volunteer',
     'about_you' => 'About you',
     'volunteer_coordination' => 'Volunteer Coordination',
-    'no_jobs_found' => 'No jobs found',
+    'no_jobs_found' => 'No jobs found.',
     'confirm_delete_job' => 'Really delete this job?',
     'available_dates' => 'Available dates',
     'minimum_stay' => 'Minimum stay',
