@@ -1,13 +1,16 @@
 <table>
     <thead>
         <tr>
-            <th>@lang('app.name')</th>
-            <th>@lang('fundraising.address')</th>
-            <th>@lang('fundraising.zip')</th>
-            <th>@lang('fundraising.city')</th>
-            <th>@lang('fundraising.country')</th>
+            <th>@lang('app.first_name')</th>
+            <th>@lang('app.last_name')</th>
+            <th>@lang('app.company')</th>
+            <th>@lang('app.street')</th>
+            <th>@lang('app.zip')</th>
+            <th>@lang('app.city')</th>
+            <th>@lang('app.country')</th>
             <th>@lang('app.email')</th>
-            <th>@lang('fundraising.phone')</th>
+            <th>@lang('app.phone')</th>
+            <th>@lang('app.correspondence_language')</th>
             <th>@lang('app.registered')</th>
             @can('list', App\Donation::class)
                 <th>@lang('fundraising.donations') {{ Carbon\Carbon::now()->subYear()->year }}</th>
@@ -18,13 +21,16 @@
     <tbody>
         @foreach ($donors as $donor)
             <tr>
-                <td>{{ $donor->name }}</td>
-                <td>{{ $donor->address }}</td>
+                <td>{{ $donor->first_name }}</td>
+                <td>{{ $donor->last_name }}</td>
+                <td>{{ $donor->company }}</td>
+                <td>{{ $donor->street }}</td>
                 <td>{{ $donor->zip }}</td>
                 <td>{{ $donor->city }}</td>
-                <td>{{ $donor->country }}</td>
+                <td>{{ $donor->country_name }}</td>
                 <td>{{ $donor->email }}</td>
                 <td>{{ $donor->phone }}</td>
+                <td>{{ $donor->language }}</td>
                 <td>{{ $donor->created_at }}</td>
                 @can('list', App\Donation::class)
                     <td>{{ $donor->amountPerYear(Carbon\Carbon::now()->subYear()->year) ?? 0 }}</td>

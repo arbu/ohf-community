@@ -39,7 +39,7 @@ class DonationController extends Controller
     {
         $this->authorize('create', Donation::class);
 
-        return view('fundraising.donations.register', [
+        return view('fundraising.donations.create', [
             'donor' => $donor,
             'currencies' => Config::get('fundraising.currencies'),
             'channels' => Donation::select('channel')->distinct()->get()->pluck('channel')->toArray(),
@@ -72,9 +72,8 @@ class DonationController extends Controller
                     $exchange_rate = EzvExchangeRates::getExchangeRate($request->currency, $date);
                 } catch (\Exception $e) {
                     Log::error($e);
-                    // If exchange cannot be determined, redirect to advanced registration form, where exchange can be specified
                     return redirect()
-                        ->route('fundraising.create', $donor)
+                        ->back()
                         ->withInput()
                         ->with('error', __('app.an_error_happened'). ': ' . $e->getMessage());
                 }
@@ -187,7 +186,7 @@ class DonationController extends Controller
     {
         $this->authorize('list', Donation::class);
 
-        \Excel::create('OHF_Community_Donors_' . str_replace(' ', '_', $donor->name) . '_' . Carbon::now()->toDateString(), function($excel) use($donor) {
+        \Excel::create(Config::get('app.name') . ' ' .__('fundraising.donations') . ' - ' . $donor->full_name . ' (' . Carbon::now()->toDateString() . ')', function($excel) use($donor) {
             self::createDonationSheet($excel, Carbon::now()->subYear()->year, $donor);
             self::createDonationSheet($excel, Carbon::now()->year, $donor);
         })->export('xlsx');
@@ -205,7 +204,7 @@ class DonationController extends Controller
                 $sheet->freezeFirstRow();
     
                 // Data
-                $sheet->loadView('fundraising.donations.export',[
+                $sheet->loadView('fundraising.donations.export-single',[
                     'donations' => $donations,
                 ]);
     
@@ -217,7 +216,8 @@ class DonationController extends Controller
     
                 // Sum
                 $sumCell = 'F' . (count($donations) + 2);
-                $sheet->setCellValue($sumCell, '=SUM(F2:F' . (count($donations) + 1) . ')');
+                //$sheet->setCellValue($sumCell, '=SUM(F2:F' . (count($donations) + 1) . ')');
+                $sheet->setCellValue($sumCell, $donations->sum('exchange_amount'));
                 $sheet->getStyle($sumCell)->getFont()->setUnderline(\PHPExcel_Style_Font::UNDERLINE_DOUBLEACCOUNTING);
             });
         }
