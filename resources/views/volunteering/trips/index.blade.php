@@ -76,7 +76,7 @@
         @endforeach
     {{-- </div> --}}
 
-    @if($current->isEmpty() && $upcoming->isEmpty() && $future->isEmpty())
+    @if($current->isEmpty() && $upcoming->isEmpty() && $upcoming->isEmpty())
 		<div class="alert alert-info">
             <i class="fa fa-info-circle"></i> @lang('volunteering.no_trips_found')
         </div>
