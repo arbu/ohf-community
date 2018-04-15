@@ -84,7 +84,44 @@
 
             {{-- Trips --}}
             <h4 class="mb-3">@lang('volunteering.trips')</h4>
-            <p><em>@lang('volunteering.no_trips_until_now')</em></p>
+            @if($volunteer->trips->count() > 0)
+                <div class="table-responsive">
+                    <table class="table table-sm table-bordered table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>@lang('volunteering.arrival')</th>
+                                <th>@lang('volunteering.departure')</th>
+                                <th class="d-none d-sm-table-cell">@lang('volunteering.duration_days')</th>
+                                <th>@lang('volunteering.job')</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($volunteer->trips->sortByDesc('arrival') as $trip)
+                                <tr>
+                                    <td>
+                                        <a href="{{ route('volunteering.trips.show', $trip) }}">
+                                            {{ $trip->arrival }}
+                                        </a>
+                                    </td>
+                                    <td>{{ $trip->departure ?? __('app.unspecified') }}</td>
+                                    <td class="d-none d-sm-table-cell">{{ $trip->duration ?? __('app.unspecified') }}</td>
+                                    <td>
+                                        @isset($trip->job)
+                                            <a href="{{ route('volunteering.jobs.show', $trip->job) }}">
+                                                {{ $trip->job->title[App::getLocale()] }}
+                                            </a>
+                                        @else
+                                            @lang('app.unspecified')
+                                        @endisset
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @else
+                <p><em>@lang('volunteering.no_trips_until_now')</em></p>
+            @endif
 
             {{-- Documents --}}
             <h4 class="mb-3">@lang('app.documents')</h4>
