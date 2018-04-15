@@ -82,4 +82,9 @@ return [
     'trip_deleted' => 'Trip deleted',
     'edit_trip' => 'Edit trip',
     'departure_date_unspecified' => 'Departure date unspecified',
+    'arrives_in_n_days' => 'arrives tommorow|arrives in :days days',
+    'departs_in_n_days' => 'departs tomorrow|departs in :days days',
+    'in_n_days' => 'tomorrow|in :days days',
+    'applications' => 'Applications',
+    'denied_applications' => 'Denied Applications',
 ];

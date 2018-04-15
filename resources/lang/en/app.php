@@ -164,4 +164,10 @@ return [
     'requirements' => 'Requirements',
     'unspecified' => 'Unspecified',
     'duration' => 'Duration',
+    'applied' => 'applied',
+    'approved' => 'approved',
+    'denied' => 'denied',
+    'completed' => 'completed',
+    'ongoing' => 'ongoing',
+    'status' => 'Status',
  ];

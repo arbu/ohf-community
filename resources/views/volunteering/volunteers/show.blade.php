@@ -89,22 +89,38 @@
                     <table class="table table-sm table-bordered table-striped table-hover">
                         <thead>
                             <tr>
+                                <th>@lang('app.status')</th>
                                 <th>@lang('volunteering.arrival')</th>
                                 <th>@lang('volunteering.departure')</th>
-                                <th class="d-none d-sm-table-cell">@lang('volunteering.duration_days')</th>
+                                <th class="fit d-none d-sm-table-cell text-right">@lang('app.duration')</th>
                                 <th>@lang('volunteering.job')</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($volunteer->trips->sortByDesc('arrival') as $trip)
                                 <tr>
+                                    <td class="{{ status_text_color($trip->status) }}">
+                                        @lang('app.' . $trip->status)
+                                    </td>                                    
                                     <td>
-                                        <a href="{{ route('volunteering.trips.show', $trip) }}">
-                                            {{ $trip->arrival }}
-                                        </a>
+                                        <a href="{{ route('volunteering.trips.show', $trip) }}">{{ $trip->arrival->toDateString() }}</a>
+                                        @unless($trip->hasArrived || $trip->status == 'denied')
+                                            <small class="text-muted">{{ trans_choice('volunteering.in_n_days', $trip->arrivesIn, [ 'days' => $trip->arrivesIn ]) }}</small>
+                                        @endunless
                                     </td>
-                                    <td>{{ $trip->departure ?? __('app.unspecified') }}</td>
-                                    <td class="d-none d-sm-table-cell">{{ $trip->duration ?? __('app.unspecified') }}</td>
+                                    <td>
+                                        {{ optional($trip->departure)->toDateString() ?? __('app.unspecified') }}
+                                        @unless($trip->hasDeparted || !$trip->hasArrived || $trip->status == 'denied')
+                                            <small class="text-muted">{{ trans_choice('volunteering.in_n_days', $trip->departsIn, [ 'days' => $trip->departsIn ]) }}</small>
+                                        @endunless
+                                    </td>
+                                    <td class="fit d-none d-sm-table-cell text-right">
+                                        @isset($trip->duration)
+                                            {{ $trip->duration }} {{ trans_choice('app.day_days', $trip->duration) }}
+                                        @else
+                                            @lang('app.unspecified')
+                                        @endif
+                                    </td>
                                     <td>
                                         @isset($trip->job)
                                             <a href="{{ route('volunteering.jobs.show', $trip->job) }}">

@@ -12,10 +12,10 @@
                 <p>{{ $trip->volunteer->name }}, {{ $trip->volunteer->date_of_birth }}, {{ $trip->volunteer->nationality }}</p>
                 <div class="form-row">
                     <div class="col-sm">
-                        {{ Form::bsDate('arrival', null, [ 'id' => 'arrival', 'required' ], __('volunteering.arrival')) }}
+                        {{ Form::bsDate('arrival', $trip->arrival->toDateString(), [ 'id' => 'arrival', 'required' ], __('volunteering.arrival')) }}
                     </div>
                     <div class="col-sm">
-                        {{ Form::bsDate('departure', null, [ 'id' => 'departure' ], __('volunteering.departure')) }}
+                        {{ Form::bsDate('departure', optional($trip->departure)->toDateString(), [ 'id' => 'departure' ], __('volunteering.departure')) }}
                     </div>
                     <div class="col-sm">
                         {{ Form::bsSelect('job', $jobs, null, [ 'required' ], __('volunteering.job')) }}

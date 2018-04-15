@@ -15,6 +15,13 @@ class VolunteerTrip extends Model
         'departure',
     ];
 
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'arrival',
+        'departure',
+    ];
+
     public function volunteer()
     {
         return $this->belongsTo('App\Volunteer');
@@ -29,15 +36,41 @@ class VolunteerTrip extends Model
         if ($this->departure == null) {
             return null;
         }
-        $arrival = new Carbon($this->arrival);
-        $departure = new Carbon($this->departure);
-        return $arrival->diffInDays($departure);
+        return $this->arrival->diffInDays($this->departure);
     }
 
-    /*
-    public function arrivesIn() {
-        $arrival = new \Carbon\Carbon($this->arrival);
-        return \Carbon\Carbon::now()->diffForHumans($arrival);
+    public function getArrivesInAttribute() {
+        return $this->hasArrived ? null : Carbon::today()->diffInDays($this->arrival);
     }
-    */
+
+    public function getHasArrivedAttribute() {
+        return Carbon::today()->gte($this->arrival);
+    }
+
+    public function getDepartsInAttribute() {
+        if ($this->departure == null) {
+            return null;
+        }
+        return $this->hasDeparted ? null : Carbon::today()->diffInDays($this->departure);
+    }
+
+    public function getHasDepartedAttribute() {
+        if ($this->departure == null) {
+            return false;
+        }
+        return Carbon::today()->gte($this->departure);
+    }
+
+    public function getStatusAttribute() {
+        if ($this->attributes['status'] == 'approved') {
+            if ($this->hasArrived && !$this->hasDeparted) {
+                return 'ongoing';
+            } elseif ($this->hasDeparted) {
+                return 'completed';
+            }
+        }
+        return $this->attributes['status'];
+    }
+
+
 }

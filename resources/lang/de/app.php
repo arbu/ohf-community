@@ -164,4 +164,10 @@ return [
     'requirements' => 'Anforderungen',
     'unspecified' => 'Nicht angegeben',
     'duration' => 'Dauer',
+    'applied' => 'angefragt',
+    'approved' => 'bestätigt',
+    'denied' => 'abgelehnt',
+    'completed' => 'abgeschlossen',
+    'ongoing' => 'laufend',
+    'status' => 'Status',
 ];

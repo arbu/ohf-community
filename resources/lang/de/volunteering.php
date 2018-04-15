@@ -82,4 +82,9 @@ return [
     'trip_deleted' => 'Einsatz gelöscht',
     'edit_trip' => 'Einsatz bearbeiten',
     'departure_date_unspecified' => 'Abreisedatum nicht angegeben',
+    'arrives_in_n_days' => 'kommt morgen an|kommt in :days Tagen an',
+    'departs_in_n_days' => 'reist morgen ab|reist in :days Tagen ab',
+    'in_n_days' => 'morgen|in :days Tagen',
+    'applications' => 'Bewerbungen',
+    'denied_applications' => 'Abgelehnte Bewerbungen',
 ];

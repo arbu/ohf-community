@@ -57,8 +57,8 @@
                     <tbody>
                         @foreach( $volunteer->trips()->orderBy('arrival', 'asc')->get() as $trip )
                             <tr>
-                                <td>{{ $trip->arrival }}</td>
-                                <td>{{ $trip->departure }}</td>
+                                <td>{{ $trip->arrival->toDateString() }}</td>
+                                <td>{{ optional($trip->departure)->toDateString() }}</td>
                                 <td>{{ $trip->duration() }} days</td>
                             </tr>
                         @endforeach
