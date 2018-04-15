@@ -758,7 +758,7 @@ class ContextMenuComposer {
                     // ],
                     'volunteers' => [
                         'url' => route('volunteering.volunteers.vcard', $volunteer),
-                        'caption' => __('app.export'),
+                        'caption' => __('app.vcard'),
                         'icon' => 'vcard',
                         'authorized' => Auth::user()->can('view', $volunteer)
                     ],
@@ -814,7 +814,7 @@ class ContextMenuComposer {
                         'caption' => __('app.register'),
                         'icon' => 'plus-circle',
                         'icon_floating' => 'plus',
-                        'authorized' => Auth::user()->can('create', VolunteerTrip::class)
+                        'authorized' => Auth::user()->can('create', VolunteerTrip::class) && Volunteer::count() > 0
                     ],
                 ];
             case 'volunteering.trips.create':

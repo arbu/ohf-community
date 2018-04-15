@@ -37,10 +37,10 @@
                     <table class="table table-sm table-bordered table-striped table-hover">
                         <thead>
                             <tr>
-                                <th>@lang('volunteering.volunteer')</th>
                                 <th>@lang('volunteering.arrival')</th>
                                 <th>@lang('volunteering.departure')</th>
                                 <th class="d-none d-sm-table-cell">@lang('volunteering.duration_days')</th>
+                                <th>@lang('volunteering.volunteer')</th>
                                 <th>@lang('volunteering.job')</th>
                             </tr>
                         </thead>
@@ -48,20 +48,22 @@
                             @foreach ($trips as $trip)
                                 <tr>
                                     <td>
-                                        {{-- <a href="{{ route('volunteering.volunteers.show', $trip->volunteer) }}"> --}}
                                         <a href="{{ route('volunteering.trips.show', $trip) }}">
-                                            {{ $trip->volunteer->name }}
+                                            {{ $trip->arrival }}
                                         </a>
-                                        {{-- </a> --}}
                                     </td>
-                                    <td>{{ $trip->arrival }}</td>
                                     <td>{{ $trip->departure ?? __('app.unspecified') }}</td>
                                     <td class="d-none d-sm-table-cell">{{ $trip->duration ?? __('app.unspecified') }}</td>
                                     <td>
+                                        <a href="{{ route('volunteering.volunteers.show', $trip->volunteer) }}">
+                                            {{ $trip->volunteer->name }}, {{ $trip->volunteer->date_of_birth }}, {{ $trip->volunteer->nationality }}
+                                        </a>
+                                    </td>
+                                    <td>
                                         @isset($trip->job)
-                                            {{-- <a href="{{ route('volunteering.jobs.show', $trip->job) }}"> --}}
+                                            <a href="{{ route('volunteering.jobs.show', $trip->job) }}">
                                                 {{ $trip->job->title[App::getLocale()] }}
-                                            {{-- </a> --}}
+                                            </a>
                                         @else
                                             @lang('app.unspecified')
                                         @endisset

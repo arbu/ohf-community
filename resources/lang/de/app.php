@@ -163,4 +163,5 @@ return [
     'description' => 'Beschreibung',
     'requirements' => 'Anforderungen',
     'unspecified' => 'Nicht angegeben',
+    'duration' => 'Dauer',
 ];

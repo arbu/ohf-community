@@ -13,6 +13,7 @@
                     <th>@lang('app.date_of_birth')</th>
                     <th>@lang('app.age')</th>
                     <th>@lang('app.gender')</th>
+                    <th>@lang('app.nationality')</th>
                     <th>@lang('app.email')</th>
                     <th>@lang('app.phone')</th>
                     <th>@lang('volunteering.whatsapp')</th>
@@ -35,6 +36,7 @@
                                 @endif
                             @endisset
                         </td>
+                        <td>{{ $volunteer->nationality }}</td>
                         <td>
                             <a href="{{ email_url($volunteer->user->email) }}"><i class="fa fa-envelope-o"></i></a>
                             {{ $volunteer->user->email }}

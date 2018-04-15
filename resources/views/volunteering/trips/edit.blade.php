@@ -8,7 +8,8 @@
 
         @if(count($jobs) > 0)
             {!! Form::open(['route' => ['volunteering.trips.store'], 'method' => 'post']) !!}
-                <p>@lang('volunteering.volunteer'): {{ $trip->volunteer->name }}, {{ $trip->volunteer->date_of_birth }}, {{ $trip->volunteer->nationality }}</p>
+                <p>@lang('volunteering.volunteer'):</p>
+                <p>{{ $trip->volunteer->name }}, {{ $trip->volunteer->date_of_birth }}, {{ $trip->volunteer->nationality }}</p>
                 <div class="form-row">
                     <div class="col-sm">
                         {{ Form::bsDate('arrival', null, [ 'id' => 'arrival', 'required' ], __('volunteering.arrival')) }}
