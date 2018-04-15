@@ -22,33 +22,50 @@ class TripsController extends Controller
         $this->authorize('list', VolunteerTrip::class);
 
         return view('volunteering.trips.index', [
-            'applied' => VolunteerTrip
-                ::where('status', 'applied')
-                ->orderBy('arrival', 'asc')
-                ->get(),
-            'denied' => VolunteerTrip
-                ::where('status', 'denied')
-                ->orderBy('arrival', 'asc')
-                ->get(),
-            'current' => VolunteerTrip
-                ::whereDate('arrival', '<=', Carbon::today())
-                ->where('status', 'approved')
-                ->where(function($q){
-                    $q->whereDate('departure', '>=', Carbon::today())
-                        ->orWhereNull('departure');
-                })
-                ->orderBy('departure', 'asc')
-                ->get(),
-            'upcoming' => VolunteerTrip
-                ::whereDate('arrival', '>', Carbon::today())
-                ->where('status', 'approved')
-                ->orderBy('arrival', 'asc')
-                ->get(),
-            'past' => VolunteerTrip
-                ::whereDate('departure', '<', Carbon::today())
-                ->where('status', 'approved')
-                ->orderBy('departure', 'desc')
-                ->get(),
+            'data' => [
+                'applications' => VolunteerTrip
+                    ::where('status', 'applied')
+                    ->orderBy('arrival', 'asc')
+                    ->get(),
+                'ongoing_trips' => VolunteerTrip
+                    ::whereDate('arrival', '<=', Carbon::today())
+                    ->where('status', 'approved')
+                    ->where(function($q){
+                        $q->whereDate('departure', '>=', Carbon::today())
+                            ->orWhereNull('departure');
+                    })
+                    ->orderBy('departure', 'asc')
+                    ->get(),
+                'upcoming_trips' => VolunteerTrip
+                    ::whereDate('arrival', '>', Carbon::today())
+                    ->where('status', 'approved')
+                    ->orderBy('arrival', 'asc')
+                    ->get(),
+            ]
+        ]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function archive()
+    {
+        $this->authorize('list', VolunteerTrip::class);
+
+        return view('volunteering.trips.archive', [
+            'data' => [
+                'completed_trips' => VolunteerTrip
+                    ::whereDate('departure', '<', Carbon::today())
+                    ->where('status', 'approved')
+                    ->orderBy('departure', 'desc')
+                    ->get(),
+                'denied_applications' => VolunteerTrip
+                    ::where('status', 'denied')
+                    ->orderBy('arrival', 'asc')
+                    ->get(),
+            ]
         ]);
     }
 

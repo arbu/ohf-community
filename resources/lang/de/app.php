@@ -170,4 +170,5 @@ return [
     'completed' => 'abgeschlossen',
     'ongoing' => 'laufend',
     'status' => 'Status',
+    'archive' => 'Archiv',
 ];

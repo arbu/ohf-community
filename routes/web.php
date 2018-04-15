@@ -229,6 +229,7 @@ Route::group(['middleware' => 'language'], function () {
         Route::delete('volunteers/{volunteer}/document/{document}', 'Volunteering\DocumentsController@destroy')->name('documents.destroy');
 
         // Trips
+        Route::get('trips/archive', 'Volunteering\TripsController@archive')->name('trips.archive');
         Route::resource('trips', 'Volunteering\TripsController');
 
         // Jobs
