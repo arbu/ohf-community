@@ -12,6 +12,9 @@ $(document).ready(function() {
             center: 'title',
             right: ''
         },
+        buttonText: {
+            today: todayLabel,
+        },
         defaultView: 'timelineMonth',
         firstDay: 1,
         weekends: true,
@@ -24,6 +27,6 @@ $(document).ready(function() {
         resources: listResourcesUrl,
         schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
         resourceAreaWidth: '15%',
-        resourceLabelText: 'Jobs',
+        resourceLabelText: resourceLabel,
     });
 });

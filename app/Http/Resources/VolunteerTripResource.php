@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Carbon\Carbon;
 
 class VolunteerTripResource extends JsonResource
 {
@@ -14,16 +15,19 @@ class VolunteerTripResource extends JsonResource
      */
     public function toArray($request)
     {
+        if ($request->end != null && $this->departure == null) {
+            $this->departure = new Carbon($request->end, $request->timezone);
+        }
+
         return [
             'id' => $this->id,
             'title' => $this->volunteer->name,
-            //'description' => $this->description,
             'start' => $this->arrival->toDateString(),
-            'end' => optional($this->departure)->toDateString(),
+            'end' => optional(optional($this->departure)->addDay())->toDateString(),
             'allDay' => true,
             'url' => route('volunteering.trips.show', $this),
-            'color' => random_color(),
             'resourceId' => optional($this->job)->id
+            //'color' => random_color(),
         ];
     }
 }

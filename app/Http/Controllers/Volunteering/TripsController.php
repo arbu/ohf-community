@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use App\Http\Requests\Volunteering\StoreVolunteerTrip;
 use App\Http\Resources\VolunteerTripResource;
 use App\Http\Resources\VolunteerJobResource;
+use App\Http\Requests\GetCalendarEvents;
 
 class TripsController extends Controller
 {
@@ -92,16 +93,26 @@ class TripsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function calendarEvents()
+    public function calendarEvents(GetCalendarEvents $request)
     {
         $this->authorize('list', VolunteerTrip::class);
         
-        $trips = VolunteerTrip
-            ::where('status', 'approved')
-            ->orderBy('arrival', 'asc')
-            ->get();
+        $qry = VolunteerTrip
+            ::whereIn('status', ['applied', 'approved'])
+            ->orderBy('arrival', 'asc');
 
-        return VolunteerTripResource::collection($trips);
+        if ($request->start != null) {
+            $qry->whereDate('arrival', '>=', new Carbon($request->start, $request->timezone));
+            if ($request->end != null) {
+                $qry->where(function($q) use($request) {
+                    $q->whereDate('departure', '<=', new Carbon($request->end, $request->timezone))
+                        ->orWhereNull('departure');
+                });
+            }
+            $qry->orWhereNull('departure');
+        }
+
+        return VolunteerTripResource::collection($qry->get());
     }
 
     public function calendarResources()
