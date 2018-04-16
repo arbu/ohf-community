@@ -13,7 +13,8 @@
 
 @section('script')
     var locale = '{{ App::getLocale() }}';
-    var listEventsUrl = '{{ route('volunteering.trips.calendar.list') }}';
+    var listEventsUrl = '{{ route('volunteering.trips.calendar.events') }}';
+    var listResourcesUrl = '{{ route('volunteering.trips.calendar.resources') }}';
 @endsection
 
 @section('footer')

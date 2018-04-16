@@ -98,5 +98,35 @@ class VolunteersSeeder extends Seeder
             'departure' => Carbon::now()->subDays(100),
             'status' => 'approved',
         ]);
+
+        $user = User::firstOrCreate([
+            'name' => 'Anna Meier',
+            'email' => 'anna.meier@gmail.com',
+        ]);
+        $volunteer = Volunteer::create([
+            'first_name' => 'Anna',
+            'last_name' => 'Meier',
+            'street' => 'Musterstrasse 1',
+            'zip' => '1234',
+            'city' => 'Musterort',
+            'country' => 'Germany',
+            'nationality' => 'German',
+            'date_of_birth' => '1992-05-02',
+            'gender' => 'femaile',
+            'phone' => '+491234567890',
+            'whatsapp' => '+491234567890',
+            'skype' => 'anna.meier',
+            'professions' => 'Social Worker',
+            'other_skills' => 'Creative Writing',
+            'language_skills' => 'German, French',
+            'passport_no' => 'C987654321',
+            'user_id' => $user->id,
+        ]);
+        // Current trip
+        $volunteer->trips()->create([
+            'arrival' => Carbon::now()->subDays(12),
+            'departure' => Carbon::now()->addDays(5),
+            'status' => 'approved',
+        ]);
     }
 }

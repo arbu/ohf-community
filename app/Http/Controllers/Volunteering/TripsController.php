@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use App\Http\Requests\Volunteering\StoreVolunteerTrip;
 use App\Http\Resources\VolunteerTripResource;
+use App\Http\Resources\VolunteerJobResource;
 
 class TripsController extends Controller
 {
@@ -91,7 +92,7 @@ class TripsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function calendarList()
+    public function calendarEvents()
     {
         $this->authorize('list', VolunteerTrip::class);
         
@@ -102,7 +103,18 @@ class TripsController extends Controller
 
         return VolunteerTripResource::collection($trips);
     }
-    
+
+    public function calendarResources()
+    {
+        $this->authorize('list', VolunteerJob::class);
+        
+        $jobs = VolunteerJob
+            ::orderBy('order', 'asc')
+            ->orderBy('title', 'asc')
+            ->get();
+
+        return VolunteerJobResource::collection($jobs);
+    } 
 
     /**
      * Show the form for creating a new resource.

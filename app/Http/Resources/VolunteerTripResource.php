@@ -18,10 +18,12 @@ class VolunteerTripResource extends JsonResource
             'id' => $this->id,
             'title' => $this->volunteer->name,
             //'description' => $this->description,
-            'start' => $this->arrival->toIso8601String(),
-            'end' => optional($this->departure)->toIso8601String(),
+            'start' => $this->arrival->toDateString(),
+            'end' => optional($this->departure)->toDateString(),
             'allDay' => true,
             'url' => route('volunteering.trips.show', $this),
+            'color' => random_color(),
+            'resourceId' => optional($this->job)->id
         ];
     }
 }

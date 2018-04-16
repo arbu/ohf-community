@@ -25,6 +25,17 @@ if (! function_exists('status_text_color')) {
     }
 }
 
+if (! function_exists('random_color')) {
+    function random_color() {
+        $letters = '0123456789ABCDEF';
+        $color = '#';
+        for ($i = 0; $i < 6; $i++) {
+          $color.= $letters[rand(0, 15)];
+        }
+        return $color;
+    }
+}
+
 if (! function_exists('list_fa_icons')) {
     function list_fa_icons() {
         return [

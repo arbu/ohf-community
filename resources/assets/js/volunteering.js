@@ -7,23 +7,12 @@ $(document).ready(function() {
         themeSystem: 'bootstrap4',
         height: "auto",
         locale: locale,
-        slotLabelFormat: 'H:mm',
-        minTime: '08:00', // TODO  scrollTime: '08:00',
         header: {
             left: 'prev,next today',
             center: 'title',
-            right: 'month,timelineDay'
+            right: ''
         },
-        resourceLabelText: 'Resources',
-        views: {
-            month: {
-                buttonText: 'Month'
-            },
-            timelineDay: {
-                buttonText: 'Timeline'
-            }
-        },
-        defaultView: 'timelineDay',
+        defaultView: 'timelineMonth',
         firstDay: 1,
         weekends: true,
         weekNumbers: true,
@@ -32,7 +21,9 @@ $(document).ready(function() {
         eventLimit: true,
         events: listEventsUrl,
         editable: false,
-        unselectAuto: false,
+        resources: listResourcesUrl,
         schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
+        resourceAreaWidth: '15%',
+        resourceLabelText: 'Jobs',
     });
 });
