@@ -15,3 +15,13 @@
 
 * Implement privilege assignment with expiration date
 * Add audit log wherever user accesses privacy relevant data
+
+## Volunteering
+
+* Job enable/disable
+* Application process
+* Public registration form
+* Volunteer-admin: register/edit/delete
+* Reports
+* Calendar
+
