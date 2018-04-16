@@ -25,14 +25,16 @@ class VolunteeringWidget implements Widget
              'volunteers' => Volunteer
                 ::count(),
              'applications' => VolunteerTrip
-                ::where('status', 'applied')->count(),
+                ::where('status', 'applied')
+                ->count(),
              'active' => VolunteerTrip
                 ::whereDate('arrival', '<=', Carbon::today())
                 ->where('status', 'approved')
                 ->where(function($q){
                     $q->whereDate('departure', '>=', Carbon::today())
                         ->orWhereNull('departure');
-                }),
+                })
+                ->count(),
         ];
     }
 }

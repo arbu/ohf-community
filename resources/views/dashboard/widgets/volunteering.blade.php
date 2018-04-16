@@ -13,6 +13,11 @@
                     'num' => '<strong><a href="' . route('volunteering.trips.index') . '">' . $applications . '</a></strong>',
                 ])<br>
             @endif
+            @if($active > 0)
+                @lang('volunteering.currently_n_active_trips', [
+                    'num' => '<strong><a href="' . route('volunteering.trips.index') . '">' . $active . '</a></strong>',
+                ])<br>
+            @endif
         </p>
     </div>
 </div>

@@ -89,4 +89,5 @@ return [
     'denied_applications' => 'Denied Applications',
     'there_are_n_volunteers_in_our_datanase' => ':num volunteers are registered in the database.',
     'there_are_n_open_applications' => 'There are :num open applications.',
+    'currently_n_active_trips' => 'Currently there are :num active volunteers.',
 ];
