@@ -18,13 +18,13 @@
                         @endif
                     @endisset
                     @isset($volunteer->date_of_birth)
-                            {{ $volunteer->date_of_birth }} ({{ $volunteer->age }}) 
+                        {{ $volunteer->date_of_birth }} ({{ $volunteer->age }})<br>
                     @endisset
                     @isset($volunteer->nationality)
-                            {{ $volunteer->nationality }}
+                        {{ $volunteer->nationality }}<br>
                     @endisset
                     @isset($volunteer->passport_no)
-                            {{ $volunteer->passport_no }}
+                        {{ $volunteer->passport_no }}<br>
                     @endisset
 
                     <hr>
@@ -56,8 +56,8 @@
             @php
                 $qualifications = [
                     __('volunteering.professions') => $volunteer->professions,
-                    __('volunteering.other_skills') => $volunteer->other_skills,
                     __('volunteering.language_skills') => $volunteer->language_skills,
+                    __('volunteering.other_skills') => $volunteer->other_skills,
                     __('volunteering.previous_experience') => $volunteer->previous_experience,
                 ]
             @endphp
@@ -81,6 +81,63 @@
             
         </div>
         <div class="col-sm">
+
+            {{-- Trips --}}
+            <h4 class="mb-3">@lang('volunteering.trips')</h4>
+            @if($volunteer->trips->count() > 0)
+                <div class="table-responsive">
+                    <table class="table table-sm table-bordered table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>@lang('app.status')</th>
+                                <th>@lang('volunteering.arrival')</th>
+                                <th>@lang('volunteering.departure')</th>
+                                <th class="fit d-none d-sm-table-cell text-right">@lang('app.duration')</th>
+                                <th>@lang('volunteering.job')</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($volunteer->trips->sortByDesc('arrival') as $trip)
+                                <tr>
+                                    <td class="{{ status_text_color($trip->status) }}">
+                                        @lang('app.' . $trip->status)
+                                    </td>                                    
+                                    <td>
+                                        <a href="{{ route('volunteering.trips.show', $trip) }}">{{ $trip->arrival->toDateString() }}</a>
+                                        @unless($trip->hasArrived || $trip->status == 'denied')
+                                            <small class="text-muted">{{ trans_choice('volunteering.in_n_days', $trip->arrivesIn, [ 'days' => $trip->arrivesIn ]) }}</small>
+                                        @endunless
+                                    </td>
+                                    <td>
+                                        {{ optional($trip->departure)->toDateString() ?? __('app.unspecified') }}
+                                        @unless($trip->hasDeparted || !$trip->hasArrived || $trip->status == 'denied')
+                                            <small class="text-muted">{{ trans_choice('volunteering.in_n_days', $trip->departsIn, [ 'days' => $trip->departsIn ]) }}</small>
+                                        @endunless
+                                    </td>
+                                    <td class="fit d-none d-sm-table-cell text-right">
+                                        @isset($trip->duration)
+                                            {{ $trip->duration }} {{ trans_choice('app.day_days', $trip->duration) }}
+                                        @else
+                                            @lang('app.unspecified')
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @isset($trip->job)
+                                            <a href="{{ route('volunteering.jobs.show', $trip->job) }}">
+                                                {{ $trip->job->title[App::getLocale()] }}
+                                            </a>
+                                        @else
+                                            @lang('app.unspecified')
+                                        @endisset
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @else
+                <p><em>@lang('volunteering.no_trips_until_now')</em></p>
+            @endif
 
             {{-- Documents --}}
             <h4 class="mb-3">@lang('app.documents')</h4>
@@ -127,10 +184,6 @@
                 @endif
             @endcannot
 
-            {{-- Trips --}}
-            <h4 class="mb-3">@lang('volunteering.trips')</h4>
-            <p><em>@lang('volunteering.no_trips_until_now')</em></p>
-
         </div>
     </div>
 @endsection
@@ -171,5 +224,8 @@
         $('#file').on('change',function(){
             $('#type').focus();
         });
+        @if ($errors->has('file') || $errors->has('type') || $errors->has('remarks'))
+            $('#resourceModal').modal('show');
+        @endif
     });
 @endsection

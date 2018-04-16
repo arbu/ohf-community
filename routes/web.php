@@ -29,11 +29,23 @@ Route::group(['middleware' => 'language'], function () {
         });
 
         //
-        // User management
+        // User and role management
         //
-        Route::put('users/{user}/disable2FA', 'UserController@disable2FA')->name('users.disable2FA');
-        Route::resource('users', 'UserController');
-        Route::resource('roles', 'RoleController');
+        Route::namespace('Admin')->prefix('admin')->group(function(){
+            // Users
+            Route::put('users/{user}/disable2FA', 'UserController@disable2FA')->name('users.disable2FA');
+            Route::resource('users', 'UserController');
+
+            // Roles
+            Route::resource('roles', 'RoleController');
+
+            // Reporting
+            Route::group(['middleware' => ['can:view-usermgmt-reports']], function () {    
+                Route::get('reporting/users/permissions', 'UserController@permissions')->name('users.permissions');
+                Route::get('reporting/users/sensitiveData', 'UserController@sensitiveDataReport')->name('reporting.privacy');
+                Route::get('reporting/roles/permissions', 'RoleController@permissions')->name('roles.permissions');
+            });
+        });
 
         //
         // User profile
@@ -160,12 +172,7 @@ Route::group(['middleware' => 'language'], function () {
         Route::get('/reporting/articles/chart/{article}/transactionsPerMonth', 'Reporting\\ArticleReportingController@transactionsPerMonth')->name('reporting.articles.transactionsPerMonth');
         Route::get('/reporting/articles/chart/{article}/avgTransactionsPerWeekDay', 'Reporting\\ArticleReportingController@avgTransactionsPerWeekDay')->name('reporting.articles.avgTransactionsPerWeekDay');
 
-        // Reporting: User and role management
-        Route::group(['middleware' => ['can:view-usermgmt-reports']], function () {    
-            Route::get('/reporting/users/permissions', 'UserController@permissions')->name('users.permissions');
-            Route::get('/reporting/users/sensitiveData', 'UserController@sensitiveDataReport')->name('reporting.privacy');
-            Route::get('/reporting/roles/permissions', 'RoleController@permissions')->name('roles.permissions');
-        });
+
     });
 
     // Logistics
@@ -192,46 +199,49 @@ Route::group(['middleware' => 'language'], function () {
     });
 
     // Donors and donations
-    Route::group(['middleware' => ['auth']], function () {
-        Route::get('/donations/donors/export', 'Donations\DonorController@export')->name('donors.export');
-        Route::resource('donations/donors', 'Donations\DonorController');
-        Route::get('/donations/donors/{donor}/donation', 'Donations\DonationController@register')->name('donations.create');
-        Route::post('/donations/donors/{donor}/donation', 'Donations\DonationController@store')->name('donations.store');
-        Route::get('/donations/donors/{donor}/donation/{donation}/edit', 'Donations\DonationController@edit')->name('donations.edit');
-        Route::put('/donations/donors/{donor}/donation/{donation}', 'Donations\DonationController@update')->name('donations.update');
-        Route::delete('/donations/donors/{donor}/donation/{donation}', 'Donations\DonationController@destroy')->name('donations.destroy');
-        Route::get('/donations/donors/{donor}/export', 'Donations\DonationController@export')->name('donations.export');
-        Route::get('/donations', 'Donations\DonationController@index')->name('donations.index');
+    Route::namespace('Fundraising')->middleware(['auth'])->prefix('fundraising')->name('fundraising.')->group(function () {
+        // Donors
+        Route::name('donors.export')->get('donors/export', 'DonorController@export');
+        Route::name('donors.vcard')->get('donors/{donor}/vcard', 'DonorController@vcard');
+        Route::resource('donors', 'DonorController');
+
+        // Donations
+        Route::name('donations.index')->get('donations', 'DonationController@index');
+        Route::prefix('donors/{donor}')->group(function () {
+            Route::name('donations.export')->get('export', 'DonationController@export');
+            Route::resource('donations', 'DonationController')->except('show', 'index');
+        });
     });
 
-    // Volunteers
-    Route::group(['middleware' => ['auth']], function () {
+    // Volunteering
+    Route::name('volunteering.')->prefix('volunteering')->middleware(['auth'])->group(function () {
 
-        // Volunteers
-        Route::get('/volunteering/volunteers', 'Volunteering\VolunteersController@index')->name('volunteering.volunteers.index');
-        Route::get('/volunteering/volunteers/export', 'Volunteering\VolunteersController@export')->name('volunteering.volunteers.export');
-        Route::get('/volunteering/volunteers/{volunteer}', 'Volunteering\VolunteersController@show')->name('volunteering.volunteers.show');
-        Route::get('/volunteering/volunteers/{volunteer}/vcard', 'Volunteering\VolunteersController@vcard')->name('volunteering.volunteers.vcard');
+        // Manage volunteers
+        Route::get('volunteers', 'Volunteering\VolunteersController@index')->name('volunteers.index');
+        Route::get('volunteers/export', 'Volunteering\VolunteersController@export')->name('volunteers.export');
+        Route::get('volunteers/filter', 'Volunteering\VolunteersController@filter')->name('volunteers.filter');
+        Route::get('volunteers/{volunteer}', 'Volunteering\VolunteersController@show')->name('volunteers.show');
+        Route::get('volunteers/{volunteer}/vcard', 'Volunteering\VolunteersController@vcard')->name('volunteers.vcard');
 
-        // Volunteers: Documents
-        Route::post('/volunteering/volunteers/{volunteer}/document', 'Volunteering\DocumentsController@store')->name('volunteering.documents.store');
-        Route::get('/volunteering/volunteers/{volunteer}/document/{document}', 'Volunteering\DocumentsController@download')->name('volunteering.documents.download');
-        Route::delete('/volunteering/volunteers/{volunteer}/document/{document}', 'Volunteering\DocumentsController@destroy')->name('volunteering.documents.destroy');
+        // Documents
+        Route::get('volunteers/{volunteer}/document/{document}', 'Volunteering\DocumentsController@download')->name('documents.download');
+        Route::post('volunteers/{volunteer}/document', 'Volunteering\DocumentsController@store')->name('documents.store');
+        Route::delete('volunteers/{volunteer}/document/{document}', 'Volunteering\DocumentsController@destroy')->name('documents.destroy');
 
         // Trips
-        Route::get('/volunteering/trips', 'Volunteering\TripsController@index')->name('volunteering.trips.index');
+        Route::get('trips/archive', 'Volunteering\TripsController@archive')->name('trips.archive');
+        Route::resource('trips', 'Volunteering\TripsController');
 
         // Jobs
-        Route::get('/volunteering/jobs', 'Volunteering\JobsController@index')->name('volunteering.jobs.index');
+        Route::name('jobs')->resource('jobs/categories', 'Volunteering\JobCategoriesController')->except(['show']);
+        Route::resource('jobs', 'Volunteering\JobsController');
+        
+        Route::get('profile', 'Volunteering\ProfileController@show')->name('profile.show');
+        Route::get('profile/edit', 'Volunteering\ProfileController@edit')->name('profile.edit');
+        Route::post('profile/edit', 'Volunteering\ProfileController@update')->name('profile.update');
 
-        // Profile        
-        Route::get('/volunteering/profile', 'Volunteering\ProfileController@show')->name('volunteering.profile.show');
-        Route::get('/volunteering/profile/edit', 'Volunteering\ProfileController@edit')->name('volunteering.profile.edit');
-        Route::post('/volunteering/profile/edit', 'Volunteering\ProfileController@update')->name('volunteering.profile.update');
-
-        // Profile: Trips
-        Route::get('/volunteering/profile/trip/apply', 'Volunteering\ProfileController@createTrip')->name('volunteering.profile.createTrip');
-        Route::post('/volunteering/profile/trip/apply', 'Volunteering\ProfileController@storeTrip')->name('volunteering.profile.storeTrip');
+        Route::get('profile/trip/apply', 'Volunteering\ProfileController@createTrip')->name('profile.createTrip');
+        Route::post('profile/trip/apply', 'Volunteering\ProfileController@storeTrip')->name('profile.storeTrip');
     });
 
     Auth::routes();

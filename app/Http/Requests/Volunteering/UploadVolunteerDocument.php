@@ -27,7 +27,7 @@ class UploadVolunteerDocument extends FormRequest
         return [
             'file' => 'required|file|mimes:jpeg,bmp,png,pdf|max:' . (16 * 1024),
             'type' => 'required|in:' . implode(',', array_keys(VolunteerDocument::types())),
-            'remarkts' => 'nullable|string',
+            'remarks' => 'nullable|string',
         ];
     }
 

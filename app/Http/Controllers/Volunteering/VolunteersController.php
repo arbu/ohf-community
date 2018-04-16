@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Volunteering;
 use App\Http\Controllers\Controller;
 use App\Volunteer;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use JeroenDesloovere\VCard\VCard;
 use Carbon\Carbon;
+use App\Http\Requests\FilterQuery;
 
 class VolunteersController extends Controller
 {
@@ -22,6 +24,35 @@ class VolunteersController extends Controller
                 ->orderBy('last_name', 'asc')
                 ->paginate(),
         ]);
+    }
+
+    /**
+     * Filtered list of volunteers, JSON
+     */
+    public function filter(FilterQuery $request) {
+        $qry = Volunteer::limit(10)
+            ->orderBy('first_name', 'asc')
+            ->orderBy('last_name', 'asc');
+        if (isset($request->query()['query'])) {
+            $qry->where('first_name', 'LIKE', '%' . $request->query()['query'] . '%')
+                ->orWhere('last_name', 'LIKE', '%' . $request->query()['query'] . '%')
+                ->orWhere(DB::raw('CONCAT(first_name, \' \', last_name)'), 'LIKE', '%' . $request->query()['query'] . '%');
+        }
+        $persons = $qry->get()
+            ->map(function($e){ 
+                $val = $e->family_name . ' '. $e->name;
+                if (!empty($e->date_of_birth)) {
+                    $val.= ', ' . $e->date_of_birth;
+                }
+                if (!empty($e->nationality)) {
+                    $val.= ', ' . $e->nationality;
+                }
+                return [
+                    'value' => trim($val),
+                    'data' => $e->id,
+                ]; 
+            });
+        return response()->json(["suggestions" => $persons]);
     }
 
     /**

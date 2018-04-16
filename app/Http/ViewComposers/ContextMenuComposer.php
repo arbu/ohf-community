@@ -10,6 +10,9 @@ use App\Donor;
 use App\Donation;
 use App\CouponType;
 use App\Volunteer;
+use App\VolunteerTrip;
+use App\VolunteerJob;
+use App\VolunteerJobCategory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
@@ -144,7 +147,13 @@ class ContextMenuComposer {
                         'caption' => __('app.permissions'),
                         'icon' => 'key',
                         'authorized' => Gate::allows('view-usermgmt-reports')
-                    ]
+                    ],
+                    'privacy' => [
+                        'url' => route('reporting.privacy'),
+                        'caption' => __('reporting.privacy'),
+                        'icon' => 'eye',
+                        'authorized' => Gate::allows('view-usermgmt-reports')
+                    ],                    
                 ];
             case 'users.create':
                 return [
@@ -580,94 +589,100 @@ class ContextMenuComposer {
             //
             // Donations : Donors
             //
-            case 'donors.index':
+            case 'fundraising.donors.index':
                 return [
                     'action' => [
-                        'url' => route('donors.create'),
+                        'url' => route('fundraising.donors.create'),
                         'caption' => __('app.add'),
                         'icon' => 'plus-circle',
                         'icon_floating' => 'plus',
                         'authorized' => Auth::user()->can('create', Donor::class)
                     ],
                     'export' => [
-                        'url' => route('donors.export'),
+                        'url' => route('fundraising.donors.export'),
                         'caption' => __('app.export'),
                         'icon' => 'download',
                         'authorized' => Auth::user()->can('list', Donor::class)
                     ]
                 ];
-            case 'donors.create':
+            case 'fundraising.donors.create':
                 return [
                     'back' => [
-                        'url' => route('donors.index'),
+                        'url' => route('fundraising.donors.index'),
                         'caption' => __('app.cancel'),
                         'icon' => 'times-circle',
                         'authorized' => Auth::user()->can('create', Donor::class)
                     ]
                 ];
-            case 'donors.show':
+            case 'fundraising.donors.show':
                 $donor = $view->getData()['donor'];
                 return [
                     'action' => [
-                        'url' => route('donors.edit', $donor),
+                        'url' => route('fundraising.donors.edit', $donor),
                         'caption' => __('app.edit'),
                         'icon' => 'pencil',
                         'icon_floating' => 'pencil',
                         'authorized' => Auth::user()->can('update', $donor)
                     ],
                     'export' => [
-                        'url' => route('donations.export', $donor),
+                        'url' => route('fundraising.donations.export', $donor),
                         'caption' => __('app.export'),
                         'icon' => 'download',
                         'authorized' => Auth::user()->can('list', Donation::class) && $donor->donations()->count() > 0
                     ],
+                    'vcard' => [
+                        'url' => route('fundraising.donors.vcard', $donor),
+                        'caption' => __('app.vcard'),
+                        'icon' => 'vcard',
+                        'authorized' => Auth::user()->can('view', $donor)
+                    ],
                     'delete' => [
-                        'url' => route('donors.destroy', $donor),
+                        'url' => route('fundraising.donors.destroy', $donor),
                         'caption' => __('app.delete'),
                         'icon' => 'trash',
                         'authorized' => Auth::user()->can('delete', $donor),
-                        'confirmation' => __('donations.confirm_delete_donor')
+                        'confirmation' => __('fundraising.confirm_delete_donor')
                     ],
                     'back' => [
-                        'url' => route('donors.index'),
+                        'url' => route('fundraising.donors.index'),
                         'caption' => __('app.close'),
                         'icon' => 'times-circle',
                         'authorized' => Auth::user()->can('list', Donor::class)
                     ]
                 ];
-            case 'donors.edit':
+            case 'fundraising.donors.edit':
                 $donor = $view->getData()['donor'];
                 return [
                     'back' => [
-                        'url' => route('donors.show', $donor),
+                        'url' => route('fundraising.donors.show', $donor),
                         'caption' => __('app.cancel'),
                         'icon' => 'times-circle',
                         'authorized' => Auth::user()->can('view', $donor)
                     ]
                 ];
-            case 'donations.create':
+            case 'fundraising.donations.create':
                 $donor = $view->getData()['donor'];
                 return [
                     'back' => [
-                        'url' => route('donors.show', $donor),
+                        'url' => route('fundraising.donors.show', $donor),
                         'caption' => __('app.cancel'),
                         'icon' => 'times-circle',
                         'authorized' => Auth::user()->can('view', $donor)
                     ]
                 ];
-            case 'donations.edit':
+            case 'fundraising.donations.edit':
                 $donor = $view->getData()['donor'];
                 $donation = $view->getData()['donation'];
                 return [
                     'delete' => [
-                        'url' => route('donations.destroy', [$donor, $donation]),
+                        'url' => route('fundraising.donations.destroy', [$donor, $donation]),
                         'caption' => __('app.delete'),
                         'icon' => 'trash',
                         'authorized' => Auth::user()->can('delete', $donation),
-                        'confirmation' => __('donations.confirm_delete_donation')
+                        'confirmation' => __('fundraising.confirm_delete_donation')
                     ],
                     'back' => [
-                        'url' => route('donors.show', $donor),
+                        'url' => route('fundraising.donors.show', $donor),
                         'caption' => __('app.close'),
                         'icon' => 'times-circle',
                         'authorized' => Auth::user()->can('view', $donor)
@@ -743,7 +758,7 @@ class ContextMenuComposer {
                     // ],
                     'volunteers' => [
                         'url' => route('volunteering.volunteers.vcard', $volunteer),
-                        'caption' => __('app.export'),
+                        'caption' => __('app.vcard'),
                         'icon' => 'vcard',
                         'authorized' => Auth::user()->can('view', $volunteer)
                     ],
@@ -766,7 +781,7 @@ class ContextMenuComposer {
                 return [
                     'action' => [
                         'url' => route('volunteering.profile.edit'),
-                        'caption' => 'Edit Profile',
+                        'caption' => __('volunteering.edit_profile'),
                         'icon' => 'pencil',
                         'icon_floating' => 'pencil',
                         'authorized' => true,
@@ -775,8 +790,8 @@ class ContextMenuComposer {
             case 'volunteering.profile.edit':
                 return [
                     'back' => [
-                        'url' => route('volunteering.profile.show'),
-                        'caption' => 'Cancel',
+                        'url' => route(Auth::user()->volunteer == null ? 'home' : 'volunteering.profile.show'),
+                        'caption' => __('app.cancel'),
                         'icon' => 'times-circle',
                         'authorized' => true,
                     ]
@@ -785,11 +800,188 @@ class ContextMenuComposer {
                 return [
                     'back' => [
                         'url' => route('volunteering.profile.show'),
-                        'caption' => 'Cancel',
+                        'caption' => __('app.cancel'),
                         'icon' => 'times-circle',
                         'authorized' => true,
                     ]
                 ];
+
+            // Trips
+            case 'volunteering.trips.index':
+                return [
+                    'action' => [
+                        'url' => route('volunteering.trips.create'),
+                        'caption' => __('app.register'),
+                        'icon' => 'plus-circle',
+                        'icon_floating' => 'plus',
+                        'authorized' => Auth::user()->can('create', VolunteerTrip::class) && Volunteer::count() > 0
+                    ],
+                    'archive' => [
+                        'url' => route('volunteering.trips.archive'),
+                        'caption' => __('app.archive'),
+                        'icon' => 'archive',
+                        'authorized' => Auth::user()->can('list', VolunteerTrip::class)
+                    ],
+                ];
+            case 'volunteering.trips.create':
+                return [
+                    'back' => [
+                        'url' => route('volunteering.trips.index'),
+                        'caption' => __('app.cancel'),
+                        'icon' => 'times-circle',
+                        'authorized' => Auth::user()->can('list', VolunteerTrip::class)
+                    ]
+                ];
+            case 'volunteering.trips.archive':
+                return [
+                    'back' => [
+                        'url' => route('volunteering.trips.index'),
+                        'caption' => __('app.cancel'),
+                        'icon' => 'times-circle',
+                        'authorized' => Auth::user()->can('list', VolunteerTrip::class)
+                    ]
+                ];
+            case 'volunteering.trips.show':
+                $trip = $view->getData()['trip'];
+                return [
+                    'action' => [
+                        'url' => route('volunteering.trips.edit', $trip),
+                        'caption' => __('app.edit'),
+                        'icon' => 'pencil',
+                        'icon_floating' => 'pencil',
+                        'authorized' => Auth::user()->can('update', $trip)
+                    ],
+                    'delete' => [
+                        'url' => route('volunteering.trips.destroy', $trip),
+                        'caption' => __('app.delete'),
+                        'icon' => 'trash',
+                        'authorized' => Auth::user()->can('delete', $trip),
+                        'confirmation' => __('volunteering.confirm_delete_trip')
+                    ],
+                    'back' => [
+                        'url' => route('volunteering.trips.index'),
+                        'caption' => __('app.close'),
+                        'icon' => 'times-circle',
+                        'authorized' => Auth::user()->can('list', VolunteerTrip::class)
+                    ]
+                ];
+            case 'volunteering.trips.edit':
+                $trip = $view->getData()['trip'];
+                return [
+                    'back' => [
+                        'url' => route('volunteering.trips.show', $trip),
+                        'caption' => __('app.cancel'),
+                        'icon' => 'times-circle',
+                        'authorized' => Auth::user()->can('view', $trip)
+                    ]
+                ];
+
+            //
+            // Volunteer Jobs
+            // 
+            case 'volunteering.jobs.index':
+                return [
+                    'action' => [
+                        'url' => route('volunteering.jobs.create'),
+                        'caption' => __('app.add'),
+                        'icon' => 'plus-circle',
+                        'icon_floating' => 'plus',
+                        'authorized' => Auth::user()->can('create', VolunteerJob::class)
+                    ],
+                    'categories' => [
+                        'url' => route('volunteering.jobs.categories.index'),
+                        'caption' => __('app.categories'),
+                        'icon' => 'folder-open-o',
+                        'authorized' => Auth::user()->can('list', VolunteerJobCategory::class)
+                    ],
+                ];
+            case 'volunteering.jobs.create':
+                return [
+                    'back' => [
+                        'url' => route('volunteering.jobs.index'),
+                        'caption' => __('app.cancel'),
+                        'icon' => 'times-circle',
+                        'authorized' => Auth::user()->can('list', VolunteerJob::class)
+                    ]
+                ];
+            case 'volunteering.jobs.show':
+                $job = $view->getData()['job'];
+                return [
+                    'action' => [
+                        'url' => route('volunteering.jobs.edit', $job),
+                        'caption' => __('app.edit'),
+                        'icon' => 'pencil',
+                        'icon_floating' => 'pencil',
+                        'authorized' => Auth::user()->can('update', $job)
+                    ],
+                    'delete' => [
+                        'url' => route('volunteering.jobs.destroy', $job),
+                        'caption' => __('app.delete'),
+                        'icon' => 'trash',
+                        'authorized' => Auth::user()->can('delete', $job),
+                        'confirmation' => __('volunteering.confirm_delete_job')
+                    ],
+                    'back' => [
+                        'url' => route('volunteering.jobs.index'),
+                        'caption' => __('app.close'),
+                        'icon' => 'times-circle',
+                        'authorized' => Auth::user()->can('list', VolunteerJob::class)
+                    ]
+                ];
+            case 'volunteering.jobs.edit':
+                $job = $view->getData()['job'];
+                return [
+                    'back' => [
+                        'url' => route('volunteering.jobs.show', $job),
+                        'caption' => __('app.cancel'),
+                        'icon' => 'times-circle',
+                        'authorized' => Auth::user()->can('view', $job)
+                    ]
+                ];
+
+            // Categories
+            case 'volunteering.jobs.categories.index':
+                return [
+                    'action' => [
+                        'url' => route('volunteering.jobs.categories.create'),
+                        'caption' => __('app.add'),
+                        'icon' => 'plus-circle',
+                        'icon_floating' => 'plus',
+                        'authorized' => Auth::user()->can('create', VolunteerJobCategory::class)
+                    ],
+                    'back' => [
+                        'url' => route('volunteering.jobs.index'),
+                        'caption' => __('app.close'),
+                        'icon' => 'times-circle',
+                        'authorized' => Auth::user()->can('list', VolunteerJob::class)
+                    ],
+                ];
+            case 'volunteering.jobs.categories.create':
+                return [
+                    'back' => [
+                        'url' => route('volunteering.jobs.categories.index'),
+                        'caption' => __('app.cancel'),
+                        'icon' => 'times-circle',
+                        'authorized' => Auth::user()->can('list', VolunteerJobCategory::class)
+                    ]
+                ];
+            case 'volunteering.jobs.categories.edit':
+                $category = $view->getData()['category'];
+                return [
+                    'delete' => [
+                        'url' => route('volunteering.jobs.categories.destroy', $category),
+                        'caption' => __('app.delete'),
+                        'icon' => 'trash',
+                        'authorized' => Auth::user()->can('delete', $category),
+                        'confirmation' => __('volunteering.confirm_delete_category')
+                    ],
+                    'back' => [
+                        'url' => route('volunteering.jobs.categories.index'),
+                        'caption' => __('app.cancel'),
+                        'icon' => 'times-circle',
+                        'authorized' => Auth::user()->can('view', $category)
+                    ]
+                ];    
         }
         return [];
     }

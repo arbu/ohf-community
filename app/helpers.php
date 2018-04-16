@@ -6,6 +6,25 @@ if (! function_exists('form_id_string')) {
     }
 }
 
+if (! function_exists('status_text_color')) {
+    function status_text_color($status) {
+        switch($status) {
+            case 'completed':
+                return 'text-muted';
+            case 'denied':
+                return 'text-danger';
+            case 'ongoing':
+                return 'text-success';
+            case 'approved':
+                return 'text-info';
+            case 'applied':
+                return 'text-warning';
+            default:
+                return '';
+        }
+    }
+}
+
 if (! function_exists('list_fa_icons')) {
     function list_fa_icons() {
         return [

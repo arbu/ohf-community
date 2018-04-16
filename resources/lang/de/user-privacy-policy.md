@@ -20,7 +20,7 @@ Diese Anwendung verwendet Cookies um die Benutzererfahrung zu verbsessern (z.B. 
 
 Aktivitäten in Zusammenhang mit deinem Benutzerprofil (z.B. Login, Passwort- oder Namensänderng) werden zu Prüfungszwecken geloggt. Logdateien können bis zu einem Jahr aufbewahrt werden.
 
-Du kannst deinen Account jederzeit löschen. Dies wird sobald wie möglich alle deine personenbezogene Daten aus unserer Datenbank entfernen.
+Du kannst deinen Account jederzeit löschen. Dies wird sobald wie möglich alle deine personenbezogenen Daten aus unserer Datenbank entfernen.
 
 Unsere Datenbank wird regelmässig gesichert, und die Sicherungen werden eine Woche aufbewahrt, um im Falle eines Ausfalls die Applikation wiederherstellen zu können.
 

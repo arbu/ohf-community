@@ -1,8 +1,8 @@
 <div class="card mb-4">
     <div class="card-header">
-        Volunteering
+        @lang('volunteering.volunteering')
     </div>
     <div class="card-body">
-        <a href="{{ route('volunteering.profile.edit')  }}" class="btn btn-primary btn-block">Apply as a volunteer</a>
+        <a href="{{ route('volunteering.profile.edit')  }}" class="btn btn-primary btn-block">@lang('volunteering.apply_as_a_volunteer')</a>
     </div>
 </div>

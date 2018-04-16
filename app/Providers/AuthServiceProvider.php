@@ -19,10 +19,13 @@ class AuthServiceProvider extends ServiceProvider
         'App\Task' => 'App\Policies\TaskPolicy',
         'App\CalendarEvent' => 'App\Policies\CalendarEventPolicy',
         \App\CalendarResource::class => \App\Policies\Calendar\ResourcePolicy::class,
-        \App\Donor::class => \App\Policies\Donations\DonorPolicy::class,
-        \App\Donation::class => \App\Policies\Donations\DonationPolicy::class,
+        \App\Donor::class => \App\Policies\Fundraising\DonorPolicy::class,
+        \App\Donation::class => \App\Policies\Fundraising\DonationPolicy::class,
         \App\CouponType::class => \App\Policies\People\Bank\CouponTypePolicy::class,
-        \App\Volunteer::class => \App\Policies\VolunteerPolicy::class,
+        \App\Volunteer::class => \App\Policies\Volunteering\VolunteerPolicy::class,
+        \App\VolunteerJob::class => \App\Policies\Volunteering\VolunteerJobPolicy::class,
+        \App\VolunteerJobCategory::class => \App\Policies\Volunteering\VolunteerJobCategoryPolicy::class,
+        \App\VolunteerTrip::class => \App\Policies\Volunteering\VolunteerTripPolicy::class,
     ];
 
     /**

@@ -57,9 +57,9 @@ class NavigationComposer {
                 ],
                 [
                     'route' => 'volunteering.volunteers.index',
-                    'caption' => __('volunteering.volunteers'),
+                    'caption' => __('volunteering.volunteer_coordination'),
                     'icon' => 'heart',
-                    'active' => 'volunteers*',
+                    'active' => 'volunteering*',
                     'authorized' => Auth::user()->can('list', Volunteer::class)
                 ],                
                 [
@@ -70,10 +70,10 @@ class NavigationComposer {
                     'authorized' => Gate::allows('use-logistics')
                 ],
                 [
-                    'route' => 'donors.index',
-                    'caption' => __('donations.donations'),
+                    'route' => 'fundraising.donors.index',
+                    'caption' => __('fundraising.donation_management'),
                     'icon' => 'handshake-o',
-                    'active' => 'donations/donors*',
+                    'active' => 'fundraising/*',
                     'authorized' => Auth::user()->can('list', Donor::class),
                 ],
                 [
@@ -102,7 +102,7 @@ class NavigationComposer {
                     'route' => 'users.index',
                     'caption' => __('app.users_and_roles'),
                     'icon' => 'users',
-                    'active' => ['users*', 'roles*'],
+                    'active' => ['admin/users*', 'admin/roles*'],
                     'authorized' => Auth::user()->can('list', User::class) || Auth::user()->can('list', Role::class)
                 ],
                 [

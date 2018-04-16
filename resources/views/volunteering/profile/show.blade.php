@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'My Volunteer Profile')
+@section('title', __('volunteering.my_volunteer_profile'))
 
 @section('content')
 
@@ -10,7 +10,7 @@
         <div class="card-body">
             <div class="row mb-3">
                 <div class="col-sm-2 d-none d-md-block">Person</div>
-                <div class="col-sm">{{ $volunteer->user->name }}, {{ $volunteer->nationality }}, {{ $volunteer->birthdate }}, {{ $volunteer->gender }}</div>
+                <div class="col-sm">{{ $volunteer->user->name }}, {{ $volunteer->nationality }}, {{ $volunteer->date_of_birth }}, {{ $volunteer->gender }}</div>
             </div>
             <div class="row mb-3">
                 <div class="col-sm-2 d-none d-md-block">Address</div>
@@ -57,8 +57,8 @@
                     <tbody>
                         @foreach( $volunteer->trips()->orderBy('arrival', 'asc')->get() as $trip )
                             <tr>
-                                <td>{{ $trip->arrival }}</td>
-                                <td>{{ $trip->departure }}</td>
+                                <td>{{ $trip->arrival->toDateString() }}</td>
+                                <td>{{ optional($trip->departure)->toDateString() }}</td>
                                 <td>{{ $trip->duration() }} days</td>
                             </tr>
                         @endforeach

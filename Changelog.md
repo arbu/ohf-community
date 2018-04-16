@@ -1,9 +1,21 @@
 # Changelog
 
+## 1.13.10
+
+* UI improvements in user and role manager
+* Updated libraries
+* Added correspondence language to donors
+
+## 1.13.9
+
+* Bank search shows family relations
+
 ## 1.13.8
 
 * Fixed coupon return transactions using audit model
 * Removed unnecessary user reference in coupon handouts and returns (since we now have audits)
+* Improved file upload control
+* Added search for family members in bank
 
 ## 1.13.7
 

@@ -3,7 +3,7 @@
         [
             'url' => route('volunteering.volunteers.index'),
             'label' => __('volunteering.volunteers'),
-            'icon' => 'user',
+            'icon' => 'address-book-o',
             'active' => function($currentRouteName) {
                 return $currentRouteName == 'volunteering.volunteers.index';
             },
@@ -21,7 +21,7 @@
         [
             'url' => route('volunteering.jobs.index'),
             'label' => __('volunteering.jobs'),
-            'icon' => 'list',
+            'icon' => 'wrench',
             'active' => function($currentRouteName) {
                 return $currentRouteName == 'volunteering.jobs.index';
             },

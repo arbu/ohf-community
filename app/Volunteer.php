@@ -31,7 +31,7 @@ class Volunteer extends Model
 	
 	public function trips()
     {
-        return $this->hasMany('App\Trip');
+        return $this->hasMany('App\VolunteerTrip');
     }
 
 	public function documents()

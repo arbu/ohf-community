@@ -15,7 +15,7 @@
             <th>@lang('app.phone')</th>
             <th>@lang('volunteering.whatsapp')</th>
             <th>@lang('volunteering.skype')</th>
-            <th>@lang('volunteering.passort_no')</th>
+            <th>@lang('volunteering.passport_no')</th>
             <th>@lang('volunteering.professions')</th>
             <th>@lang('volunteering.driver')</th>
         </tr>
