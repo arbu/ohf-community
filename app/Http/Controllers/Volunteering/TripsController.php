@@ -9,9 +9,14 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use App\Http\Requests\Volunteering\StoreVolunteerTrip;
+use App\Http\Resources\VolunteerTripResource;
 
 class TripsController extends Controller
 {
+    public function __construct() {
+        VolunteerTripResource::withoutWrapping();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -68,6 +73,36 @@ class TripsController extends Controller
             ]
         ]);
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function calendar()
+    {
+        $this->authorize('list', VolunteerTrip::class);
+
+        return view('volunteering.trips.calendar');
+    }
+    
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function calendarList()
+    {
+        $this->authorize('list', VolunteerTrip::class);
+        
+        $trips = VolunteerTrip
+            ::where('status', 'approved')
+            ->orderBy('arrival', 'asc')
+            ->get();
+
+        return VolunteerTripResource::collection($trips);
+    }
+    
 
     /**
      * Show the form for creating a new resource.

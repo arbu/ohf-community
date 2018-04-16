@@ -3,6 +3,7 @@
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
     "/js/people.js": "/js/people.js",
+    "/js/volunteering.js": "/js/volunteering.js",
     "/js/calendar.js": "/js/calendar.js",
     "/css/fullcalendar.min.css": "/css/fullcalendar.min.css",
     "/css/scheduler.min.css": "/css/scheduler.min.css",

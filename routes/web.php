@@ -230,6 +230,8 @@ Route::group(['middleware' => 'language'], function () {
 
         // Trips
         Route::get('trips/archive', 'Volunteering\TripsController@archive')->name('trips.archive');
+        Route::get('trips/calendar', 'Volunteering\TripsController@calendar')->name('trips.calendar');
+        Route::get('trips/calendar/list', 'Volunteering\TripsController@calendarList')->name('trips.calendar.list');
         Route::resource('trips', 'Volunteering\TripsController');
 
         // Jobs

@@ -816,6 +816,12 @@ class ContextMenuComposer {
                         'icon_floating' => 'plus',
                         'authorized' => Auth::user()->can('create', VolunteerTrip::class) && Volunteer::count() > 0
                     ],
+                    'calendar' => [
+                        'url' => route('volunteering.trips.calendar'),
+                        'caption' => __('app.calendar'),
+                        'icon' => 'calendar',
+                        'authorized' => Auth::user()->can('list', VolunteerTrip::class)
+                    ],
                     'archive' => [
                         'url' => route('volunteering.trips.archive'),
                         'caption' => __('app.archive'),
@@ -833,10 +839,11 @@ class ContextMenuComposer {
                     ]
                 ];
             case 'volunteering.trips.archive':
+            case 'volunteering.trips.calendar':
                 return [
                     'back' => [
                         'url' => route('volunteering.trips.index'),
-                        'caption' => __('app.cancel'),
+                        'caption' => __('app.close'),
                         'icon' => 'times-circle',
                         'authorized' => Auth::user()->can('list', VolunteerTrip::class)
                     ]

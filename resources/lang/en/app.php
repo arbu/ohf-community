@@ -171,4 +171,5 @@ return [
     'ongoing' => 'ongoing',
     'status' => 'Status',
     'archive' => 'Archive',
+    'calendar' => 'Calendar',
  ];
