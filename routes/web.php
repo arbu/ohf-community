@@ -214,8 +214,8 @@ Route::group(['middleware' => 'language'], function () {
         Route::get('/volunteering/volunteers/{volunteer}/vcard', 'Volunteering\VolunteersController@vcard')->name('volunteering.volunteers.vcard');
 
         // Volunteers: Documents
-        Route::get('/volunteering/volunteers/{volunteer}/document/{document}', 'Volunteering\DocumentsController@download')->name('volunteering.documents.download');
         Route::post('/volunteering/volunteers/{volunteer}/document', 'Volunteering\DocumentsController@store')->name('volunteering.documents.store');
+        Route::get('/volunteering/volunteers/{volunteer}/document/{document}', 'Volunteering\DocumentsController@download')->name('volunteering.documents.download');
         Route::delete('/volunteering/volunteers/{volunteer}/document/{document}', 'Volunteering\DocumentsController@destroy')->name('volunteering.documents.destroy');
 
         // Trips
