@@ -87,4 +87,6 @@ return [
     'in_n_days' => 'morgen|in :days Tagen',
     'applications' => 'Bewerbungen',
     'denied_applications' => 'Abgelehnte Bewerbungen',
+    'there_are_n_volunteers_in_our_datanase' => 'Es sind :num Volunteers in der Datenbank registriert.',
+    'there_are_n_open_applications' => 'Es gibt :num offene Bewerbungen.',
 ];
