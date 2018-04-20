@@ -18,7 +18,6 @@
 
 ## Volunteering
 
-* Job enable/disable
 * Application process
 * Public registration form
 * Volunteer-admin: register/edit/delete
