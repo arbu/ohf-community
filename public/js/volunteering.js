@@ -111,7 +111,7 @@ $(document).ready(function () {
         editable: false,
         resources: listResourcesUrl,
         schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
-        resourceAreaWidth: '15%',
+        //resourceAreaWidth: '15%',
         resourceLabelText: resourceLabel
     });
 });

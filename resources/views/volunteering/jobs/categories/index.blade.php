@@ -16,10 +16,7 @@
                 @foreach ($categories as $category)
                     <tr>
                         <td>
-                            @foreach (language()->allowed() as $code => $name)
-                                <small class="text-muted d-block d-sm-inline">{{ $name }}:</small> 
-                                <a href="{{ route('volunteering.jobs.categories.edit', $category) }}">{{ $category->title[$code] ?? '-' }}</a><br>
-                            @endforeach
+                            <a href="{{ route('volunteering.jobs.categories.edit', $category) }}">{{ $category->title[App::getLocale()] ?? '-' }}</a><br>
                         </td>
                         <td class="d-none d-sm-table-cell fit">{{ $category->order }}</td>
                     </tr>

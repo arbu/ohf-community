@@ -16,6 +16,10 @@
                     <div class="col-md-2">
                         {{ Form::bsNumber('order', \App\VolunteerJob::count(), [ 'required', 'min' => 0 ], __('app.order')) }}
                     </div>
+                    <div class="col-md-auto">
+                        <label></label>
+                        <p>{{ Form::bsCheckbox('enabled', 1, true, __('app.enabled')) }}</p>
+                    </div>
                 </div>
             </div>
         </div>

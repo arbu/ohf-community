@@ -11,23 +11,20 @@
                     <th>@lang('app.title')</th>
                     <th>@lang('app.category')</th>
                     <th class="d-none d-sm-table-cell fit">@lang('app.order')</th>
+                    <th class="d-none d-sm-table-cell fit">@lang('app.enabled')</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($jobs as $job)
                     <tr>
                         <td>
-                            @foreach (language()->allowed() as $code => $name)
-                                <small class="text-muted d-block d-sm-inline">{{ $name }}:</small> 
-                                <a href="{{ route('volunteering.jobs.show', $job) }}">{{ $job->title[$code] ?? '-' }}</a><br>
-                            @endforeach
+                            <a href="{{ route('volunteering.jobs.show', $job) }}">{{ $job->title[App::getLocale()] }}</a><br>
                         </td>
                         <td>
-                            @foreach (language()->allowed() as $code => $name)
-                                <small class="text-muted d-block d-sm-inline">{{ $name }}:</small> {{ $job->category->title[$code] ?? '-' }}<br>
-                            @endforeach
+                            {{ $job->category->title[App::getLocale()] }}<br>
                         </td>
                         <td class="d-none d-sm-table-cell fit">{{ $job->order }}</td>
+                        <td class="d-none d-sm-table-cell fit">{{ $job->enabled ? __('app.yes') : __('app.no') }}</td>
                     </tr>
                 @endforeach
             </tbody>

@@ -66,7 +66,6 @@ class VolunteeringSeeder extends Seeder
                 'de' => 'mindestalter 20 Jahre'
             ],
             'order' => 0,
-
         ]);
         
     }

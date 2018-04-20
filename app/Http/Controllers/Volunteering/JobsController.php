@@ -57,6 +57,7 @@ class JobsController extends Controller
         $job->minimum_stay = $request->minimum_stay;
         $job->requirements = $request->requirements;
         $job->order = $request->order;
+        $job->enabled = isset($request->enabled);
         $job->category()->associate(VolunteerJobCategory::findOrFail($request->category));
         $job->save();
 
@@ -112,6 +113,7 @@ class JobsController extends Controller
         $job->minimum_stay = $request->minimum_stay;
         $job->requirements = $request->requirements;
         $job->order = $request->order;
+        $job->enabled = isset($request->enabled);
         $job->category()->dissociate();
         $job->category()->associate(VolunteerJobCategory::findOrFail($request->category));
         $job->save();

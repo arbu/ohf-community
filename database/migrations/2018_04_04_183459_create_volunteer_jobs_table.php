@@ -27,6 +27,7 @@ class CreateVolunteerJobsTable extends Migration
             $table->text('available_dates');
             $table->text('minimum_stay');
             $table->text('requirements');
+            $table->boolean('enabled')->default(true);
             $table->unsignedInteger('order')->default(0);
             $table->timestamps();
             $table->foreign('category_id')->references('id')->on('volunteer_job_categories')->onDelete('cascade')->onUpdate('cascade');

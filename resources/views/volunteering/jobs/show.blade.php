@@ -63,6 +63,14 @@
                 </div>
             </div>
         </li>
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-sm-2"><strong>@lang('app.enabled')</strong></div>
+                <div class="col-sm">
+                    <div class="mt-3 mt-sm-0">{{ $job->enabled ? __('app.yes') : __('app.no') }}</div>
+                </div>
+            </div>
+        </li>
     </ul>
 
 @endsection

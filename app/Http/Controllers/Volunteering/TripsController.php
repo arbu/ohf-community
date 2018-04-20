@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Volunteering;
 
 use App\VolunteerTrip;
 use App\VolunteerJob;
+use App\VolunteerJobCategory;
 use App\Volunteer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -27,7 +28,8 @@ class TripsController extends Controller
                 'applications' => VolunteerTrip
                     ::where('status', 'applied')
                     ->orderBy('arrival', 'asc')
-                    ->get(),
+                    ->get()
+                    ->all(),
                 'ongoing_trips' => VolunteerTrip
                     ::whereDate('arrival', '<=', Carbon::today())
                     ->where('status', 'approved')
@@ -36,12 +38,14 @@ class TripsController extends Controller
                             ->orWhereNull('departure');
                     })
                     ->orderBy('departure', 'asc')
-                    ->get(),
+                    ->get()
+                    ->all(),
                 'upcoming_trips' => VolunteerTrip
                     ::whereDate('arrival', '>', Carbon::today())
                     ->where('status', 'approved')
                     ->orderBy('arrival', 'asc')
-                    ->get(),
+                    ->get()
+                    ->all(),
             ]
         ]);
     }
@@ -61,11 +65,13 @@ class TripsController extends Controller
                     ::whereDate('departure', '<', Carbon::today())
                     ->where('status', 'approved')
                     ->orderBy('departure', 'desc')
-                    ->get(),
+                    ->get()
+                    ->all(),
                 'denied_applications' => VolunteerTrip
                     ::where('status', 'denied')
                     ->orderBy('arrival', 'asc')
-                    ->get(),
+                    ->get()
+                    ->all(),
             ]
         ]);
     }
@@ -147,8 +153,7 @@ class TripsController extends Controller
     {
         $this->authorize('list', VolunteerJob::class);
 
-        return response()->json(
-            VolunteerJob
+        $categories = VolunteerJobCategory
             ::orderBy('order', 'asc')
             ->orderBy('title', 'asc')
             ->get()
@@ -156,9 +161,26 @@ class TripsController extends Controller
                 return [
                     'id' => $e->id,
                     'title' => $e->title[\App::getLocale()],
-                    'parentId' => null,
+                    'children' => $e->jobs()
+                        ->where('enabled', true)
+                        ->orderBy('order', 'asc')
+                        ->orderBy('title', 'asc')
+                        ->get()
+                        ->map(function($e){
+                            return [
+                                'id' => $e->id,
+                                'title' => $e->title[\App::getLocale()],
+                            ];
+                        }),
                 ];
             })
+            ->filter(function($e){
+                return count($e['children']) > 0;
+            })
+            ->values();
+
+        return response()->json(
+            $categories
         );
     } 
 
@@ -270,13 +292,23 @@ class TripsController extends Controller
     }
 
     private static function getJobs() {
-        return VolunteerJob
+        return VolunteerJobCategory
             ::orderBy('order', 'asc')
             ->orderBy('title', 'asc')
             ->get()
-            ->mapWithKeys(function($e) {
-                $lang = \App::getLocale();
-                return [ $e->id => $e->title[$lang] ?? implode(' / ', $e->title) ];
+            ->mapWithKeys(function($c) {
+                return [$c->title[\App::getLocale()] => $c->jobs()
+                    ->where('enabled', true)
+                    ->orderBy('order', 'asc')
+                    ->orderBy('title', 'asc')
+                    ->get()
+                    ->mapWithKeys(function($e) {
+                        return [ $e->id => $e->title[\App::getLocale()] ?? implode(' / ', $e->title) ];
+                    })
+                ];
+            })
+            ->filter(function($e){
+                return $e->isNotEmpty();
             })
             ->toArray();        
     }
