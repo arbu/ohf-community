@@ -112,7 +112,7 @@ class VolunteersSeeder extends Seeder
             'country' => 'Germany',
             'nationality' => 'German',
             'date_of_birth' => '1992-05-02',
-            'gender' => 'femaile',
+            'gender' => 'female',
             'phone' => '+491234567890',
             'whatsapp' => '+491234567890',
             'skype' => 'anna.meier',
