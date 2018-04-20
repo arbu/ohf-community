@@ -172,4 +172,6 @@ return [
     'status' => 'Status',
     'archive' => 'Archive',
     'calendar' => 'Calendar',
+    'week' => 'Week',
+    'month' => 'Month',
  ];

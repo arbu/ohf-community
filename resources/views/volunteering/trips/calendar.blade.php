@@ -17,6 +17,8 @@
     var listResourcesUrl = '{{ route('volunteering.trips.calendar.resources') }}';
     var resourceLabel = '@lang('volunteering.jobs')';
     var todayLabel = '@lang('app.today')';
+    var weekLabel = '@lang('app.week')';
+    var monthLabel = '@lang('app.month')';
 @endsection
 
 @section('footer')

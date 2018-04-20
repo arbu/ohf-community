@@ -9,16 +9,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use App\Http\Requests\Volunteering\StoreVolunteerTrip;
-use App\Http\Resources\VolunteerTripResource;
-use App\Http\Resources\VolunteerJobResource;
 use App\Http\Requests\GetCalendarEvents;
 
 class TripsController extends Controller
 {
-    public function __construct() {
-        VolunteerTripResource::withoutWrapping();
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -100,31 +94,80 @@ class TripsController extends Controller
         $qry = VolunteerTrip
             ::whereIn('status', ['applied', 'approved'])
             ->orderBy('arrival', 'asc');
-
+        
         if ($request->start != null) {
-            $qry->whereDate('arrival', '>=', new Carbon($request->start, $request->timezone));
-            if ($request->end != null) {
-                $qry->where(function($q) use($request) {
-                    $q->whereDate('departure', '<=', new Carbon($request->end, $request->timezone))
-                        ->orWhereNull('departure');
-                });
-            }
-            $qry->orWhereNull('departure');
+            $qry->where(function($q) use($request) {
+                $q->whereDate('departure', '>=', new Carbon($request->start, $request->timezone))
+                    ->orWhereNull('departure');
+            });
         }
 
-        return VolunteerTripResource::collection($qry->get());
+        // if ($request->start != null) {
+        //     $qry->whereDate('arrival', '>=', new Carbon($request->start, $request->timezone));
+        //     $qry->whereDate('arrival', '<=', new Carbon($request->end, $request->timezone));
+        //     if ($request->end != null) {
+        //         $qry->where(function($q) use($request) {
+        //             $q->whereDate('departure', '<=', new Carbon($request->end, $request->timezone))
+        //                 ->orWhereNull('departure');
+        //         });
+        //     }
+        // }
+
+        return response()->json(
+            $qry->get()
+                ->map(function($e) use($request) {
+                    if ($request->end != null && $e->departure == null) {
+                        $end = (new Carbon($request->end, $request->timezone));
+                    } else {
+                        $end = optional($e->departure)->addDay();
+                    }
+            
+                    $color = null;
+                    if ($e->status == 'ongoing') {
+                        $color = '#28a745';
+                    } else if ($e->status == 'completed') {
+                        $color = '#6c757d';
+                    } else if ($e->status == 'approved') {
+                        $color = '#17a2b8';
+                    } else if ($e->status == 'applied') {
+                        $color = '#ffc107';
+                    }
+                    $title = $e->volunteer->name;
+                    if ($e->duration != null) {
+                        $title.= ' (' . $e->duration . ' ' . trans_choice('app.day_days', $e->duration) . ')';
+                    }
+            
+                    return [
+                        'id' => $e->id,
+                        'title' => $title,
+                        'start' => $e->arrival->toDateString(),
+                        'end' => optional($end)->toDateString(),
+                        'allDay' => true,
+                        'url' => route('volunteering.trips.show', $e),
+                        'resourceId' => optional($e->job)->id,
+                        'color' => $color,
+                    ];
+                })
+        );
     }
 
     public function calendarResources()
     {
         $this->authorize('list', VolunteerJob::class);
-        
-        $jobs = VolunteerJob
+
+        return response()->json(
+            VolunteerJob
             ::orderBy('order', 'asc')
             ->orderBy('title', 'asc')
-            ->get();
-
-        return VolunteerJobResource::collection($jobs);
+            ->get()
+            ->map(function($e){
+                return [
+                    'id' => $e->id,
+                    'title' => $e->title[\App::getLocale()],
+                    'parentId' => null,
+                ];
+            })
+        );
     } 
 
     /**
