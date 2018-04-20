@@ -101,17 +101,9 @@ class TripsController extends Controller
                     ->orWhereNull('departure');
             });
         }
-
-        // if ($request->start != null) {
-        //     $qry->whereDate('arrival', '>=', new Carbon($request->start, $request->timezone));
-        //     $qry->whereDate('arrival', '<=', new Carbon($request->end, $request->timezone));
-        //     if ($request->end != null) {
-        //         $qry->where(function($q) use($request) {
-        //             $q->whereDate('departure', '<=', new Carbon($request->end, $request->timezone))
-        //                 ->orWhereNull('departure');
-        //         });
-        //     }
-        // }
+        if ($request->end != null) {
+            $qry->whereDate('arrival', '<=', new Carbon($request->end, $request->timezone));
+        }
 
         return response()->json(
             $qry->get()
