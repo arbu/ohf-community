@@ -175,4 +175,5 @@ return [
     'week' => 'Woche',
     'month' => 'Monat',
     'yyyy_mm_dd' => 'JJJJ-MM-TT',
+    'year_month_day' => 'Jahr-Monat-Tag',
 ];

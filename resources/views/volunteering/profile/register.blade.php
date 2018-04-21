@@ -30,7 +30,7 @@
                         {{ Form::bsText('passport_no', null, [ ], __('volunteering.passport_no'), __('volunteering.according_to_your_passport_id_card')) }}
                     </div>
                     <div class="col-md">
-                        {{ Form::bsStringDate('date_of_birth', null, [ 'required' ], __('app.date_of_birth')) }}
+                        {{ Form::bsDate('date_of_birth', null, [ 'required', 'max' => Carbon\Carbon::today()->toDateString() ], __('app.date_of_birth')) }}
                     </div>
                     <div class="col-md-auto pl-md-3">
                         <p>@lang('app.gender')</p>

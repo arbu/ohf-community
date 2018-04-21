@@ -42,7 +42,7 @@
                         {{ Form::bsText('passport_no', null, [ ], __('volunteering.passport_no'), __('volunteering.according_to_your_passport_id_card')) }}
                     </div>
                     <div class="col-md">
-                        {{ Form::date_of_birth('date_of_birth', null, [ 'required' ], __('app.date_of_birth'), __('app.yyyy_mm_dd')) }}
+                        {{ Form::bsDate('date_of_birth', null, [ 'required' ], __('app.date_of_birth')) }}
                     </div>
                     <div class="col-md-auto pl-md-3">
                         <p>@lang('app.gender')</p>

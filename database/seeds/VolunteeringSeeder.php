@@ -16,6 +16,19 @@ class VolunteeringSeeder extends Seeder
      */
     public function run()
     {
+		//disable foreign key check for this connection before running seeders
+		DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
+        DB::table('volunteer_trips')->truncate();
+        DB::table('volunteer_documents')->truncate();
+        DB::table('volunteers')->truncate();
+        DB::table('volunteer_jobs')->truncate();
+        DB::table('volunteer_job_categories')->truncate();
+
+        // supposed to only apply to a single connection and reset it's self
+		// but I like to explicitly undo what I've done for clarity
+		DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
         $short = VolunteerJobCategory::create([
             'title' => [
                 'en' => 'Short-term Volunteer (2-3 Weeks)',
@@ -45,7 +58,7 @@ class VolunteeringSeeder extends Seeder
             'order' => 3,
         ]);
 
-        $short->jobs()->create([
+        $short_term_vol = $short->jobs()->create([
             'title' => [
                 'en' => 'Short-term Volunteer',
                 'de' => 'Short-term-Freiwillige/r'
@@ -138,7 +151,6 @@ class VolunteeringSeeder extends Seeder
             ],
             'order' => 2,
         ]);
-        
 
         $user = User::firstOrCreate([
             'name' => 'Hans Muster',
@@ -148,7 +160,7 @@ class VolunteeringSeeder extends Seeder
             'first_name' => 'Hans',
             'last_name' => 'Muster',
             'street' => 'Musterstrasse 1',
-            'zip' => '1234',
+            'zip' => '12345',
             'city' => 'Musterort',
             'country_name' => 'Germany',
             'nationality' => 'German',
@@ -232,12 +244,12 @@ class VolunteeringSeeder extends Seeder
         $volunteer = Volunteer::create([
             'first_name' => 'Anna',
             'last_name' => 'Meier',
-            'street' => 'Musterstrasse 1',
+            'street' => 'Musterweg 1',
             'zip' => '1234',
-            'city' => 'Musterort',
-            'country_name' => 'Germany',
-            'nationality' => 'German',
-            'date_of_birth' => '1992-05-02',
+            'city' => 'Musterdorf',
+            'country_name' => 'Switzerland',
+            'nationality' => 'Swiss',
+            'date_of_birth' => '1992-05-03',
             'gender' => 'female',
             'phone' => '+491234567890',
             'whatsapp' => '+491234567890',
@@ -249,10 +261,13 @@ class VolunteeringSeeder extends Seeder
             'user_id' => $user->id,
         ]);
         // Current trip
-        $volunteer->trips()->create([
+        $trip = $volunteer->trips()->create([
             'arrival' => Carbon::now()->subDays(12),
             'departure' => Carbon::now()->addDays(5),
             'status' => 'approved',
         ]);
+        $trip->job()->associate($short_term_vol);
+        $trip->save();
+
     }
 }
