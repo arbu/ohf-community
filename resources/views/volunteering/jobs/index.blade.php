@@ -16,7 +16,7 @@
             </thead>
             <tbody>
                 @foreach ($jobs as $job)
-                    <tr>
+                    <tr @unless($job->enabled)class="text-muted" @endunless>
                         <td>
                             <a href="{{ route('volunteering.jobs.show', $job) }}">{{ $job->title[App::getLocale()] }}</a><br>
                         </td>

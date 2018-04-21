@@ -22,7 +22,10 @@ class JobsController extends Controller
             'jobs' => VolunteerJob
                 ::orderBy('order', 'asc')
                 ->orderBy('title', 'asc')
-                ->get(),
+                ->get()
+                ->sortBy(function ($e, $key) {
+                    return $e->category->order . '.' . $e->order;
+                }),
         ]);
     }
 
