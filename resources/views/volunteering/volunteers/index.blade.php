@@ -39,12 +39,11 @@
                         <td>{{ $volunteer->nationality }}</td>
                         <td>
                             <a href="{{ email_url($volunteer->user->email) }}"><i class="fa fa-envelope-o"></i></a>
-                            {{ $volunteer->user->email }}
-                        </td>
+                            {{ $volunteer->user->email }}</td>
                         <td>
                             @if ( isset( $volunteer->phone ) )
                                 <a href="{{ phone_url($volunteer->phone) }}"><i class="fa fa-phone"></i></a>
-                                {{ $volunteer->phone }} 
+                                {{ $volunteer->phone }}
                             @endif
                         </td>
                         <td>
@@ -56,7 +55,7 @@
                         <td>
                             @if ( isset( $volunteer->skype ) )
                                 <a href="{{ skype_call_url($volunteer->skype) }}"><i class="fa fa-skype"></i></a>
-                                {{ $volunteer->skype }} 
+                                {{ $volunteer->skype }}
                             @endif
                         </td>
                     </tr>

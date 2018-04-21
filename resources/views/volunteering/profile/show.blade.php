@@ -14,7 +14,7 @@
             </div>
             <div class="row mb-3">
                 <div class="col-sm-2 d-none d-md-block">Address</div>
-                <div class="col-sm">{{ $volunteer->address }}, {{ $volunteer->zip }} {{ $volunteer->city }}, {{ $volunteer->country }}</div>
+                <div class="col-sm">{{ $volunteer->address }}, {{ $volunteer->zip }} {{ $volunteer->city }}, {{ $volunteer->country_name }}</div>
             </div>
             <div class="row align-items-center">
                 <div class="col-sm-2 d-none d-md-block">Communication</div>

@@ -32,7 +32,7 @@
                     {{-- Address --}}
                     {{ $volunteer->street }}<br>
                     {{ $volunteer->zip }} {{ $volunteer->city }}<br>
-                    {{ $volunteer->country }}<br>
+                    {{ $volunteer->country_name }}<br>
 
                 </div>
                 

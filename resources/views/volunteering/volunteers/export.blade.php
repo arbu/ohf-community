@@ -28,7 +28,7 @@
                 <td>{{ $volunteer->street }}</td>
                 <td>{{ $volunteer->zip }}</td>
                 <td>{{ $volunteer->city }}</td>
-                <td>{{ $volunteer->country }}</td>
+                <td>{{ $volunteer->country_name }}</td>
                 <td>{{ $volunteer->nationality }}</td>
                 <td>{{ $volunteer->date_of_birth }}</td>
                 <td>{{ $volunteer->age }}</td>

@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Volunteering\StoreVolunteerProfile;
 use App\Http\Requests\StoreTrip;
-use App\Util\CountriesExtended;
 use Illuminate\Support\Facades\Auth;
 use App\VolunteerTrip;
 use App\Volunteer;
@@ -24,9 +23,7 @@ class ProfileController extends Controller
     }
 
     function edit() {
-        return view('volunteering.profile.edit', [
-            'countries' => CountriesExtended::getList('en') // TODO localize
-        ]);
+        return view('volunteering.profile.edit', []);
     }
 
     function update(StoreVolunteerProfile $request) {
@@ -40,7 +37,7 @@ class ProfileController extends Controller
         $volunteer->street = $request->street;
         $volunteer->zip = $request->zip;
         $volunteer->city = $request->city;
-        $volunteer->country = $request->country;
+        $volunteer->country_name = $request->country_name;
         $volunteer->nationality = $request->nationality;
         $volunteer->passport_no = $request->passport_no;
         $volunteer->date_of_birth = $request->date_of_birth;

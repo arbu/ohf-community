@@ -63,7 +63,7 @@ class Donor extends Model
     public function setCountryNameAttribute($value)
     {
         $this->attributes['country_code'] = $value != null ? array_flip(\Countries::getList(\App::getLocale()))[$value] ?? null : null;
-    }    
+    }
 
     function donations() {
         return $this->hasMany('App\Donation');

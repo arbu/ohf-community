@@ -51,15 +51,38 @@ class Volunteer extends Model
         $str .= $this->zip;
         $str .= ' ';
         $str .= $this->city;
-        if (!empty($this->country)) {
+        if (!empty($this->country_name)) {
             $str .= ', ';
-            $str .= $this->country;
+            $str .= $this->country_name;
         }
         return $str;
     }
 
     public function getAgeAttribute() {
         return isset($this->date_of_birth) ? (new Carbon($this->date_of_birth))->age : null;
+    }
+
+        /**
+     * Get the country name based on the country code
+     * 
+     * @return string
+     */
+    public function getCountryNameAttribute() {
+        if ($this->country_code != null) {
+            return \Countries::getOne($this->country_code, \App::getLocale());
+        }
+        return null;
+    }
+
+    /**
+     * Set the country code based on the country name
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setCountryNameAttribute($value)
+    {
+        $this->attributes['country_code'] = $value != null ? array_flip(\Countries::getList(\App::getLocale()))[$value] ?? null : null;
     }
 
 }

@@ -79,7 +79,7 @@
                         {{ Form::bsText('city', null, [ 'required' ], __('app.city')) }}
                     </div>
                     <div class="col-md">
-                        {{ Form::bsText('country', null, [ 'required', 'id' => 'country', 'autocomplete' => 'off', 'rel' => 'autocomplete', 'data-autocomplete-source' => json_encode(array_values($countries))], __('app.country')) }}
+                        {{ Form::bsCountryName('country_name', null, [ ], __('app.country')) }}
                     </div>
                 </div>
             </div>

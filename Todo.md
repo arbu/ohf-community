@@ -22,4 +22,3 @@
 * Public registration form
 * Volunteer-admin: register/edit/delete
 * Reports
-

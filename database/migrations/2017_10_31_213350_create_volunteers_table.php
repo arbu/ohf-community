@@ -20,7 +20,7 @@ class CreateVolunteersTable extends Migration
             $table->string('street');
             $table->string('zip');
             $table->string('city');
-            $table->string('country');
+            $table->string('country_code');
             $table->string('nationality');
             $table->date('date_of_birth');
             $table->enum('gender', ['male', 'female']);
