@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <ul class="list-group list-group-flush mb-2">
+    <ul class="list-group list-group-flush mb-4">
         <li class="list-group-item">
             <div class="row">
                 <div class="col-sm">
@@ -112,5 +112,14 @@
             </li>
         @endisset
     </ul>
+
+    @if($trip->status == 'applied')
+        <div class="card">
+            <div class="card-header">@lang('volunteering.process_application')</div>
+            <div class="card-body">
+                
+            </div>
+        </div>
+    @endisset
 
 @endsection
