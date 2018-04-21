@@ -214,36 +214,36 @@ Route::group(['middleware' => 'language'], function () {
     });
 
     // Volunteering
-    Route::name('volunteering.')->prefix('volunteering')->middleware(['auth'])->group(function () {
+    Route::namespace('Volunteering')->name('volunteering.')->prefix('volunteering')->middleware(['auth'])->group(function () {
 
         // Manage volunteers
-        Route::get('volunteers', 'Volunteering\VolunteersController@index')->name('volunteers.index');
-        Route::get('volunteers/export', 'Volunteering\VolunteersController@export')->name('volunteers.export');
-        Route::get('volunteers/filter', 'Volunteering\VolunteersController@filter')->name('volunteers.filter');
-        Route::get('volunteers/{volunteer}', 'Volunteering\VolunteersController@show')->name('volunteers.show');
-        Route::get('volunteers/{volunteer}/vcard', 'Volunteering\VolunteersController@vcard')->name('volunteers.vcard');
+        Route::get('volunteers', 'VolunteersController@index')->name('volunteers.index');
+        Route::get('volunteers/export', 'VolunteersController@export')->name('volunteers.export');
+        Route::get('volunteers/filter', 'VolunteersController@filter')->name('volunteers.filter');
+        Route::get('volunteers/{volunteer}', 'VolunteersController@show')->name('volunteers.show');
+        Route::get('volunteers/{volunteer}/vcard', 'VolunteersController@vcard')->name('volunteers.vcard');
 
         // Documents
-        Route::get('volunteers/{volunteer}/document/{document}', 'Volunteering\DocumentsController@download')->name('documents.download');
-        Route::post('volunteers/{volunteer}/document', 'Volunteering\DocumentsController@store')->name('documents.store');
-        Route::delete('volunteers/{volunteer}/document/{document}', 'Volunteering\DocumentsController@destroy')->name('documents.destroy');
+        Route::get('volunteers/{volunteer}/document/{document}', 'DocumentsController@download')->name('documents.download');
+        Route::post('volunteers/{volunteer}/document', 'DocumentsController@store')->name('documents.store');
+        Route::delete('volunteers/{volunteer}/document/{document}', 'DocumentsController@destroy')->name('documents.destroy');
 
         // Trips
-        Route::get('trips/archive', 'Volunteering\TripsController@archive')->name('trips.archive');
-        Route::get('trips/calendar', 'Volunteering\TripsController@calendar')->name('trips.calendar');
-        Route::get('trips/calendar/events', 'Volunteering\TripsController@calendarEvents')->name('trips.calendar.events');
-        Route::get('trips/calendar/resources', 'Volunteering\TripsController@calendarResources')->name('trips.calendar.resources');
-        Route::resource('trips', 'Volunteering\TripsController');
+        Route::get('trips/archive', 'TripsController@archive')->name('trips.archive');
+        Route::get('trips/calendar', 'TripsController@calendar')->name('trips.calendar');
+        Route::get('trips/calendar/events', 'TripsController@calendarEvents')->name('trips.calendar.events');
+        Route::get('trips/calendar/resources', 'TripsController@calendarResources')->name('trips.calendar.resources');
+        Route::resource('trips', 'TripsController');
 
         // Jobs
-        Route::name('jobs')->resource('jobs/categories', 'Volunteering\JobCategoriesController')->except(['show']);
-        Route::resource('jobs', 'Volunteering\JobsController');
+        Route::name('jobs')->resource('jobs/categories', 'JobCategoriesController')->except(['show']);
+        Route::resource('jobs', 'JobsController');
         
-        Route::get('profile', 'Volunteering\ProfileController@show')->name('profile.show');
-        Route::get('profile/edit', 'Volunteering\ProfileController@edit')->name('profile.edit');
-        Route::post('profile/edit', 'Volunteering\ProfileController@update')->name('profile.update');
+        Route::get('profile', 'ProfileController@show')->name('profile.show');
+        Route::get('profile/edit', 'ProfileController@edit')->name('profile.edit');
+        Route::post('profile/edit', 'ProfileController@update')->name('profile.update');
 
-        Route::get('profile/trip/apply', 'Volunteering\ProfileController@createTrip')->name('profile.createTrip');
+        Route::get('profile/trip/apply', 'ProfileController@createTrip')->name('profile.createTrip');
         Route::post('profile/trip/apply', 'Volunteering\ProfileController@storeTrip')->name('profile.storeTrip');
     });
 
