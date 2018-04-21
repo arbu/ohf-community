@@ -820,7 +820,7 @@ class ContextMenuComposer {
                         'url' => route('volunteering.trips.calendar'),
                         'caption' => __('app.calendar'),
                         'icon' => 'calendar',
-                        'authorized' => Auth::user()->can('list', VolunteerTrip::class)
+                        'authorized' => Auth::user()->can('list', VolunteerTrip::class) && VolunteerTrip::count() > 0
                     ],
                     'archive' => [
                         'url' => route('volunteering.trips.archive'),

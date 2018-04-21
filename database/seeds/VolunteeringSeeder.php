@@ -116,12 +116,12 @@ class VolunteeringSeeder extends Seeder
         ]);
         $long->jobs()->create([
             'title' => [
-                'en' => 'Adult School Coordinator',
-                'de' => 'Shift Coordinator'
+                'en' => 'Shift Coordinator',
+                'de' => 'Schicht-KoordinatorIn'
             ],
             'description' => [
-                'en' => 'You live as many lives as the languages you know, a proverb says. To pave our helpers’ and visitors’ way for the future, we offer language classes at our education center for adults. Our teachers come from the communities in the camps and teach Arabic, Farsi and French. Also, we invite all our international volunteers to participate in the English conversation classes for students who would like to expand their vocabulary. As our adult school coordinator, you will make sure that the teachers’ positions are filled at all times and find replacements if needed. You will be responsible for new students’ registrations and available material like chalk, pens and notebooks. Since in our eyes networking is important, you will not only regularly meet with the teachers, but also with other actors providing education to the people in the camps. And, last but not least, you can also teach!',
-                'de' => 'Every ship needs a captain and every shift a shift coordinator! As our shift coordinator you sit together with our volunteers at the beginning of every shift and arrange all tasks of the day. During your shift you supervise the volunteers, answer all questions related to their projects and check the wind direction on a regular basis, so our ship will always be on the right course. As a shift coordinator you will still have the opportunity to help us with our daily volunteer tasks.'
+                'en' => 'Every ship needs a captain and every shift a shift coordinator! As our shift coordinator you sit together with our volunteers at the beginning of every shift and arrange all tasks of the day. During your shift you supervise the volunteers, answer all questions related to their projects and check the wind direction on a regular basis, so our ship will always be on the right course. As a shift coordinator you will still have the opportunity to help us with our daily volunteer tasks.',
+                'de' => 'Jedes Schiff braucht eine/n KapitänIn und jede Schicht eine/n SchichtkoordinatorIn! Als SchichtkoordinatorIn verteilst du zu Beginn der Schicht zusammen mit den Freiwilligen die Aufgaben, die während des Tages anstehen. Während der Schicht betreust du die Freiwilligen, stehst jederzeit für Fragen bereit und überprüfst regelmäßig die Windrichtung, damit unser Schiff immer auf richtigem Kurs läuft. Als SchichtkoordinatorIn arbeitest du natürlich auch in unseren regulären Projekten als Freiwillige/r mit.'
             ],
             'available_dates' => [
                 'en' => 'from May 2018',
@@ -133,7 +133,7 @@ class VolunteeringSeeder extends Seeder
             ],
             'requirements' => [
                 'en' => 'at least 20 years old, well-organised, experienced in working with children',
-                'de' => 'Mindestalter 20 Jahre, organisiert, Erfahrung in der Arbeit mit Kindern'
+                'de' => 'Mindestalter 20 Jahre, organisiert'
             ],
             'order' => 2,
         ]);

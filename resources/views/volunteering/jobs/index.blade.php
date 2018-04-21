@@ -10,6 +10,8 @@
                 <tr>
                     <th>@lang('app.title')</th>
                     <th>@lang('app.category')</th>
+                    <th class="d-none d-md-table-cell">@lang('volunteering.available_dates')</th>
+                    <th class="d-none d-md-table-cell">@lang('volunteering.minimum_stay')</th>
                     <th class="d-none d-sm-table-cell fit">@lang('app.order')</th>
                     <th class="d-none d-sm-table-cell fit">@lang('app.enabled')</th>
                 </tr>
@@ -23,6 +25,8 @@
                         <td>
                             {{ $job->category->title[App::getLocale()] }}<br>
                         </td>
+                        <td class="d-none d-md-table-cell">{{ $job->available_dates[App::getLocale()] }}</td>
+                        <td class="d-none d-md-table-cell">{{ $job->minimum_stay[App::getLocale()] }}</td>
                         <td class="d-none d-sm-table-cell fit">{{ $job->order }}</td>
                         <td class="d-none d-sm-table-cell fit">{{ $job->enabled ? __('app.yes') : __('app.no') }}</td>
                     </tr>
