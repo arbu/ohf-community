@@ -174,4 +174,5 @@ return [
     'calendar' => 'Calendar',
     'week' => 'Week',
     'month' => 'Month',
+    'yyyy_mm_dd' => 'YYYY-MM-DD',
  ];

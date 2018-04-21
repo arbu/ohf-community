@@ -247,6 +247,11 @@ Route::group(['middleware' => 'language'], function () {
         Route::post('profile/trip/apply', 'Volunteering\ProfileController@storeTrip')->name('profile.storeTrip');
     });
 
+    Route::namespace('Volunteering')->name('volunteering.')->group(function () { // ->middleware(['guest'])
+        Route::get('volunteer', 'ProfileController@register')->name('profile.register');
+    });
+
+
     Auth::routes();
     Route::get('/userPrivacyPolicy', 'PrivacyPolicy@userPolicy')->name('userPrivacyPolicy');
 

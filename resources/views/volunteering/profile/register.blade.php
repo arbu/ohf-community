@@ -1,26 +1,14 @@
-@extends('layouts.app')
+@extends('layouts.public')
 
 @section('title')
-    @if ( Auth::user()->volunteer == null )
-        @lang('volunteering.create_volunteer_profile')
-    @else
-        @lang('volunteering.update_volunteer_profile')
-    @endif
+    @lang('volunteering.create_volunteer_profile')
 @endsection
 
 @section('content')
 
-    @if ( Auth::guest() || Auth::user()->volunteer == null )
-        <p>@lang('volunteering.fill_in_form_to_complete_volunteer_profile')</p>
-    @endif
+    <p>@lang('volunteering.fill_in_form_to_complete_volunteer_profile')</p>
 
-    {!! Form::model(Auth::user()->volunteer, ['route' => ['volunteering.profile.update']]) !!}
-        @php
-            $name_parts = explode(' ', Auth::user()->name);
-            $first_name = isset($name_parts[0]) ? $name_parts[0] : null;
-            $last_name = isset($name_parts[1]) ? $name_parts[1] : null;
-            $email = Auth::user()->email;
-        @endphp
+    {!! Form::open(['route' => ['volunteering.profile.update']]) !!}
 
         {{-- About you --}}
         <div class="card mb-4">
@@ -28,10 +16,10 @@
             <div class="card-body">
                 <div class="form-row">
                     <div class="col-md">
-                        {{ Form::bsText('first_name', $first_name, [ 'required', 'autofocus' ], __('app.first_name')) }}
+                        {{ Form::bsText('first_name', null, [ 'required', 'autofocus' ], __('app.first_name')) }}
                     </div>
                     <div class="col-md">
-                        {{ Form::bsText('last_name', $last_name, [ 'required' ], __('app.last_name')) }}
+                        {{ Form::bsText('last_name', null, [ 'required' ], __('app.last_name')) }}
                     </div>
                 </div>
                 <div class="form-row">
@@ -42,7 +30,7 @@
                         {{ Form::bsText('passport_no', null, [ ], __('volunteering.passport_no'), __('volunteering.according_to_your_passport_id_card')) }}
                     </div>
                     <div class="col-md">
-                        {{ Form::date_of_birth('date_of_birth', null, [ 'required' ], __('app.date_of_birth'), __('app.yyyy_mm_dd')) }}
+                        {{ Form::bsStringDate('date_of_birth', null, [ 'required' ], __('app.date_of_birth')) }}
                     </div>
                     <div class="col-md-auto pl-md-3">
                         <p>@lang('app.gender')</p>
@@ -91,7 +79,7 @@
             <div class="card-body">
                 <div class="form-row">
                     <div class="col-md">
-                        {{ Form::bsText('email', $email, [ 'required' ], __('app.email'), __('volunteering.used_for_login')) }}
+                        {{ Form::bsText('email', null, [ 'required' ], __('app.email'), __('volunteering.used_for_login')) }}
                     </div>
                     <div class="col-md">
                         {{ Form::bsText('phone', null, [ 'required' ], __('app.phone'), __('volunteering.mobile_phone_number_incl_country_code')) }}
@@ -107,16 +95,9 @@
         </div>
 
         <p>
-            @if ( Auth::user()->volunteer == null )
-                {{ Form::bsSubmitButton(__('volunteering.create_profile')) }}
-            @else
-                {{ Form::bsSubmitButton(__('volunteering.update_profile')) }}
-            @endif
+            {{ Form::bsSubmitButton(__('volunteering.create_profile')) }}
         </p>
 
     {!! Form::close() !!}
 
-@endsection
-
-@section('script')
 @endsection

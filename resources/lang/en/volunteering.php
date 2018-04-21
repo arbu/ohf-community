@@ -41,7 +41,6 @@ return [
     'create_profile' => 'Create profile',
     'update_profile' => 'Update profile',
     'according_to_your_passport_id_card' => 'According to your passport / ID card',
-    'yyyy_mm_dd' => 'YYYY-MM-DD',
     'mobile_phone_number_incl_country_code' => 'Mobile phone number, including country code',
     'whatsapp_number_incl_country_code' => 'Phone number used in WhatsApp, if available',
     'used_for_login' => 'Used for login',

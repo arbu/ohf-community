@@ -51,6 +51,10 @@ class ProfileController extends Controller
             ->with('success', 'Your data has been updated');
     }
     
+    function register() {
+        return view('volunteering.profile.register', []);
+    }
+
     function createTrip() {
         if (Auth::user()->volunteer == null) {
             return redirect()->route('volunteering.profile.edit');

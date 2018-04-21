@@ -41,7 +41,6 @@ return [
     'create_profile' => 'Profil erstellen',
     'update_profile' => 'Profil aktualisieren',
     'according_to_your_passport_id_card' => 'Gemäss deinem Reisepass / ID Karte',
-    'yyyy_mm_dd' => 'JJJJ-MM-TT',
     'mobile_phone_number_incl_country_code' => 'Mobiltelefonnummer, inkl. Ländercode',
     'whatsapp_number_incl_country_code' => 'Telefonnummer welche in WhatsApp verwendet wird, falls vorhanden',
     'used_for_login' => 'Wird für das Login benötigt',
