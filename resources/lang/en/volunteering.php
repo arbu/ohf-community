@@ -91,5 +91,8 @@ return [
     'currently_n_active_trips' => 'Currently there are :num active volunteers.',
     'your_trip' => 'Your Trip',
     'choose_a_job' => 'Choose a job...',
-    'choose_a_job' => 'We offer the following volunteering opportunities',
+    'we_offer_the_following_possibilities_in_our_project' => 'We offer the following volunteering opportunities',
+    'volunteer_application' => 'Volunteer-Application',
+    'fill_form_for_volunteer_application' => 'Fill in the following form to apply as a volunteer. Be aware that we first need to confirm your application, therefore do not book any flights or accommodation before receiving a positive answer from us.',
+    'already_have_an_account' => 'Do you already have an account? Please login <a href=":url">here</a>.',
 ];

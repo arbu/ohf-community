@@ -1,22 +1,25 @@
 @extends('layouts.public')
 
-@section('title')
-    @lang('volunteering.create_volunteer_profile')
-@endsection
+@section('title', __('volunteering.volunteer_application'))
 
 @section('content')
 
-    <p>Fülle das folgende Formular aus, um dich für einen Freiwilligeneinsatz zu bewerben. Bitte beachte, dass wir deine Anfrage zuerst überprüfen und bestätigen müssen. Buche deshalb keine Flüge oder Unterkunft bevor du nicht eine positive Antwort von uns erhalten hast.</p>
+    <p>@lang('volunteering.fill_form_for_volunteer_application')</p>
+    
+    @component('components.alert.info')
+        @lang('volunteering.already_have_an_account', [ 'url' => route('volunteering.profile.show') ])
+    @endcomponent
 
     {!! Form::open(['route' => ['volunteering.profile.update']]) !!}
 
         {{-- Your trip --}}
         <h4 class="mt-5 mb-3">@lang('volunteering.your_trip')</h4>
-
         {{ Form::bsSelect('job', $jobs, null, [ 'required', 'id' => 'job', 'placeholder' => __('volunteering.choose_a_job') ], __('volunteering.we_offer_the_following_possibilities_in_our_project')) }}
         <div class="mb-4" id="job_container">
-            {{-- <h5 id="job_title"></h5> --}}
-            <p id="job_description"></p>
+            <p>
+                <strong><span id="job_title"></span>:</strong> 
+                <span id="job_description" class="d-block d-sm-inline"></span>
+            </p>
             <p>
                 <strong>@lang('volunteering.available_dates'):</strong> 
                 <span id="job_available_dates" class="d-block d-sm-inline"></span>
@@ -110,6 +113,12 @@
                 {{ Form::bsText('skype', null, [ ], __('volunteering.skype'), __('volunteering.skype_username_if_available')) }}
             </div>
         </div>
+
+        <h4 class="mt-5 mb-3">@lang('volunteering.qualifications')</h4>
+        {{ Form::bsTextarea('professions', null, [ ], __('volunteering.professions'), 'Please write here your professional qualifications and/or licenses you possess.') }}
+        {{ Form::bsTextarea('language_skills', null, [ ], __('volunteering.language_skills')) }}
+        {{ Form::bsTextarea('other_skills', null, [ ], __('volunteering.other_skills')) }}
+        {{ Form::bsTextarea('previous_experience', null, [ ], __('volunteering.previous_experience'), 'Describe if you have any previous experience in working with refugees, children, minorities, ...') }}
 
         <p>
             {{ Form::bsSubmitButton(__('volunteering.create_profile')) }}

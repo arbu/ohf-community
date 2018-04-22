@@ -92,4 +92,7 @@ return [
     'your_trip' => 'Dein Einsatz',
     'choose_a_job' => 'Wähle einen Job aus...',
     'we_offer_the_following_possibilities_in_our_project' => 'In unserem Projekt gibt es folgende Einsatzmöglichkeiten',
+    'volunteer_application' => 'Volunteer-Bewerbung',
+    'fill_form_for_volunteer_application' => 'Fülle das folgende Formular aus, um dich für einen Freiwilligeneinsatz zu bewerben. Bitte beachte, dass wir deine Anfrage zuerst überprüfen und bestätigen müssen. Buche deshalb keine Flüge oder Unterkunft bevor du nicht eine positive Antwort von uns erhalten hast.',
+    'already_have_an_account' => 'Hast du bereits ein Konto? Bitte logge dich <a href=":url">hier</a> ein.',
 ];

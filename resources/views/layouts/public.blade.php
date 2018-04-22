@@ -5,21 +5,22 @@
 
 		<div class="container">
 			<div class="row justify-content-center">
-				<div class="">
 
-					<div class="px-5 px-sm-0 text-center">
-						<img src="{{ asset('/img/logo_login.png') }}" class="img-fluid text-center my-sm-0 p-4" />
+				<div class="px-5 px-sm-0 text-center col-md-4 col-sm-6 col-10">
+					<img src="{{ asset('/img/logo_login.png') }}" class="img-fluid text-center my-sm-0 p-4" />
+				</div>
+
+				<div class="card mb-4">
+					<div class="card-body p-md-5">
+
+						<h1 class="display-4 text-center mb-4 mb-md-5">@yield('title')</h1>
+
+						@yield('content')
+
 					</div>
+				</div>
 
-					<div class="card mb-4">
-						<div class="card-body p-md-5">
-
-							<h1 class="display-4 text-center mb-4 mb-md-5">@yield('title')</h1>
-
-							@yield('content')
-
-						</div>
-					</div>
+				<div>
 					<p class="text-center">
 						<small>
 							@foreach (language()->allowed() as $code => $name)
@@ -31,6 +32,7 @@
 						<small><a href="{{ route('userPrivacyPolicy') }}" target="_blank">@lang('app.privacy_policy')</a></small>
 					</p>
 				</div>
+
 			</div>
 		</div>
 
