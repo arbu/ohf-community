@@ -79,7 +79,7 @@
                         {{ Form::bsText('city', null, [ 'required' ], __('app.city')) }}
                     </div>
                     <div class="col-md">
-                        {{ Form::bsCountryName('country_name', null, [ ], __('app.country')) }}
+                        {{ Form::bsCountryName('country_name', null, [ 'required' ], __('app.country')) }}
                     </div>
                 </div>
             </div>
@@ -91,7 +91,7 @@
             <div class="card-body">
                 <div class="form-row">
                     <div class="col-md">
-                        {{ Form::bsText('email', $email, [ 'required' ], __('app.email'), __('volunteering.used_for_login')) }}
+                        {{ Form::bsEmail('email', $email, [ 'required' ], __('app.email'), __('volunteering.used_for_login')) }}
                     </div>
                     <div class="col-md">
                         {{ Form::bsText('phone', null, [ 'required' ], __('app.phone'), __('volunteering.mobile_phone_number_incl_country_code')) }}
