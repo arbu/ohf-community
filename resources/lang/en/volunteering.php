@@ -91,4 +91,5 @@ return [
     'currently_n_active_trips' => 'Currently there are :num active volunteers.',
     'your_trip' => 'Your Trip',
     'choose_a_job' => 'Choose a job...',
+    'choose_a_job' => 'We offer the following volunteering opportunities',
 ];

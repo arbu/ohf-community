@@ -91,4 +91,5 @@ return [
     'currently_n_active_trips' => 'Aktuell sind :num Volunteers aktiv.',
     'your_trip' => 'Dein Einsatz',
     'choose_a_job' => 'Wähle einen Job aus...',
+    'we_offer_the_following_possibilities_in_our_project' => 'In unserem Projekt gibt es folgende Einsatzmöglichkeiten',
 ];
