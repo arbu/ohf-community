@@ -47,7 +47,7 @@
                             @foreach (language()->allowed() as $code => $name)
                                 <div class="col-sm">
                                     <small class="text-muted d-block d-sm-none mt-3">{{ $name }}:</small> 
-                                    {{ $job->$v[$code] ?? '-' }}
+                                    {!! nl2br(e($job->$v[$code] ?? '-')) !!}
                                 </div>
                             @endforeach
                         </div>

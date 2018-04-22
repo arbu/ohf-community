@@ -89,4 +89,6 @@ return [
     'there_are_n_volunteers_in_our_datanase' => ':num volunteers are registered in the database.',
     'there_are_n_open_applications' => 'There are :num open applications.',
     'currently_n_active_trips' => 'Currently there are :num active volunteers.',
+    'your_trip' => 'Your Trip',
+    'choose_a_job' => 'Choose a job...',
 ];

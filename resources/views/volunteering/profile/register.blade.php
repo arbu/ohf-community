@@ -6,9 +6,47 @@
 
 @section('content')
 
+Anfrage für einen Freiwilligeneinsatz
+
+Bitte beachte, dass wir deine Anfrage zuerst überprüfen und bestätigen müssen. Buche deshalb keine Flüge oder Unterkunft bevor du nicht eine positive Antwort von uns erhalten hast.
+
     <p>@lang('volunteering.fill_in_form_to_complete_volunteer_profile')</p>
 
     {!! Form::open(['route' => ['volunteering.profile.update']]) !!}
+
+        <div class="card mb-4">
+            <div class="card-header">@lang('volunteering.your_trip')</div>
+            <div class="card-body">
+                {{ Form::bsSelect('job', $jobs, null, [ 'required', 'id' => 'job', 'placeholder' => 'Wähle einen Job aus...' ], __('volunteering.job')) }}
+
+                <div class="mb-4" id="job_container">
+                    <h5 id="job_title"></h5>
+                    <p id="job_description"></p>
+                    <p>
+                        <strong>@lang('volunteering.available_dates'):</strong> 
+                        <span id="job_available_dates" class="d-block d-sm-inline"></span>
+                    </p>
+                    <p>
+                        <strong>@lang('volunteering.minimum_stay'):</strong> 
+                        <span id="job_minimum_stay" class="d-block d-sm-inline"></span>
+                    </p>
+                    <p>
+                        <strong>@lang('app.requirements'):</strong> 
+                        <span id="job_requirements" class="d-block d-sm-inline"></span>
+                    </p>
+                </div>
+                
+                <div class="form-row">
+                    <div class="col-sm">
+                        {{ Form::bsDate('arrival', Carbon\Carbon::today()->toDateString(), [ 'id' => 'arrival', 'required' ], __('volunteering.arrival')) }}
+                    </div>
+                    <div class="col-sm">
+                        {{ Form::bsDate('departure', Carbon\Carbon::today()->addWeeks(2)->toDateString(), [ 'id' => 'departure' ], __('volunteering.departure')) }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
 
         {{-- About you --}}
         <div class="card mb-4">
@@ -16,7 +54,7 @@
             <div class="card-body">
                 <div class="form-row">
                     <div class="col-md">
-                        {{ Form::bsText('first_name', null, [ 'required', 'autofocus' ], __('app.first_name')) }}
+                        {{ Form::bsText('first_name', null, [ 'required' ], __('app.first_name')) }}
                     </div>
                     <div class="col-md">
                         {{ Form::bsText('last_name', null, [ 'required' ], __('app.last_name')) }}
@@ -100,4 +138,28 @@
 
     {!! Form::close() !!}
 
+@endsection
+
+@section('script')
+    $(function(){
+        $('#job_container').hide();
+        $('#job').on('change', function(){
+            displayJob($(this).val());
+        });
+        displayJob($('#job').val());
+    });
+    function displayJob(jobId){
+        if(jobId) {
+            $.get('/api/volunteering/jobs/' + jobId, function(data){
+                $('#job_title').html(data.title);
+                $('#job_description').html(data.description.nl2br());
+                $('#job_available_dates').html(data.available_dates);
+                $('#job_minimum_stay').html(data.minimum_stay);
+                $('#job_requirements').html(data.requirements);
+                $('#job_container').show();
+            });
+        } else {
+            $('#job_container').hide();
+        }
+    }
 @endsection

@@ -291,7 +291,7 @@ class TripsController extends Controller
             ->with('success', __('volunteering.trip_deleted'));
     }
 
-    private static function getJobs() {
+    public static function getJobs() {
         return VolunteerJobCategory
             ::orderBy('order', 'asc')
             ->orderBy('title', 'asc')

@@ -37,7 +37,7 @@ class VolunteerJobPolicy
      */
     public function view(User $user, VolunteerJob $volunteerJob)
     {
-        return true;
+        return $volunteerJob->enabled;
     }
 
     /**

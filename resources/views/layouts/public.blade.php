@@ -8,7 +8,7 @@
 				<div class="">
 
 					<div class="px-5 px-sm-0 text-center">
-						<img src="{{ asset('/img/logo_login.png') }}" class="img-fluid text-center my-sm-0 p-4" style="max-width: 492px" />
+						{{-- <img src="{{ asset('/img/logo_login.png') }}" class="img-fluid text-center my-sm-0 p-4" /> --}}
 					</div>
 
 					<div class="card mb-4">
@@ -34,7 +34,10 @@
 			</div>
 		</div>
 
-        <script src="{{ asset('js/app.js') }}?v={{ $app_version }}"></script>
+		<script src="{{ asset('js/app.js') }}?v={{ $app_version }}"></script>
+        <script>
+			@yield('script')
+		</script>		
 
     </body>
 </html>

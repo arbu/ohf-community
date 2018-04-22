@@ -52,7 +52,9 @@ class ProfileController extends Controller
     }
     
     function register() {
-        return view('volunteering.profile.register', []);
+        return view('volunteering.profile.register', [
+            'jobs' => TripsController::getJobs(),
+        ]);
     }
 
     function createTrip() {
