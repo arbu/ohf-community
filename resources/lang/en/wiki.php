@@ -15,4 +15,10 @@ return [
     'num_articles_in_total' => 'One article in total.|:num articles in total.',
     'articles_in_db' => 'One article in the database|:num articles in the database.',
     'the_latest_article_is' => 'The latest article is',
+    'addon_view_missing' => 'View for addon \':type\' does not exist!',
+    'map' => 'Map',
+    'website' => 'Website',
+    'phone' => 'Phone',
+    'social_media' => 'Social Media',
+    'email' => 'E-Mail',
 ];

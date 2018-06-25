@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Wiki;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\WikiArticle;
+use App\WikiArticleAddon;
 use App\Tag;
 use App\Http\Requests\Wiki\StoreArticle;
 use Michelf\MarkdownExtra;
@@ -68,6 +69,13 @@ class ArticleController extends Controller
                 $article->tags()->save($tag);
             }
         }
+
+        // $addon = new WikiArticleAddon();
+        // $addon->type = 'map';
+        // $addon->args = [
+        //     'location' => 'Mitilini'
+        // ];
+        // $article->addons()->save($addon);
 
         return redirect()->route('wiki.articles.show', $article)
             ->with('info', __('wiki.article_created'));

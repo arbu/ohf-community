@@ -20,13 +20,19 @@
 @section('widget-title', __('accounting.accounting'))
 
 @section('widget-content')
-    <table class="table mb-0">
-        <tr><th colspan="2">{{ $monthName }}:</td></tr>
-        @isset($income)
-            <tr><td>@lang('accounting.income')</td><td class="text-right">{{ number_format($income, 2) }}</td></tr>
-        @endif
-        @isset($spending)
-            <tr><td>@lang('accounting.spending')</td><td class="text-right">{{ number_format($spending, 2) }}</td></tr>
-        @endif
-    </table>
+    @if(!isset($income) && !isset($spending))
+        <div class="card-body pb-2">
+            <p>@lang('accounting.no_transactions_found')</p>
+        </div>
+    @else
+        <table class="table mb-0">
+            <tr><th colspan="2">{{ $monthName }}:</td></tr>
+            @isset($income)
+                <tr><td>@lang('accounting.income')</td><td class="text-right">{{ number_format($income, 2) }}</td></tr>
+            @endif
+            @isset($spending)
+                <tr><td>@lang('accounting.spending')</td><td class="text-right">{{ number_format($spending, 2) }}</td></tr>
+            @endif
+        </table>
+    @endif
 @endsection

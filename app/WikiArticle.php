@@ -53,4 +53,8 @@ class WikiArticle extends Model implements Auditable
     protected $encrypted = [
         'content',
     ];
+
+    public function addons() {
+        return $this->hasMany('App\WikiArticleAddon', 'article_id');
+    }
 }
