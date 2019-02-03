@@ -285,7 +285,7 @@ Route::group(['middleware' => 'language'], function () {
 
     // Logistics
     Route::group(['middleware' => 'can:use-logistics'], function () {
-        Route::get('/logistics', 'LogisticsController@index')->name('logistics.index');
+        Route::get('/logistics-list', 'LogisticsController@index')->name('logistics.index');
 
         Route::get('/logistics/projects/{project}/articles', 'ArticleController@index')->name('logistics.articles.index');
         Route::post('/logistics/projects/{project}/articles', 'ArticleController@store')->name('logistics.articles.store');
