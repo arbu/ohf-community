@@ -825,6 +825,18 @@ if (! function_exists('tel_link')) {
     }
 }
 
+if (! function_exists('gmaps_link')) {
+    function gmaps_link($label, $value) {
+        return '<a href="http://maps.google.com/maps?q=' . urlencode($value) . '" target="_blank">' . $label . '</a>';
+    }
+}
+
+if (! function_exists('gmaps_embedd')) {
+    function gmaps_embedd($query) {
+        return '<iframe style="width: 100%" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?key=' . env('GOOGLE_MAPS_API_KEY') . '&q=' . urlencode($query) . '" allowfullscreen></iframe>';
+    }
+}
+
 if (! function_exists('whatsapp_link')) {
     function whatsapp_link($value, $text = null) {
         // See https://medium.com/@jeanlivino/how-to-fix-whatsapp-api-in-desktop-browsers-fc661b513dc

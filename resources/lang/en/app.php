@@ -215,4 +215,11 @@ return [
     'number_of_days' => 'Number of days',
     'google_api_key' => 'Google API key',
     'language' => 'Language',
+    'category' => 'Category',
+    'name_translit' => 'Name (transliterated)',
+    'address_translit' => 'Address (transliterated)',
+    'latitude' => 'Latitude',
+    'longitude' => 'Longitude',
+    'decimal_number' => 'Decimal number',
+    'website' => 'Website',
  ];

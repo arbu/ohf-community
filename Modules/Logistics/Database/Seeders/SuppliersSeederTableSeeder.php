@@ -5,7 +5,7 @@ namespace Modules\Logistics\Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 
-class LogisticsDatabaseSeeder extends Seeder
+class SuppliersSeederTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,6 +16,6 @@ class LogisticsDatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        $this->call(SuppliersSeederTableSeeder::class);
+        // TODO
     }
 }

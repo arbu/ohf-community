@@ -14,3 +14,15 @@
 Route::prefix('logistics')->group(function() {
     Route::get('/', 'LogisticsController@index');
 });
+
+Route::group(['middleware' => 'language'], function () {
+    Route::middleware(['auth'])->prefix('logistics')->name('logistics.')->group(function () {
+        
+        // Suppliers
+        Route::resource('suppliers', 'SupplierController');
+
+        // Products
+        Route::resource('products', 'ProductController')->only(['index', 'show']);
+
+    });
+});
