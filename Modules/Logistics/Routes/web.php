@@ -22,7 +22,7 @@ Route::group(['middleware' => 'language'], function () {
         Route::resource('suppliers', 'SupplierController');
 
         // Products
-        Route::resource('products', 'ProductController')->only(['index', 'show']);
+        Route::resource('products', 'ProductController');
 
     });
 });

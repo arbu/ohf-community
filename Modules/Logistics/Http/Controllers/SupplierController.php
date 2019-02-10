@@ -55,7 +55,7 @@ class SupplierController extends Controller
         $supplier->save();
 
         return redirect()
-            ->route('logistics.suppliers.index')
+            ->route('logistics.suppliers.show', $supplier)
             ->with('success', __('logistics::suppliers.supplier_created'));
     }
 

@@ -4,6 +4,7 @@ namespace Modules\Logistics\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\URL;
 
 use App\Http\Controllers\Controller;
 
@@ -36,7 +37,7 @@ class ProductController extends Controller
     {
         $this->authorize('create', Product::class);
 
-        return view('logistics::create', [
+        return view('logistics::products.create', [
             'categories' => self::getCategories(),
         ]);
     }
@@ -51,7 +52,13 @@ class ProductController extends Controller
     {
         $this->authorize('create', Product::class);
 
-        // TODO
+        $product = new Product();
+        $product->fill($request->all());
+        $product->save();
+
+        return redirect()
+            ->route('logistics.products.show', $product)
+            ->with('success', __('logistics::products.product_registered'));
     }
 
     /**
@@ -79,7 +86,7 @@ class ProductController extends Controller
     {
         $this->authorize('update', $product);
 
-        return view('logistics::edit', [
+        return view('logistics::products.edit', [
             'product' => $product,
             'categories' => self::getCategories(),
         ]);
@@ -96,8 +103,13 @@ class ProductController extends Controller
     {
         $this->authorize('update', $product);
 
-        // TODO
-    }
+        $product->fill($request->all());
+        $product->save();
+
+        return redirect()
+            ->route('logistics.products.show', $product)
+            ->with('success', __('logistics::products.product_updated'));
+     }
 
     /**
      * Remove the specified resource from storage.
@@ -109,7 +121,12 @@ class ProductController extends Controller
     {
         $this->authorize('delete', $product);
 
-        // TODO
+        $product->delete();
+
+        return redirect()
+            ->route('logistics.products.index')
+            ->with('success', __('logistics::products.product_deleted'));
+
     }
 
     private static function getCategories() {
