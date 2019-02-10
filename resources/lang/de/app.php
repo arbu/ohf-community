@@ -216,4 +216,10 @@ return [
     'google_api_key' => 'Google API Schlüssel',
     'language' => 'Sprache',
     'category' => 'Kategorie',
+    'name_translit' => 'Name (transkribiert)',
+    'address_translit' => 'Adresse (transkribiert)',
+    'latitude' => 'Breitengrad',
+    'longitude' => 'Längengrad',
+    'decimal_number' => 'Dezimalzahl',
+    'website' => 'Webseite',
 ];

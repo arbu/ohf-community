@@ -11,4 +11,5 @@ return [
     'edit_supplier' => 'Edit supplier',
     'supplier_updated' => 'Supplier updated.',
     'supplier_deleted' => 'Supplier deleted.',
+    'confirm_delete_supplier' => 'Do you really want to delete this supplier?',
 ];

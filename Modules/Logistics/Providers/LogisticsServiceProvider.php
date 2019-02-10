@@ -5,6 +5,8 @@ namespace Modules\Logistics\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
 
+use Illuminate\Support\Facades\View;
+
 class LogisticsServiceProvider extends ServiceProvider
 {
     /**
@@ -26,6 +28,7 @@ class LogisticsServiceProvider extends ServiceProvider
         $this->registerViews();
         $this->registerFactories();
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
+        $this->registerViewComposers();
     }
 
     /**
@@ -99,6 +102,15 @@ class LogisticsServiceProvider extends ServiceProvider
         if (! app()->environment('production')) {
             app(Factory::class)->load(__DIR__ . '/../Database/factories');
         }
+    }
+
+    /**
+     * Register view composers.
+     */
+    public function registerViewComposers()
+    {
+        view()->composer('layouts.include.side-nav', 'Modules\Logistics\Http\ViewComposers\NavigationComposer');
+        view()->composer(['layouts.app', 'layouts.include.site-header'], 'Modules\Logistics\Http\ViewComposers\ContextMenuComposer');
     }
 
     /**
