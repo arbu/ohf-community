@@ -22,7 +22,7 @@ class SupplierController extends Controller
         $this->authorize('list', Supplier::class);
 
         return view('logistics::suppliers.index', [
-            'suppliers' => Supplier::orderBy('name')->paginate(),            
+            'suppliers' => Supplier::orderBy('name_translit')->orderBy('name')->paginate(100),            
         ]);
     }
 

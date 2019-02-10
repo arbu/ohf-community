@@ -1,8 +1,8 @@
-@extends('layouts.app')
+@extends('logistics::layouts.suppliers-products')
 
 @section('title', __('logistics::products.products'))
 
-@section('content')
+@section('wrapped-content')
 
     @if( ! $products->isEmpty() )
         <div class="table-responsive">

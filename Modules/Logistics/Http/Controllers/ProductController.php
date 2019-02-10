@@ -23,7 +23,7 @@ class ProductController extends Controller
         $this->authorize('list', Product::class);
 
         return view('logistics::products.index', [
-            'products' => Product::orderBy('name')->paginate(),            
+            'products' => Product::orderBy('name_translit')->orderBy('name')->paginate(100),            
         ]);
     }
 
