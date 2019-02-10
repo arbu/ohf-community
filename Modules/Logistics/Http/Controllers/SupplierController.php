@@ -19,7 +19,7 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        // TODO $this->authorize('list', Supplier::class);
+        $this->authorize('list', Supplier::class);
 
         return view('logistics::suppliers.index', [
             'suppliers' => Supplier::orderBy('name')->paginate(),            
@@ -33,7 +33,7 @@ class SupplierController extends Controller
      */
     public function create()
     {
-        // TODO $this->authorize('create', Supplier::class);
+        $this->authorize('create', Supplier::class);
 
         return view('logistics::suppliers.create', [
             'categories' => self::getCategories(),
@@ -48,7 +48,7 @@ class SupplierController extends Controller
      */
     public function store(CreateSupplierRequest $request)
     {
-        // TODO $this->authorize('create', Supplier::class);
+        $this->authorize('create', Supplier::class);
 
         $supplier = new Supplier();
         $supplier->fill($request->all());
@@ -67,7 +67,7 @@ class SupplierController extends Controller
      */
     public function show(Supplier $supplier)
     {
-        // TODO $this->authorize('view', $supplier);
+        $this->authorize('view', $supplier);
 
         return view('logistics::suppliers.show', [
             'supplier' => $supplier,
@@ -82,7 +82,7 @@ class SupplierController extends Controller
      */
     public function edit(Supplier $supplier)
     {
-        // TODO $this->authorize('update', $supplier);
+        $this->authorize('update', $supplier);
 
         return view('logistics::suppliers.edit', [
             'supplier' => $supplier,
@@ -99,7 +99,7 @@ class SupplierController extends Controller
      */
     public function update(Supplier $supplier, UpdateSupplierRequest $request)
     {
-        // TODO $this->authorize('update', $supplier);
+        $this->authorize('update', $supplier);
 
         $supplier->fill($request->all());
         $supplier->save();
@@ -117,7 +117,7 @@ class SupplierController extends Controller
      */
     public function destroy(Supplier $supplier)
     {
-        // TODO $this->authorize('delete', $supplier);
+        $this->authorize('delete', $supplier);
 
         $supplier->delete();
 

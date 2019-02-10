@@ -28,7 +28,6 @@ class LogisticsServiceProvider extends ServiceProvider
         $this->registerViews();
         $this->registerFactories();
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
-        $this->registerViewComposers();
     }
 
     /**
@@ -39,6 +38,8 @@ class LogisticsServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(RouteServiceProvider::class);
+        $this->app->register(AuthServiceProvider::class);
+        $this->app->register(ComposerServiceProvider::class);
     }
 
     /**
@@ -102,15 +103,6 @@ class LogisticsServiceProvider extends ServiceProvider
         if (! app()->environment('production')) {
             app(Factory::class)->load(__DIR__ . '/../Database/factories');
         }
-    }
-
-    /**
-     * Register view composers.
-     */
-    public function registerViewComposers()
-    {
-        view()->composer('layouts.include.side-nav', 'Modules\Logistics\Http\ViewComposers\NavigationComposer');
-        view()->composer(['layouts.app', 'layouts.include.site-header'], 'Modules\Logistics\Http\ViewComposers\ContextMenuComposer');
     }
 
     /**

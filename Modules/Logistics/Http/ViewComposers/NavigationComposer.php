@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
+use Modules\Logistics\Entities\Supplier;
+
 class NavigationComposer {
 
 	/**
@@ -33,7 +35,7 @@ class NavigationComposer {
                 'caption' => __('logistics::logistics.logistics'),
                 'icon' => 'exchange',
                 'active' => 'logistics*',
-                'authorized' => true, // TODO
+                'authorized' => Auth::user()->can('list', Supplier::class)
             ]]);
 
             $view->with('nav', $nav);

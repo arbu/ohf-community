@@ -66,7 +66,7 @@ class ContextMenuComposer {
                         'caption' => __('app.add'),
                         'icon' => 'plus-circle',
                         'icon_floating' => 'plus',
-                        'authorized' => true, // TODO Auth::user()->can('create', Supplier::class)
+                        'authorized' => Auth::user()->can('create', Supplier::class)
                     ],
                 ];
             case 'logistics.suppliers.create':
@@ -75,7 +75,7 @@ class ContextMenuComposer {
                         'url' => route('logistics.suppliers.index'),
                         'caption' => __('app.cancel'),
                         'icon' => 'times-circle',
-                        'authorized' => true, // TODO Auth::user()->can('create', Supplier::class)
+                        'authorized' => Auth::user()->can('create', Supplier::class)
                     ]
                 ];
             case 'logistics.suppliers.show':
@@ -86,20 +86,20 @@ class ContextMenuComposer {
                         'caption' => __('app.edit'),
                         'icon' => 'pencil',
                         'icon_floating' => 'pencil',
-                        'authorized' => true, // TODO Auth::user()->can('update', $supplier)
+                        'authorized' => Auth::user()->can('update', $supplier)
                     ],
                     'delete' => [
                         'url' => route('logistics.suppliers.destroy', $supplier),
                         'caption' => __('app.delete'),
                         'icon' => 'trash',
-                        'authorized' => true, // TODO Auth::user()->can('delete', $supplier),
+                        'authorized' => Auth::user()->can('delete', $supplier),
                         'confirmation' => __('logistics::suppliers.confirm_delete_supplier')
                     ],
                     'back' => [
                         'url' => route('logistics.suppliers.index'),
                         'caption' => __('app.close'),
                         'icon' => 'times-circle',
-                        'authorized' => true, // TODO Auth::user()->can('list', Supplier::class)
+                        'authorized' => Auth::user()->can('list', Supplier::class)
                     ]
                 ];
             case 'logistics.suppliers.edit':
@@ -109,7 +109,7 @@ class ContextMenuComposer {
                         'url' => route('logistics.suppliers.show', $supplier),
                         'caption' => __('app.cancel'),
                         'icon' => 'times-circle',
-                        'authorized' => true, // TODO Auth::user()->can('view', $supplier)
+                        'authorized' => Auth::user()->can('view', $supplier)
                     ]
                 ];
             
@@ -123,7 +123,7 @@ class ContextMenuComposer {
                         'url' => route('logistics.products.index'),
                         'caption' => __('app.close'),
                         'icon' => 'times-circle',
-                        'authorized' => true, // TODO Auth::user()->can('list', Product::class)
+                        'authorized' => Auth::user()->can('list', Product::class)
                     ]
                 ];
         }

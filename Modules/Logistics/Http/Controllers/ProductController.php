@@ -4,6 +4,7 @@ namespace Modules\Logistics\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+
 use App\Http\Controllers\Controller;
 
 use Modules\Logistics\Entities\Product;
@@ -19,7 +20,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        // TODO $this->authorize('list', Product::class);
+        $this->authorize('list', Product::class);
 
         return view('logistics::products.index', [
             'products' => Product::orderBy('name')->paginate(),            
@@ -33,9 +34,11 @@ class ProductController extends Controller
      */
     public function create()
     {
-        // TODO $this->authorize('create', Product::class);
+        $this->authorize('create', Product::class);
 
-        return view('logistics::create');
+        return view('logistics::create', [
+            'categories' => self::getCategories(),
+        ]);
     }
 
     /**
@@ -46,9 +49,9 @@ class ProductController extends Controller
      */
     public function store(CreateProductRequest $request)
     {
-        // TODO $this->authorize('create', Product::class);
+        $this->authorize('create', Product::class);
 
-
+        // TODO
     }
 
     /**
@@ -59,7 +62,7 @@ class ProductController extends Controller
     */
     public function show(Product $product)    
     {
-        // TODO $this->authorize('view', $product);
+        $this->authorize('view', $product);
 
         return view('logistics::products.show', [
             'product' => $product,
@@ -74,9 +77,12 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        // TODO $this->authorize('update', $product);
+        $this->authorize('update', $product);
 
-        return view('logistics::edit');
+        return view('logistics::edit', [
+            'product' => $product,
+            'categories' => self::getCategories(),
+        ]);
     }
 
     /**
@@ -88,7 +94,9 @@ class ProductController extends Controller
      */
     public function update(Product $product, UpdateProductRequest $request)
     {
-        // TODO $this->authorize('update', $product);
+        $this->authorize('update', $product);
+
+        // TODO
     }
 
     /**
@@ -99,7 +107,9 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        // TODO $this->authorize('delete', $product);
+        $this->authorize('delete', $product);
+
+        // TODO
     }
 
     private static function getCategories() {
