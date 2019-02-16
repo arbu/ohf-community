@@ -37,7 +37,8 @@ class Supplier extends Model
      */
     public function products()
     {
-        return $this->belongsToMany('Modules\Logistics\Entities\Product', 'logistics_product_supplier');
+        return $this->belongsToMany('Modules\Logistics\Entities\Product', 'logistics_product_supplier')
+            ->withPivot('remarks');
     }
 
     public static function boot()

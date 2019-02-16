@@ -32,8 +32,11 @@
         <ul class="list-group list-group-flush">
             @forelse($supplier->products->sortBy('name') as $product)
                 <li class="list-group-item">
-                    {{ $product->name_tr }}
+                    {{ $product->name_tr }} 
                     <small class="text-muted pull-right">{{ $product->category }}</small>
+                    @isset($product->pivot->remarks)
+                        <br><small>{!! nl2br($product->pivot->remarks) !!}</small>
+                    @endisset
                 </li>
             @empty
                 <li class="list-group-item">

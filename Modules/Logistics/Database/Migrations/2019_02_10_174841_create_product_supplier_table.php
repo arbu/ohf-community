@@ -17,6 +17,7 @@ class CreateProductSupplierTable extends Migration
             $table->increments('id');
             $table->integer('product_id')->unsigned();
             $table->integer('supplier_id')->unsigned();
+            $table->text('remarks')->nullable();
             $table->timestamps();
             $table->foreign('product_id')->references('id')->on('logistics_products')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('supplier_id')->references('id')->on('logistics_suppliers')->onDelete('cascade')->onUpdate('cascade');

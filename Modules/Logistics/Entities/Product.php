@@ -12,12 +12,10 @@ class Product extends Model
         'name',
         'name_translit',
         'category',
-        'remarks',
     ];
 
     protected $nullable = [
         'name_translit',
-        'remarks',
     ];
 
     public function getNameTrAttribute() {
@@ -26,7 +24,8 @@ class Product extends Model
 
     public function suppliers()
     {
-        return $this->belongsToMany('Modules\Logistics\Entities\Supplier', 'logistics_product_supplier');
+        return $this->belongsToMany('Modules\Logistics\Entities\Supplier', 'logistics_product_supplier')
+            ->withPivot('remarks');
     }
 
 }

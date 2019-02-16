@@ -19,7 +19,6 @@
                 {{ Form::bsText('category', null, [ 'required', 'rel' => 'autocomplete', 'data-autocomplete-source' => json_encode($categories) ], __('app.category')) }}
             </div>
         </div>
-        {{ Form::bsTextarea('remarks', null, [ 'rows' => 3 ], __('app.remarks')) }}
 
         <p>
             {{ Form::bsSubmitButton(__('app.create')) }}

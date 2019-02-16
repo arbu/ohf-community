@@ -18,7 +18,6 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->string('name_translit')->nullable();
             $table->string('category');
-            $table->text('remarks')->nullable();
             $table->timestamps();
         });
     }
