@@ -18,10 +18,10 @@
                     @foreach ($suppliers as $supplier)
                         <tr>
                             <td>
-                                <a href="{{ route('logistics.suppliers.show', $supplier) }}">{{ $supplier->name_tr }}</a>
+                                <a href="{{ route('logistics.suppliers.show', $supplier) }}">{{ $supplier->poi->name_tr }}</a>
                             </td>
                             <td class="d-none d-sm-table-cell">
-                                {{ $supplier->address_tr }}
+                                {{ $supplier->poi->address_tr }}
                             </td>
                             <td>{{ $supplier->category }}</td>
                         </tr>

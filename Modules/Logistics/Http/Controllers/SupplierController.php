@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 
+use App\Poi;
 use Modules\Logistics\Entities\Supplier;
 use Modules\Logistics\Http\Requests\CreateSupplierRequest;
 use Modules\Logistics\Http\Requests\UpdateSupplierRequest;
@@ -22,7 +23,10 @@ class SupplierController extends Controller
         $this->authorize('list', Supplier::class);
 
         return view('logistics::suppliers.index', [
-            'suppliers' => Supplier::orderBy('name_translit')->orderBy('name')->paginate(100),            
+            'suppliers' => Supplier::join('pois', 'pois.id', '=', 'logistics_suppliers.poi_id')
+                ->orderBy('pois.name_translit')
+                ->orderBy('pois.name')
+                ->paginate(),
         ]);
     }
 
@@ -50,8 +54,13 @@ class SupplierController extends Controller
     {
         $this->authorize('create', Supplier::class);
 
+        $poi = new Poi();
+        $poi->fill($request->all());
+        $poi->save();
+
         $supplier = new Supplier();
         $supplier->fill($request->all());
+        $supplier->poi()->associate($poi);
         $supplier->save();
 
         return redirect()

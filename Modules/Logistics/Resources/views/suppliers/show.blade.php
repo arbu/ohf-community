@@ -4,11 +4,11 @@
 
 @section('content')
 
-    <h1>{{ $supplier->name_tr }}</h1>
+    <h1>{{ $supplier->poi->name_tr }}</h1>
     <p>{{ $supplier->category }}</p>
     <hr>
     <p>
-        @icon(map-marker) {!! gmaps_link($supplier->address_tr, $supplier->maps_location) !!}<br>
+        @icon(map-marker) {!! gmaps_link($supplier->poi->address_tr, $supplier->poi->maps_location) !!}<br>
         @isset($supplier->phone)
             @icon(phone) {!! tel_link($supplier->phone) !!}<br>
         @endisset

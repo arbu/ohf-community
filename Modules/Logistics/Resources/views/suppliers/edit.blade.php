@@ -8,24 +8,24 @@
 
        <div class="form-row">
             <div class="col-md">
-                {{ Form::bsText('name', null, [ 'required' ], __('app.name')) }}
+                {{ Form::bsText('name', $supplier->poi->name, [ 'required' ], __('app.name')) }}
             </div>
             <div class="col-md">
-                {{ Form::bsText('name_translit', null, [ ], __('app.name_translit')) }}
+                {{ Form::bsText('name_translit', $supplier->poi->name_translit, [ ], __('app.name_translit')) }}
             </div>
         </div>
         <div class="form-row">
             <div class="col-md">
-                {{ Form::bsText('address', null, [ 'required' ], __('app.address')) }}
+                {{ Form::bsText('address', $supplier->poi->address, [ 'required' ], __('app.address')) }}
             </div>
             <div class="col-md">
-                {{ Form::bsText('address_translit', null, [  ], __('app.address_translit')) }}
+                {{ Form::bsText('address_translit', $supplier->poi->address_translit, [  ], __('app.address_translit')) }}
             </div>
             <div class="col-sm-1">
-                {{ Form::bsText('latitude', null, [ 'pattern' => '-?\d+\.\d+', 'title' => __('app.decimal_number') ], __('app.latitude')) }}
+                {{ Form::bsText('latitude', $supplier->poi->latitude, [ 'pattern' => '-?\d+\.\d+', 'title' => __('app.decimal_number') ], __('app.latitude')) }}
             </div>
             <div class="col-sm-1">
-                {{ Form::bsText('longitude', null, [ 'pattern' => '-?\d+\.\d+', 'title' => __('app.decimal_number') ], __('app.longitude')) }}
+                {{ Form::bsText('longitude', $supplier->poi->longitude, [ 'pattern' => '-?\d+\.\d+', 'title' => __('app.decimal_number') ], __('app.longitude')) }}
             </div>
         </div>
         <div class="form-row">
