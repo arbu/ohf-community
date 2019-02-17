@@ -5,6 +5,7 @@ namespace Modules\Logistics\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use Validator;
 
 use App\Poi;
 use Modules\Logistics\Entities\Supplier;
@@ -21,6 +22,21 @@ class SupplierController extends Controller
     public function index(Request $request)
     {
         $this->authorize('list', Supplier::class);
+
+
+        // Validate request
+        Validator::make($request->all(), [
+            'display' => [
+                'nullable', 
+                'in:list,map',
+            ],
+        ])->validate();
+
+        // Handle display session persistence
+        if (isset($request->display)) {
+            $request->session()->put('suppliers_display', $request->display);
+        }
+        $display = $request->session()->get('suppliers_display', 'list');
 
         // Handle filter session persistence
         if ($request->has('reset_filter') || ($request->has('filter') && $request->filter == null)) {
@@ -53,6 +69,7 @@ class SupplierController extends Controller
                 ->orderBy('pois.name')
                 ->paginate(),
             'filter' => $filter,
+            'display' => $display,
         ]);
     }
 
