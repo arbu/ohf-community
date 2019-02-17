@@ -65,13 +65,13 @@ class NavigationComposer {
                     'active' => 'helpers*',
                     'authorized' => Auth::user()->can('list', Helper::class)
                 ],
-                [
-                    'route' => 'logistics.index',
-                    'caption' => 'Logistics',
-                    'icon' => 'spoon',
-                    'active' => 'logistics*',
-                    'authorized' => Gate::allows('use-logistics')
-                ],
+                // [
+                //     'route' => 'logistics.index',
+                //     'caption' => 'Logistics',
+                //     'icon' => 'spoon',
+                //     'active' => 'logistics*',
+                //     'authorized' => Gate::allows('use-logistics')
+                // ],
                 [
                     'route' => 'fundraising.donors.index',
                     'caption' => __('fundraising.donation_management'),

@@ -1,8 +1,10 @@
-@extends('logistics::layouts.suppliers-products')
+{{-- @extends('logistics::layouts.suppliers-products') --}}
+@extends('layouts.app')
 
 @section('title', __('logistics::suppliers.suppliers'))
 
-@section('wrapped-content')
+{{-- @section('wrapped-content') --}}
+@section('content')
 
     <div class="form-row">
         <div class="col">
@@ -40,7 +42,8 @@
                     @isset($supplier->poi->description)
                         <p class="card-text">{{ $supplier->poi->description }}</p>
                     @endisset
-                    <div class="row mb-3">
+                    {{-- <div class="row mb-3"> --}}
+                    <div class="row">
                         <div class="col-sm">
                             <p class="card-text">
                                 @icon(map-marker) {!! gmaps_link(str_replace(", ", "<br>", $supplier->poi->address_tr), $supplier->poi->maps_location) !!}
@@ -60,8 +63,8 @@
                             </p>
                         </div>
                     </div>
-                    <a href="#" class="card-link text-dark">@icon(shopping-basket) Products</a>
-                    <a href="#" class="card-link text-dark">@icon(file-text-o) Services</a>
+                    {{-- <a href="#" class="card-link text-dark">@icon(shopping-basket) Products</a>
+                    <a href="#" class="card-link text-dark">@icon(file-text-o) Services</a> --}}
                     {{-- <p class="card-text"><small class="text-muted"><a href="" class="text-muted">Products: Apples, Pears, Wrenches, ...</a></small></p> --}}
                 </div>
             </div>
