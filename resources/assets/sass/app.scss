@@ -307,3 +307,12 @@
 .tags-input {
   width: 100%;
 }
+
+/**
+* Ellipsis
+*/
+.ellipsis {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

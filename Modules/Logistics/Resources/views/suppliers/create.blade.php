@@ -21,12 +21,12 @@
             <div class="col-md">
                 {{ Form::bsText('address_translit', null, [  ], __('app.address_translit')) }}
             </div>
-            <div class="col-sm-1">
+            {{-- <div class="col-sm-1">
                 {{ Form::bsText('latitude', null, [ 'pattern' => '-?\d+\.\d+', 'title' => __('app.decimal_number') ], __('app.latitude')) }}
             </div>
             <div class="col-sm-1">
                 {{ Form::bsText('longitude', null, [ 'pattern' => '-?\d+\.\d+', 'title' => __('app.decimal_number') ], __('app.longitude')) }}
-            </div>
+            </div> --}}
         </div>
         <div class="form-row">
             <div class="col-md">
@@ -44,7 +44,7 @@
                 {{ Form::bsUrl('website', null, [ ], __('app.website')) }}
             </div>
         </div>
-        {{ Form::bsTextarea('remarks', null, [ 'rows' => 3 ], __('app.remarks')) }}
+        {{ Form::bsTextarea('description', null, [ 'rows' => 3 ], __('app.description')) }}
 
         <p>
             {{ Form::bsSubmitButton(__('app.create')) }}

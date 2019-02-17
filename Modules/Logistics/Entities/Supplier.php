@@ -14,14 +14,12 @@ class Supplier extends Model
         'phone',
         'email',
         'website',
-        'remarks',
     ];
 
     protected $nullable = [
         'phone',
         'email',
         'website',
-        'remarks',
     ];
 
     /**

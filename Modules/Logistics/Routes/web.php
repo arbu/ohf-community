@@ -19,7 +19,7 @@ Route::group(['middleware' => 'language'], function () {
     Route::middleware(['auth'])->prefix('logistics')->name('logistics.')->group(function () {
         
         // Suppliers
-        Route::resource('suppliers', 'SupplierController');
+        Route::resource('suppliers', 'SupplierController')->except(['show']);
 
         // Products
         Route::resource('products', 'ProductController');

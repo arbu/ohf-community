@@ -64,23 +64,8 @@ class SupplierController extends Controller
         $supplier->save();
 
         return redirect()
-            ->route('logistics.suppliers.show', $supplier)
+            ->route('logistics.suppliers.index')
             ->with('success', __('logistics::suppliers.supplier_created'));
-    }
-
-    /**
-     * Show the specified resource.
-     * 
-     * @param Supplier $supplier
-     * @return Response
-     */
-    public function show(Supplier $supplier)
-    {
-        $this->authorize('view', $supplier);
-
-        return view('logistics::suppliers.show', [
-            'supplier' => $supplier,
-        ]);
     }
 
     /**
@@ -110,11 +95,14 @@ class SupplierController extends Controller
     {
         $this->authorize('update', $supplier);
 
+        $supplier->poi->fill($request->all());
+        $supplier->poi->save();
+
         $supplier->fill($request->all());
         $supplier->save();
 
         return redirect()
-            ->route('logistics.suppliers.show', $supplier)
+            ->route('logistics.suppliers.index')
             ->with('success', __('logistics::suppliers.supplier_updated'));
     }
 

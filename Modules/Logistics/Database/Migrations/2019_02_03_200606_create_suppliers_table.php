@@ -20,7 +20,6 @@ class CreateSuppliersTable extends Migration
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
             $table->string('website')->nullable();
-            $table->text('remarks')->nullable();
             $table->timestamps();
             $table->foreign('poi_id')->references('id')->on('pois')->onDelete('cascade')->onUpdate('cascade');
         });

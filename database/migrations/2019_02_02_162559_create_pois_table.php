@@ -20,6 +20,7 @@ class CreatePoisTable extends Migration
             $table->string('address');
             $table->string('address_translit')->nullable();
             $table->string('latlong')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

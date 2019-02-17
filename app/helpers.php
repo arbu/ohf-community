@@ -814,20 +814,23 @@ if (! function_exists('emailize')) {
 }
 
 if (! function_exists('email_link')) {
-    function email_link($value) {
-        return '<a href="mailto:' . $value . '">' . $value . '</a>';
+    function email_link($value, $label = null, $classes = []) {
+        $class = count($classes) > 0 ? 'class="'. implode(' ', $classes) .'"' : '';
+        return '<a href="mailto:' . $value . '"' . $class .'>' . ($label ?? $value) . '</a>';
     }
 }
 
 if (! function_exists('tel_link')) {
-    function tel_link($value) {
-        return '<a href="tel:' . preg_replace('/[^+0-9]/', '', $value) . '">' . $value . '</a>';
+    function tel_link($value, $label = null, $classes = []) {
+        $class = count($classes) > 0 ? 'class="'. implode(' ', $classes) .'"' : '';
+        return '<a href="tel:' . preg_replace('/[^+0-9]/', '', $value) . '"' . $class . '>' . ($label ?? $value) . '</a>';
     }
 }
 
 if (! function_exists('gmaps_link')) {
-    function gmaps_link($label, $value) {
-        return '<a href="http://maps.google.com/maps?q=' . urlencode($value) . '" target="_blank">' . $label . '</a>';
+    function gmaps_link($label, $value, $classes = []) {
+        $class = count($classes) > 0 ? 'class="'. implode(' ', $classes) .'"' : '';
+        return '<a href="http://maps.google.com/maps?q=' . urlencode($value) . '" target="_blank"' . $class . '>' . $label . '</a>';
     }
 }
 

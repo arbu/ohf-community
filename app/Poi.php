@@ -18,12 +18,14 @@ class Poi extends Model
         'latlong',
         'latitude',
         'longitude',
+        'description',
     ];
 
     protected $nullable = [
         'name_translit',
         'address_translit',
         'latlong',
+        'description',
     ];
 
     public function getNameTrAttribute() {

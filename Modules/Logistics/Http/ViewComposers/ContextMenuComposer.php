@@ -78,16 +78,9 @@ class ContextMenuComposer {
                         'authorized' => Auth::user()->can('create', Supplier::class)
                     ]
                 ];
-            case 'logistics.suppliers.show':
+            case 'logistics.suppliers.edit':
                 $supplier = $view->getData()['supplier'];
                 return [
-                    'action' => [
-                        'url' => route('logistics.suppliers.edit', $supplier),
-                        'caption' => __('app.edit'),
-                        'icon' => 'pencil',
-                        'icon_floating' => 'pencil',
-                        'authorized' => Auth::user()->can('update', $supplier)
-                    ],
                     'delete' => [
                         'url' => route('logistics.suppliers.destroy', $supplier),
                         'caption' => __('app.delete'),
@@ -97,19 +90,9 @@ class ContextMenuComposer {
                     ],
                     'back' => [
                         'url' => route('logistics.suppliers.index'),
-                        'caption' => __('app.close'),
-                        'icon' => 'times-circle',
-                        'authorized' => Auth::user()->can('list', Supplier::class)
-                    ]
-                ];
-            case 'logistics.suppliers.edit':
-                $supplier = $view->getData()['supplier'];
-                return [
-                    'back' => [
-                        'url' => route('logistics.suppliers.show', $supplier),
                         'caption' => __('app.cancel'),
                         'icon' => 'times-circle',
-                        'authorized' => Auth::user()->can('view', $supplier)
+                        'authorized' => Auth::user()->can('list', Supplier::class)
                     ]
                 ];
             
