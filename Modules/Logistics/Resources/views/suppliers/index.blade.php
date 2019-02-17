@@ -4,26 +4,28 @@
 
 @section('wrapped-content')
 
-    <div class="row mb-3">
-        <div class="col-sm">
+    <div class="form-row">
+        <div class="col">
             {!! Form::open(['route' => ['logistics.suppliers.index'], 'method' => 'get']) !!}
                 <div class="input-group mb-3">
-                    {{ Form::search('filter', isset($filter) ? $filter : null, [ 'class' => 'form-control', 'placeholder' => __('app.filter') . '...' ]) }}
+                    {{ Form::search('filter', isset($filter) ? $filter : null, [ 'class' => 'form-control form-control-sm', 'placeholder' => __('app.filter') . '...' ]) }}
                     <div class="input-group-append">
-                        <button class="btn btn-primary" type="submit">@icon(search)</button> 
+                        <button class="btn btn-primary btn-sm" type="submit">@icon(search)</button> 
                         @if(isset($filter))
-                            <a class="btn btn-secondary" href="{{ route('logistics.suppliers.index', ['reset_filter']) }}">@icon(eraser)</a> 
+                            <a class="btn btn-secondary btn-sm" href="{{ route('logistics.suppliers.index', ['reset_filter']) }}">@icon(eraser)</a> 
                         @endif
                     </div>
                 </div>
             {!! Form::close() !!}
         </div>
-        <div class="col-sm text-right">
-            @if( ! $suppliers->isEmpty() )
-                <a href="{{ route('logistics.suppliers.index') }}" class="btn btn-dark">@icon(list)</a>
-                <a href="{{ route('logistics.suppliers.index') }}" class="btn btn-secondary">@icon(map)</a>
-            @endif
-        </div>
+        @if( ! $suppliers->isEmpty() )
+            <div class="col-auto">
+                <div class="btn-group" role="group">
+                    <a href="{{ route('logistics.suppliers.index') }}" class="btn btn-sm btn-dark">@icon(list)</a>
+                    <a href="{{ route('logistics.suppliers.index') }}" class="btn btn-sm btn-secondary">@icon(map)</a>
+                </div>
+            </div>
+        @endif
     </div>
 
     @if( ! $suppliers->isEmpty() )
@@ -38,7 +40,7 @@
                     @isset($supplier->poi->description)
                         <p class="card-text">{{ $supplier->poi->description }}</p>
                     @endisset
-                    <div class="row">
+                    <div class="row mb-3">
                         <div class="col-sm">
                             <p class="card-text">
                                 @icon(map-marker) {!! gmaps_link(str_replace(", ", "<br>", $supplier->poi->address_tr), $supplier->poi->maps_location) !!}
@@ -58,6 +60,9 @@
                             </p>
                         </div>
                     </div>
+                    <a href="#" class="card-link text-dark">@icon(shopping-basket) Products</a>
+                    <a href="#" class="card-link text-dark">@icon(file-text-o) Services</a>
+                    {{-- <p class="card-text"><small class="text-muted"><a href="" class="text-muted">Products: Apples, Pears, Wrenches, ...</a></small></p> --}}
                 </div>
             </div>
         @endforeach
