@@ -3,13 +3,30 @@
 @section('title', __('logistics::suppliers.suppliers'))
 
 @section('wrapped-content')
-    @if( ! $suppliers->isEmpty() )
 
-        <div class="text-right mb-3">
-            <a href="{{ route('logistics.suppliers.index') }}" class="btn btn-sm btn-dark">@icon(list)</a>
-            <a href="{{ route('logistics.suppliers.index') }}" class="btn btn-sm btn-secondary">@icon(map)</a>
+    <div class="row mb-3">
+        <div class="col-sm">
+            {!! Form::open(['route' => ['logistics.suppliers.index'], 'method' => 'get']) !!}
+                <div class="input-group mb-3">
+                    {{ Form::search('filter', isset($filter) ? $filter : null, [ 'class' => 'form-control', 'placeholder' => __('app.filter') . '...' ]) }}
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit">@icon(search)</button> 
+                        @if(isset($filter))
+                            <a class="btn btn-secondary" href="{{ route('logistics.suppliers.index', ['reset_filter']) }}">@icon(eraser)</a> 
+                        @endif
+                    </div>
+                </div>
+            {!! Form::close() !!}
         </div>
+        <div class="col-sm text-right">
+            @if( ! $suppliers->isEmpty() )
+                <a href="{{ route('logistics.suppliers.index') }}" class="btn btn-dark">@icon(list)</a>
+                <a href="{{ route('logistics.suppliers.index') }}" class="btn btn-secondary">@icon(map)</a>
+            @endif
+        </div>
+    </div>
 
+    @if( ! $suppliers->isEmpty() )
         @foreach ($suppliers as $supplier)
             <div class="card mb-3">
                 <div class="card-body">

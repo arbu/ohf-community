@@ -18,15 +18,41 @@ class SupplierController extends Controller
      * 
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('list', Supplier::class);
 
+        // Handle filter session persistence
+        if ($request->has('reset_filter') || ($request->has('filter') && $request->filter == null)) {
+            $request->session()->forget('suppliers_filter');
+        }
+        if (isset($request->filter)) {
+            $request->session()->put('suppliers_filter', $request->filter);
+        }
+
+        // Init query
+        $query = Supplier::join('pois', 'pois.id', '=', 'logistics_suppliers.poi_id');
+
+        // Filter
+        if ($request->session()->has('suppliers_filter')) {
+            $filter = $request->session()->get('suppliers_filter');
+            $query->where(function($wq) use($filter) {
+                return $wq->where('name', 'LIKE', '%' . $filter . '%')
+                    ->orWhere('name_translit', 'LIKE', '%' . $filter . '%')
+                    ->orWhere('address', 'LIKE', '%' . $filter . '%')
+                    ->orWhere('address_translit', 'LIKE', '%' . $filter . '%')
+                    ->orWhere('category', 'LIKE', '%' . $filter . '%');
+            });
+        } else {
+            $filter = null;
+        }
+
         return view('logistics::suppliers.index', [
-            'suppliers' => Supplier::join('pois', 'pois.id', '=', 'logistics_suppliers.poi_id')
+            'suppliers' => $query
                 ->orderBy('pois.name_translit')
                 ->orderBy('pois.name')
                 ->paginate(),
+            'filter' => $filter,
         ]);
     }
 
