@@ -39,7 +39,7 @@
         @if ( isset( $buttons ) && sizeof($buttons) > 0 )
             @foreach( $buttons as $key => $button )
                 @if ( $button['authorized'] )
-                    @if( $key == 'delete' )
+                    @if( $key == 'delete' && isset($button['confirmation']) )
                         <form method="POST" action="{{ $button['url'] }}" class="d-inline">
                             {{ csrf_field() }}
                             {{ method_field('DELETE') }}

@@ -31,7 +31,7 @@ class ContextMenuComposer {
     {
         $currentRouteName = Route::currentRouteName();
         $view->with('menu', array_merge($view->getData()['menu'], $this->getMenu($view, $currentRouteName)));
-        $view->with('buttons', array_merge($view->getData()['menu'], $this->getButtons($view, $currentRouteName)));
+        $view->with('buttons', array_merge($view->getData()['buttons'], $this->getButtons($view, $currentRouteName)));
     }
 
     /**
