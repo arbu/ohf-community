@@ -18,7 +18,7 @@ class ContextMenuComposer {
      */
     public function compose(View $view)
     {
-        $currentRouteName = Route::currentRouteName();
+        $currentRouteName = Route::currentRouteName() ?? '';
 
         $view->with('menu', ContextMenus::get($currentRouteName));
         $view->with('buttons', ContextButtons::get($currentRouteName, $view));
