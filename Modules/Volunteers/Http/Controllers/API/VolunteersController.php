@@ -22,6 +22,8 @@ class VolunteersController extends Controller
         // TODO authorization
         if ($request->scope == 'active') {
             $data = Volunteer::active()->get();
+        } else if ($request->scope == 'future') {
+            $data = Volunteer::future()->get();
         } else {
             $data = Volunteer::all();
         }

@@ -59,4 +59,9 @@ class Stay extends Model
     {
         return $this->arrival <= Carbon::today() && ($this->departure == null || $this->departure >= Carbon::today());
     }
+
+    public function scopeFuture($query)
+    {
+        return $query->whereDate('arrival', '>', Carbon::today());
+    }
 }
