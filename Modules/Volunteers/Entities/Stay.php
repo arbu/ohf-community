@@ -50,9 +50,10 @@ class Stay extends Model
 
     public function scopeActive($query)
     {
-        return $query->whereDate('arrival', '<=', Carbon::today())->where(function($q){
-            $q->where('departure', null)->orWhereDate('departure', '>=', Carbon::today());
-        });
+        return $query->where('status', 'confirmed')
+            ->whereDate('arrival', '<=', Carbon::today())->where(function($q){
+                $q->where('departure', null)->orWhereDate('departure', '>=', Carbon::today());
+            });
     }
 
     public function getActiveAttribute()
@@ -62,6 +63,12 @@ class Stay extends Model
 
     public function scopeFuture($query)
     {
-        return $query->whereDate('arrival', '>', Carbon::today());
+        return $query->where('status', 'confirmed')
+            ->whereDate('arrival', '>', Carbon::today());
+    }
+
+    public function scopeApplied($query)
+    {
+        return $query->where('status', 'applied');
     }
 }

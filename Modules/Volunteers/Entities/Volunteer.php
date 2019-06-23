@@ -73,4 +73,11 @@ class Volunteer extends Model
             $q->future();
         });
     }
+
+    public function scopeApplied($query)
+    {
+        return $query->whereHas('stays', function($q) {
+            $q->applied();
+        });
+    }
 }
