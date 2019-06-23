@@ -10,7 +10,7 @@ $factory->define(Volunteer::class, function (Faker $faker) {
     $gender = $faker->randomElement(['male', 'female']);
     $countryCode = $faker->optional(0.9)->countryCode; 
     $nationality = $countryCode != null && !in_array($countryCode, ['HM', 'BV']) ? \Countries::getOne($countryCode) : null;
-    $dob = $faker->optional(0.9)->dateTimeBetween('-70 years', 'now');
+    $dob = $faker->optional(0.9)->dateTimeBetween('-70 years', '-19 years');
     $govtRegNr = $faker->optional(0.2)->randomNumber(5);
     $languages = [];
     for ($i = 0; $i < mt_rand(1,3); $i++) {
