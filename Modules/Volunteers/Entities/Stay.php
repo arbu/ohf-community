@@ -72,6 +72,12 @@ class Stay extends Model
             ->whereDate('arrival', '>', Carbon::today());
     }
 
+    public function scopePrevious($query)
+    {
+        return $query->where('status', 'confirmed')
+            ->whereDate('departure', '<', Carbon::today());
+    }
+
     public function scopeApplied($query)
     {
         return $query->where('status', 'applied');

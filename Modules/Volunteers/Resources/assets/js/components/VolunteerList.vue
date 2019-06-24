@@ -1,10 +1,11 @@
 <template>
     <div>
-        <div class="row">
+        <div class="row mb-3 mb-sm-0">
             <div class="col col-auto">
                 <div class="btn-group btn-group-sm mb-3" role="group" aria-label="Scopes">
                     <button class="btn btn-sm" :class="{ 'btn-dark': scope == 'active', 'btn-secondary':  scope != 'active' }" @click="scope='active'">Active</button>
                     <button class="btn btn-sm" :class="{ 'btn-dark': scope == 'future', 'btn-secondary':  scope != 'future' }" @click="scope='future'">Future</button>
+                    <button class="btn btn-sm" :class="{ 'btn-dark': scope == 'previous', 'btn-secondary':  scope != 'previous' }" @click="scope='previous'">Previous</button>
                     <button class="btn btn-sm" :class="{ 'btn-dark': scope == 'applied', 'btn-secondary':  scope != 'applied' }" @click="scope='applied'">Applications</button>
                 </div>
             </div>
@@ -28,6 +29,11 @@
                         <th>Name</th>
                         <th>Nationality</th>
                         <th>Age</th>
+                        <th>Gender</th>
+                        <th>Languages</th>
+                        <th v-if="scope == 'future' || scope == 'applications'">Arrival</th>
+                        <th>Departure</th>
+                        <th v-if="scope == 'future' || scope == 'applications'">Number of days</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,16 +41,31 @@
                         <td>{{ volunteer.first_name }} {{ volunteer.last_name }}</td>
                         <td>{{ volunteer.nationality }}</td>
                         <td>{{ volunteer.age }}</td>
-                        <td>{{ volunteer.stays[0].arrival }}</td>
-                        <td>{{ volunteer.stays[0].departure }}</td>
-                        <td>{{ volunteer.stays[0].num_days }}</td>
+                        <td>
+                            <i class="fas" :class="{ 'fa-male': volunteer.gender == 'm', 'fa-female': volunteer.gender == 'f', }"></i>
+                        </td>
+                        <td>
+                            <template v-for="language in volunteer.languages">
+                                {{ language }}<br :key="language">
+                            </template>
+                        </td>
+                        <td v-if="scope == 'future' || scope == 'applications'">{{ volunteer.stay.arrival }}</td>
+                        <td>
+                            <template v-if="volunteer.stay.departure != null">
+                                {{ volunteer.stay.departure }}
+                            </template>
+                            <template v-else>
+                                open-end
+                            </template>                            
+                        </td>
+                        <td v-if="scope == 'future' || scope == 'applications'">{{ volunteer.stay.num_days }}</td>
                     </tr>
                 </tbody>
             </table>
             <p><small>{{ volunteers.length }} volunteers in total</small></p>
         </div>
-        <div v-else-if="error == null" class="alert alert-warning">
-            No volunteers registered!
+        <div v-else-if="error == null" class="alert alert-info">
+            No volunteers registrations found!
         </div>
     </div>
 </template>

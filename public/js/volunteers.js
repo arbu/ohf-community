@@ -279,9 +279,7 @@ __webpack_require__.r(__webpack_exports__);
       volunteer: null
     };
   },
-  mounted: function mounted() {
-    this.refresh();
-  },
+  mounted: function mounted() {},
   methods: {}
 });
 
@@ -296,6 +294,27 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -435,7 +454,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("div", { staticClass: "row" }, [
+    _c("div", { staticClass: "row mb-3 mb-sm-0" }, [
       _c("div", { staticClass: "col col-auto" }, [
         _c(
           "div",
@@ -476,6 +495,23 @@ var render = function() {
                 }
               },
               [_vm._v("Future")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-sm",
+                class: {
+                  "btn-dark": _vm.scope == "previous",
+                  "btn-secondary": _vm.scope != "previous"
+                },
+                on: {
+                  click: function($event) {
+                    _vm.scope = "previous"
+                  }
+                }
+              },
+              [_vm._v("Previous")]
             ),
             _vm._v(" "),
             _c(
@@ -539,7 +575,29 @@ var render = function() {
                 "table table-sm table-bordered table-striped table-hover"
             },
             [
-              _vm._m(0),
+              _c("thead", [
+                _c("tr", [
+                  _c("th", [_vm._v("Name")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Nationality")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Age")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Gender")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Languages")]),
+                  _vm._v(" "),
+                  _vm.scope == "future" || _vm.scope == "applications"
+                    ? _c("th", [_vm._v("Arrival")])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Departure")]),
+                  _vm._v(" "),
+                  _vm.scope == "future" || _vm.scope == "applications"
+                    ? _c("th", [_vm._v("Number of days")])
+                    : _vm._e()
+                ])
+              ]),
               _vm._v(" "),
               _c(
                 "tbody",
@@ -557,11 +615,59 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(volunteer.age))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(volunteer.stays[0].arrival))]),
+                    _c("td", [
+                      _c("i", {
+                        staticClass: "fas",
+                        class: {
+                          "fa-male": volunteer.gender == "m",
+                          "fa-female": volunteer.gender == "f"
+                        }
+                      })
+                    ]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(volunteer.stays[0].departure))]),
+                    _c(
+                      "td",
+                      [
+                        _vm._l(volunteer.languages, function(language) {
+                          return [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(language)
+                            ),
+                            _c("br", { key: language })
+                          ]
+                        })
+                      ],
+                      2
+                    ),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(volunteer.stays[0].num_days))])
+                    _vm.scope == "future" || _vm.scope == "applications"
+                      ? _c("td", [_vm._v(_vm._s(volunteer.stay.arrival))])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c(
+                      "td",
+                      [
+                        volunteer.stay.departure != null
+                          ? [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(volunteer.stay.departure) +
+                                  "\n                        "
+                              )
+                            ]
+                          : [
+                              _vm._v(
+                                "\n                            open-end\n                        "
+                              )
+                            ]
+                      ],
+                      2
+                    ),
+                    _vm._v(" "),
+                    _vm.scope == "future" || _vm.scope == "applications"
+                      ? _c("td", [_vm._v(_vm._s(volunteer.stay.num_days))])
+                      : _vm._e()
                   ])
                 }),
                 0
@@ -576,28 +682,13 @@ var render = function() {
           ])
         ])
       : _vm.error == null
-      ? _c("div", { staticClass: "alert alert-warning" }, [
-          _vm._v("\n        No volunteers registered!\n    ")
+      ? _c("div", { staticClass: "alert alert-info" }, [
+          _vm._v("\n        No volunteers registrations found!\n    ")
         ])
       : _vm._e()
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", [_vm._v("Name")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Nationality")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Age")])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

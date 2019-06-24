@@ -21,15 +21,17 @@ class VolunteersController extends Controller
     {
         // TODO authorization
         if ($request->scope == 'active') {
-            $data = Volunteer::active()->get();
+            $qry = Volunteer::active();
         } else if ($request->scope == 'applied') {
-            $data = Volunteer::applied()->get();
+            $qry = Volunteer::applied()->join('volunteer_stays', 'volunteer_stays.volunteer_id', '=', 'volunteers.id')->orderBy('volunteer_stays.arrival', 'asc')->select('volunteers.*');
         } else if ($request->scope == 'future') {
-            $data = Volunteer::future()->get();
+            $qry = Volunteer::future()->join('volunteer_stays', 'volunteer_stays.volunteer_id', '=', 'volunteers.id')->orderBy('volunteer_stays.arrival', 'asc')->select('volunteers.*');
+        } else if ($request->scope == 'previous') {
+            $qry = Volunteer::previous()->join('volunteer_stays', 'volunteer_stays.volunteer_id', '=', 'volunteers.id')->orderBy('volunteer_stays.departure', 'desc')->select('volunteers.*');
         } else {
-            $data = Volunteer::all();
+            $qry = Volunteer::query();
         }
-        return new VolunteerCollection($data);
+        return new VolunteerCollection($qry->orderBy('first_name')->orderBy('last_name')->get());
     }
 
     /**

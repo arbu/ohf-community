@@ -15,7 +15,8 @@ class Stay extends Resource
     public function toArray($request)
     {
         $data = parent::toArray($request);
-        $data['active'] = $this->active;
+        unset($data['volunteer_id']);
+        // $data['active'] = $this->active;
         $data['arrival'] = $this->arrival->toDateString();
         $data['departure'] = optional($this->departure)->toDateString();
         $data['num_days'] = $this->numberOfDays;
