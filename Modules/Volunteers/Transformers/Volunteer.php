@@ -18,7 +18,7 @@ class Volunteer extends Resource
     {
         return array_merge(parent::toArray($request) + [
             'age' => $this->age,
-            'stays' => StayResource::collection($this->stays),
+            'stays' => StayResource::collection($this->stays->sortBy('arrival')),
         ]);
     }
 }

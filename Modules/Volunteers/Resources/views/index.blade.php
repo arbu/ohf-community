@@ -4,7 +4,7 @@
 
 @section('content')
     <div id="app" class="mb-3">
-        <volunteer-list></volunteer-list>
+        <volunteer-app></volunteer-app>
     </div>
 @endsection
 

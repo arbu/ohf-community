@@ -35,6 +35,9 @@
                         <td>{{ volunteer.first_name }} {{ volunteer.last_name }}</td>
                         <td>{{ volunteer.nationality }}</td>
                         <td>{{ volunteer.age }}</td>
+                        <td>{{ volunteer.stays[0].arrival }}</td>
+                        <td>{{ volunteer.stays[0].departure }}</td>
+                        <td>{{ volunteer.stays[0].num_days }}</td>
                     </tr>
                 </tbody>
             </table>

@@ -48,6 +48,11 @@ class Stay extends Model
         return $this->belongsTo(Volunteer::class);
     }
 
+    public function getNumberOfDaysAttribute()
+    {
+        return optional($this->departure)->diffInDays($this->arrival);
+    }
+
     public function scopeActive($query)
     {
         return $query->where('status', 'confirmed')

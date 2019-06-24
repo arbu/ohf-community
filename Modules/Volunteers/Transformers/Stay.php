@@ -14,8 +14,11 @@ class Stay extends Resource
      */
     public function toArray($request)
     {
-        return array_merge(parent::toArray($request) + [
-            'active' => $this->active,
-        ]);
+        $data = parent::toArray($request);
+        $data['active'] = $this->active;
+        $data['arrival'] = $this->arrival->toDateString();
+        $data['departure'] = optional($this->departure)->toDateString();
+        $data['num_days'] = $this->numberOfDays;
+        return $data;
     }
 }
