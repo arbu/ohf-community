@@ -24,6 +24,7 @@ class CreateVolunteerStaysTable extends Migration
             $table->boolean('financial_contribution_paid')->default(false);
             $table->boolean('feedback_sheet_received')->default(false);
             $table->boolean('fundraising_infos_received')->default(false);
+            $table->string('responsibilities')->nullable();
             $table->text('remarks')->nullable();
             $table->timestamps();
             $table->foreign('volunteer_id')->references('id')->on('volunteers')->onDelete('cascade')->onUpdate('cascade');

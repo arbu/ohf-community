@@ -41,6 +41,7 @@ class Stay extends Model
         'financial_contribution_paid' => 'boolean',
         'feedback_sheet_received' => 'boolean',
         'fundraising_infos_received' => 'boolean',
+        'responsibilities' => 'array',
     ];    
 
     public function volunteer()

@@ -34,6 +34,7 @@ class Volunteer extends Model
     protected $casts = [
         'languages' => 'array',
         'criminal_record_received' => 'boolean',
+        'has_driving_license' => 'boolean',
     ];    
 
     /**
