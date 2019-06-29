@@ -382,6 +382,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+var scopes = ['applied', 'future', 'active', 'previous'];
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -392,10 +393,15 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
+    if (localStorage.volunteers_list_scope && scopes.includes(localStorage.volunteers_list_scope)) {
+      this.scope = localStorage.volunteers_list_scope;
+    }
+
     this.refresh();
   },
   watch: {
     scope: function scope(val, oldVal) {
+      localStorage.volunteers_list_scope = val;
       this.loadData(val);
     }
   },
@@ -485,16 +491,16 @@ var render = function() {
               {
                 staticClass: "btn btn-sm",
                 class: {
-                  "btn-dark": _vm.scope == "active",
-                  "btn-secondary": _vm.scope != "active"
+                  "btn-dark": _vm.scope == "applied",
+                  "btn-secondary": _vm.scope != "applied"
                 },
                 on: {
                   click: function($event) {
-                    _vm.scope = "active"
+                    _vm.scope = "applied"
                   }
                 }
               },
-              [_vm._v("Active")]
+              [_vm._v("Applications")]
             ),
             _vm._v(" "),
             _c(
@@ -519,6 +525,23 @@ var render = function() {
               {
                 staticClass: "btn btn-sm",
                 class: {
+                  "btn-dark": _vm.scope == "active",
+                  "btn-secondary": _vm.scope != "active"
+                },
+                on: {
+                  click: function($event) {
+                    _vm.scope = "active"
+                  }
+                }
+              },
+              [_vm._v("Active")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-sm",
+                class: {
                   "btn-dark": _vm.scope == "previous",
                   "btn-secondary": _vm.scope != "previous"
                 },
@@ -529,23 +552,6 @@ var render = function() {
                 }
               },
               [_vm._v("Previous")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-sm",
-                class: {
-                  "btn-dark": _vm.scope == "applied",
-                  "btn-secondary": _vm.scope != "applied"
-                },
-                on: {
-                  click: function($event) {
-                    _vm.scope = "applied"
-                  }
-                }
-              },
-              [_vm._v("Applications")]
             )
           ]
         )
@@ -611,7 +617,9 @@ var render = function() {
                   _c("th", [_vm._v("Departure")]),
                   _vm._v(" "),
                   _vm.scope != "active"
-                    ? _c("th", [_vm._v("Number of days")])
+                    ? _c("th", { staticClass: "text-right" }, [
+                        _vm._v("Number of days")
+                      ])
                     : _vm._e(),
                   _vm._v(" "),
                   _c("th", [_vm._v("Govt. reg.")]),
@@ -632,7 +640,7 @@ var render = function() {
                           _vm._s(volunteer.first_name) +
                           " " +
                           _vm._s(volunteer.last_name) +
-                          "^\n                    "
+                          "\n                    "
                       )
                     ]),
                     _vm._v(" "),
@@ -691,7 +699,9 @@ var render = function() {
                     ),
                     _vm._v(" "),
                     _vm.scope != "active"
-                      ? _c("td", [_vm._v(_vm._s(volunteer.stay.num_days))])
+                      ? _c("td", { staticClass: "text-right" }, [
+                          _vm._v(_vm._s(volunteer.stay.num_days))
+                        ])
                       : _vm._e(),
                     _vm._v(" "),
                     _c("td", [

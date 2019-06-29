@@ -3,10 +3,10 @@
         <div class="row mb-3 mb-sm-0">
             <div class="col col-auto">
                 <div class="btn-group btn-group-sm mb-3" role="group" aria-label="Scopes">
-                    <button class="btn btn-sm" :class="{ 'btn-dark': scope == 'active', 'btn-secondary':  scope != 'active' }" @click="scope='active'">Active</button>
-                    <button class="btn btn-sm" :class="{ 'btn-dark': scope == 'future', 'btn-secondary':  scope != 'future' }" @click="scope='future'">Future</button>
-                    <button class="btn btn-sm" :class="{ 'btn-dark': scope == 'previous', 'btn-secondary':  scope != 'previous' }" @click="scope='previous'">Previous</button>
                     <button class="btn btn-sm" :class="{ 'btn-dark': scope == 'applied', 'btn-secondary':  scope != 'applied' }" @click="scope='applied'">Applications</button>
+                    <button class="btn btn-sm" :class="{ 'btn-dark': scope == 'future', 'btn-secondary':  scope != 'future' }" @click="scope='future'">Future</button>
+                    <button class="btn btn-sm" :class="{ 'btn-dark': scope == 'active', 'btn-secondary':  scope != 'active' }" @click="scope='active'">Active</button>
+                    <button class="btn btn-sm" :class="{ 'btn-dark': scope == 'previous', 'btn-secondary':  scope != 'previous' }" @click="scope='previous'">Previous</button>
                 </div>
             </div>
             <div class="col col-auto">
@@ -33,7 +33,7 @@
                         <th>Languages</th>
                         <th v-if="scope != 'active'">Arrival</th>
                         <th>Departure</th>
-                        <th v-if="scope != 'active'">Number of days</th>
+                        <th v-if="scope != 'active'" class="text-right">Number of days</th>
                         <th>Govt. reg.</th>
                         <th>Contribution paid</th>
                         <th>Feedback sheet received</th>
@@ -42,7 +42,7 @@
                 <tbody>
                     <tr v-for="volunteer in volunteers" :key="volunteer.id">
                         <td>
-                            {{ volunteer.first_name }} {{ volunteer.last_name }}^
+                            {{ volunteer.first_name }} {{ volunteer.last_name }}
                         </td>
                         <td>{{ volunteer.nationality }}</td>
                         <td>{{ volunteer.age }}</td>
@@ -63,7 +63,7 @@
                                 open-end
                             </template>                            
                         </td>
-                        <td v-if="scope != 'active'">{{ volunteer.stay.num_days }}</td>
+                        <td v-if="scope != 'active'" class="text-right">{{ volunteer.stay.num_days }}</td>
                         <td>
                             {{ volunteer.stay.govt_reg_status }}
                         </td>
@@ -87,6 +87,7 @@
     </div>
 </template>
 <script>
+    const scopes = ['applied', 'future', 'active', 'previous'];
     export default {
         data() {
             return {
@@ -97,10 +98,14 @@
             }
         },
         mounted() {
+            if (localStorage.volunteers_list_scope && scopes.includes(localStorage.volunteers_list_scope)) {
+                this.scope = localStorage.volunteers_list_scope;
+            }
             this.refresh();
         },
         watch: {
             scope(val, oldVal) {
+                localStorage.volunteers_list_scope = val;
                 this.loadData(val);
             }
         },
