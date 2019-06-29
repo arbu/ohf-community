@@ -365,6 +365,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -587,15 +604,21 @@ var render = function() {
                   _vm._v(" "),
                   _c("th", [_vm._v("Languages")]),
                   _vm._v(" "),
-                  _vm.scope == "future" || _vm.scope == "applications"
+                  _vm.scope != "active"
                     ? _c("th", [_vm._v("Arrival")])
                     : _vm._e(),
                   _vm._v(" "),
                   _c("th", [_vm._v("Departure")]),
                   _vm._v(" "),
-                  _vm.scope == "future" || _vm.scope == "applications"
+                  _vm.scope != "active"
                     ? _c("th", [_vm._v("Number of days")])
-                    : _vm._e()
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Govt. reg.")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Contribution paid")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Feedback sheet received")])
                 ])
               ]),
               _vm._v(" "),
@@ -605,9 +628,11 @@ var render = function() {
                   return _c("tr", { key: volunteer.id }, [
                     _c("td", [
                       _vm._v(
-                        _vm._s(volunteer.first_name) +
+                        "\n                        " +
+                          _vm._s(volunteer.first_name) +
                           " " +
-                          _vm._s(volunteer.last_name)
+                          _vm._s(volunteer.last_name) +
+                          "^\n                    "
                       )
                     ]),
                     _vm._v(" "),
@@ -641,7 +666,7 @@ var render = function() {
                       2
                     ),
                     _vm._v(" "),
-                    _vm.scope == "future" || _vm.scope == "applications"
+                    _vm.scope != "active"
                       ? _c("td", [_vm._v(_vm._s(volunteer.stay.arrival))])
                       : _vm._e(),
                     _vm._v(" "),
@@ -665,9 +690,41 @@ var render = function() {
                       2
                     ),
                     _vm._v(" "),
-                    _vm.scope == "future" || _vm.scope == "applications"
+                    _vm.scope != "active"
                       ? _c("td", [_vm._v(_vm._s(volunteer.stay.num_days))])
-                      : _vm._e()
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(volunteer.stay.govt_reg_status) +
+                          "\n                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(volunteer.stay.financial_contribution_paid) +
+                          "\n                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(volunteer.stay.feedback_sheet_received) +
+                          "\n                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(volunteer.stay.fundraising_infos_received) +
+                          "\n                    "
+                      )
+                    ])
                   ])
                 }),
                 0

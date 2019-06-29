@@ -19,7 +19,7 @@ class CreateVolunteerStaysTable extends Migration
             $table->date('arrival');
             $table->date('departure')->nullable();
             $table->integer('volunteer_id')->unsigned();
-            $table->enum('govt_reg_status', ['not_yet_applied','applied', 'registered'])->nullable()->default(null);
+            $table->enum('govt_reg_status', ['not_yet_applied','applied', 'registered'])->default('not_yet_applied')->default(null);
             $table->integer('financial_contribution')->default(0);
             $table->boolean('financial_contribution_paid')->default(false);
             $table->boolean('feedback_sheet_received')->default(false);

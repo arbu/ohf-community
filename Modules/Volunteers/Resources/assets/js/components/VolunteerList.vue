@@ -31,14 +31,19 @@
                         <th>Age</th>
                         <th>Gender</th>
                         <th>Languages</th>
-                        <th v-if="scope == 'future' || scope == 'applications'">Arrival</th>
+                        <th v-if="scope != 'active'">Arrival</th>
                         <th>Departure</th>
-                        <th v-if="scope == 'future' || scope == 'applications'">Number of days</th>
+                        <th v-if="scope != 'active'">Number of days</th>
+                        <th>Govt. reg.</th>
+                        <th>Contribution paid</th>
+                        <th>Feedback sheet received</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="volunteer in volunteers" :key="volunteer.id">
-                        <td>{{ volunteer.first_name }} {{ volunteer.last_name }}</td>
+                        <td>
+                            {{ volunteer.first_name }} {{ volunteer.last_name }}^
+                        </td>
                         <td>{{ volunteer.nationality }}</td>
                         <td>{{ volunteer.age }}</td>
                         <td>
@@ -49,7 +54,7 @@
                                 {{ language }}<br :key="language">
                             </template>
                         </td>
-                        <td v-if="scope == 'future' || scope == 'applications'">{{ volunteer.stay.arrival }}</td>
+                        <td v-if="scope != 'active'">{{ volunteer.stay.arrival }}</td>
                         <td>
                             <template v-if="volunteer.stay.departure != null">
                                 {{ volunteer.stay.departure }}
@@ -58,7 +63,19 @@
                                 open-end
                             </template>                            
                         </td>
-                        <td v-if="scope == 'future' || scope == 'applications'">{{ volunteer.stay.num_days }}</td>
+                        <td v-if="scope != 'active'">{{ volunteer.stay.num_days }}</td>
+                        <td>
+                            {{ volunteer.stay.govt_reg_status }}
+                        </td>
+                        <td>
+                            {{ volunteer.stay.financial_contribution_paid }}
+                        </td>
+                        <td>
+                            {{ volunteer.stay.feedback_sheet_received }}
+                        </td>
+                        <td>
+                            {{ volunteer.stay.fundraising_infos_received }}
+                        </td>
                     </tr>
                 </tbody>
             </table>
