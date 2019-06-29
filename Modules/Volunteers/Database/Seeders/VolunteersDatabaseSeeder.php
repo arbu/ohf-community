@@ -3,6 +3,7 @@
 namespace Modules\Volunteers\Database\Seeders;
 
 use Modules\Volunteers\Entities\Volunteer;
+use Modules\Volunteers\Entities\Stay;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
@@ -18,7 +19,9 @@ class VolunteersDatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        // $this->call("OthersTableSeeder");
-        factory(Volunteer::class, 150)->create();
+        factory(Volunteer::class, 150)->create()->each(function($d){
+            $d->stays()->saveMany(factory(Stay::class, mt_rand(0, 3))->make());
+        });
+
     }
 }

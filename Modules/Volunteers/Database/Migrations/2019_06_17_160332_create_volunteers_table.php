@@ -17,11 +17,11 @@ class CreateVolunteersTable extends Migration
             $table->increments('id');
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('address');
-            $table->string('zip');
+            $table->string('street');
+            $table->string('postcode');
             $table->string('city');
             $table->string('country');
-            $table->text('emergency_contact');
+            $table->text('emergency_contact')->nullable();
             $table->date('date_of_birth')->nullable();
             $table->string('nationality')->nullable();
             $table->enum('gender', ['m', 'f'])->nullable();
