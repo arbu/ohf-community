@@ -1,21 +1,7 @@
 <template>
     <div>
-        <!-- <div class="row mb-3 mb-sm-0">
-            <div class="col col-auto">
-                <div class="btn-group btn-group-sm mb-3" role="group" aria-label="Scopes">
-                    <button class="btn btn-sm" :class="{ 'btn-dark': scope == 'applied', 'btn-secondary':  scope != 'applied' }" @click="scope='applied'">Applications</button>
-                    <button class="btn btn-sm" :class="{ 'btn-dark': scope == 'future', 'btn-secondary':  scope != 'future' }" @click="scope='future'">Future</button>
-                    <button class="btn btn-sm" :class="{ 'btn-dark': scope == 'active', 'btn-secondary':  scope != 'active' }" @click="scope='active'">Active</button>
-                    <button class="btn btn-sm" :class="{ 'btn-dark': scope == 'previous', 'btn-secondary':  scope != 'previous' }" @click="scope='previous'">Previous</button>
-                </div>
-            </div>
-            <div class="col col-auto">
-                <button class="btn btn-sm btn-secondary" @click="refresh()" :disabled="!loaded">
-                    <i class="fas fa-sync" :class="{ 'fa-spin': !loaded }"></i>
-                </button>
-            </div>
-        </div> -->
 
+        <!-- Nav tabs -->
         <ul class="nav nav-tabs">
             <li class="nav-item">
                 <a class="nav-link" :class="{ 'active': scope == 'applied' }" href="#" @click.stop="scope='applied'">
@@ -42,76 +28,96 @@
                 </a>
             </li>
         </ul>
-        <p>
-            asd
-        </p>
 
-        <div class="alert alert-warning" v-if="error != null">
-            {{ error }}
+        <div class="alert alert-warning mt-3" v-if="error != null">
+            <p>{{ error }}</p>
+            <button type="button" class="btn btn-warning btn-sm" @click="refresh"><i class="fa fa-sync"></i> Reload</button>
         </div>
-        <div v-if="!loaded" class="text-center">
-            <!-- <i class="fas fa-spinner fa-pulse"></i>  -->
+        <div v-if="!loaded" class="text-center mt-2">
+            <i class="fas fa-spinner fa-pulse"></i> 
             Loading...
         </div>
-        <div v-else-if="volunteers.length > 0" class="table-responsive">
-            <table class="table table-sm table-bordered table-striped table-hover">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Nationality</th>
-                        <th>Age</th>
-                        <th>Gender</th>
-                        <th>Languages</th>
-                        <th v-if="scope != 'active'">Arrival</th>
-                        <th>Departure</th>
-                        <th v-if="scope != 'active'" class="text-right">Number of days</th>
-                        <th>Govt. reg.</th>
-                        <th>Contribution paid</th>
-                        <th>Feedback sheet received</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="volunteer in volunteers" :key="volunteer.id">
-                        <td>
-                            {{ volunteer.first_name }} {{ volunteer.last_name }}
-                        </td>
-                        <td>{{ volunteer.nationality }}</td>
-                        <td>{{ volunteer.age }}</td>
-                        <td>
-                            <i class="fas" :class="{ 'fa-male': volunteer.gender == 'm', 'fa-female': volunteer.gender == 'f', }"></i>
-                        </td>
-                        <td>
-                            <template v-for="language in volunteer.languages">
-                                {{ language }}<br :key="language">
-                            </template>
-                        </td>
-                        <td v-if="scope != 'active'">{{ volunteer.stay.arrival }}</td>
-                        <td>
-                            <template v-if="volunteer.stay.departure != null">
-                                {{ volunteer.stay.departure }}
-                            </template>
-                            <template v-else>
-                                open-end
-                            </template>                            
-                        </td>
-                        <td v-if="scope != 'active'" class="text-right">{{ volunteer.stay.num_days }}</td>
-                        <td>
-                            {{ volunteer.stay.govt_reg_status }}
-                        </td>
-                        <td>
-                            {{ volunteer.stay.financial_contribution_paid }}
-                        </td>
-                        <td>
-                            {{ volunteer.stay.feedback_sheet_received }}
-                        </td>
-                        <td>
-                            {{ volunteer.stay.fundraising_infos_received }}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <p><small>{{ volunteers.length }} volunteers in total</small></p>
-        </div>
+        <template v-else-if="volunteers.length > 0">
+
+            <p class="mt-1 mb-2"><small>
+                <template v-if="scope == 'applied'">
+                    {{ volunteers.length }} applicants
+                </template>
+                <template v-else-if="scope == 'future'">
+                    {{ volunteers.length }} future volunteers
+                </template>
+                <template v-else-if="scope == 'active'">
+                    {{ volunteers.length }} active volunteers
+                </template>
+                <template v-else-if="scope == 'previous'">
+                    {{ volunteers.length }} former volunteers
+                </template>
+                <template v-else>
+                    {{ volunteers.length }} volunteers
+                </template>
+            </small></p>
+
+            <div class="table-responsive">
+                <table class="table table-sm table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Nationality</th>
+                            <th class="text-right">Age</th>
+                            <th class="text-center">Gender</th>
+                            <!-- <th>Languages</th> -->
+                            <th v-if="scope != 'active'">Arrival</th>
+                            <th>Departure</th>
+                            <th v-if="scope != 'active'" class="text-right text-nowrap"># Weeks</th>
+                            <th v-if="scope == 'future' || scope == 'active'">Govt. reg.</th>
+                            <th v-if="scope == 'active'">Contribution paid</th>
+                            <th v-if="scope == 'previous'">Feedback sheet received</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="volunteer in volunteers" :key="volunteer.id">
+                            <td>
+                                {{ volunteer.first_name }} {{ volunteer.last_name }}
+                            </td>
+                            <td>{{ volunteer.nationality }}</td>
+                            <td class="text-right">{{ volunteer.age }}</td>
+                            <td class="text-center">
+                                <i class="fas" :class="{ 'fa-male': volunteer.gender == 'm', 'fa-female': volunteer.gender == 'f', }"></i>
+                            </td>
+                            <!-- <td>
+                                <template v-for="language in volunteer.languages">
+                                    {{ language }}<br :key="language">
+                                </template>
+                            </td> -->
+                            <td v-if="scope != 'active'">{{ volunteer.stay.arrival }}</td>
+                            <td>
+                                <template v-if="volunteer.stay.departure != null">
+                                    {{ volunteer.stay.departure }}
+                                </template>
+                                <template v-else>
+                                    open-end
+                                </template>                            
+                            </td>
+                            <td v-if="scope != 'active'" class="text-right">
+                                {{ Math.round(volunteer.stay.num_days / 7) }}
+                            </td>
+                            <td v-if="scope == 'future' || scope == 'active'">
+                                {{ volunteer.stay.govt_reg_status }}
+                            </td>
+                            <td v-if="scope == 'active'">
+                                {{ volunteer.stay.financial_contribution_paid }}
+                            </td>
+                            <td v-if="scope == 'previous'">
+                                {{ volunteer.stay.feedback_sheet_received }}
+                            </td>
+                            <td v-if="scope == 'previous'">
+                                {{ volunteer.stay.fundraising_infos_received }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </template>
         <div v-else-if="error == null" class="alert alert-info">
             No volunteers registrations found!
         </div>

@@ -413,6 +413,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 var scopes = ['applied', 'future', 'active', 'previous'];
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -507,282 +513,351 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("ul", { staticClass: "nav nav-tabs" }, [
-      _c("li", { staticClass: "nav-item" }, [
-        _c(
-          "a",
-          {
-            staticClass: "nav-link",
-            class: { active: _vm.scope == "applied" },
-            attrs: { href: "#" },
-            on: {
-              click: function($event) {
-                $event.stopPropagation()
-                _vm.scope = "applied"
-              }
-            }
-          },
-          [
-            _c("i", { staticClass: "fas fa-envelope-open-text" }),
-            _vm._v(" "),
-            _c("span", { staticClass: "d-none d-sm-inline" }, [
-              _vm._v("Applicants")
-            ])
-          ]
-        )
-      ]),
-      _vm._v(" "),
-      _c("li", { staticClass: "nav-item" }, [
-        _c(
-          "a",
-          {
-            staticClass: "nav-link",
-            class: { active: _vm.scope == "future" },
-            attrs: { href: "#" },
-            on: {
-              click: function($event) {
-                $event.stopPropagation()
-                _vm.scope = "future"
-              }
-            }
-          },
-          [
-            _c("i", { staticClass: "fas fa-calendar-check" }),
-            _vm._v(" "),
-            _c("span", { staticClass: "d-none d-sm-inline" }, [
-              _vm._v("Upcoming")
-            ])
-          ]
-        )
-      ]),
-      _vm._v(" "),
-      _c("li", { staticClass: "nav-item" }, [
-        _c(
-          "a",
-          {
-            staticClass: "nav-link",
-            class: { active: _vm.scope == "active" },
-            attrs: { href: "#" },
-            on: {
-              click: function($event) {
-                $event.stopPropagation()
-                _vm.scope = "active"
-              }
-            }
-          },
-          [
-            _c("i", { staticClass: "fas fa-globe-africa" }),
-            _vm._v(" "),
-            _c("span", { staticClass: "d-none d-sm-inline" }, [
-              _vm._v("Active")
-            ])
-          ]
-        )
-      ]),
-      _vm._v(" "),
-      _c("li", { staticClass: "nav-item" }, [
-        _c(
-          "a",
-          {
-            staticClass: "nav-link",
-            class: { active: _vm.scope == "previous" },
-            attrs: { href: "#" },
-            on: {
-              click: function($event) {
-                $event.stopPropagation()
-                _vm.scope = "previous"
-              }
-            }
-          },
-          [
-            _c("i", { staticClass: "fas fa-folder-open" }),
-            _vm._v(" "),
-            _c("span", { staticClass: "d-none d-sm-inline" }, [
-              _vm._v("Alumni")
-            ])
-          ]
-        )
-      ])
-    ]),
-    _vm._v(" "),
-    _c("p", [_vm._v("\n        asd\n    ")]),
-    _vm._v(" "),
-    _vm.error != null
-      ? _c("div", { staticClass: "alert alert-warning" }, [
-          _vm._v("\n        " + _vm._s(_vm.error) + "\n    ")
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    !_vm.loaded
-      ? _c("div", { staticClass: "text-center" }, [
-          _vm._v("\n        Loading...\n    ")
-        ])
-      : _vm.volunteers.length > 0
-      ? _c("div", { staticClass: "table-responsive" }, [
+  return _c(
+    "div",
+    [
+      _c("ul", { staticClass: "nav nav-tabs" }, [
+        _c("li", { staticClass: "nav-item" }, [
           _c(
-            "table",
+            "a",
             {
-              staticClass:
-                "table table-sm table-bordered table-striped table-hover"
+              staticClass: "nav-link",
+              class: { active: _vm.scope == "applied" },
+              attrs: { href: "#" },
+              on: {
+                click: function($event) {
+                  $event.stopPropagation()
+                  _vm.scope = "applied"
+                }
+              }
             },
             [
-              _c("thead", [
-                _c("tr", [
-                  _c("th", [_vm._v("Name")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Nationality")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Age")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Gender")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Languages")]),
-                  _vm._v(" "),
-                  _vm.scope != "active"
-                    ? _c("th", [_vm._v("Arrival")])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Departure")]),
-                  _vm._v(" "),
-                  _vm.scope != "active"
-                    ? _c("th", { staticClass: "text-right" }, [
-                        _vm._v("Number of days")
-                      ])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Govt. reg.")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Contribution paid")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v("Feedback sheet received")])
-                ])
-              ]),
+              _c("i", { staticClass: "fas fa-envelope-open-text" }),
               _vm._v(" "),
+              _c("span", { staticClass: "d-none d-sm-inline" }, [
+                _vm._v("Applicants")
+              ])
+            ]
+          )
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "nav-item" }, [
+          _c(
+            "a",
+            {
+              staticClass: "nav-link",
+              class: { active: _vm.scope == "future" },
+              attrs: { href: "#" },
+              on: {
+                click: function($event) {
+                  $event.stopPropagation()
+                  _vm.scope = "future"
+                }
+              }
+            },
+            [
+              _c("i", { staticClass: "fas fa-calendar-check" }),
+              _vm._v(" "),
+              _c("span", { staticClass: "d-none d-sm-inline" }, [
+                _vm._v("Upcoming")
+              ])
+            ]
+          )
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "nav-item" }, [
+          _c(
+            "a",
+            {
+              staticClass: "nav-link",
+              class: { active: _vm.scope == "active" },
+              attrs: { href: "#" },
+              on: {
+                click: function($event) {
+                  $event.stopPropagation()
+                  _vm.scope = "active"
+                }
+              }
+            },
+            [
+              _c("i", { staticClass: "fas fa-globe-africa" }),
+              _vm._v(" "),
+              _c("span", { staticClass: "d-none d-sm-inline" }, [
+                _vm._v("Active")
+              ])
+            ]
+          )
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "nav-item" }, [
+          _c(
+            "a",
+            {
+              staticClass: "nav-link",
+              class: { active: _vm.scope == "previous" },
+              attrs: { href: "#" },
+              on: {
+                click: function($event) {
+                  $event.stopPropagation()
+                  _vm.scope = "previous"
+                }
+              }
+            },
+            [
+              _c("i", { staticClass: "fas fa-folder-open" }),
+              _vm._v(" "),
+              _c("span", { staticClass: "d-none d-sm-inline" }, [
+                _vm._v("Alumni")
+              ])
+            ]
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _vm.error != null
+        ? _c("div", { staticClass: "alert alert-warning mt-3" }, [
+            _c("p", [_vm._v(_vm._s(_vm.error))]),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-warning btn-sm",
+                attrs: { type: "button" },
+                on: { click: _vm.refresh }
+              },
+              [_c("i", { staticClass: "fa fa-sync" }), _vm._v(" Reload")]
+            )
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      !_vm.loaded
+        ? _c("div", { staticClass: "text-center mt-2" }, [
+            _c("i", { staticClass: "fas fa-spinner fa-pulse" }),
+            _vm._v(" \n        Loading...\n    ")
+          ])
+        : _vm.volunteers.length > 0
+        ? [
+            _c("p", { staticClass: "mt-1 mb-2" }, [
               _c(
-                "tbody",
-                _vm._l(_vm.volunteers, function(volunteer) {
-                  return _c("tr", { key: volunteer.id }, [
-                    _c("td", [
-                      _vm._v(
-                        "\n                        " +
-                          _vm._s(volunteer.first_name) +
-                          " " +
-                          _vm._s(volunteer.last_name) +
-                          "\n                    "
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(volunteer.nationality))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(volunteer.age))]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c("i", {
-                        staticClass: "fas",
-                        class: {
-                          "fa-male": volunteer.gender == "m",
-                          "fa-female": volunteer.gender == "f"
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "td",
-                      [
-                        _vm._l(volunteer.languages, function(language) {
-                          return [
-                            _vm._v(
-                              "\n                            " +
-                                _vm._s(language)
-                            ),
-                            _c("br", { key: language })
-                          ]
-                        })
-                      ],
-                      2
-                    ),
-                    _vm._v(" "),
-                    _vm.scope != "active"
-                      ? _c("td", [_vm._v(_vm._s(volunteer.stay.arrival))])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _c(
-                      "td",
-                      [
-                        volunteer.stay.departure != null
-                          ? [
+                "small",
+                [
+                  _vm.scope == "applied"
+                    ? [
+                        _vm._v(
+                          "\n                " +
+                            _vm._s(_vm.volunteers.length) +
+                            " applicants\n            "
+                        )
+                      ]
+                    : _vm.scope == "future"
+                    ? [
+                        _vm._v(
+                          "\n                " +
+                            _vm._s(_vm.volunteers.length) +
+                            " future volunteers\n            "
+                        )
+                      ]
+                    : _vm.scope == "active"
+                    ? [
+                        _vm._v(
+                          "\n                " +
+                            _vm._s(_vm.volunteers.length) +
+                            " active volunteers\n            "
+                        )
+                      ]
+                    : _vm.scope == "previous"
+                    ? [
+                        _vm._v(
+                          "\n                " +
+                            _vm._s(_vm.volunteers.length) +
+                            " former volunteers\n            "
+                        )
+                      ]
+                    : [
+                        _vm._v(
+                          "\n                " +
+                            _vm._s(_vm.volunteers.length) +
+                            " volunteers\n            "
+                        )
+                      ]
+                ],
+                2
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "table-responsive" }, [
+              _c(
+                "table",
+                {
+                  staticClass:
+                    "table table-sm table-bordered table-striped table-hover"
+                },
+                [
+                  _c("thead", [
+                    _c("tr", [
+                      _c("th", [_vm._v("Name")]),
+                      _vm._v(" "),
+                      _c("th", [_vm._v("Nationality")]),
+                      _vm._v(" "),
+                      _c("th", { staticClass: "text-right" }, [_vm._v("Age")]),
+                      _vm._v(" "),
+                      _c("th", { staticClass: "text-center" }, [
+                        _vm._v("Gender")
+                      ]),
+                      _vm._v(" "),
+                      _vm.scope != "active"
+                        ? _c("th", [_vm._v("Arrival")])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("th", [_vm._v("Departure")]),
+                      _vm._v(" "),
+                      _vm.scope != "active"
+                        ? _c("th", { staticClass: "text-right text-nowrap" }, [
+                            _vm._v("# Weeks")
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.scope == "future" || _vm.scope == "active"
+                        ? _c("th", [_vm._v("Govt. reg.")])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.scope == "active"
+                        ? _c("th", [_vm._v("Contribution paid")])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.scope == "previous"
+                        ? _c("th", [_vm._v("Feedback sheet received")])
+                        : _vm._e()
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "tbody",
+                    _vm._l(_vm.volunteers, function(volunteer) {
+                      return _c("tr", { key: volunteer.id }, [
+                        _c("td", [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(volunteer.first_name) +
+                              " " +
+                              _vm._s(volunteer.last_name) +
+                              "\n                        "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(volunteer.nationality))]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "text-right" }, [
+                          _vm._v(_vm._s(volunteer.age))
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "text-center" }, [
+                          _c("i", {
+                            staticClass: "fas",
+                            class: {
+                              "fa-male": volunteer.gender == "m",
+                              "fa-female": volunteer.gender == "f"
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _vm.scope != "active"
+                          ? _c("td", [_vm._v(_vm._s(volunteer.stay.arrival))])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          [
+                            volunteer.stay.departure != null
+                              ? [
+                                  _vm._v(
+                                    "\n                                " +
+                                      _vm._s(volunteer.stay.departure) +
+                                      "\n                            "
+                                  )
+                                ]
+                              : [
+                                  _vm._v(
+                                    "\n                                open-end\n                            "
+                                  )
+                                ]
+                          ],
+                          2
+                        ),
+                        _vm._v(" "),
+                        _vm.scope != "active"
+                          ? _c("td", { staticClass: "text-right" }, [
                               _vm._v(
                                 "\n                            " +
-                                  _vm._s(volunteer.stay.departure) +
+                                  _vm._s(
+                                    Math.round(volunteer.stay.num_days / 7)
+                                  ) +
                                   "\n                        "
                               )
-                            ]
-                          : [
+                            ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.scope == "future" || _vm.scope == "active"
+                          ? _c("td", [
                               _vm._v(
-                                "\n                            open-end\n                        "
+                                "\n                            " +
+                                  _vm._s(volunteer.stay.govt_reg_status) +
+                                  "\n                        "
                               )
-                            ]
-                      ],
-                      2
-                    ),
-                    _vm._v(" "),
-                    _vm.scope != "active"
-                      ? _c("td", { staticClass: "text-right" }, [
-                          _vm._v(_vm._s(volunteer.stay.num_days))
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _c("td", [
-                      _vm._v(
-                        "\n                        " +
-                          _vm._s(volunteer.stay.govt_reg_status) +
-                          "\n                    "
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _vm._v(
-                        "\n                        " +
-                          _vm._s(volunteer.stay.financial_contribution_paid) +
-                          "\n                    "
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _vm._v(
-                        "\n                        " +
-                          _vm._s(volunteer.stay.feedback_sheet_received) +
-                          "\n                    "
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _vm._v(
-                        "\n                        " +
-                          _vm._s(volunteer.stay.fundraising_infos_received) +
-                          "\n                    "
-                      )
-                    ])
-                  ])
-                }),
-                0
+                            ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.scope == "active"
+                          ? _c("td", [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(
+                                    volunteer.stay.financial_contribution_paid
+                                  ) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.scope == "previous"
+                          ? _c("td", [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(
+                                    volunteer.stay.feedback_sheet_received
+                                  ) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.scope == "previous"
+                          ? _c("td", [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(
+                                    volunteer.stay.fundraising_infos_received
+                                  ) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _vm._e()
+                      ])
+                    }),
+                    0
+                  )
+                ]
               )
-            ]
-          ),
-          _vm._v(" "),
-          _c("p", [
-            _c("small", [
-              _vm._v(_vm._s(_vm.volunteers.length) + " volunteers in total")
             ])
+          ]
+        : _vm.error == null
+        ? _c("div", { staticClass: "alert alert-info" }, [
+            _vm._v("\n        No volunteers registrations found!\n    ")
           ])
-        ])
-      : _vm.error == null
-      ? _c("div", { staticClass: "alert alert-info" }, [
-          _vm._v("\n        No volunteers registrations found!\n    ")
-        ])
-      : _vm._e()
-  ])
+        : _vm._e()
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
