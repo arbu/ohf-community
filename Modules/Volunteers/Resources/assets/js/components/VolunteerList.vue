@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="row mb-3 mb-sm-0">
+        <!-- <div class="row mb-3 mb-sm-0">
             <div class="col col-auto">
                 <div class="btn-group btn-group-sm mb-3" role="group" aria-label="Scopes">
                     <button class="btn btn-sm" :class="{ 'btn-dark': scope == 'applied', 'btn-secondary':  scope != 'applied' }" @click="scope='applied'">Applications</button>
@@ -14,7 +14,38 @@
                     <i class="fas fa-sync" :class="{ 'fa-spin': !loaded }"></i>
                 </button>
             </div>
-        </div>
+        </div> -->
+
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" :class="{ 'active': scope == 'applied' }" href="#" @click.stop="scope='applied'">
+                    <i class="fas fa-envelope-open-text"></i> 
+                    <span class="d-none d-sm-inline">Applicants</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" :class="{ 'active': scope == 'future' }" href="#" @click.stop="scope='future'">
+                    <i class="fas fa-calendar-check"></i> 
+                    <span class="d-none d-sm-inline">Upcoming</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" :class="{ 'active': scope == 'active' }" href="#" @click.stop="scope='active'">
+                    <i class="fas fa-globe-africa"></i> 
+                    <span class="d-none d-sm-inline">Active</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" :class="{ 'active': scope == 'previous' }" href="#" @click.stop="scope='previous'">
+                    <i class="fas fa-folder-open"></i> 
+                    <span class="d-none d-sm-inline">Alumni</span>
+                </a>
+            </li>
+        </ul>
+        <p>
+            asd
+        </p>
+
         <div class="alert alert-warning" v-if="error != null">
             {{ error }}
         </div>

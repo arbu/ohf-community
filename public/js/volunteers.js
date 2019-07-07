@@ -382,6 +382,37 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var scopes = ['applied', 'future', 'active', 'previous'];
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -477,107 +508,105 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("div", { staticClass: "row mb-3 mb-sm-0" }, [
-      _c("div", { staticClass: "col col-auto" }, [
+    _c("ul", { staticClass: "nav nav-tabs" }, [
+      _c("li", { staticClass: "nav-item" }, [
         _c(
-          "div",
+          "a",
           {
-            staticClass: "btn-group btn-group-sm mb-3",
-            attrs: { role: "group", "aria-label": "Scopes" }
-          },
-          [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-sm",
-                class: {
-                  "btn-dark": _vm.scope == "applied",
-                  "btn-secondary": _vm.scope != "applied"
-                },
-                on: {
-                  click: function($event) {
-                    _vm.scope = "applied"
-                  }
-                }
-              },
-              [_vm._v("Applications")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-sm",
-                class: {
-                  "btn-dark": _vm.scope == "future",
-                  "btn-secondary": _vm.scope != "future"
-                },
-                on: {
-                  click: function($event) {
-                    _vm.scope = "future"
-                  }
-                }
-              },
-              [_vm._v("Future")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-sm",
-                class: {
-                  "btn-dark": _vm.scope == "active",
-                  "btn-secondary": _vm.scope != "active"
-                },
-                on: {
-                  click: function($event) {
-                    _vm.scope = "active"
-                  }
-                }
-              },
-              [_vm._v("Active")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-sm",
-                class: {
-                  "btn-dark": _vm.scope == "previous",
-                  "btn-secondary": _vm.scope != "previous"
-                },
-                on: {
-                  click: function($event) {
-                    _vm.scope = "previous"
-                  }
-                }
-              },
-              [_vm._v("Previous")]
-            )
-          ]
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col col-auto" }, [
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-sm btn-secondary",
-            attrs: { disabled: !_vm.loaded },
+            staticClass: "nav-link",
+            class: { active: _vm.scope == "applied" },
+            attrs: { href: "#" },
             on: {
               click: function($event) {
-                return _vm.refresh()
+                $event.stopPropagation()
+                _vm.scope = "applied"
               }
             }
           },
           [
-            _c("i", {
-              staticClass: "fas fa-sync",
-              class: { "fa-spin": !_vm.loaded }
-            })
+            _c("i", { staticClass: "fas fa-envelope-open-text" }),
+            _vm._v(" "),
+            _c("span", { staticClass: "d-none d-sm-inline" }, [
+              _vm._v("Applicants")
+            ])
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("li", { staticClass: "nav-item" }, [
+        _c(
+          "a",
+          {
+            staticClass: "nav-link",
+            class: { active: _vm.scope == "future" },
+            attrs: { href: "#" },
+            on: {
+              click: function($event) {
+                $event.stopPropagation()
+                _vm.scope = "future"
+              }
+            }
+          },
+          [
+            _c("i", { staticClass: "fas fa-calendar-check" }),
+            _vm._v(" "),
+            _c("span", { staticClass: "d-none d-sm-inline" }, [
+              _vm._v("Upcoming")
+            ])
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("li", { staticClass: "nav-item" }, [
+        _c(
+          "a",
+          {
+            staticClass: "nav-link",
+            class: { active: _vm.scope == "active" },
+            attrs: { href: "#" },
+            on: {
+              click: function($event) {
+                $event.stopPropagation()
+                _vm.scope = "active"
+              }
+            }
+          },
+          [
+            _c("i", { staticClass: "fas fa-globe-africa" }),
+            _vm._v(" "),
+            _c("span", { staticClass: "d-none d-sm-inline" }, [
+              _vm._v("Active")
+            ])
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("li", { staticClass: "nav-item" }, [
+        _c(
+          "a",
+          {
+            staticClass: "nav-link",
+            class: { active: _vm.scope == "previous" },
+            attrs: { href: "#" },
+            on: {
+              click: function($event) {
+                $event.stopPropagation()
+                _vm.scope = "previous"
+              }
+            }
+          },
+          [
+            _c("i", { staticClass: "fas fa-folder-open" }),
+            _vm._v(" "),
+            _c("span", { staticClass: "d-none d-sm-inline" }, [
+              _vm._v("Alumni")
+            ])
           ]
         )
       ])
     ]),
+    _vm._v(" "),
+    _c("p", [_vm._v("\n        asd\n    ")]),
     _vm._v(" "),
     _vm.error != null
       ? _c("div", { staticClass: "alert alert-warning" }, [
