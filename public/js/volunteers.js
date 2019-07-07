@@ -273,6 +273,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -280,7 +285,11 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {},
-  methods: {}
+  methods: {
+    showVolunteer: function showVolunteer(volunteer) {
+      this.volunteer = volunteer;
+    }
+  }
 });
 
 /***/ }),
@@ -480,10 +489,46 @@ var render = function() {
     "div",
     [
       _vm.volunteer != null
-        ? _c("div", [_vm._v("\n        Volunteer\n    ")])
-        : _vm._e(),
-      _vm._v(" "),
-      _c("volunteer-list")
+        ? _c("div", [
+            _c("h2", [
+              _vm._v(
+                _vm._s(_vm.volunteer.first_name) +
+                  " " +
+                  _vm._s(_vm.volunteer.last_name)
+              )
+            ]),
+            _vm._v(" "),
+            _c("i", {
+              staticClass: "fas",
+              class: {
+                "fa-male": _vm.volunteer.gender == "m",
+                "fa-female": _vm.volunteer.gender == "f"
+              }
+            }),
+            _vm._v(
+              "\n        " +
+                _vm._s(_vm.volunteer.date_of_birth) +
+                " (age " +
+                _vm._s(_vm.volunteer.age) +
+                "), \n        " +
+                _vm._s(_vm.volunteer.nationality) +
+                "\n\n        "
+            ),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-warning btn-sm",
+                attrs: { type: "button" },
+                on: {
+                  click: function($event) {
+                    _vm.volunteer = null
+                  }
+                }
+              },
+              [_c("i", { staticClass: "fa fa-times" }), _vm._v(" Close")]
+            )
+          ])
+        : _c("volunteer-list", { on: { volunteerSelected: _vm.showVolunteer } })
     ],
     1
   )
@@ -735,12 +780,27 @@ var render = function() {
                     _vm._l(_vm.volunteers, function(volunteer) {
                       return _c("tr", { key: volunteer.id }, [
                         _c("td", [
-                          _vm._v(
-                            "\n                            " +
-                              _vm._s(volunteer.first_name) +
-                              " " +
-                              _vm._s(volunteer.last_name) +
-                              "\n                        "
+                          _c(
+                            "a",
+                            {
+                              attrs: { href: "#" },
+                              on: {
+                                click: function($event) {
+                                  $event.stopPropagation()
+                                  return _vm.$emit(
+                                    "volunteerSelected",
+                                    volunteer
+                                  )
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                _vm._s(volunteer.first_name) +
+                                  " " +
+                                  _vm._s(volunteer.last_name)
+                              )
+                            ]
                           )
                         ]),
                         _vm._v(" "),

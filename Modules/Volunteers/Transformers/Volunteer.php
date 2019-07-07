@@ -17,6 +17,7 @@ class Volunteer extends Resource
     public function toArray($request)
     {
         $data = parent::toArray($request);
+        $data['date_of_birth'] = optional($this->date_of_birth)->toDateString();
         $data['age'] = $this->age;
         if ($request->scope == 'active') {
             $data['stay'] = new StayResource($this->stays()->active()->first());

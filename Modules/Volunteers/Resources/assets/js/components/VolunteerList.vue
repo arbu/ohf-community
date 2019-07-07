@@ -77,7 +77,7 @@
                     <tbody>
                         <tr v-for="volunteer in volunteers" :key="volunteer.id">
                             <td>
-                                {{ volunteer.first_name }} {{ volunteer.last_name }}
+                                <a href="#" @click.stop="$emit('volunteerSelected', volunteer)">{{ volunteer.first_name }} {{ volunteer.last_name }}</a>
                             </td>
                             <td>{{ volunteer.nationality }}</td>
                             <td class="text-right">{{ volunteer.age }}</td>
