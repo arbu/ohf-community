@@ -62,8 +62,7 @@ $factory->define(Stay::class, function (Faker $faker) {
         'govt_reg_status' => $govt_reg_status,
         'financial_contribution' => $faker->numberBetween(0, 15) * 10,
         'financial_contribution_paid' => $status == 'confirmed' && new \DateTime() < $arrival ? $faker->boolean(70) : false,
-        'feedback_sheet_received' => $status == 'confirmed' && $departure != null && new \DateTime() < $departure ? $faker->boolean(90) : false,
-        'fundraising_infos_received' => $status == 'confirmed' && $departure != null && new \DateTime() < $departure ? $faker->boolean(90) : false,
+        'debriefing_info_received' => $status == 'confirmed' && $departure != null && new \DateTime() < $departure ? $faker->boolean(90) : false,
         'responsibilities' => $responsibilities,
         'remarks' => $faker->optional(0.1)->text,
     ];

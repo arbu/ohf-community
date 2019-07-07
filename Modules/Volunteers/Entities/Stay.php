@@ -17,8 +17,7 @@ class Stay extends Model
         'govt_reg_status',
         'financial_contribution',
         'financial_contribution_paid',
-        'feedback_sheet_received',
-        'fundraising_infos_received',
+        'debriefing_info_received',
         'remarks',
     ];
 
@@ -39,8 +38,7 @@ class Stay extends Model
      */
     protected $casts = [
         'financial_contribution_paid' => 'boolean',
-        'feedback_sheet_received' => 'boolean',
-        'fundraising_infos_received' => 'boolean',
+        'debriefing_info_received' => 'boolean',
         'responsibilities' => 'array',
     ];    
 

@@ -416,9 +416,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 var scopes = ['applied', 'future', 'active', 'previous'];
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -726,7 +723,9 @@ var render = function() {
                         : _vm._e(),
                       _vm._v(" "),
                       _vm.scope == "previous"
-                        ? _c("th", [_vm._v("Feedback sheet received")])
+                        ? _c("th", { staticClass: "text-center" }, [
+                            _vm._v("Debriefing info received")
+                          ])
                         : _vm._e()
                     ])
                   ]),
@@ -820,26 +819,16 @@ var render = function() {
                           : _vm._e(),
                         _vm._v(" "),
                         _vm.scope == "previous"
-                          ? _c("td", [
-                              _vm._v(
-                                "\n                            " +
-                                  _vm._s(
-                                    volunteer.stay.feedback_sheet_received
-                                  ) +
-                                  "\n                        "
-                              )
-                            ])
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.scope == "previous"
-                          ? _c("td", [
-                              _vm._v(
-                                "\n                            " +
-                                  _vm._s(
-                                    volunteer.stay.fundraising_infos_received
-                                  ) +
-                                  "\n                        "
-                              )
+                          ? _c("td", { staticClass: "text-center" }, [
+                              _c("i", {
+                                staticClass: "fa",
+                                class: {
+                                  "fa-check":
+                                    volunteer.stay.debriefing_info_received,
+                                  "fa-times": !volunteer.stay
+                                    .debriefing_info_received
+                                }
+                              })
                             ])
                           : _vm._e()
                       ])

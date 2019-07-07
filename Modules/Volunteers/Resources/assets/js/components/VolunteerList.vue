@@ -71,7 +71,7 @@
                             <th v-if="scope != 'active'" class="text-right text-nowrap"># Weeks</th>
                             <th v-if="scope == 'future' || scope == 'active'">Govt. reg.</th>
                             <th v-if="scope == 'active'">Contribution paid</th>
-                            <th v-if="scope == 'previous'">Feedback sheet received</th>
+                            <th v-if="scope == 'previous'" class="text-center">Debriefing info received</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -107,11 +107,8 @@
                             <td v-if="scope == 'active'">
                                 {{ volunteer.stay.financial_contribution_paid }}
                             </td>
-                            <td v-if="scope == 'previous'">
-                                {{ volunteer.stay.feedback_sheet_received }}
-                            </td>
-                            <td v-if="scope == 'previous'">
-                                {{ volunteer.stay.fundraising_infos_received }}
+                            <td v-if="scope == 'previous'" class="text-center">
+                                <i class="fa" :class="{ 'fa-check': volunteer.stay.debriefing_info_received, 'fa-times': !volunteer.stay.debriefing_info_received }"></i>
                             </td>
                         </tr>
                     </tbody>
