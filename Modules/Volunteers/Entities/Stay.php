@@ -37,6 +37,7 @@ class Stay extends Model
      * @var array
      */
     protected $casts = [
+        'code_of_conduct_signed' => 'boolean',
         'financial_contribution_paid' => 'boolean',
         'debriefing_info_received' => 'boolean',
         'responsibilities' => 'array',

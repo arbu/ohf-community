@@ -34,6 +34,7 @@
     "summernote": "^0.8.12",
     "vue": "^2.6.10",
     "vue-chartjs": "^3.4.2",
+    "vue-router": "^3.0.7",
     "vue-template-compiler": "^2.6.10"
   }
 }

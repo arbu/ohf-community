@@ -75,9 +75,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="volunteer in volunteers" :key="volunteer.id">
+                        <tr v-for="volunteer in volunteers" :key="'volunteer-'+volunteer.id">
                             <td>
-                                <a href="#" @click.stop="$emit('volunteerSelected', volunteer)">{{ volunteer.first_name }} {{ volunteer.last_name }}</a>
+                                {{ volunteer.id }}
+                                <a href="#" @click.stop="$emit('volunteerSelected', volunteer)">
+                                    {{ volunteer.first_name }} {{ volunteer.last_name }}
+                                </a>
                             </td>
                             <td>{{ volunteer.nationality }}</td>
                             <td class="text-right">{{ volunteer.age }}</td>

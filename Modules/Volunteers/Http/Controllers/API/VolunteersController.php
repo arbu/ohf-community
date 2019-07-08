@@ -56,7 +56,11 @@ class VolunteersController extends Controller
     public function show(Volunteer $volunteer)
     {
         // TODO authorization
-        return new VolunteerResource($volunteer);
+        return new VolunteerResource($volunteer->load([
+            'stays' => function ($query) {
+                $query->orderBy('arrival', 'asc');
+            }
+        ]));
     }
 
     /**

@@ -28,11 +28,7 @@ class Volunteer extends Resource
         } else if ($request->scope == 'previous') {
             $data['stay'] = new StayResource($this->stays()->previous()->orderBy('departure', 'desc')->first());
         }
-        // return array_merge(parent::toArray($request) + [
-        //     'age' => $this->age,
-        //     // 'stays' => StayResource::collection($this->stays->sortBy('arrival')),
-        // ]);
-        // $data['stays'] = StayResource::collection($this->stays->sortBy('arrival'));
+        $data['stays'] = StayResource::collection($this->whenLoaded('stays'));
         return $data;
     }
 }
