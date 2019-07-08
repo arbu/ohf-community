@@ -3057,26 +3057,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    return {
-      volunteer: null
-    };
-  },
-  mounted: function mounted() {},
-  methods: {
-    showVolunteer: function showVolunteer(volunteer) {
-      this.volunteer = volunteer;
-    }
+    return {};
   }
 });
 
@@ -3107,6 +3090,43 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3121,7 +3141,6 @@ __webpack_require__.r(__webpack_exports__);
 
     axios.get('/api/volunteers/' + this.volunteer_id).then(function (res) {
       _this.volunteer = res.data.data;
-      console.log(_this.volunteer);
     })["catch"](function (err) {
       _this.error = err;
     }).then(function () {
@@ -3391,13 +3410,107 @@ var render = function() {
                   _vm._s(_vm.volunteer.last_name)
               )
             ]),
-            _vm._v("\n        asd\n    ")
+            _vm._v(" "),
+            _c("i", {
+              staticClass: "fas",
+              class: {
+                "fa-male": _vm.volunteer.gender == "m",
+                "fa-female": _vm.volunteer.gender == "f"
+              }
+            }),
+            _vm._v(
+              "\n        " +
+                _vm._s(_vm.volunteer.date_of_birth) +
+                " (age " +
+                _vm._s(_vm.volunteer.age) +
+                "), \n        " +
+                _vm._s(_vm.volunteer.nationality) +
+                "\n\n        \n        "
+            ),
+            _c("div", { staticClass: "table-responsive" }, [
+              _c(
+                "table",
+                {
+                  staticClass:
+                    "table table-sm table-bordered table-striped table-hover mt-4"
+                },
+                [
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _c(
+                    "tbody",
+                    _vm._l(_vm.volunteer.stays, function(stay) {
+                      return _c("tr", { key: stay.id }, [
+                        _c("td", [_vm._v(_vm._s(stay.arrival))]),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          [
+                            stay.departure != null
+                              ? [
+                                  _vm._v(
+                                    "\n                                " +
+                                      _vm._s(stay.departure) +
+                                      "\n                            "
+                                  )
+                                ]
+                              : [
+                                  _vm._v(
+                                    "\n                                open-end\n                            "
+                                  )
+                                ]
+                          ],
+                          2
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          { staticClass: "text-right" },
+                          [
+                            stay.departure != null
+                              ? [
+                                  _vm._v(
+                                    "\n                                " +
+                                      _vm._s(Math.round(stay.num_days / 7)) +
+                                      "\n                            "
+                                  )
+                                ]
+                              : [
+                                  _vm._v(
+                                    "\n                                -\n                            "
+                                  )
+                                ]
+                          ],
+                          2
+                        )
+                      ])
+                    }),
+                    0
+                  )
+                ]
+              )
+            ])
           ]
     ],
     2
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Arrival")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Departure")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-right text-nowrap" }, [_vm._v("# Weeks")])
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
