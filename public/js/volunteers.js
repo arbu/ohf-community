@@ -3634,6 +3634,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3660,6 +3686,9 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function () {
         _this.loaded = true;
       });
+    },
+    whatsAppUrl: function whatsAppUrl(value) {
+      return 'whatsapp://send?phone=' + value;
     }
   }
 });
@@ -3935,8 +3964,66 @@ var render = function() {
                 _vm._s(_vm.volunteer.age) +
                 "), \n        " +
                 _vm._s(_vm.volunteer.nationality) +
-                "\n       \n        "
+                "\n\n        "
             ),
+            _c("p", [
+              _vm._v(
+                _vm._s(_vm.volunteer.street) +
+                  " " +
+                  _vm._s(_vm.volunteer.postcode) +
+                  " " +
+                  _vm._s(_vm.volunteer.city) +
+                  " " +
+                  _vm._s(_vm.volunteer.country)
+              )
+            ]),
+            _vm._v(" "),
+            _vm.volunteer.emergency_contact != null
+              ? _c("p", [
+                  _vm._v(
+                    "\n            Emergency contact: \n            " +
+                      _vm._s(_vm.volunteer.emergency_contact) +
+                      "\n        "
+                  )
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.volunteer.email != null
+              ? _c("p", [
+                  _c("i", { staticClass: "fas fa-envelope" }),
+                  _vm._v(" "),
+                  _c(
+                    "a",
+                    { attrs: { href: "mailto:" + _vm.volunteer.email } },
+                    [_vm._v(_vm._s(_vm.volunteer.email))]
+                  )
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.volunteer.phone != null
+              ? _c("p", [
+                  _c("i", { staticClass: "fas fa-phone" }),
+                  _vm._v(" "),
+                  _c("a", { attrs: { href: "tel:" + _vm.volunteer.phone } }, [
+                    _vm._v(_vm._s(_vm.volunteer.phone))
+                  ])
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.volunteer.whatsapp != null
+              ? _c("p", [
+                  _c("i", { staticClass: "fab fa-whatsapp" }),
+                  _vm._v(" "),
+                  _c(
+                    "a",
+                    {
+                      attrs: { href: _vm.whatsAppUrl(_vm.volunteer.whatsapp) }
+                    },
+                    [_vm._v(_vm._s(_vm.volunteer.whatsapp))]
+                  )
+                ])
+              : _vm._e(),
+            _vm._v(" "),
             _c("div", { staticClass: "table-responsive" }, [
               _c(
                 "table",
@@ -3999,7 +4086,28 @@ var render = function() {
                   )
                 ]
               )
-            ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "p",
+              [
+                _c(
+                  "router-link",
+                  { attrs: { to: { name: "volunteer-index" } } },
+                  [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary",
+                        attrs: { type: "button" }
+                      },
+                      [_vm._v("Back")]
+                    )
+                  ]
+                )
+              ],
+              1
+            )
           ]
     ],
     2

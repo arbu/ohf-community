@@ -12,6 +12,26 @@
             <i class="fas" :class="{ 'fa-male': volunteer.gender == 'm', 'fa-female': volunteer.gender == 'f', }"></i>
             {{ volunteer.date_of_birth }} (age {{ volunteer.age }}), 
             {{ volunteer.nationality }}
+
+            <p>{{ volunteer.street }} {{ volunteer.postcode }} {{ volunteer.city }} {{ volunteer.country }}</p>
+
+            <p v-if="volunteer.emergency_contact != null">
+                Emergency contact: 
+                {{ volunteer.emergency_contact }}
+            </p>
+
+            <p v-if="volunteer.email != null">
+                <i class="fas fa-envelope"></i>
+                <a :href="`mailto:${volunteer.email}`">{{ volunteer.email }}</a>
+            </p>
+            <p v-if="volunteer.phone != null">
+                <i class="fas fa-phone"></i>
+                <a :href="`tel:${volunteer.phone}`">{{ volunteer.phone }}</a>
+            </p>
+            <p v-if="volunteer.whatsapp != null">
+                <i class="fab fa-whatsapp"></i>
+                <a :href="whatsAppUrl(volunteer.whatsapp)">{{ volunteer.whatsapp }}</a>
+            </p>
            
             <div class="table-responsive">
                 <table class="table table-sm table-bordered table-striped table-hover mt-4">
@@ -46,7 +66,13 @@
                 </table>
             </div>
 
-        </template>        
+            <p>
+                <router-link :to="{ name: 'volunteer-index' }">
+                    <button type="button" class="btn btn-secondary">Back</button>
+                </router-link>
+            </p>
+
+        </template>
     </div>
 </template>
 <script>
@@ -77,6 +103,9 @@
                     .then(() => {
                         this.loaded = true;
                     });
+            },
+            whatsAppUrl(value) {
+                return 'whatsapp://send?phone=' + value
             }
         }
     }
