@@ -9,8 +9,8 @@
             Loading...
         </div>
         <template v-else>
-            Details {{ volunteer_id }}
-            <h2>{{ volunteer.first_name }}</h2>
+            <h2>{{ volunteer.first_name }} {{ volunteer.last_name }}</h2>
+            asd
         </template>        
     </div>
 </template>

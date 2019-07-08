@@ -3384,10 +3384,14 @@ var render = function() {
             _vm._v(" \n        Loading...\n    ")
           ])
         : [
-            _vm._v(
-              "\n        Details " + _vm._s(_vm.volunteer_id) + "\n        "
-            ),
-            _c("h2", [_vm._v(_vm._s(_vm.volunteer.first_name))])
+            _c("h2", [
+              _vm._v(
+                _vm._s(_vm.volunteer.first_name) +
+                  " " +
+                  _vm._s(_vm.volunteer.last_name)
+              )
+            ]),
+            _vm._v("\n        asd\n    ")
           ]
     ],
     2
