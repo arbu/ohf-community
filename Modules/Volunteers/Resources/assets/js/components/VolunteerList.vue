@@ -79,9 +79,9 @@
                         <tr v-for="volunteer in volunteers" :key="'volunteer-'+volunteer.id">
                             <td >
                                 {{ volunteer.id }}
-                                <a href="#" @click.stop="$emit('volunteerSelected', volunteer)">
+                                <router-link :to="{ name: 'volunteer-show', params: { volunteer_id: volunteer.id } }">
                                     {{ volunteer.first_name }} {{ volunteer.last_name }}
-                                </a>
+                                </router-link>
                             </td>
                             <td>{{ volunteer.nationality }}</td>
                             <td class="text-right">{{ volunteer.age }}</td>
@@ -103,7 +103,12 @@
                                 </template>                            
                             </td>
                             <td v-if="scope != 'active'" class="text-right">
-                                {{ Math.round(volunteer.stay.num_days / 7) }}
+                                <template v-if="volunteer.stay.departure != null">
+                                    {{ Math.round(volunteer.stay.num_days / 7) }}
+                                </template>
+                                <template v-else>
+                                    -
+                                </template>      
                             </td>
                             <td v-if="scope == 'future' || scope == 'active'">
                                 {{ volunteer.stay.govt_reg_status }}
@@ -157,7 +162,7 @@
             loadData(scope) {
                 this.loaded = false;
                 this.error = null;
-                axios.get('api/volunteers?scope=' + scope)
+                axios.get('/api/volunteers?scope=' + scope)
                     .then(res => {
                         this.volunteers = res.data.data;
                     })

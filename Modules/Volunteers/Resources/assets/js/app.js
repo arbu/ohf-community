@@ -4,6 +4,9 @@ window.Vue.component('volunteer-app', VolunteerApp);
 import VolunteerList from './components/VolunteerList.vue';
 window.Vue.component('volunteer-list', VolunteerList);
 
+import VolunteerDetails from './components/VolunteerDetails.vue';
+window.Vue.component('volunteer-details', VolunteerDetails);
+
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
@@ -19,7 +22,8 @@ const router = new VueRouter({
     base: '/volunteers',
     mode: 'history',
     routes: [
-        { path: '/', component: VolunteerList },
+        { path: '/', name: 'volunteer-index', component: VolunteerList },
+        { path: '/volunteer/:volunteer_id', name: 'volunteer-show', component: VolunteerDetails, props: true },
         { path: "*", component: PageNotFound }
     ]
 })
