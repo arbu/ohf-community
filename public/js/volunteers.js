@@ -3127,6 +3127,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 var scopes = ['applied', 'future', 'active', 'previous'];
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -3420,7 +3424,15 @@ var render = function() {
                         : _vm._e(),
                       _vm._v(" "),
                       _vm.scope == "active"
-                        ? _c("th", [_vm._v("Contribution paid")])
+                        ? _c("th", { staticClass: "text-center" }, [
+                            _vm._v("Code signed")
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.scope == "active"
+                        ? _c("th", { staticClass: "text-center" }, [
+                            _vm._v("Contribution paid")
+                          ])
                         : _vm._e(),
                       _vm._v(" "),
                       _vm.scope == "previous"
@@ -3530,14 +3542,30 @@ var render = function() {
                           : _vm._e(),
                         _vm._v(" "),
                         _vm.scope == "active"
-                          ? _c("td", [
-                              _vm._v(
-                                "\n                            " +
-                                  _vm._s(
-                                    volunteer.stay.financial_contribution_paid
-                                  ) +
-                                  "\n                        "
-                              )
+                          ? _c("td", { staticClass: "text-center" }, [
+                              _c("i", {
+                                staticClass: "fa",
+                                class: {
+                                  "fa-check":
+                                    volunteer.stay.code_of_conduct_signed,
+                                  "fa-times": !volunteer.stay
+                                    .code_of_conduct_signed
+                                }
+                              })
+                            ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.scope == "active"
+                          ? _c("td", { staticClass: "text-center" }, [
+                              _c("i", {
+                                staticClass: "fa",
+                                class: {
+                                  "fa-check":
+                                    volunteer.stay.financial_contribution_paid,
+                                  "fa-times": !volunteer.stay
+                                    .financial_contribution_paid
+                                }
+                              })
                             ])
                           : _vm._e(),
                         _vm._v(" "),
