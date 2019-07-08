@@ -3644,15 +3644,23 @@ __webpack_require__.r(__webpack_exports__);
   },
   props: ['volunteer_id'],
   created: function created() {
-    var _this = this;
+    this.loadData();
+  },
+  methods: {
+    loadData: function loadData() {
+      var _this = this;
 
-    axios.get('/api/volunteers/' + this.volunteer_id).then(function (res) {
-      _this.volunteer = res.data.data;
-    })["catch"](function (err) {
-      _this.error = err;
-    }).then(function () {
-      _this.loaded = true;
-    });
+      this.loaded = false;
+      this.error = null;
+      this.volunteer = null;
+      axios.get('/api/volunteers/' + this.volunteer_id).then(function (res) {
+        _this.volunteer = res.data.data;
+      })["catch"](function (err) {
+        _this.error = err;
+      }).then(function () {
+        _this.loaded = true;
+      });
+    }
   }
 });
 
@@ -3667,7 +3675,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
 //
 //
 //
@@ -3896,14 +3903,12 @@ var render = function() {
               {
                 staticClass: "btn btn-warning btn-sm",
                 attrs: { type: "button" },
-                on: { click: _vm.refresh }
+                on: { click: _vm.loadData }
               },
               [_c("i", { staticClass: "fa fa-sync" }), _vm._v(" Reload")]
             )
           ])
-        : _vm._e(),
-      _vm._v(" "),
-      !_vm.loaded
+        : !_vm.loaded
         ? _c("div", { staticClass: "text-center mt-2" }, [
             _vm._v("\n        Loading...\n    ")
           ])
@@ -4271,11 +4276,6 @@ var render = function() {
                         _c(
                           "td",
                           [
-                            _vm._v(
-                              "\n                            " +
-                                _vm._s(volunteer.id) +
-                                "\n                            "
-                            ),
                             _c(
                               "router-link",
                               {

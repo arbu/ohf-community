@@ -2,9 +2,9 @@
     <div>
         <div class="alert alert-warning mt-3" v-if="error != null">
             <p>{{ error }}</p>
-            <button type="button" class="btn btn-warning btn-sm" @click="refresh"><i class="fa fa-sync"></i> Reload</button>
+            <button type="button" class="btn btn-warning btn-sm" @click="loadData"><i class="fa fa-sync"></i> Reload</button>
         </div>
-        <div v-if="!loaded" class="text-center mt-2">
+        <div v-else-if="!loaded" class="text-center mt-2">
             Loading...
         </div>
         <template v-else>
@@ -60,16 +60,24 @@
         },
         props: ['volunteer_id'],
         created() {
-            axios.get('/api/volunteers/' + this.volunteer_id)
-                .then(res => {
-                    this.volunteer = res.data.data;
-                })
-                .catch(err => {
-                    this.error = err;
-                })
-                .then(() => {
-                    this.loaded = true;
-                });
-        }        
+            this.loadData();
+        },
+        methods: {
+            loadData() {
+                this.loaded = false;
+                this.error = null;
+                this.volunteer = null;
+                axios.get('/api/volunteers/' + this.volunteer_id)
+                    .then(res => {
+                        this.volunteer = res.data.data;
+                    })
+                    .catch(err => {
+                        this.error = err;
+                    })
+                    .then(() => {
+                        this.loaded = true;
+                    });
+            }
+        }
     }
 </script>

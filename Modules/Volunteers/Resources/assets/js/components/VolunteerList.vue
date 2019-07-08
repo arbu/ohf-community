@@ -77,7 +77,6 @@
                     <tbody>
                         <tr v-for="volunteer in volunteers" :key="'volunteer-'+volunteer.id">
                             <td >
-                                {{ volunteer.id }}
                                 <router-link :to="{ name: 'volunteer-show', params: { volunteer_id: volunteer.id } }">
                                     {{ volunteer.first_name }} {{ volunteer.last_name }}
                                 </router-link>
