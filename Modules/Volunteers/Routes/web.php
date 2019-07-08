@@ -12,5 +12,6 @@
 */
 
 Route::prefix('volunteers')->group(function() {
-    Route::get('/', 'VolunteersController@index');
+    Route::view('/', 'volunteers::index')->where('any', '.*');
+    Route::view('/{any}', 'volunteers::index')->where('any', '.*');
 });

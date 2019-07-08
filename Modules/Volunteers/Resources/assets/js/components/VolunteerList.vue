@@ -77,7 +77,7 @@
                     </thead>
                     <tbody>
                         <tr v-for="volunteer in volunteers" :key="'volunteer-'+volunteer.id">
-                            <td>
+                            <td >
                                 {{ volunteer.id }}
                                 <a href="#" @click.stop="$emit('volunteerSelected', volunteer)">
                                     {{ volunteer.first_name }} {{ volunteer.last_name }}

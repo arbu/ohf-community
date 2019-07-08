@@ -2791,11 +2791,22 @@ window.Vue.component('volunteer-app', _components_VolunteerApp_vue__WEBPACK_IMPO
 window.Vue.component('volunteer-list', _components_VolunteerList_vue__WEBPACK_IMPORTED_MODULE_1__["default"]);
 
 Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]);
+var PageNotFound = Vue.component("page-not-found", {
+  template: "",
+  created: function created() {
+    // Redirect outside the app using plain old javascript
+    window.location.href = "/not-found.html";
+  }
+});
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]({
   base: '/volunteers',
+  mode: 'history',
   routes: [{
     path: '/',
     component: _components_VolunteerList_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+  }, {
+    path: "*",
+    component: PageNotFound
   }]
 });
 var app = new Vue({
