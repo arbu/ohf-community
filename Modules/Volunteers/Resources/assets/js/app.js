@@ -28,6 +28,30 @@ const router = new VueRouter({
     ]
 })
 
+import NProgress from 'nprogress';
+// router.beforeResolve((to, from, next) => {
+//     if (to.name) {
+//         NProgress.start()
+//     }
+//     next()
+// })
+
+// router.afterEach((to, from) => {
+//     NProgress.done()
+// })
+
+// before a request is made start the nprogress
+axios.interceptors.request.use(config => {
+    NProgress.start()
+    return config
+})
+  
+// before a response is returned stop nprogress
+axios.interceptors.response.use(response => {
+    NProgress.done()
+    return response
+})
+
 const app = new Vue({
     el: '#app',
     router: router

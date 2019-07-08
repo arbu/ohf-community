@@ -34,7 +34,6 @@
             <button type="button" class="btn btn-warning btn-sm" @click="refresh"><i class="fa fa-sync"></i> Reload</button>
         </div>
         <div v-if="!loaded" class="text-center mt-2">
-            <i class="fas fa-spinner fa-pulse"></i> 
             Loading...
         </div>
         <template v-else-if="volunteers.length > 0">

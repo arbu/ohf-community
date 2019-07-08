@@ -5,7 +5,6 @@
             <button type="button" class="btn btn-warning btn-sm" @click="refresh"><i class="fa fa-sync"></i> Reload</button>
         </div>
         <div v-if="!loaded" class="text-center mt-2">
-            <i class="fas fa-spinner fa-pulse"></i> 
             Loading...
         </div>
         <template v-else>
@@ -13,8 +12,7 @@
             <i class="fas" :class="{ 'fa-male': volunteer.gender == 'm', 'fa-female': volunteer.gender == 'f', }"></i>
             {{ volunteer.date_of_birth }} (age {{ volunteer.age }}), 
             {{ volunteer.nationality }}
-
-            
+           
             <div class="table-responsive">
                 <table class="table table-sm table-bordered table-striped table-hover mt-4">
                     <thead>
@@ -61,7 +59,7 @@
             }
         },
         props: ['volunteer_id'],
-        mounted() {
+        created() {
             axios.get('/api/volunteers/' + this.volunteer_id)
                 .then(res => {
                     this.volunteer = res.data.data;
