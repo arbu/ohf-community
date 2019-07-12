@@ -23,11 +23,11 @@ class VolunteersController extends Controller
         if ($request->scope == 'active') {
             $qry = Volunteer::active();
         } else if ($request->scope == 'applied') {
-            $qry = Volunteer::applied()->join('volunteer_stays', 'volunteer_stays.volunteer_id', '=', 'volunteers.id')->orderBy('volunteer_stays.arrival', 'asc')->select('volunteers.*');
+            $qry = Volunteer::applied();
         } else if ($request->scope == 'future') {
-            $qry = Volunteer::future()->join('volunteer_stays', 'volunteer_stays.volunteer_id', '=', 'volunteers.id')->orderBy('volunteer_stays.arrival', 'asc')->select('volunteers.*');
+            $qry = Volunteer::future();
         } else if ($request->scope == 'previous') {
-            $qry = Volunteer::previous()->join('volunteer_stays', 'volunteer_stays.volunteer_id', '=', 'volunteers.id')->orderBy('volunteer_stays.departure', 'desc')->select('volunteers.*');
+            $qry = Volunteer::previous();
         } else {
             $qry = Volunteer::query();
         }
