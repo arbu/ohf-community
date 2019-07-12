@@ -88,7 +88,11 @@
                 error: null,                
             }
         },
-        props: ['volunteer_id'],
+        props: {
+            'volunteer_id': {
+                required: true,
+            }
+        },
         created() {
             this.loadData();
         },

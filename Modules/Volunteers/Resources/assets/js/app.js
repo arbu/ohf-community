@@ -21,12 +21,15 @@ const PageNotFound = Vue.component("page-not-found", {
     }
 });
 
+const defaultScope = 'active'
+const allowedScopes = ['active','future','applied','previous']
+
 const router = new VueRouter({
     base: '/volunteers',
     mode: 'history',
     routes: [
-        { path: '/', redirect: '/active' },
-        { path: '/:scope(active|future|applied|previous)', name: 'volunteers-index', component: VolunteerList, props: true },
+        { path: '/', redirect: '/' + defaultScope },
+        { path: '/:scope(' + allowedScopes.join('|') + ')', name: 'volunteers-index', component: VolunteerList, props: true },
         { path: '/volunteer/:volunteer_id', name: 'volunteers-show', component: VolunteerDetails, props: true },
         { path: "*", component: PageNotFound }
     ]

@@ -1,6 +1,5 @@
 <template>
     <div>
-asd
         <!-- Nav tabs -->
         <ul class="nav nav-tabs">
             <li class="nav-item">
@@ -142,14 +141,11 @@ asd
         },
         props: {
             scope: {
-                default: 'active',
-                required: false,
+                required: true,
             }
         },
         created() {
             this.rememberScope(this.scope)
-        },
-        mounted() {
             this.refresh();
         },
         watch: {

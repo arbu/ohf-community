@@ -3363,14 +3363,16 @@ var PageNotFound = Vue.component("page-not-found", {
     window.location.href = "/not-found.html";
   }
 });
+var defaultScope = 'active';
+var allowedScopes = ['active', 'future', 'applied', 'previous'];
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_4__["default"]({
   base: '/volunteers',
   mode: 'history',
   routes: [{
     path: '/',
-    redirect: '/active'
+    redirect: '/' + defaultScope
   }, {
-    path: '/:scope(active|future|applied|previous)',
+    path: '/:scope(' + allowedScopes.join('|') + ')',
     name: 'volunteers-index',
     component: _views_VolunteerList_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
     props: true
@@ -3820,7 +3822,11 @@ __webpack_require__.r(__webpack_exports__);
       error: null
     };
   },
-  props: ['volunteer_id'],
+  props: {
+    'volunteer_id': {
+      required: true
+    }
+  },
   created: function created() {
     this.loadData();
   },
@@ -3984,7 +3990,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3998,14 +4003,11 @@ __webpack_require__.r(__webpack_exports__);
   },
   props: {
     scope: {
-      "default": 'active',
-      required: false
+      required: true
     }
   },
   created: function created() {
     this.rememberScope(this.scope);
-  },
-  mounted: function mounted() {
     this.refresh();
   },
   watch: {
@@ -4338,8 +4340,6 @@ var render = function() {
   return _c(
     "div",
     [
-      _vm._v("\nasd\n        "),
-      _vm._v(" "),
       _c("ul", { staticClass: "nav nav-tabs" }, [
         _c(
           "li",
@@ -4475,40 +4475,40 @@ var render = function() {
                   _vm.scope == "applied"
                     ? [
                         _vm._v(
-                          "\n                    " +
+                          "\n                " +
                             _vm._s(_vm.volunteers.length) +
-                            " applicants\n                "
+                            " applicants\n            "
                         )
                       ]
                     : _vm.scope == "future"
                     ? [
                         _vm._v(
-                          "\n                    " +
+                          "\n                " +
                             _vm._s(_vm.volunteers.length) +
-                            " future volunteers\n                "
+                            " future volunteers\n            "
                         )
                       ]
                     : _vm.scope == "active"
                     ? [
                         _vm._v(
-                          "\n                    " +
+                          "\n                " +
                             _vm._s(_vm.volunteers.length) +
-                            " active volunteers\n                "
+                            " active volunteers\n            "
                         )
                       ]
                     : _vm.scope == "previous"
                     ? [
                         _vm._v(
-                          "\n                    " +
+                          "\n                " +
                             _vm._s(_vm.volunteers.length) +
-                            " former volunteers\n                "
+                            " former volunteers\n            "
                         )
                       ]
                     : [
                         _vm._v(
-                          "\n                    " +
+                          "\n                " +
                             _vm._s(_vm.volunteers.length) +
-                            " volunteers\n                "
+                            " volunteers\n            "
                         )
                       ]
                 ],
@@ -4591,11 +4591,11 @@ var render = function() {
                               },
                               [
                                 _vm._v(
-                                  "\n                                    " +
+                                  "\n                                " +
                                     _vm._s(volunteer.first_name) +
                                     " " +
                                     _vm._s(volunteer.last_name) +
-                                    "\n                                "
+                                    "\n                            "
                                 )
                               ]
                             )
@@ -4629,14 +4629,14 @@ var render = function() {
                             volunteer.stay.departure != null
                               ? [
                                   _vm._v(
-                                    "\n                                    " +
+                                    "\n                                " +
                                       _vm._s(volunteer.stay.departure) +
-                                      "\n                                "
+                                      "\n                            "
                                   )
                                 ]
                               : [
                                   _vm._v(
-                                    "\n                                    open-end\n                                "
+                                    "\n                                open-end\n                            "
                                   )
                                 ]
                           ],
@@ -4651,18 +4651,18 @@ var render = function() {
                                 volunteer.stay.departure != null
                                   ? [
                                       _vm._v(
-                                        "\n                                    " +
+                                        "\n                                " +
                                           _vm._s(
                                             Math.round(
                                               volunteer.stay.num_days / 7
                                             )
                                           ) +
-                                          "\n                                "
+                                          "\n                            "
                                       )
                                     ]
                                   : [
                                       _vm._v(
-                                        "\n                                    -\n                                "
+                                        "\n                                -\n                            "
                                       )
                                     ]
                               ],
@@ -4673,9 +4673,9 @@ var render = function() {
                         _vm.scope == "future" || _vm.scope == "active"
                           ? _c("td", [
                               _vm._v(
-                                "\n                                " +
+                                "\n                            " +
                                   _vm._s(volunteer.stay.govt_reg_status) +
-                                  "\n                            "
+                                  "\n                        "
                               )
                             ])
                           : _vm._e(),
@@ -4731,7 +4731,7 @@ var render = function() {
           ]
         : _vm.error == null
         ? _c("div", { staticClass: "alert alert-info" }, [
-            _vm._v("\n            No volunteers registrations found!\n        ")
+            _vm._v("\n        No volunteers registrations found!\n    ")
           ])
         : _vm._e()
     ],
