@@ -65,7 +65,7 @@
             </div>
 
             <p>
-                <router-link :to="{ name: 'volunteers-index' }">
+                <router-link :to="indexLink()">
                     <button type="button" class="btn btn-secondary">
                         <i class="fa fa-angle-left"></i> Back
                     </button>
@@ -76,9 +76,10 @@
     </div>
 </template>
 <script>
-    import helpersMixin from '../mixins/helpers.js';
+    import commonMixin from '../mixins/common.js';
+    import volunteersMixin from '../mixins/volunteers.js';
     export default {
-        mixins: [ helpersMixin ],
+        mixins: [ commonMixin, volunteersMixin ],
         data() {
             return {
                 volunteer: null,

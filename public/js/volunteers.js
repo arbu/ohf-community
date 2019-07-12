@@ -3464,10 +3464,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./Resources/assets/js/mixins/helpers.js":
-/*!***********************************************!*\
-  !*** ./Resources/assets/js/mixins/helpers.js ***!
-  \***********************************************/
+/***/ "./Resources/assets/js/mixins/common.js":
+/*!**********************************************!*\
+  !*** ./Resources/assets/js/mixins/common.js ***!
+  \**********************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -3483,6 +3483,41 @@ __webpack_require__.r(__webpack_exports__);
     },
     mailUrl: function mailUrl(value) {
       return 'mailto:' + value;
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./Resources/assets/js/mixins/volunteers.js":
+/*!**************************************************!*\
+  !*** ./Resources/assets/js/mixins/volunteers.js ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var scopes = ['applied', 'future', 'active', 'previous'];
+/* harmony default export */ __webpack_exports__["default"] = ({
+  methods: {
+    indexLink: function indexLink() {
+      var scope = 'active';
+
+      if (localStorage.volunteers_list_scope && scopes.includes(localStorage.volunteers_list_scope)) {
+        scope = localStorage.volunteers_list_scope;
+      }
+
+      return {
+        name: 'volunteers-index',
+        params: {
+          scope: scope
+        }
+      };
+    },
+    rememberScope: function rememberScope(scope) {
+      // console.log('remember scope: ' + scope)
+      localStorage.volunteers_list_scope = scope;
     }
   }
 });
@@ -3669,7 +3704,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _mixins_helpers_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../mixins/helpers.js */ "./Resources/assets/js/mixins/helpers.js");
+/* harmony import */ var _mixins_common_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../mixins/common.js */ "./Resources/assets/js/mixins/common.js");
+/* harmony import */ var _mixins_volunteers_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../mixins/volunteers.js */ "./Resources/assets/js/mixins/volunteers.js");
 //
 //
 //
@@ -3748,8 +3784,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mixins: [_mixins_helpers_js__WEBPACK_IMPORTED_MODULE_0__["default"]],
+  mixins: [_mixins_common_js__WEBPACK_IMPORTED_MODULE_2__["default"], _mixins_volunteers_js__WEBPACK_IMPORTED_MODULE_1__["default"]],
   data: function data() {
     return {
       volunteer: null,
@@ -3790,6 +3827,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _mixins_volunteers_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../mixins/volunteers.js */ "./Resources/assets/js/mixins/volunteers.js");
 //
 //
 //
@@ -3920,12 +3958,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-var scopes = ['applied', 'future', 'active', 'previous'];
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  mixins: [_mixins_volunteers_js__WEBPACK_IMPORTED_MODULE_0__["default"]],
   data: function data() {
     return {
       loaded: false,
-      // scope: 'active',
       volunteers: [],
       error: null
     };
@@ -3937,17 +3975,14 @@ var scopes = ['applied', 'future', 'active', 'previous'];
     }
   },
   created: function created() {
-    console.log('scope: ' + this.scope);
+    this.rememberScope(this.scope);
   },
   mounted: function mounted() {
-    // if (localStorage.volunteers_list_scope && scopes.includes(localStorage.volunteers_list_scope)) {
-    //     this.scope = localStorage.volunteers_list_scope;
-    // }
     this.refresh();
   },
   watch: {
     scope: function scope(val, oldVal) {
-      // localStorage.volunteers_list_scope = val;
+      this.rememberScope(this.scope);
       this.loadData(val);
     }
   },
@@ -4229,23 +4264,19 @@ var render = function() {
             _c(
               "p",
               [
-                _c(
-                  "router-link",
-                  { attrs: { to: { name: "volunteers-index" } } },
-                  [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-secondary",
-                        attrs: { type: "button" }
-                      },
-                      [
-                        _c("i", { staticClass: "fa fa-angle-left" }),
-                        _vm._v(" Back\n                ")
-                      ]
-                    )
-                  ]
-                )
+                _c("router-link", { attrs: { to: _vm.indexLink() } }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-secondary",
+                      attrs: { type: "button" }
+                    },
+                    [
+                      _c("i", { staticClass: "fa fa-angle-left" }),
+                      _vm._v(" Back\n                ")
+                    ]
+                  )
+                ])
               ],
               1
             )

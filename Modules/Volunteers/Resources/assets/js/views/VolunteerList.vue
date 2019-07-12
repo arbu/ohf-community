@@ -129,12 +129,12 @@
     </div>
 </template>
 <script>
-    const scopes = ['applied', 'future', 'active', 'previous'];
+    import volunteersMixin from '../mixins/volunteers.js';
     export default {
+        mixins: [ volunteersMixin ],
         data() {
             return {
                 loaded: false,
-                // scope: 'active',
                 volunteers: [],
                 error: null,
             }
@@ -146,17 +146,14 @@
             }
         },
         created() {
-            console.log('scope: ' + this.scope)
+            this.rememberScope(this.scope)
         },
         mounted() {
-            // if (localStorage.volunteers_list_scope && scopes.includes(localStorage.volunteers_list_scope)) {
-            //     this.scope = localStorage.volunteers_list_scope;
-            // }
             this.refresh();
         },
         watch: {
             scope(val, oldVal) {
-                // localStorage.volunteers_list_scope = val;
+                this.rememberScope(this.scope)
                 this.loadData(val);
             }
         },
