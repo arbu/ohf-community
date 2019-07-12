@@ -4,28 +4,28 @@
         <!-- Nav tabs -->
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link" :class="{ 'active': scope == 'applied' }" href="#" @click.stop="scope='applied'">
+                <router-link :to="{ name: 'volunteers-index', params: { scope: 'applied' } }" class="nav-link" active-class="active">
                     <i class="fas fa-envelope-open-text"></i> 
                     <span class="d-none d-sm-inline">Applicants</span>
-                </a>
+                </router-link>
             </li>
             <li class="nav-item">
-                <a class="nav-link" :class="{ 'active': scope == 'future' }" href="#" @click.stop="scope='future'">
+                <router-link :to="{ name: 'volunteers-index', params: { scope: 'future' } }" class="nav-link" active-class="active">
                     <i class="fas fa-calendar-check"></i> 
                     <span class="d-none d-sm-inline">Upcoming</span>
-                </a>
+                </router-link>
             </li>
             <li class="nav-item">
-                <a class="nav-link" :class="{ 'active': scope == 'active' }" href="#" @click.stop="scope='active'">
+                <router-link :to="{ name: 'volunteers-index', params: { scope: 'active' } }" class="nav-link" active-class="active">
                     <i class="fas fa-globe-africa"></i> 
                     <span class="d-none d-sm-inline">Active</span>
-                </a>
+                </router-link>
             </li>
             <li class="nav-item">
-                <a class="nav-link" :class="{ 'active': scope == 'previous' }" href="#" @click.stop="scope='previous'">
+                <router-link :to="{ name: 'volunteers-index', params: { scope: 'previous' } }" class="nav-link" active-class="active">
                     <i class="fas fa-folder-open"></i> 
                     <span class="d-none d-sm-inline">Alumni</span>
-                </a>
+                </router-link>
             </li>
         </ul>
 
@@ -33,9 +33,7 @@
             <p>{{ error }}</p>
             <button type="button" class="btn btn-warning btn-sm" @click="refresh"><i class="fa fa-sync"></i> Reload</button>
         </div>
-        <div v-if="!loaded" class="text-center mt-2">
-            Loading...
-        </div>
+        <loading-indicator v-if="!loaded"></loading-indicator>
         <template v-else-if="volunteers.length > 0">
 
             <p class="mt-1 mb-2"><small>
@@ -77,7 +75,7 @@
                     <tbody>
                         <tr v-for="volunteer in volunteers" :key="'volunteer-'+volunteer.id">
                             <td >
-                                <router-link :to="{ name: 'volunteer-show', params: { volunteer_id: volunteer.id } }">
+                                <router-link :to="{ name: 'volunteers-show', params: { volunteer_id: volunteer.id } }">
                                     {{ volunteer.first_name }} {{ volunteer.last_name }}
                                 </router-link>
                             </td>
@@ -136,20 +134,29 @@
         data() {
             return {
                 loaded: false,
-                scope: 'active',
+                // scope: 'active',
                 volunteers: [],
                 error: null,
             }
         },
-        mounted() {
-            if (localStorage.volunteers_list_scope && scopes.includes(localStorage.volunteers_list_scope)) {
-                this.scope = localStorage.volunteers_list_scope;
+        props: {
+            scope: {
+                default: 'active',
+                required: false,
             }
+        },
+        created() {
+            console.log('scope: ' + this.scope)
+        },
+        mounted() {
+            // if (localStorage.volunteers_list_scope && scopes.includes(localStorage.volunteers_list_scope)) {
+            //     this.scope = localStorage.volunteers_list_scope;
+            // }
             this.refresh();
         },
         watch: {
             scope(val, oldVal) {
-                localStorage.volunteers_list_scope = val;
+                // localStorage.volunteers_list_scope = val;
                 this.loadData(val);
             }
         },

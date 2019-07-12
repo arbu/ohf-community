@@ -3270,19 +3270,20 @@ if (inBrowser && window.Vue) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_VolunteerApp_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/VolunteerApp.vue */ "./Resources/assets/js/components/VolunteerApp.vue");
-/* harmony import */ var _components_VolunteerList_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/VolunteerList.vue */ "./Resources/assets/js/components/VolunteerList.vue");
-/* harmony import */ var _components_VolunteerDetails_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/VolunteerDetails.vue */ "./Resources/assets/js/components/VolunteerDetails.vue");
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-router */ "../../node_modules/vue-router/dist/vue-router.esm.js");
-/* harmony import */ var nprogress__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! nprogress */ "../../node_modules/nprogress/nprogress.js");
-/* harmony import */ var nprogress__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(nprogress__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _components_LoadingIndicator_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/LoadingIndicator.vue */ "./Resources/assets/js/components/LoadingIndicator.vue");
+/* harmony import */ var _components_VolunteerList_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/VolunteerList.vue */ "./Resources/assets/js/components/VolunteerList.vue");
+/* harmony import */ var _components_VolunteerDetails_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/VolunteerDetails.vue */ "./Resources/assets/js/components/VolunteerDetails.vue");
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-router */ "../../node_modules/vue-router/dist/vue-router.esm.js");
+/* harmony import */ var nprogress__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! nprogress */ "../../node_modules/nprogress/nprogress.js");
+/* harmony import */ var nprogress__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(nprogress__WEBPACK_IMPORTED_MODULE_5__);
 
 window.Vue.component('volunteer-app', _components_VolunteerApp_vue__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
-window.Vue.component('volunteer-list', _components_VolunteerList_vue__WEBPACK_IMPORTED_MODULE_1__["default"]);
+window.Vue.component('loading-indicator', _components_LoadingIndicator_vue__WEBPACK_IMPORTED_MODULE_1__["default"]);
 
-window.Vue.component('volunteer-details', _components_VolunteerDetails_vue__WEBPACK_IMPORTED_MODULE_2__["default"]);
 
-Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_3__["default"]);
+
+Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_4__["default"]);
 var PageNotFound = Vue.component("page-not-found", {
   template: "",
   created: function created() {
@@ -3290,24 +3291,28 @@ var PageNotFound = Vue.component("page-not-found", {
     window.location.href = "/not-found.html";
   }
 });
-var router = new vue_router__WEBPACK_IMPORTED_MODULE_3__["default"]({
+var router = new vue_router__WEBPACK_IMPORTED_MODULE_4__["default"]({
   base: '/volunteers',
   mode: 'history',
   routes: [{
-    path: '/',
-    name: 'volunteer-index',
-    component: _components_VolunteerList_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+    path: '/:scope?',
+    name: 'volunteers-index',
+    component: _components_VolunteerList_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    props: true
   }, {
     path: '/volunteer/:volunteer_id',
-    name: 'volunteer-show',
-    component: _components_VolunteerDetails_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    name: 'volunteers-show',
+    component: _components_VolunteerDetails_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
     props: true
   }, {
     path: "*",
     component: PageNotFound
   }]
 });
- // router.beforeResolve((to, from, next) => {
+
+nprogress__WEBPACK_IMPORTED_MODULE_5___default.a.configure({
+  showSpinner: false
+}); // router.beforeResolve((to, from, next) => {
 //     if (to.name) {
 //         NProgress.start()
 //     }
@@ -3319,18 +3324,71 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_3__["default"]({
 // before a request is made start the nprogress
 
 axios.interceptors.request.use(function (config) {
-  nprogress__WEBPACK_IMPORTED_MODULE_4___default.a.start();
+  nprogress__WEBPACK_IMPORTED_MODULE_5___default.a.start();
   return config;
 }); // before a response is returned stop nprogress
 
 axios.interceptors.response.use(function (response) {
-  nprogress__WEBPACK_IMPORTED_MODULE_4___default.a.done();
+  nprogress__WEBPACK_IMPORTED_MODULE_5___default.a.done();
   return response;
 });
 var app = new Vue({
   el: '#app',
   router: router
 });
+
+/***/ }),
+
+/***/ "./Resources/assets/js/components/LoadingIndicator.vue":
+/*!*************************************************************!*\
+  !*** ./Resources/assets/js/components/LoadingIndicator.vue ***!
+  \*************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _LoadingIndicator_vue_vue_type_template_id_17b700ca___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LoadingIndicator.vue?vue&type=template&id=17b700ca& */ "./Resources/assets/js/components/LoadingIndicator.vue?vue&type=template&id=17b700ca&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+var script = {}
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__["default"])(
+  script,
+  _LoadingIndicator_vue_vue_type_template_id_17b700ca___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _LoadingIndicator_vue_vue_type_template_id_17b700ca___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "Resources/assets/js/components/LoadingIndicator.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./Resources/assets/js/components/LoadingIndicator.vue?vue&type=template&id=17b700ca&":
+/*!********************************************************************************************!*\
+  !*** ./Resources/assets/js/components/LoadingIndicator.vue?vue&type=template&id=17b700ca& ***!
+  \********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LoadingIndicator_vue_vue_type_template_id_17b700ca___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./LoadingIndicator.vue?vue&type=template&id=17b700ca& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./Resources/assets/js/components/LoadingIndicator.vue?vue&type=template&id=17b700ca&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LoadingIndicator_vue_vue_type_template_id_17b700ca___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LoadingIndicator_vue_vue_type_template_id_17b700ca___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
 
 /***/ }),
 
@@ -3834,28 +3892,34 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 var scopes = ['applied', 'future', 'active', 'previous'];
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       loaded: false,
-      scope: 'active',
+      // scope: 'active',
       volunteers: [],
       error: null
     };
   },
-  mounted: function mounted() {
-    if (localStorage.volunteers_list_scope && scopes.includes(localStorage.volunteers_list_scope)) {
-      this.scope = localStorage.volunteers_list_scope;
+  props: {
+    scope: {
+      "default": 'active',
+      required: false
     }
-
+  },
+  created: function created() {
+    console.log('scope: ' + this.scope);
+  },
+  mounted: function mounted() {
+    // if (localStorage.volunteers_list_scope && scopes.includes(localStorage.volunteers_list_scope)) {
+    //     this.scope = localStorage.volunteers_list_scope;
+    // }
     this.refresh();
   },
   watch: {
     scope: function scope(val, oldVal) {
-      localStorage.volunteers_list_scope = val;
+      // localStorage.volunteers_list_scope = val;
       this.loadData(val);
     }
   },
@@ -3878,6 +3942,40 @@ var scopes = ['applied', 'future', 'active', 'previous'];
     }
   }
 });
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./Resources/assets/js/components/LoadingIndicator.vue?vue&type=template&id=17b700ca&":
+/*!**************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./Resources/assets/js/components/LoadingIndicator.vue?vue&type=template&id=17b700ca& ***!
+  \**************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-center mt-2" }, [
+      _c("i", { staticClass: "fas fa-spinner fa-pulse" }),
+      _vm._v(" Loading...\n")
+    ])
+  }
+]
+render._withStripped = true
+
+
 
 /***/ }),
 
@@ -3937,10 +4035,10 @@ var render = function() {
               [_c("i", { staticClass: "fa fa-sync" }), _vm._v(" Reload")]
             )
           ])
-        : !_vm.loaded
-        ? _c("div", { staticClass: "text-center mt-2" }, [
-            _vm._v("\n        Loading...\n    ")
-          ])
+        : _vm._e(),
+      _vm._v(" "),
+      !_vm.loaded
+        ? _c("loading-indicator")
         : [
             _c("h2", [
               _vm._v(
@@ -4032,7 +4130,17 @@ var render = function() {
                     "table table-sm table-bordered table-striped table-hover mt-4"
                 },
                 [
-                  _vm._m(0),
+                  _c("thead", [
+                    _c("tr", [
+                      _c("th", [_vm._v("Arrival")]),
+                      _vm._v(" "),
+                      _c("th", [_vm._v("Departure")]),
+                      _vm._v(" "),
+                      _c("th", { staticClass: "text-right text-nowrap" }, [
+                        _vm._v("# Weeks")
+                      ])
+                    ])
+                  ]),
                   _vm._v(" "),
                   _c(
                     "tbody",
@@ -4093,7 +4201,7 @@ var render = function() {
               [
                 _c(
                   "router-link",
-                  { attrs: { to: { name: "volunteer-index" } } },
+                  { attrs: { to: { name: "volunteers-index" } } },
                   [
                     _c(
                       "button",
@@ -4101,7 +4209,10 @@ var render = function() {
                         staticClass: "btn btn-secondary",
                         attrs: { type: "button" }
                       },
-                      [_vm._v("Back")]
+                      [
+                        _c("i", { staticClass: "fa fa-angle-left" }),
+                        _vm._v(" Back\n                ")
+                      ]
                     )
                   ]
                 )
@@ -4113,22 +4224,7 @@ var render = function() {
     2
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", [_vm._v("Arrival")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Departure")]),
-        _vm._v(" "),
-        _c("th", { staticClass: "text-right text-nowrap" }, [_vm._v("# Weeks")])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -4154,101 +4250,111 @@ var render = function() {
     "div",
     [
       _c("ul", { staticClass: "nav nav-tabs" }, [
-        _c("li", { staticClass: "nav-item" }, [
-          _c(
-            "a",
-            {
-              staticClass: "nav-link",
-              class: { active: _vm.scope == "applied" },
-              attrs: { href: "#" },
-              on: {
-                click: function($event) {
-                  $event.stopPropagation()
-                  _vm.scope = "applied"
+        _c(
+          "li",
+          { staticClass: "nav-item" },
+          [
+            _c(
+              "router-link",
+              {
+                staticClass: "nav-link",
+                attrs: {
+                  to: {
+                    name: "volunteers-index",
+                    params: { scope: "applied" }
+                  },
+                  "active-class": "active"
                 }
-              }
-            },
-            [
-              _c("i", { staticClass: "fas fa-envelope-open-text" }),
-              _vm._v(" "),
-              _c("span", { staticClass: "d-none d-sm-inline" }, [
-                _vm._v("Applicants")
-              ])
-            ]
-          )
-        ]),
+              },
+              [
+                _c("i", { staticClass: "fas fa-envelope-open-text" }),
+                _vm._v(" "),
+                _c("span", { staticClass: "d-none d-sm-inline" }, [
+                  _vm._v("Applicants")
+                ])
+              ]
+            )
+          ],
+          1
+        ),
         _vm._v(" "),
-        _c("li", { staticClass: "nav-item" }, [
-          _c(
-            "a",
-            {
-              staticClass: "nav-link",
-              class: { active: _vm.scope == "future" },
-              attrs: { href: "#" },
-              on: {
-                click: function($event) {
-                  $event.stopPropagation()
-                  _vm.scope = "future"
+        _c(
+          "li",
+          { staticClass: "nav-item" },
+          [
+            _c(
+              "router-link",
+              {
+                staticClass: "nav-link",
+                attrs: {
+                  to: { name: "volunteers-index", params: { scope: "future" } },
+                  "active-class": "active"
                 }
-              }
-            },
-            [
-              _c("i", { staticClass: "fas fa-calendar-check" }),
-              _vm._v(" "),
-              _c("span", { staticClass: "d-none d-sm-inline" }, [
-                _vm._v("Upcoming")
-              ])
-            ]
-          )
-        ]),
+              },
+              [
+                _c("i", { staticClass: "fas fa-calendar-check" }),
+                _vm._v(" "),
+                _c("span", { staticClass: "d-none d-sm-inline" }, [
+                  _vm._v("Upcoming")
+                ])
+              ]
+            )
+          ],
+          1
+        ),
         _vm._v(" "),
-        _c("li", { staticClass: "nav-item" }, [
-          _c(
-            "a",
-            {
-              staticClass: "nav-link",
-              class: { active: _vm.scope == "active" },
-              attrs: { href: "#" },
-              on: {
-                click: function($event) {
-                  $event.stopPropagation()
-                  _vm.scope = "active"
+        _c(
+          "li",
+          { staticClass: "nav-item" },
+          [
+            _c(
+              "router-link",
+              {
+                staticClass: "nav-link",
+                attrs: {
+                  to: { name: "volunteers-index", params: { scope: "active" } },
+                  "active-class": "active"
                 }
-              }
-            },
-            [
-              _c("i", { staticClass: "fas fa-globe-africa" }),
-              _vm._v(" "),
-              _c("span", { staticClass: "d-none d-sm-inline" }, [
-                _vm._v("Active")
-              ])
-            ]
-          )
-        ]),
+              },
+              [
+                _c("i", { staticClass: "fas fa-globe-africa" }),
+                _vm._v(" "),
+                _c("span", { staticClass: "d-none d-sm-inline" }, [
+                  _vm._v("Active")
+                ])
+              ]
+            )
+          ],
+          1
+        ),
         _vm._v(" "),
-        _c("li", { staticClass: "nav-item" }, [
-          _c(
-            "a",
-            {
-              staticClass: "nav-link",
-              class: { active: _vm.scope == "previous" },
-              attrs: { href: "#" },
-              on: {
-                click: function($event) {
-                  $event.stopPropagation()
-                  _vm.scope = "previous"
+        _c(
+          "li",
+          { staticClass: "nav-item" },
+          [
+            _c(
+              "router-link",
+              {
+                staticClass: "nav-link",
+                attrs: {
+                  to: {
+                    name: "volunteers-index",
+                    params: { scope: "previous" }
+                  },
+                  "active-class": "active"
                 }
-              }
-            },
-            [
-              _c("i", { staticClass: "fas fa-folder-open" }),
-              _vm._v(" "),
-              _c("span", { staticClass: "d-none d-sm-inline" }, [
-                _vm._v("Alumni")
-              ])
-            ]
-          )
-        ])
+              },
+              [
+                _c("i", { staticClass: "fas fa-folder-open" }),
+                _vm._v(" "),
+                _c("span", { staticClass: "d-none d-sm-inline" }, [
+                  _vm._v("Alumni")
+                ])
+              ]
+            )
+          ],
+          1
+        )
       ]),
       _vm._v(" "),
       _vm.error != null
@@ -4268,9 +4374,7 @@ var render = function() {
         : _vm._e(),
       _vm._v(" "),
       !_vm.loaded
-        ? _c("div", { staticClass: "text-center mt-2" }, [
-            _vm._v("\n        Loading...\n    ")
-          ])
+        ? _c("loading-indicator")
         : _vm.volunteers.length > 0
         ? [
             _c("p", { staticClass: "mt-1 mb-2" }, [
@@ -4389,7 +4493,7 @@ var render = function() {
                               {
                                 attrs: {
                                   to: {
-                                    name: "volunteer-show",
+                                    name: "volunteers-show",
                                     params: { volunteer_id: volunteer.id }
                                   }
                                 }

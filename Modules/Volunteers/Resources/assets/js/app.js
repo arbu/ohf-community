@@ -1,11 +1,11 @@
 import VolunteerApp from './components/VolunteerApp.vue';
 window.Vue.component('volunteer-app', VolunteerApp);
 
-import VolunteerList from './components/VolunteerList.vue';
-window.Vue.component('volunteer-list', VolunteerList);
+import LoadingIndicator from './components/LoadingIndicator.vue';
+window.Vue.component('loading-indicator', LoadingIndicator);
 
+import VolunteerList from './components/VolunteerList.vue';
 import VolunteerDetails from './components/VolunteerDetails.vue';
-window.Vue.component('volunteer-details', VolunteerDetails);
 
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
@@ -22,13 +22,14 @@ const router = new VueRouter({
     base: '/volunteers',
     mode: 'history',
     routes: [
-        { path: '/', name: 'volunteer-index', component: VolunteerList },
-        { path: '/volunteer/:volunteer_id', name: 'volunteer-show', component: VolunteerDetails, props: true },
+        { path: '/:scope?', name: 'volunteers-index', component: VolunteerList, props: true },
+        { path: '/volunteer/:volunteer_id', name: 'volunteers-show', component: VolunteerDetails, props: true },
         { path: "*", component: PageNotFound }
     ]
 })
 
 import NProgress from 'nprogress';
+NProgress.configure({ showSpinner: false });
 // router.beforeResolve((to, from, next) => {
 //     if (to.name) {
 //         NProgress.start()

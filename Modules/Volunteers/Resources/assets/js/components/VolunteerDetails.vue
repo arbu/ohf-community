@@ -4,9 +4,7 @@
             <p>{{ error }}</p>
             <button type="button" class="btn btn-warning btn-sm" @click="loadData"><i class="fa fa-sync"></i> Reload</button>
         </div>
-        <div v-else-if="!loaded" class="text-center mt-2">
-            Loading...
-        </div>
+        <loading-indicator v-if="!loaded"></loading-indicator>
         <template v-else>
             <h2>{{ volunteer.first_name }} {{ volunteer.last_name }}</h2>
             <i class="fas" :class="{ 'fa-male': volunteer.gender == 'm', 'fa-female': volunteer.gender == 'f', }"></i>
@@ -67,8 +65,10 @@
             </div>
 
             <p>
-                <router-link :to="{ name: 'volunteer-index' }">
-                    <button type="button" class="btn btn-secondary">Back</button>
+                <router-link :to="{ name: 'volunteers-index' }">
+                    <button type="button" class="btn btn-secondary">
+                        <i class="fa fa-angle-left"></i> Back
+                    </button>
                 </router-link>
             </p>
 
