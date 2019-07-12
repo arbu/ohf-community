@@ -61,7 +61,6 @@
                             <th>Nationality</th>
                             <th class="text-right">Age</th>
                             <th class="text-center">Gender</th>
-                            <!-- <th>Languages</th> -->
                             <th v-if="scope != 'active'">Arrival</th>
                             <th>Departure</th>
                             <th v-if="scope != 'active'" class="text-right text-nowrap"># Weeks</th>
@@ -83,11 +82,6 @@
                             <td class="text-center">
                                 <i class="fas" :class="{ 'fa-male': volunteer.gender == 'm', 'fa-female': volunteer.gender == 'f', }"></i>
                             </td>
-                            <!-- <td>
-                                <template v-for="language in volunteer.languages">
-                                    {{ language }}<br :key="language">
-                                </template>
-                            </td> -->
                             <td v-if="scope != 'active'">{{ volunteer.stay.arrival }}</td>
                             <td>
                                 <template v-if="volunteer.stay.departure != null">

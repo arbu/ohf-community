@@ -16,7 +16,7 @@ class Stay extends Resource
     {
         $data = parent::toArray($request);
         unset($data['volunteer_id']);
-        // $data['active'] = $this->active;
+        $data['active'] = $this->active;
         $data['arrival'] = $this->arrival->toDateString();
         $data['departure'] = optional($this->departure)->toDateString();
         $data['num_days'] = $this->numberOfDays;

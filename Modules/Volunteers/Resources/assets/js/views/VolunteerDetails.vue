@@ -7,61 +7,64 @@
         <loading-indicator v-if="!loaded"></loading-indicator>
         <template v-else>
             <h2>{{ volunteer.first_name }} {{ volunteer.last_name }}</h2>
-            <i class="fas" :class="{ 'fa-male': volunteer.gender == 'm', 'fa-female': volunteer.gender == 'f', }"></i>
+            <p><strong>About:</strong> <i class="fas" :class="{ 'fa-male': volunteer.gender == 'm', 'fa-female': volunteer.gender == 'f', }"></i>
             {{ volunteer.date_of_birth }} (age {{ volunteer.age }}), 
-            {{ volunteer.nationality }}
+            {{ volunteer.nationality }}</p>
 
-            <p>{{ volunteer.street }} {{ volunteer.postcode }} {{ volunteer.city }} {{ volunteer.country }}</p>
+            <p><strong>Address:</strong> {{ volunteer.street }} {{ volunteer.postcode }} {{ volunteer.city }} {{ volunteer.country }}</p>
 
             <p v-if="volunteer.emergency_contact != null">
-                Emergency contact: 
+                <strong>Emergency contact:</strong>
                 {{ volunteer.emergency_contact }}
             </p>
 
-            <p v-if="volunteer.email != null">
-                <i class="fas fa-envelope"></i>
-                <a :href="mailUrl(volunteer.email)">{{ volunteer.email }}</a>
+            <p><strong>Langauges:</strong>
+                <template v-for="(language, idx) in volunteer.languages">
+                    {{ language }}<template v-if="idx + 1 < volunteer.languages.length">,</template>
+                </template>
             </p>
-            <p v-if="volunteer.phone != null">
-                <i class="fas fa-phone"></i>
-                <a :href="telUrl(volunteer.phone)">{{ volunteer.phone }}</a>
-            </p>
-            <p v-if="volunteer.whatsapp != null">
-                <i class="fab fa-whatsapp"></i>
-                <a :href="whatsAppUrl(volunteer.whatsapp)">{{ volunteer.whatsapp }}</a>
-            </p>
+
+            <div class="form-row">
+                <div v-if="volunteer.email != null" class="col-auto mb-3">
+                    <a :href="mailUrl(volunteer.email, volunteer.first_name + ' ' + volunteer.last_name)" class="btn btn-primary">
+                        <i class="fas fa-envelope"></i> {{ volunteer.email }}
+                    </a>
+                </div>
+                <div v-if="volunteer.phone != null" class="col-auto mb-3">
+                    <a :href="telUrl(volunteer.phone)" class="btn btn-primary">
+                        <i class="fas fa-phone"></i> {{ volunteer.phone }}
+                    </a>
+                </div>
+                <div v-if="volunteer.whatsapp != null" class="col-auto mb-3">
+                    <a :href="whatsAppUrl(volunteer.whatsapp)" class="btn btn-primary">
+                        <i class="fab fa-whatsapp"></i> {{ volunteer.whatsapp }}
+                    </a>
+                </div>
+                <div v-if="volunteer.skype != null" class="col-auto mb-3">
+                    <a :href="skypeUrl(volunteer.skype)" class="btn btn-primary">
+                        <i class="fab fa-skype"></i> {{ volunteer.skype }}
+                    </a>
+                </div>
+                
+            </div>
            
-            <div class="table-responsive">
-                <table class="table table-sm table-bordered table-striped table-hover mt-4">
-                    <thead>
-                        <tr>
-                            <th>Arrival</th>
-                            <th>Departure</th>
-                            <th class="text-right text-nowrap"># Weeks</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="stay in volunteer.stays" :key="stay.id">
-                            <td>{{ stay.arrival }}</td>
-                            <td>
-                                <template v-if="stay.departure != null">
-                                    {{ stay.departure }}
-                                </template>
-                                <template v-else>
-                                    open-end
-                                </template>                            
-                            </td>
-                            <td class="text-right">
-                                <template v-if="stay.departure != null">
-                                    {{ Math.round(stay.num_days / 7) }}
-                                </template>
-                                <template v-else>
-                                    -
-                                </template>      
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="card mb-4" v-for="stay in volunteer.stays" :key="stay.id">
+                <div class="card-header">
+                    {{ stay.arrival }} - 
+                    <template v-if="stay.departure != null">
+                        {{ stay.departure }} ({{ Math.round(stay.num_days / 7) }} weeks)
+                    </template>
+                    <template v-else>
+                        open-end
+                    </template>   
+                    <span v-if="stay.active" class="badge badge-pill badge-success">Active</span>
+                </div>
+                <div class="card-body">
+                    Test
+                    <!-- <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                </div>
             </div>
 
             <p>

@@ -3486,8 +3486,13 @@ __webpack_require__.r(__webpack_exports__);
     telUrl: function telUrl(value) {
       return 'tel:' + value;
     },
-    mailUrl: function mailUrl(value) {
+    mailUrl: function mailUrl(address) {
+      var name = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      var value = name != null ? name + ' <' + address + '>' : address;
       return 'mailto:' + value;
+    },
+    skypeUrl: function skypeUrl(value) {
+      return 'skype:' + value + '?chat';
     }
   }
 });
@@ -3810,6 +3815,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -3861,12 +3869,6 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_volunteers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../services/volunteers */ "./Resources/assets/js/services/volunteers.js");
 /* harmony import */ var _mixins_volunteers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../mixins/volunteers */ "./Resources/assets/js/mixins/volunteers.js");
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -4141,25 +4143,31 @@ var render = function() {
               )
             ]),
             _vm._v(" "),
-            _c("i", {
-              staticClass: "fas",
-              class: {
-                "fa-male": _vm.volunteer.gender == "m",
-                "fa-female": _vm.volunteer.gender == "f"
-              }
-            }),
-            _vm._v(
-              "\n        " +
-                _vm._s(_vm.volunteer.date_of_birth) +
-                " (age " +
-                _vm._s(_vm.volunteer.age) +
-                "), \n        " +
-                _vm._s(_vm.volunteer.nationality) +
-                "\n\n        "
-            ),
             _c("p", [
+              _c("strong", [_vm._v("About:")]),
+              _vm._v(" "),
+              _c("i", {
+                staticClass: "fas",
+                class: {
+                  "fa-male": _vm.volunteer.gender == "m",
+                  "fa-female": _vm.volunteer.gender == "f"
+                }
+              }),
               _vm._v(
-                _vm._s(_vm.volunteer.street) +
+                "\n        " +
+                  _vm._s(_vm.volunteer.date_of_birth) +
+                  " (age " +
+                  _vm._s(_vm.volunteer.age) +
+                  "), \n        " +
+                  _vm._s(_vm.volunteer.nationality)
+              )
+            ]),
+            _vm._v(" "),
+            _c("p", [
+              _c("strong", [_vm._v("Address:")]),
+              _vm._v(
+                " " +
+                  _vm._s(_vm.volunteer.street) +
                   " " +
                   _vm._s(_vm.volunteer.postcode) +
                   " " +
@@ -4171,125 +4179,164 @@ var render = function() {
             _vm._v(" "),
             _vm.volunteer.emergency_contact != null
               ? _c("p", [
+                  _c("strong", [_vm._v("Emergency contact:")]),
                   _vm._v(
-                    "\n            Emergency contact: \n            " +
+                    "\n            " +
                       _vm._s(_vm.volunteer.emergency_contact) +
                       "\n        "
                   )
                 ])
               : _vm._e(),
             _vm._v(" "),
-            _vm.volunteer.email != null
-              ? _c("p", [
-                  _c("i", { staticClass: "fas fa-envelope" }),
-                  _vm._v(" "),
-                  _c(
-                    "a",
-                    { attrs: { href: _vm.mailUrl(_vm.volunteer.email) } },
-                    [_vm._v(_vm._s(_vm.volunteer.email))]
-                  )
-                ])
-              : _vm._e(),
+            _c(
+              "p",
+              [
+                _c("strong", [_vm._v("Langauges:")]),
+                _vm._v(" "),
+                _vm._l(_vm.volunteer.languages, function(language, idx) {
+                  return [
+                    _vm._v("\n                " + _vm._s(language)),
+                    idx + 1 < _vm.volunteer.languages.length
+                      ? [_vm._v(",")]
+                      : _vm._e()
+                  ]
+                })
+              ],
+              2
+            ),
             _vm._v(" "),
-            _vm.volunteer.phone != null
-              ? _c("p", [
-                  _c("i", { staticClass: "fas fa-phone" }),
-                  _vm._v(" "),
-                  _c(
-                    "a",
-                    { attrs: { href: _vm.telUrl(_vm.volunteer.phone) } },
-                    [_vm._v(_vm._s(_vm.volunteer.phone))]
-                  )
-                ])
-              : _vm._e(),
-            _vm._v(" "),
-            _vm.volunteer.whatsapp != null
-              ? _c("p", [
-                  _c("i", { staticClass: "fab fa-whatsapp" }),
-                  _vm._v(" "),
-                  _c(
-                    "a",
-                    {
-                      attrs: { href: _vm.whatsAppUrl(_vm.volunteer.whatsapp) }
-                    },
-                    [_vm._v(_vm._s(_vm.volunteer.whatsapp))]
-                  )
-                ])
-              : _vm._e(),
-            _vm._v(" "),
-            _c("div", { staticClass: "table-responsive" }, [
-              _c(
-                "table",
-                {
-                  staticClass:
-                    "table table-sm table-bordered table-striped table-hover mt-4"
-                },
-                [
-                  _c("thead", [
-                    _c("tr", [
-                      _c("th", [_vm._v("Arrival")]),
-                      _vm._v(" "),
-                      _c("th", [_vm._v("Departure")]),
-                      _vm._v(" "),
-                      _c("th", { staticClass: "text-right text-nowrap" }, [
-                        _vm._v("# Weeks")
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "tbody",
-                    _vm._l(_vm.volunteer.stays, function(stay) {
-                      return _c("tr", { key: stay.id }, [
-                        _c("td", [_vm._v(_vm._s(stay.arrival))]),
-                        _vm._v(" "),
-                        _c(
-                          "td",
-                          [
-                            stay.departure != null
-                              ? [
-                                  _vm._v(
-                                    "\n                                " +
-                                      _vm._s(stay.departure) +
-                                      "\n                            "
-                                  )
-                                ]
-                              : [
-                                  _vm._v(
-                                    "\n                                open-end\n                            "
-                                  )
-                                ]
-                          ],
-                          2
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "td",
-                          { staticClass: "text-right" },
-                          [
-                            stay.departure != null
-                              ? [
-                                  _vm._v(
-                                    "\n                                " +
-                                      _vm._s(Math.round(stay.num_days / 7)) +
-                                      "\n                            "
-                                  )
-                                ]
-                              : [
-                                  _vm._v(
-                                    "\n                                -\n                            "
-                                  )
-                                ]
-                          ],
-                          2
+            _c("div", { staticClass: "form-row" }, [
+              _vm.volunteer.email != null
+                ? _c("div", { staticClass: "col-auto mb-3" }, [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: {
+                          href: _vm.mailUrl(
+                            _vm.volunteer.email,
+                            _vm.volunteer.first_name +
+                              " " +
+                              _vm.volunteer.last_name
+                          )
+                        }
+                      },
+                      [
+                        _c("i", { staticClass: "fas fa-envelope" }),
+                        _vm._v(
+                          " " +
+                            _vm._s(_vm.volunteer.email) +
+                            "\n                "
                         )
-                      ])
-                    }),
-                    0
-                  )
-                ]
-              )
+                      ]
+                    )
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.volunteer.phone != null
+                ? _c("div", { staticClass: "col-auto mb-3" }, [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { href: _vm.telUrl(_vm.volunteer.phone) }
+                      },
+                      [
+                        _c("i", { staticClass: "fas fa-phone" }),
+                        _vm._v(
+                          " " +
+                            _vm._s(_vm.volunteer.phone) +
+                            "\n                "
+                        )
+                      ]
+                    )
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.volunteer.whatsapp != null
+                ? _c("div", { staticClass: "col-auto mb-3" }, [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { href: _vm.whatsAppUrl(_vm.volunteer.whatsapp) }
+                      },
+                      [
+                        _c("i", { staticClass: "fab fa-whatsapp" }),
+                        _vm._v(
+                          " " +
+                            _vm._s(_vm.volunteer.whatsapp) +
+                            "\n                "
+                        )
+                      ]
+                    )
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.volunteer.skype != null
+                ? _c("div", { staticClass: "col-auto mb-3" }, [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { href: _vm.skypeUrl(_vm.volunteer.skype) }
+                      },
+                      [
+                        _c("i", { staticClass: "fab fa-skype" }),
+                        _vm._v(
+                          " " +
+                            _vm._s(_vm.volunteer.skype) +
+                            "\n                "
+                        )
+                      ]
+                    )
+                  ])
+                : _vm._e()
             ]),
+            _vm._v(" "),
+            _vm._l(_vm.volunteer.stays, function(stay) {
+              return _c("div", { key: stay.id, staticClass: "card mb-4" }, [
+                _c(
+                  "div",
+                  { staticClass: "card-header" },
+                  [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(stay.arrival) +
+                        " - \n                "
+                    ),
+                    stay.departure != null
+                      ? [
+                          _vm._v(
+                            "\n                    " +
+                              _vm._s(stay.departure) +
+                              " (" +
+                              _vm._s(Math.round(stay.num_days / 7)) +
+                              " weeks)\n                "
+                          )
+                        ]
+                      : [
+                          _vm._v(
+                            "\n                    open-end\n                "
+                          )
+                        ],
+                    _vm._v(" "),
+                    stay.active
+                      ? _c(
+                          "span",
+                          { staticClass: "badge badge-pill badge-success" },
+                          [_vm._v("Active")]
+                        )
+                      : _vm._e()
+                  ],
+                  2
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "card-body" }, [
+                  _vm._v("\n                Test\n                ")
+                ])
+              ])
+            }),
             _vm._v(" "),
             _c(
               "p",
