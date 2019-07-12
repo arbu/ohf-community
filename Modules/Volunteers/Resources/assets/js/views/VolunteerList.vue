@@ -129,7 +129,8 @@
     </div>
 </template>
 <script>
-    import volunteersMixin from '../mixins/volunteers.js';
+    import api from '../services/volunteers';
+    import volunteersMixin from '../mixins/volunteers';
     export default {
         mixins: [ volunteersMixin ],
         data() {
@@ -164,7 +165,7 @@
             loadData(scope) {
                 this.loaded = false;
                 this.error = null;
-                axios.get('/api/volunteers?scope=' + scope)
+                api.listVolunteers(scope)
                     .then(res => {
                         this.volunteers = res.data.data;
                     })

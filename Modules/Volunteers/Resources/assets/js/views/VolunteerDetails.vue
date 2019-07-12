@@ -76,6 +76,7 @@
     </div>
 </template>
 <script>
+    import api from '../services/volunteers';
     import commonMixin from '../mixins/common.js';
     import volunteersMixin from '../mixins/volunteers.js';
     export default {
@@ -96,7 +97,7 @@
                 this.loaded = false;
                 this.error = null;
                 this.volunteer = null;
-                axios.get('/api/volunteers/' + this.volunteer_id)
+                api.getVolunteer(this.volunteer_id)
                     .then(res => {
                         this.volunteer = res.data.data;
                     })

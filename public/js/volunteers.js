@@ -3524,6 +3524,27 @@ var scopes = ['applied', 'future', 'active', 'previous'];
 
 /***/ }),
 
+/***/ "./Resources/assets/js/services/volunteers.js":
+/*!****************************************************!*\
+  !*** ./Resources/assets/js/services/volunteers.js ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var prefix = '/api/volunteers';
+/* harmony default export */ __webpack_exports__["default"] = ({
+  listVolunteers: function listVolunteers(scope) {
+    return axios.get(prefix + '?scope=' + scope);
+  },
+  getVolunteer: function getVolunteer(id) {
+    return axios.get(prefix + '/' + id);
+  }
+});
+
+/***/ }),
+
 /***/ "./Resources/assets/js/views/VolunteerDetails.vue":
 /*!********************************************************!*\
   !*** ./Resources/assets/js/views/VolunteerDetails.vue ***!
@@ -3704,8 +3725,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _mixins_common_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../mixins/common.js */ "./Resources/assets/js/mixins/common.js");
-/* harmony import */ var _mixins_volunteers_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../mixins/volunteers.js */ "./Resources/assets/js/mixins/volunteers.js");
+/* harmony import */ var _services_volunteers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../services/volunteers */ "./Resources/assets/js/services/volunteers.js");
+/* harmony import */ var _mixins_common_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../mixins/common.js */ "./Resources/assets/js/mixins/common.js");
+/* harmony import */ var _mixins_volunteers_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../mixins/volunteers.js */ "./Resources/assets/js/mixins/volunteers.js");
 //
 //
 //
@@ -3783,10 +3805,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mixins: [_mixins_common_js__WEBPACK_IMPORTED_MODULE_2__["default"], _mixins_volunteers_js__WEBPACK_IMPORTED_MODULE_1__["default"]],
+  mixins: [_mixins_common_js__WEBPACK_IMPORTED_MODULE_1__["default"], _mixins_volunteers_js__WEBPACK_IMPORTED_MODULE_2__["default"]],
   data: function data() {
     return {
       volunteer: null,
@@ -3805,7 +3828,7 @@ __webpack_require__.r(__webpack_exports__);
       this.loaded = false;
       this.error = null;
       this.volunteer = null;
-      axios.get('/api/volunteers/' + this.volunteer_id).then(function (res) {
+      _services_volunteers__WEBPACK_IMPORTED_MODULE_0__["default"].getVolunteer(this.volunteer_id).then(function (res) {
         _this.volunteer = res.data.data;
       })["catch"](function (err) {
         _this.error = err;
@@ -3827,7 +3850,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _mixins_volunteers_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../mixins/volunteers.js */ "./Resources/assets/js/mixins/volunteers.js");
+/* harmony import */ var _services_volunteers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../services/volunteers */ "./Resources/assets/js/services/volunteers.js");
+/* harmony import */ var _mixins_volunteers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../mixins/volunteers */ "./Resources/assets/js/mixins/volunteers.js");
 //
 //
 //
@@ -3959,8 +3983,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mixins: [_mixins_volunteers_js__WEBPACK_IMPORTED_MODULE_0__["default"]],
+  mixins: [_mixins_volunteers__WEBPACK_IMPORTED_MODULE_1__["default"]],
   data: function data() {
     return {
       loaded: false,
@@ -3995,7 +4020,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.loaded = false;
       this.error = null;
-      axios.get('/api/volunteers?scope=' + scope).then(function (res) {
+      _services_volunteers__WEBPACK_IMPORTED_MODULE_0__["default"].listVolunteers(scope).then(function (res) {
         _this.volunteers = res.data.data;
       })["catch"](function (err) {
         _this.error = err;
