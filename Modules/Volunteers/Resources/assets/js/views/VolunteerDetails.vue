@@ -20,11 +20,11 @@
 
             <p v-if="volunteer.email != null">
                 <i class="fas fa-envelope"></i>
-                <a :href="`mailto:${volunteer.email}`">{{ volunteer.email }}</a>
+                <a :href="mailUrl(volunteer.email)">{{ volunteer.email }}</a>
             </p>
             <p v-if="volunteer.phone != null">
                 <i class="fas fa-phone"></i>
-                <a :href="`tel:${volunteer.phone}`">{{ volunteer.phone }}</a>
+                <a :href="telUrl(volunteer.phone)">{{ volunteer.phone }}</a>
             </p>
             <p v-if="volunteer.whatsapp != null">
                 <i class="fab fa-whatsapp"></i>
@@ -76,7 +76,9 @@
     </div>
 </template>
 <script>
+    import helpersMixin from '../mixins/helpers.js';
     export default {
+        mixins: [ helpersMixin ],
         data() {
             return {
                 volunteer: null,
@@ -103,9 +105,6 @@
                     .then(() => {
                         this.loaded = true;
                     });
-            },
-            whatsAppUrl(value) {
-                return 'whatsapp://send?phone=' + value
             }
         }
     }

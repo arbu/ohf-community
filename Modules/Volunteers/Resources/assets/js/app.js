@@ -1,11 +1,14 @@
-import VolunteerApp from './components/VolunteerApp.vue';
+// Main app
+import VolunteerApp from './VolunteerApp.vue';
 window.Vue.component('volunteer-app', VolunteerApp);
 
+// Components
 import LoadingIndicator from './components/LoadingIndicator.vue';
 window.Vue.component('loading-indicator', LoadingIndicator);
 
-import VolunteerList from './components/VolunteerList.vue';
-import VolunteerDetails from './components/VolunteerDetails.vue';
+// Views
+import VolunteerList from './views/VolunteerList.vue';
+import VolunteerDetails from './views/VolunteerDetails.vue';
 
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
