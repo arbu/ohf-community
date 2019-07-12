@@ -25,7 +25,8 @@ const router = new VueRouter({
     base: '/volunteers',
     mode: 'history',
     routes: [
-        { path: '/:scope?', name: 'volunteers-index', component: VolunteerList, props: true },
+        { path: '/', redirect: '/active' },
+        { path: '/:scope(active|future|applied|previous)', name: 'volunteers-index', component: VolunteerList, props: true },
         { path: '/volunteer/:volunteer_id', name: 'volunteers-show', component: VolunteerDetails, props: true },
         { path: "*", component: PageNotFound }
     ]
