@@ -7,22 +7,32 @@
         <loading-indicator v-if="!loaded"></loading-indicator>
         <template v-else>
             <h2>{{ volunteer.first_name }} {{ volunteer.last_name }}</h2>
-            <p><strong>About:</strong> <i class="fas" :class="{ 'fa-male': volunteer.gender == 'm', 'fa-female': volunteer.gender == 'f', }"></i>
-            {{ volunteer.date_of_birth }} (age {{ volunteer.age }}), 
-            {{ volunteer.nationality }}</p>
 
-            <p><strong>Address:</strong> {{ volunteer.street }} {{ volunteer.postcode }} {{ volunteer.city }} {{ volunteer.country }}</p>
+            <volunteer-detail-item>
+                <template v-slot:label>About:</template>
+                <i class="fas" :class="{ 'fa-male': volunteer.gender == 'm', 'fa-female': volunteer.gender == 'f', }"></i>
+                            {{ volunteer.date_of_birth }} (age {{ volunteer.age }}), 
+                            {{ volunteer.nationality }}
+            </volunteer-detail-item>
 
-            <p v-if="volunteer.emergency_contact != null">
-                <strong>Emergency contact:</strong>
-                {{ volunteer.emergency_contact }}
-            </p>
+            <volunteer-detail-item>
+                <template v-slot:label>Address:</template>
+                {{ volunteer.street }}<br>
+                {{ volunteer.postcode }} {{ volunteer.city }}<br>
+                {{ volunteer.country }}
+            </volunteer-detail-item>
 
-            <p><strong>Langauges:</strong>
+            <volunteer-detail-item v-if="volunteer.emergency_contact != null">
+                <template v-slot:label>Emergency contact:</template>
+                <span class="pre-formatted">{{ volunteer.emergency_contact }}</span>
+            </volunteer-detail-item>
+
+            <volunteer-detail-item>
+                <template v-slot:label>Langauges:</template>
                 <template v-for="(language, idx) in volunteer.languages">
                     {{ language }}<template v-if="idx + 1 < volunteer.languages.length">,</template>
                 </template>
-            </p>
+            </volunteer-detail-item>
 
             <div class="form-row">
                 <div v-if="volunteer.email != null" class="col-auto mb-3">
@@ -79,11 +89,15 @@
     </div>
 </template>
 <script>
+    import VolunteerDetailItem from '../components/VolunteerDetailItem.vue';
     import api from '../services/volunteers';
     import commonMixin from '../mixins/common.js';
     import volunteersMixin from '../mixins/volunteers.js';
     export default {
         mixins: [ commonMixin, volunteersMixin ],
+        components: {
+            'volunteer-detail-item': VolunteerDetailItem
+        },
         data() {
             return {
                 volunteer: null,
