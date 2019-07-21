@@ -3988,6 +3988,15 @@ __webpack_require__.r(__webpack_exports__);
         _this.loaded = true;
       });
     }
+  },
+  computed: {
+    drivingLicenseClasses: function drivingLicenseClasses() {
+      if (this.volunteer.has_driving_license) {
+        return ['fa-check', 'text-success'];
+      }
+
+      return 'fa-times';
+    }
   }
 });
 
@@ -4521,18 +4530,15 @@ var render = function() {
                   {
                     key: "label",
                     fn: function() {
-                      return [_vm._v("has_driving_license:")]
+                      return [_vm._v("Driving license:")]
                     },
                     proxy: true
                   }
                 ])
               },
               [
-                _vm._v(
-                  "\n            " +
-                    _vm._s(_vm.volunteer.has_driving_license) +
-                    "\n        "
-                )
+                _vm._v(" "),
+                _c("i", { staticClass: "fa", class: _vm.drivingLicenseClasses })
               ]
             ),
             _vm._v(" "),

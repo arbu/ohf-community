@@ -50,8 +50,8 @@
             </volunteer-detail-item>
 
             <volunteer-detail-item>
-                <template v-slot:label>has_driving_license:</template>
-                {{ volunteer.has_driving_license }}
+                <template v-slot:label>Driving license:</template>
+                <i class="fa" :class="drivingLicenseClasses"></i>
             </volunteer-detail-item>
 
             <volunteer-detail-item v-if="volunteer.qualifications != null">
@@ -195,6 +195,14 @@
                     .then(() => {
                         this.loaded = true;
                     });
+            }
+        },
+        computed: {
+            drivingLicenseClasses() {
+                if (this.volunteer.has_driving_license) {
+                    return ['fa-check', 'text-success'];
+                }
+                return 'fa-times';
             }
         }
     }
