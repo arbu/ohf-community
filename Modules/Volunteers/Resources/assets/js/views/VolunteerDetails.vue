@@ -34,6 +34,41 @@
                 </template>
             </volunteer-detail-item>
 
+            <volunteer-detail-item v-if="volunteer.passport_id_number != null">
+                <template v-slot:label>Passport/ID number:</template>
+                {{ volunteer.passport_id_number }}
+            </volunteer-detail-item>
+
+            <volunteer-detail-item v-if="volunteer.govt_reg_number != null">
+                <template v-slot:label>Govt. Volunteer registration number:</template>
+                {{ volunteer.govt_reg_number }} (expires {{ volunteer.govt_reg_expiry }})
+            </volunteer-detail-item>
+
+            <volunteer-detail-item>
+                <template v-slot:label>criminal_record_received:</template>
+                {{ volunteer.criminal_record_received }}
+            </volunteer-detail-item>
+
+            <volunteer-detail-item>
+                <template v-slot:label>has_driving_license:</template>
+                {{ volunteer.has_driving_license }}
+            </volunteer-detail-item>
+
+            <volunteer-detail-item v-if="volunteer.qualifications != null">
+                <template v-slot:label>Qualifications:</template>
+                <span class="pre-formatted">{{ volunteer.qualifications }}</span>
+            </volunteer-detail-item>
+
+            <volunteer-detail-item v-if="volunteer.previous_experience != null">
+                <template v-slot:label>Previous experience:</template>
+                <span class="pre-formatted">{{ volunteer.previous_experience }}</span>
+            </volunteer-detail-item>
+
+            <volunteer-detail-item v-if="volunteer.remarks != null">
+                <template v-slot:label>Remarks:</template>
+                <span class="pre-formatted">{{ volunteer.remarks }}</span>
+            </volunteer-detail-item>
+
             <div class="form-row">
                 <div v-if="volunteer.email != null" class="col-auto mb-3">
                     <a :href="mailUrl(volunteer.email, volunteer.first_name + ' ' + volunteer.last_name)" class="btn btn-primary">
@@ -71,6 +106,38 @@
                 </div>
                 <div class="card-body">
                     Test
+
+                    <p>Status: {{ stay.status }}</p>
+
+                    <volunteer-detail-item>
+                        <template v-slot:label>govt_reg_status</template>
+                        {{ stay.govt_reg_status }}
+                    </volunteer-detail-item>
+                    <volunteer-detail-item>
+                        <template v-slot:label>code_of_conduct_signed</template>
+                        {{ stay.code_of_conduct_signed }}
+                    </volunteer-detail-item>
+                    <volunteer-detail-item>
+                        <template v-slot:label>financial contribution</template>
+                        {{ stay.financial_contribution }} Paid? {{ stay.financial_contribution_paid }}
+                    </volunteer-detail-item>
+                    <volunteer-detail-item>
+                        <template v-slot:label>debriefing_info_received</template>
+                        {{ stay.debriefing_info_received }}
+                    </volunteer-detail-item>
+
+                    <volunteer-detail-item>
+                        <template v-slot:label>Responsibilities:</template>
+                        <template v-for="(responsibility, idx) in stay.responsibilities">
+                            {{ responsibility }}<template v-if="idx + 1 < stay.responsibilities.length">,</template>
+                        </template>
+                    </volunteer-detail-item>
+
+                    <volunteer-detail-item>
+                        <template v-slot:label>remarks</template>
+                        {{ stay.remarks }}
+                    </volunteer-detail-item>
+
                     <!-- <h5 class="card-title">Special title treatment</h5>
                     <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
                     <a href="#" class="btn btn-primary">Go somewhere</a> -->

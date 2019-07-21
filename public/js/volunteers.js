@@ -3882,6 +3882,73 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -4363,6 +4430,196 @@ var render = function() {
               2
             ),
             _vm._v(" "),
+            _vm.volunteer.passport_id_number != null
+              ? _c(
+                  "volunteer-detail-item",
+                  {
+                    scopedSlots: _vm._u(
+                      [
+                        {
+                          key: "label",
+                          fn: function() {
+                            return [_vm._v("Passport/ID number:")]
+                          },
+                          proxy: true
+                        }
+                      ],
+                      null,
+                      false,
+                      1569215528
+                    )
+                  },
+                  [
+                    _vm._v(
+                      "\n            " +
+                        _vm._s(_vm.volunteer.passport_id_number) +
+                        "\n        "
+                    )
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.volunteer.govt_reg_number != null
+              ? _c(
+                  "volunteer-detail-item",
+                  {
+                    scopedSlots: _vm._u(
+                      [
+                        {
+                          key: "label",
+                          fn: function() {
+                            return [
+                              _vm._v("Govt. Volunteer registration number:")
+                            ]
+                          },
+                          proxy: true
+                        }
+                      ],
+                      null,
+                      false,
+                      76794591
+                    )
+                  },
+                  [
+                    _vm._v(
+                      "\n            " +
+                        _vm._s(_vm.volunteer.govt_reg_number) +
+                        " (expires " +
+                        _vm._s(_vm.volunteer.govt_reg_expiry) +
+                        ")\n        "
+                    )
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c(
+              "volunteer-detail-item",
+              {
+                scopedSlots: _vm._u([
+                  {
+                    key: "label",
+                    fn: function() {
+                      return [_vm._v("criminal_record_received:")]
+                    },
+                    proxy: true
+                  }
+                ])
+              },
+              [
+                _vm._v(
+                  "\n            " +
+                    _vm._s(_vm.volunteer.criminal_record_received) +
+                    "\n        "
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "volunteer-detail-item",
+              {
+                scopedSlots: _vm._u([
+                  {
+                    key: "label",
+                    fn: function() {
+                      return [_vm._v("has_driving_license:")]
+                    },
+                    proxy: true
+                  }
+                ])
+              },
+              [
+                _vm._v(
+                  "\n            " +
+                    _vm._s(_vm.volunteer.has_driving_license) +
+                    "\n        "
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _vm.volunteer.qualifications != null
+              ? _c(
+                  "volunteer-detail-item",
+                  {
+                    scopedSlots: _vm._u(
+                      [
+                        {
+                          key: "label",
+                          fn: function() {
+                            return [_vm._v("Qualifications:")]
+                          },
+                          proxy: true
+                        }
+                      ],
+                      null,
+                      false,
+                      128745827
+                    )
+                  },
+                  [
+                    _vm._v(" "),
+                    _c("span", { staticClass: "pre-formatted" }, [
+                      _vm._v(_vm._s(_vm.volunteer.qualifications))
+                    ])
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.volunteer.previous_experience != null
+              ? _c(
+                  "volunteer-detail-item",
+                  {
+                    scopedSlots: _vm._u(
+                      [
+                        {
+                          key: "label",
+                          fn: function() {
+                            return [_vm._v("Previous experience:")]
+                          },
+                          proxy: true
+                        }
+                      ],
+                      null,
+                      false,
+                      2602965166
+                    )
+                  },
+                  [
+                    _vm._v(" "),
+                    _c("span", { staticClass: "pre-formatted" }, [
+                      _vm._v(_vm._s(_vm.volunteer.previous_experience))
+                    ])
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.volunteer.remarks != null
+              ? _c(
+                  "volunteer-detail-item",
+                  {
+                    scopedSlots: _vm._u(
+                      [
+                        {
+                          key: "label",
+                          fn: function() {
+                            return [_vm._v("Remarks:")]
+                          },
+                          proxy: true
+                        }
+                      ],
+                      null,
+                      false,
+                      4289868912
+                    )
+                  },
+                  [
+                    _vm._v(" "),
+                    _c("span", { staticClass: "pre-formatted" }, [
+                      _vm._v(_vm._s(_vm.volunteer.remarks))
+                    ])
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
             _c("div", { staticClass: "form-row" }, [
               _vm.volunteer.email != null
                 ? _c("div", { staticClass: "col-auto mb-3" }, [
@@ -4490,9 +4747,184 @@ var render = function() {
                   2
                 ),
                 _vm._v(" "),
-                _c("div", { staticClass: "card-body" }, [
-                  _vm._v("\n                Test\n                ")
-                ])
+                _c(
+                  "div",
+                  { staticClass: "card-body" },
+                  [
+                    _vm._v("\n                Test\n\n                "),
+                    _c("p", [_vm._v("Status: " + _vm._s(stay.status))]),
+                    _vm._v(" "),
+                    _c(
+                      "volunteer-detail-item",
+                      {
+                        scopedSlots: _vm._u(
+                          [
+                            {
+                              key: "label",
+                              fn: function() {
+                                return [_vm._v("govt_reg_status")]
+                              },
+                              proxy: true
+                            }
+                          ],
+                          null,
+                          true
+                        )
+                      },
+                      [
+                        _vm._v(
+                          "\n                    " +
+                            _vm._s(stay.govt_reg_status) +
+                            "\n                "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "volunteer-detail-item",
+                      {
+                        scopedSlots: _vm._u(
+                          [
+                            {
+                              key: "label",
+                              fn: function() {
+                                return [_vm._v("code_of_conduct_signed")]
+                              },
+                              proxy: true
+                            }
+                          ],
+                          null,
+                          true
+                        )
+                      },
+                      [
+                        _vm._v(
+                          "\n                    " +
+                            _vm._s(stay.code_of_conduct_signed) +
+                            "\n                "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "volunteer-detail-item",
+                      {
+                        scopedSlots: _vm._u(
+                          [
+                            {
+                              key: "label",
+                              fn: function() {
+                                return [_vm._v("financial contribution")]
+                              },
+                              proxy: true
+                            }
+                          ],
+                          null,
+                          true
+                        )
+                      },
+                      [
+                        _vm._v(
+                          "\n                    " +
+                            _vm._s(stay.financial_contribution) +
+                            " Paid? " +
+                            _vm._s(stay.financial_contribution_paid) +
+                            "\n                "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "volunteer-detail-item",
+                      {
+                        scopedSlots: _vm._u(
+                          [
+                            {
+                              key: "label",
+                              fn: function() {
+                                return [_vm._v("debriefing_info_received")]
+                              },
+                              proxy: true
+                            }
+                          ],
+                          null,
+                          true
+                        )
+                      },
+                      [
+                        _vm._v(
+                          "\n                    " +
+                            _vm._s(stay.debriefing_info_received) +
+                            "\n                "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "volunteer-detail-item",
+                      {
+                        scopedSlots: _vm._u(
+                          [
+                            {
+                              key: "label",
+                              fn: function() {
+                                return [_vm._v("Responsibilities:")]
+                              },
+                              proxy: true
+                            }
+                          ],
+                          null,
+                          true
+                        )
+                      },
+                      [
+                        _vm._v(" "),
+                        _vm._l(stay.responsibilities, function(
+                          responsibility,
+                          idx
+                        ) {
+                          return [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(responsibility)
+                            ),
+                            idx + 1 < stay.responsibilities.length
+                              ? [_vm._v(",")]
+                              : _vm._e()
+                          ]
+                        })
+                      ],
+                      2
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "volunteer-detail-item",
+                      {
+                        scopedSlots: _vm._u(
+                          [
+                            {
+                              key: "label",
+                              fn: function() {
+                                return [_vm._v("remarks")]
+                              },
+                              proxy: true
+                            }
+                          ],
+                          null,
+                          true
+                        )
+                      },
+                      [
+                        _vm._v(
+                          "\n                    " +
+                            _vm._s(stay.remarks) +
+                            "\n                "
+                        )
+                      ]
+                    )
+                  ],
+                  1
+                )
               ])
             }),
             _vm._v(" "),
