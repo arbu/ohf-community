@@ -12,6 +12,6 @@ export default {
         },
         skypeUrl(value) {
             return 'skype:' + value + '?chat'
-        }
+        },
     }
 }

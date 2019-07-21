@@ -8,6 +8,7 @@ use Modules\Volunteers\Entities\Volunteer;
 use Modules\Volunteers\Transformers\Volunteer as VolunteerResource;
 use Modules\Volunteers\Transformers\VolunteerCollection;
 use Modules\Volunteers\Http\Requests\StoreVolunteer;
+use Modules\Volunteers\Http\Requests\UpdateVolunteer;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -69,17 +70,21 @@ class VolunteersController extends Controller
 
     /**
      * Update the specified resource in storage.
-     * @param StoreVolunteer $request
+     * @param UpdateVolunteer $request
      * @param Volunteer $volunteer
      * @return Response
      */
-    public function update(StoreVolunteer $request, Volunteer $volunteer)
+    public function update(UpdateVolunteer $request, Volunteer $volunteer)
     {
         $this->authorize('update', $volunteer);
 
         $volunteer->fill($request->all());
         $volunteer->save();
-        return (new VolunteerResource($volunteer))->response(200);
+        return (new VolunteerResource($volunteer->load([
+            'stays' => function ($query) {
+                $query->orderBy('arrival', 'asc');
+            }
+        ])))->response(200);
     }
 
     /**

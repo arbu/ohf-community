@@ -3408,6 +3408,9 @@ axios.interceptors.request.use(function (config) {
 axios.interceptors.response.use(function (response) {
   nprogress__WEBPACK_IMPORTED_MODULE_5___default.a.done();
   return response;
+}, function (error) {
+  nprogress__WEBPACK_IMPORTED_MODULE_5___default.a.done();
+  return Promise.reject(error);
 });
 var app = new Vue({
   el: '#app',
@@ -3464,6 +3467,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LoadingIndicator_vue_vue_type_template_id_17b700ca___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LoadingIndicator_vue_vue_type_template_id_17b700ca___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./Resources/assets/js/components/TrueFalseIcon.vue":
+/*!**********************************************************!*\
+  !*** ./Resources/assets/js/components/TrueFalseIcon.vue ***!
+  \**********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _TrueFalseIcon_vue_vue_type_template_id_9598a272___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TrueFalseIcon.vue?vue&type=template&id=9598a272& */ "./Resources/assets/js/components/TrueFalseIcon.vue?vue&type=template&id=9598a272&");
+/* harmony import */ var _TrueFalseIcon_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TrueFalseIcon.vue?vue&type=script&lang=js& */ "./Resources/assets/js/components/TrueFalseIcon.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _TrueFalseIcon_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _TrueFalseIcon_vue_vue_type_template_id_9598a272___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _TrueFalseIcon_vue_vue_type_template_id_9598a272___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "Resources/assets/js/components/TrueFalseIcon.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./Resources/assets/js/components/TrueFalseIcon.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************!*\
+  !*** ./Resources/assets/js/components/TrueFalseIcon.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TrueFalseIcon_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./TrueFalseIcon.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./Resources/assets/js/components/TrueFalseIcon.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TrueFalseIcon_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./Resources/assets/js/components/TrueFalseIcon.vue?vue&type=template&id=9598a272&":
+/*!*****************************************************************************************!*\
+  !*** ./Resources/assets/js/components/TrueFalseIcon.vue?vue&type=template&id=9598a272& ***!
+  \*****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TrueFalseIcon_vue_vue_type_template_id_9598a272___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./TrueFalseIcon.vue?vue&type=template&id=9598a272& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./Resources/assets/js/components/TrueFalseIcon.vue?vue&type=template&id=9598a272&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TrueFalseIcon_vue_vue_type_template_id_9598a272___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TrueFalseIcon_vue_vue_type_template_id_9598a272___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -3601,8 +3673,17 @@ var prefix = '/api/volunteers';
   listVolunteers: function listVolunteers(scope) {
     return axios.get(prefix + '?scope=' + scope);
   },
+  createVolunteer: function createVolunteer(data) {
+    return axios.post(prefix, data);
+  },
   getVolunteer: function getVolunteer(id) {
     return axios.get(prefix + '/' + id);
+  },
+  updateVolunteer: function updateVolunteer(id, data) {
+    return axios.put(prefix + '/' + id, data);
+  },
+  deleteVolunteer: function deleteVolunteer(id) {
+    return axios["delete"](prefix + '/' + id);
   }
 });
 
@@ -3779,6 +3860,38 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./Resources/assets/js/components/TrueFalseIcon.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./Resources/assets/js/components/TrueFalseIcon.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    value: {
+      type: Boolean,
+      required: true
+    }
+  },
+  methods: {
+    trueFalseIconClasses: function trueFalseIconClasses(value) {
+      if (value) {
+        return ['fa-check', 'text-success'];
+      }
+
+      return 'fa-times';
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./Resources/assets/js/views/VolunteerDetails.vue?vue&type=script&lang=js&":
 /*!*****************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./Resources/assets/js/views/VolunteerDetails.vue?vue&type=script&lang=js& ***!
@@ -3789,9 +3902,10 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_VolunteerDetailItem_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/VolunteerDetailItem.vue */ "./Resources/assets/js/components/VolunteerDetailItem.vue");
-/* harmony import */ var _services_volunteers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../services/volunteers */ "./Resources/assets/js/services/volunteers.js");
-/* harmony import */ var _mixins_common_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../mixins/common.js */ "./Resources/assets/js/mixins/common.js");
-/* harmony import */ var _mixins_volunteers_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../mixins/volunteers.js */ "./Resources/assets/js/mixins/volunteers.js");
+/* harmony import */ var _components_TrueFalseIcon_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/TrueFalseIcon.vue */ "./Resources/assets/js/components/TrueFalseIcon.vue");
+/* harmony import */ var _services_volunteers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../services/volunteers */ "./Resources/assets/js/services/volunteers.js");
+/* harmony import */ var _mixins_common_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../mixins/common.js */ "./Resources/assets/js/mixins/common.js");
+/* harmony import */ var _mixins_volunteers_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../mixins/volunteers.js */ "./Resources/assets/js/mixins/volunteers.js");
 //
 //
 //
@@ -3949,20 +4063,44 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mixins: [_mixins_common_js__WEBPACK_IMPORTED_MODULE_2__["default"], _mixins_volunteers_js__WEBPACK_IMPORTED_MODULE_3__["default"]],
+  mixins: [_mixins_common_js__WEBPACK_IMPORTED_MODULE_3__["default"], _mixins_volunteers_js__WEBPACK_IMPORTED_MODULE_4__["default"]],
   components: {
-    'volunteer-detail-item': _components_VolunteerDetailItem_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    'volunteer-detail-item': _components_VolunteerDetailItem_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    'true-false-icon': _components_TrueFalseIcon_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   data: function data() {
     return {
       volunteer: null,
       loaded: false,
-      error: null
+      error: null,
+      editPassportIdNumber: false,
+      passportIdNumberError: null
     };
   },
   props: {
@@ -3980,22 +4118,41 @@ __webpack_require__.r(__webpack_exports__);
       this.loaded = false;
       this.error = null;
       this.volunteer = null;
-      _services_volunteers__WEBPACK_IMPORTED_MODULE_1__["default"].getVolunteer(this.volunteer_id).then(function (res) {
+      _services_volunteers__WEBPACK_IMPORTED_MODULE_2__["default"].getVolunteer(this.volunteer_id).then(function (res) {
         _this.volunteer = res.data.data;
       })["catch"](function (err) {
         _this.error = err;
       }).then(function () {
         _this.loaded = true;
       });
-    }
-  },
-  computed: {
-    drivingLicenseClasses: function drivingLicenseClasses() {
-      if (this.volunteer.has_driving_license) {
-        return ['fa-check', 'text-success'];
-      }
+    },
+    updatePassportIdNumber: function updatePassportIdNumber() {
+      var _this2 = this;
 
-      return 'fa-times';
+      var field = this.$refs['passport_id_number'];
+      field.disabled = true;
+      this.passportIdNumberError = null;
+      _services_volunteers__WEBPACK_IMPORTED_MODULE_2__["default"].updateVolunteer(this.volunteer_id, {
+        'passport_id_number': field.value
+      }).then(function (res) {
+        _this2.editPassportIdNumber = false;
+        _this2.passportIdNumberError = null;
+        _this2.volunteer = res.data.data;
+      })["catch"](function (err) {
+        _this2.passportIdNumberError = function () {
+          if (err.response && err.response.data && err.response.data.message) {
+            if (err.response.data.errors && err.response.data.errors['passport_id_number']) {
+              return err.response.data.errors['passport_id_number'].join(' ');
+            }
+
+            return err.response.data.message;
+          }
+
+          return err;
+        }();
+      }).then(function () {
+        field.disabled = false;
+      });
     }
   }
 });
@@ -4244,6 +4401,33 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./Resources/assets/js/components/TrueFalseIcon.vue?vue&type=template&id=9598a272&":
+/*!***********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./Resources/assets/js/components/TrueFalseIcon.vue?vue&type=template&id=9598a272& ***!
+  \***********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("i", {
+    staticClass: "fa",
+    class: _vm.trueFalseIconClasses(_vm.value)
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./Resources/assets/js/components/VolunteerDetailItem.vue?vue&type=template&id=b6819c32&":
 /*!*****************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./Resources/assets/js/components/VolunteerDetailItem.vue?vue&type=template&id=b6819c32& ***!
@@ -4439,34 +4623,158 @@ var render = function() {
               2
             ),
             _vm._v(" "),
-            _vm.volunteer.passport_id_number != null
-              ? _c(
-                  "volunteer-detail-item",
+            _c(
+              "volunteer-detail-item",
+              {
+                scopedSlots: _vm._u([
                   {
-                    scopedSlots: _vm._u(
-                      [
-                        {
-                          key: "label",
-                          fn: function() {
-                            return [_vm._v("Passport/ID number:")]
-                          },
-                          proxy: true
-                        }
-                      ],
-                      null,
-                      false,
-                      1569215528
-                    )
-                  },
-                  [
-                    _vm._v(
-                      "\n            " +
-                        _vm._s(_vm.volunteer.passport_id_number) +
-                        "\n        "
-                    )
-                  ]
-                )
-              : _vm._e(),
+                    key: "label",
+                    fn: function() {
+                      return [_vm._v("Passport/ID number:")]
+                    },
+                    proxy: true
+                  }
+                ])
+              },
+              [
+                _vm._v(" "),
+                _vm.volunteer.passport_id_number != null
+                  ? [
+                      _vm._v(
+                        "\n                " +
+                          _vm._s(_vm.volunteer.passport_id_number) +
+                          "\n            "
+                      )
+                    ]
+                  : [
+                      _vm.editPassportIdNumber
+                        ? [
+                            _c("div", { staticClass: "input-group" }, [
+                              _c("input", {
+                                ref: "passport_id_number",
+                                staticClass: "form-control",
+                                class: {
+                                  "is-invalid":
+                                    _vm.passportIdNumberError != null
+                                },
+                                attrs: {
+                                  type: "text",
+                                  placeholder: "Passport/ID number"
+                                },
+                                on: {
+                                  keyup: [
+                                    function($event) {
+                                      if (
+                                        !$event.type.indexOf("key") &&
+                                        _vm._k(
+                                          $event.keyCode,
+                                          "enter",
+                                          13,
+                                          $event.key,
+                                          "Enter"
+                                        )
+                                      ) {
+                                        return null
+                                      }
+                                      return _vm.updatePassportIdNumber($event)
+                                    },
+                                    function($event) {
+                                      if (
+                                        !$event.type.indexOf("key") &&
+                                        _vm._k(
+                                          $event.keyCode,
+                                          "esc",
+                                          27,
+                                          $event.key,
+                                          ["Esc", "Escape"]
+                                        )
+                                      ) {
+                                        return null
+                                      }
+                                      _vm.editPassportIdNumber = false
+                                    }
+                                  ]
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "input-group-append",
+                                  attrs: { id: "button-addon4" }
+                                },
+                                [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-outline-success",
+                                      attrs: { type: "button" },
+                                      on: { click: _vm.updatePassportIdNumber }
+                                    },
+                                    [_c("i", { staticClass: "fa fa-check" })]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-outline-secondary",
+                                      attrs: { type: "button" },
+                                      on: {
+                                        click: function($event) {
+                                          _vm.editPassportIdNumber = false
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c("i", {
+                                        staticClass: "fa fa-times-circle"
+                                      })
+                                    ]
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _vm.passportIdNumberError != null
+                                ? _c(
+                                    "div",
+                                    { staticClass: "invalid-feedback" },
+                                    [
+                                      _vm._v(
+                                        "\n                            " +
+                                          _vm._s(_vm.passportIdNumberError) +
+                                          "\n                        "
+                                      )
+                                    ]
+                                  )
+                                : _vm._e()
+                            ])
+                          ]
+                        : [
+                            _c("span", { staticClass: "text-warning" }, [
+                              _vm._v("Missing")
+                            ]),
+                            _vm._v("\n                    ["),
+                            _c(
+                              "a",
+                              {
+                                attrs: { href: "javascript:;" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.editPassportIdNumber = true
+                                    _vm.$nextTick(function() {
+                                      return _vm.$refs.passport_id_number.focus()
+                                    })
+                                  }
+                                }
+                              },
+                              [_vm._v("Update")]
+                            ),
+                            _vm._v("]\n                ")
+                          ]
+                    ]
+              ],
+              2
+            ),
             _vm._v(" "),
             _vm.volunteer.govt_reg_number != null
               ? _c(
@@ -4508,19 +4816,19 @@ var render = function() {
                   {
                     key: "label",
                     fn: function() {
-                      return [_vm._v("criminal_record_received:")]
+                      return [_vm._v("Criminal record received:")]
                     },
                     proxy: true
                   }
                 ])
               },
               [
-                _vm._v(
-                  "\n            " +
-                    _vm._s(_vm.volunteer.criminal_record_received) +
-                    "\n        "
-                )
-              ]
+                _vm._v(" "),
+                _c("true-false-icon", {
+                  attrs: { value: _vm.volunteer.criminal_record_received }
+                })
+              ],
+              1
             ),
             _vm._v(" "),
             _c(
@@ -4538,8 +4846,11 @@ var render = function() {
               },
               [
                 _vm._v(" "),
-                _c("i", { staticClass: "fa", class: _vm.drivingLicenseClasses })
-              ]
+                _c("true-false-icon", {
+                  attrs: { value: _vm.volunteer.has_driving_license }
+                })
+              ],
+              1
             ),
             _vm._v(" "),
             _vm.volunteer.qualifications != null

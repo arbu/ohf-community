@@ -34,9 +34,29 @@
                 </template>
             </volunteer-detail-item>
 
-            <volunteer-detail-item v-if="volunteer.passport_id_number != null">
+            <volunteer-detail-item>
                 <template v-slot:label>Passport/ID number:</template>
-                {{ volunteer.passport_id_number }}
+                <template v-if="volunteer.passport_id_number != null">
+                    {{ volunteer.passport_id_number }}
+                </template>
+                <template v-else>
+                    <template v-if="editPassportIdNumber">
+                        <div class="input-group">
+                            <input type="text" class="form-control" :class="{ 'is-invalid': passportIdNumberError != null }" placeholder="Passport/ID number" ref="passport_id_number" @keyup.enter="updatePassportIdNumber" @keyup.esc="editPassportIdNumber = false">
+                            <div class="input-group-append" id="button-addon4">
+                                <button class="btn btn-outline-success" type="button" @click="updatePassportIdNumber"><i class="fa fa-check"></i></button>
+                                <button class="btn btn-outline-secondary" type="button" @click="editPassportIdNumber = false"><i class="fa fa-times-circle"></i></button>
+                            </div>
+                            <div class="invalid-feedback" v-if="passportIdNumberError != null">
+                                {{ passportIdNumberError }}
+                            </div>
+                        </div>
+                    </template>
+                    <template v-else>
+                        <span class="text-warning">Missing</span>
+                        [<a href="javascript:;" @click="editPassportIdNumber = true; $nextTick(() => $refs.passport_id_number.focus())">Update</a>]
+                    </template>                    
+                </template>
             </volunteer-detail-item>
 
             <volunteer-detail-item v-if="volunteer.govt_reg_number != null">
@@ -45,13 +65,13 @@
             </volunteer-detail-item>
 
             <volunteer-detail-item>
-                <template v-slot:label>criminal_record_received:</template>
-                {{ volunteer.criminal_record_received }}
+                <template v-slot:label>Criminal record received:</template>
+                <true-false-icon :value="volunteer.criminal_record_received"></true-false-icon>
             </volunteer-detail-item>
 
             <volunteer-detail-item>
                 <template v-slot:label>Driving license:</template>
-                <i class="fa" :class="drivingLicenseClasses"></i>
+                <true-false-icon :value="volunteer.has_driving_license"></true-false-icon>
             </volunteer-detail-item>
 
             <volunteer-detail-item v-if="volunteer.qualifications != null">
@@ -157,19 +177,23 @@
 </template>
 <script>
     import VolunteerDetailItem from '../components/VolunteerDetailItem.vue';
+    import TrueFalseIcon from '../components/TrueFalseIcon.vue';
     import api from '../services/volunteers';
     import commonMixin from '../mixins/common.js';
     import volunteersMixin from '../mixins/volunteers.js';
     export default {
         mixins: [ commonMixin, volunteersMixin ],
         components: {
-            'volunteer-detail-item': VolunteerDetailItem
+            'volunteer-detail-item': VolunteerDetailItem,
+            'true-false-icon': TrueFalseIcon,
         },
         data() {
             return {
                 volunteer: null,
                 loaded: false,
-                error: null,                
+                error: null,
+                editPassportIdNumber: false,
+                passportIdNumberError: null,     
             }
         },
         props: {
@@ -195,15 +219,34 @@
                     .then(() => {
                         this.loaded = true;
                     });
+            },
+            updatePassportIdNumber() {
+                var field = this.$refs['passport_id_number']
+                field.disabled = true
+                this.passportIdNumberError = null
+                api.updateVolunteer(this.volunteer_id, {
+                    'passport_id_number': field.value,
+                })
+                .then((res) => {
+                    this.editPassportIdNumber = false
+                    this.passportIdNumberError = null
+                    this.volunteer = res.data.data;
+                })
+                .catch(err => {
+                    this.passportIdNumberError =  (function() {
+                        if (err.response && err.response.data && err.response.data.message) {
+                            if (err.response.data.errors && err.response.data.errors['passport_id_number']) {
+                                return err.response.data.errors['passport_id_number'].join(' ')
+                            }
+                            return  err.response.data.message
+                        }
+                        return err
+                    })();  
+                })
+                .then(() => {
+                    field.disabled = false
+                })
             }
         },
-        computed: {
-            drivingLicenseClasses() {
-                if (this.volunteer.has_driving_license) {
-                    return ['fa-check', 'text-success'];
-                }
-                return 'fa-times';
-            }
-        }
     }
 </script>
