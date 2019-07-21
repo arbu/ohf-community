@@ -4060,6 +4060,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -4713,7 +4715,22 @@ var render = function() {
                             _vm._s(_vm.volunteers.length) +
                             " volunteers\n            "
                         )
-                      ]
+                      ],
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "float-right btn btn-sm btn-default",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          $event.stopPropagation()
+                          return _vm.refresh($event)
+                        }
+                      }
+                    },
+                    [_c("i", { staticClass: "fa fa-sync" })]
+                  )
                 ],
                 2
               )

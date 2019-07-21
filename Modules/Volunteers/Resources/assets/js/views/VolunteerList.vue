@@ -51,6 +51,8 @@
                 <template v-else>
                     {{ volunteers.length }} volunteers
                 </template>
+
+                <button type="button" @click.stop="refresh" class="float-right btn btn-sm btn-default"><i class="fa fa-sync"></i></button>
             </small></p>
 
             <div class="table-responsive">
