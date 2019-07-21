@@ -42,10 +42,10 @@
                 <template v-else>
                     <template v-if="editPassportIdNumber">
                         <div class="input-group">
-                            <input type="text" class="form-control" :class="{ 'is-invalid': passportIdNumberError != null }" placeholder="Passport/ID number" ref="passport_id_number" @keyup.enter="updatePassportIdNumber" @keyup.esc="editPassportIdNumber = false">
+                            <input type="text" class="form-control" :disabled="passportIdNumberUpdate" v-model="passport_id_number" :class="{ 'is-invalid': passportIdNumberError != null }" placeholder="Passport/ID number" ref="passport_id_number" @keyup.enter="updatePassportIdNumber" @keyup.esc="editPassportIdNumber = false">
                             <div class="input-group-append" id="button-addon4">
-                                <button class="btn btn-outline-success" type="button" @click="updatePassportIdNumber"><i class="fa fa-check"></i></button>
-                                <button class="btn btn-outline-secondary" type="button" @click="editPassportIdNumber = false"><i class="fa fa-times-circle"></i></button>
+                                <button class="btn btn-outline-success" type="button" @click="updatePassportIdNumber" :disabled="passportIdNumberUpdate || !validPasswordIdNumber"><i class="fa fa-check"></i></button>
+                                <button class="btn btn-outline-secondary" type="button" @click="editPassportIdNumber = false" :disabled="passportIdNumberUpdate"><i class="fa fa-times-circle"></i></button>
                             </div>
                             <div class="invalid-feedback" v-if="passportIdNumberError != null">
                                 {{ passportIdNumberError }}
@@ -54,7 +54,7 @@
                     </template>
                     <template v-else>
                         <span class="text-warning">Missing</span>
-                        [<a href="javascript:;" @click="editPassportIdNumber = true; $nextTick(() => $refs.passport_id_number.focus())">Update</a>]
+                        [<a href="javascript:;" @click="editPassportIdNumber = true">Add</a>]
                     </template>                    
                 </template>
             </volunteer-detail-item>
@@ -194,6 +194,8 @@
                 error: null,
                 editPassportIdNumber: false,
                 passportIdNumberError: null,     
+                passportIdNumberUpdate: false,
+                passport_id_number: null,
             }
         },
         props: {
@@ -221,11 +223,14 @@
                     });
             },
             updatePassportIdNumber() {
-                var field = this.$refs['passport_id_number']
-                field.disabled = true
+                var name = 'passport_id_number'
+                if (!this.validPasswordIdNumber) {
+                    return
+                }
+                this.passportIdNumberUpdate = true
                 this.passportIdNumberError = null
                 api.updateVolunteer(this.volunteer_id, {
-                    'passport_id_number': field.value,
+                    'passport_id_number': this.passport_id_number,
                 })
                 .then((res) => {
                     this.editPassportIdNumber = false
@@ -233,20 +238,36 @@
                     this.volunteer = res.data.data;
                 })
                 .catch(err => {
-                    this.passportIdNumberError =  (function() {
-                        if (err.response && err.response.data && err.response.data.message) {
-                            if (err.response.data.errors && err.response.data.errors['passport_id_number']) {
-                                return err.response.data.errors['passport_id_number'].join(' ')
+                    this.passportIdNumberError = (function() {
+                        if (err.response && err.response.data) {
+                            if (err.response.data.errors && err.response.data.errors[name]) {
+                                return Array.isArray(err.response.data.errors[name]) ? err.response.data.errors[name].join(' ') : err.response.data.errors[name]
+                            } else if (err.response.data.message) {
+                                return err.response.data.message
                             }
-                            return  err.response.data.message
                         }
                         return err
                     })();  
                 })
                 .then(() => {
-                    field.disabled = false
+                    this.passportIdNumberUpdate = false
                 })
             }
         },
+        watch: {
+            editPassportIdNumber(val, oldVal) {
+                if (val) {
+                    this.$nextTick(() => this.$refs.passport_id_number.focus())
+                } else {
+                    this.passportIdNumberError = null
+                    this.passport_id_number = null
+                }
+            }
+        },
+        computed: {
+            validPasswordIdNumber() {
+                return this.passport_id_number != null && this.passport_id_number.length > 0
+            },
+        }
     }
 </script>

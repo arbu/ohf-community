@@ -4100,7 +4100,9 @@ __webpack_require__.r(__webpack_exports__);
       loaded: false,
       error: null,
       editPassportIdNumber: false,
-      passportIdNumberError: null
+      passportIdNumberError: null,
+      passportIdNumberUpdate: false,
+      passport_id_number: null
     };
   },
   props: {
@@ -4129,30 +4131,54 @@ __webpack_require__.r(__webpack_exports__);
     updatePassportIdNumber: function updatePassportIdNumber() {
       var _this2 = this;
 
-      var field = this.$refs['passport_id_number'];
-      field.disabled = true;
+      var name = 'passport_id_number';
+
+      if (!this.validPasswordIdNumber) {
+        return;
+      }
+
+      this.passportIdNumberUpdate = true;
       this.passportIdNumberError = null;
       _services_volunteers__WEBPACK_IMPORTED_MODULE_2__["default"].updateVolunteer(this.volunteer_id, {
-        'passport_id_number': field.value
+        'passport_id_number': this.passport_id_number
       }).then(function (res) {
         _this2.editPassportIdNumber = false;
         _this2.passportIdNumberError = null;
         _this2.volunteer = res.data.data;
       })["catch"](function (err) {
         _this2.passportIdNumberError = function () {
-          if (err.response && err.response.data && err.response.data.message) {
-            if (err.response.data.errors && err.response.data.errors['passport_id_number']) {
-              return err.response.data.errors['passport_id_number'].join(' ');
+          if (err.response && err.response.data) {
+            if (err.response.data.errors && err.response.data.errors[name]) {
+              return Array.isArray(err.response.data.errors[name]) ? err.response.data.errors[name].join(' ') : err.response.data.errors[name];
+            } else if (err.response.data.message) {
+              return err.response.data.message;
             }
-
-            return err.response.data.message;
           }
 
           return err;
         }();
       }).then(function () {
-        field.disabled = false;
+        _this2.passportIdNumberUpdate = false;
       });
+    }
+  },
+  watch: {
+    editPassportIdNumber: function editPassportIdNumber(val, oldVal) {
+      var _this3 = this;
+
+      if (val) {
+        this.$nextTick(function () {
+          return _this3.$refs.passport_id_number.focus();
+        });
+      } else {
+        this.passportIdNumberError = null;
+        this.passport_id_number = null;
+      }
+    }
+  },
+  computed: {
+    validPasswordIdNumber: function validPasswordIdNumber() {
+      return this.passport_id_number != null && this.passport_id_number.length > 0;
     }
   }
 });
@@ -4651,6 +4677,14 @@ var render = function() {
                         ? [
                             _c("div", { staticClass: "input-group" }, [
                               _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.passport_id_number,
+                                    expression: "passport_id_number"
+                                  }
+                                ],
                                 ref: "passport_id_number",
                                 staticClass: "form-control",
                                 class: {
@@ -4659,8 +4693,10 @@ var render = function() {
                                 },
                                 attrs: {
                                   type: "text",
+                                  disabled: _vm.passportIdNumberUpdate,
                                   placeholder: "Passport/ID number"
                                 },
+                                domProps: { value: _vm.passport_id_number },
                                 on: {
                                   keyup: [
                                     function($event) {
@@ -4693,7 +4729,13 @@ var render = function() {
                                       }
                                       _vm.editPassportIdNumber = false
                                     }
-                                  ]
+                                  ],
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.passport_id_number = $event.target.value
+                                  }
                                 }
                               }),
                               _vm._v(" "),
@@ -4708,7 +4750,12 @@ var render = function() {
                                     "button",
                                     {
                                       staticClass: "btn btn-outline-success",
-                                      attrs: { type: "button" },
+                                      attrs: {
+                                        type: "button",
+                                        disabled:
+                                          _vm.passportIdNumberUpdate ||
+                                          !_vm.validPasswordIdNumber
+                                      },
                                       on: { click: _vm.updatePassportIdNumber }
                                     },
                                     [_c("i", { staticClass: "fa fa-check" })]
@@ -4718,7 +4765,10 @@ var render = function() {
                                     "button",
                                     {
                                       staticClass: "btn btn-outline-secondary",
-                                      attrs: { type: "button" },
+                                      attrs: {
+                                        type: "button",
+                                        disabled: _vm.passportIdNumberUpdate
+                                      },
                                       on: {
                                         click: function($event) {
                                           _vm.editPassportIdNumber = false
@@ -4761,13 +4811,10 @@ var render = function() {
                                 on: {
                                   click: function($event) {
                                     _vm.editPassportIdNumber = true
-                                    _vm.$nextTick(function() {
-                                      return _vm.$refs.passport_id_number.focus()
-                                    })
                                   }
                                 }
                               },
-                              [_vm._v("Update")]
+                              [_vm._v("Add")]
                             ),
                             _vm._v("]\n                ")
                           ]
