@@ -12,11 +12,18 @@ class AuthServiceProvider extends BaseAuthServiceProvider
      * @var array
      */
     protected $policies = [
-
+        \Modules\Volunteers\Entities\Volunteer::class => \Modules\Volunteers\Policies\VolunteerPolicy::class,
     ];
 
     protected $permissions = [
-      
+        'volunteers.view' => [
+            'label' => 'volunteers::permissions.view_volunteers',
+            'sensitive' => true,
+        ],
+        'volunteers.manage' => [
+            'label' => 'volunteers::permissions.manage_volunteers',
+            'sensitive' => true,
+        ],
     ];
 
     protected $permission_gate_mappings = [

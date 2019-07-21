@@ -2,6 +2,8 @@
 
 namespace Modules\Volunteers\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
+
 use Modules\Volunteers\Entities\Volunteer;
 use Modules\Volunteers\Transformers\Volunteer as VolunteerResource;
 use Modules\Volunteers\Transformers\VolunteerCollection;
@@ -9,7 +11,6 @@ use Modules\Volunteers\Http\Requests\StoreVolunteer;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
 
 class VolunteersController extends Controller
 {
@@ -19,7 +20,8 @@ class VolunteersController extends Controller
      */
     public function index(Request $request)
     {
-        // TODO authorization
+        $this->authorize('list', Volunteer::class);
+
         if ($request->scope == 'active') {
             $qry = Volunteer::active();
         } else if ($request->scope == 'applied') {
@@ -41,7 +43,8 @@ class VolunteersController extends Controller
      */
     public function store(StoreVolunteer $request)
     {
-        // TODO authorization
+        $this->authorize('create', Volunteer::class);
+
         $volunteer = new Volunteer();
         $volunteer->fill($request->all());
         $volunteer->save();
@@ -55,7 +58,8 @@ class VolunteersController extends Controller
      */
     public function show(Volunteer $volunteer)
     {
-        // TODO authorization
+        $this->authorize('view', $volunteer);
+
         return new VolunteerResource($volunteer->load([
             'stays' => function ($query) {
                 $query->orderBy('arrival', 'asc');
@@ -71,7 +75,8 @@ class VolunteersController extends Controller
      */
     public function update(StoreVolunteer $request, Volunteer $volunteer)
     {
-        // TODO authorization
+        $this->authorize('update', $volunteer);
+
         $volunteer->fill($request->all());
         $volunteer->save();
         return (new VolunteerResource($volunteer))->response(200);
@@ -84,7 +89,8 @@ class VolunteersController extends Controller
      */
     public function destroy(Volunteer $volunteer)
     {
-        // TODO authorization
+        $this->authorize('delete', $volunteer);
+
         $volunteer->delete();
         return response()->json([], 204);
     }
