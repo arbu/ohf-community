@@ -3618,6 +3618,24 @@ __webpack_require__.r(__webpack_exports__);
     },
     skypeUrl: function skypeUrl(value) {
       return 'skype:' + value + '?chat';
+    },
+
+    /**
+     * Extracts message from AJAX error response
+     * 
+     * @param {*} err the error object
+     * @param {*} name the field name, in case the error response should be searched for matching field validation error message
+     */
+    extractResponseErrorMessage: function extractResponseErrorMessage(err, name) {
+      if (err.response && err.response.data) {
+        if (name != null && err.response.data.errors && err.response.data.errors[name]) {
+          return Array.isArray(err.response.data.errors[name]) ? err.response.data.errors[name].join(' ') : err.response.data.errors[name];
+        } else if (err.response.data.message) {
+          return err.response.data.message;
+        }
+      }
+
+      return err;
     }
   }
 });
@@ -4131,8 +4149,6 @@ __webpack_require__.r(__webpack_exports__);
     updatePassportIdNumber: function updatePassportIdNumber() {
       var _this2 = this;
 
-      var name = 'passport_id_number';
-
       if (!this.validPasswordIdNumber) {
         return;
       }
@@ -4146,17 +4162,7 @@ __webpack_require__.r(__webpack_exports__);
         _this2.passportIdNumberError = null;
         _this2.volunteer = res.data.data;
       })["catch"](function (err) {
-        _this2.passportIdNumberError = function () {
-          if (err.response && err.response.data) {
-            if (err.response.data.errors && err.response.data.errors[name]) {
-              return Array.isArray(err.response.data.errors[name]) ? err.response.data.errors[name].join(' ') : err.response.data.errors[name];
-            } else if (err.response.data.message) {
-              return err.response.data.message;
-            }
-          }
-
-          return err;
-        }();
+        _this2.passportIdNumberError = _this2.extractResponseErrorMessage(err, 'passport_id_number');
       }).then(function () {
         _this2.passportIdNumberUpdate = false;
       });

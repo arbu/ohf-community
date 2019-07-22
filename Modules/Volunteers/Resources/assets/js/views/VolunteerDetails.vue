@@ -223,7 +223,6 @@
                     });
             },
             updatePassportIdNumber() {
-                var name = 'passport_id_number'
                 if (!this.validPasswordIdNumber) {
                     return
                 }
@@ -238,16 +237,7 @@
                     this.volunteer = res.data.data;
                 })
                 .catch(err => {
-                    this.passportIdNumberError = (function() {
-                        if (err.response && err.response.data) {
-                            if (err.response.data.errors && err.response.data.errors[name]) {
-                                return Array.isArray(err.response.data.errors[name]) ? err.response.data.errors[name].join(' ') : err.response.data.errors[name]
-                            } else if (err.response.data.message) {
-                                return err.response.data.message
-                            }
-                        }
-                        return err
-                    })();  
+                    this.passportIdNumberError = this.extractResponseErrorMessage(err, 'passport_id_number')
                 })
                 .then(() => {
                     this.passportIdNumberUpdate = false
