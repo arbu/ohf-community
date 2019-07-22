@@ -4306,7 +4306,7 @@ __webpack_require__.r(__webpack_exports__);
         _this.loaded = true;
       });
     },
-    storePassportIdNumber: function storePassportIdNumber(data) {
+    updateData: function updateData(data) {
       return _services_volunteers__WEBPACK_IMPORTED_MODULE_3__["default"].updateVolunteer(this.volunteer_id, data);
     }
   }
@@ -4951,7 +4951,7 @@ var render = function() {
                   : [
                       _c("quick-edit-field", {
                         attrs: {
-                          callback: _vm.storePassportIdNumber,
+                          callback: _vm.updateData,
                           fieldname: "passport_id_number",
                           placeholder: "Passport/ID number"
                         },

@@ -42,7 +42,7 @@
                 <template v-else>
                     <quick-edit-field 
                         @updated="volunteer = $event" 
-                        :callback="storePassportIdNumber"
+                        :callback="updateData"
                         :fieldname="'passport_id_number'"
                         :placeholder="'Passport/ID number'"
                     ></quick-edit-field>
@@ -210,7 +210,7 @@
                         this.loaded = true;
                     });
             },
-            storePassportIdNumber(data) {
+            updateData(data) {
                 return api.updateVolunteer(this.volunteer_id, data)
             }
         },
