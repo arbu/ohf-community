@@ -3472,6 +3472,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./Resources/assets/js/components/QuickEditField.vue":
+/*!***********************************************************!*\
+  !*** ./Resources/assets/js/components/QuickEditField.vue ***!
+  \***********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _QuickEditField_vue_vue_type_template_id_7f1c6c0c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./QuickEditField.vue?vue&type=template&id=7f1c6c0c& */ "./Resources/assets/js/components/QuickEditField.vue?vue&type=template&id=7f1c6c0c&");
+/* harmony import */ var _QuickEditField_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./QuickEditField.vue?vue&type=script&lang=js& */ "./Resources/assets/js/components/QuickEditField.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _QuickEditField_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _QuickEditField_vue_vue_type_template_id_7f1c6c0c___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _QuickEditField_vue_vue_type_template_id_7f1c6c0c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "Resources/assets/js/components/QuickEditField.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./Resources/assets/js/components/QuickEditField.vue?vue&type=script&lang=js&":
+/*!************************************************************************************!*\
+  !*** ./Resources/assets/js/components/QuickEditField.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_QuickEditField_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./QuickEditField.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./Resources/assets/js/components/QuickEditField.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_QuickEditField_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./Resources/assets/js/components/QuickEditField.vue?vue&type=template&id=7f1c6c0c&":
+/*!******************************************************************************************!*\
+  !*** ./Resources/assets/js/components/QuickEditField.vue?vue&type=template&id=7f1c6c0c& ***!
+  \******************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_QuickEditField_vue_vue_type_template_id_7f1c6c0c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./QuickEditField.vue?vue&type=template&id=7f1c6c0c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./Resources/assets/js/components/QuickEditField.vue?vue&type=template&id=7f1c6c0c&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_QuickEditField_vue_vue_type_template_id_7f1c6c0c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_QuickEditField_vue_vue_type_template_id_7f1c6c0c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./Resources/assets/js/components/TrueFalseIcon.vue":
 /*!**********************************************************!*\
   !*** ./Resources/assets/js/components/TrueFalseIcon.vue ***!
@@ -3878,6 +3947,108 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./Resources/assets/js/components/QuickEditField.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./Resources/assets/js/components/QuickEditField.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _mixins_common_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../mixins/common.js */ "./Resources/assets/js/mixins/common.js");
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  mixins: [_mixins_common_js__WEBPACK_IMPORTED_MODULE_0__["default"]],
+  props: {
+    fieldname: {
+      required: true,
+      type: String
+    },
+    placeholder: {
+      required: true,
+      type: String
+    },
+    callback: {
+      required: true,
+      type: Function
+    }
+  },
+  data: function data() {
+    return {
+      editMode: false,
+      error: null,
+      processing: false,
+      value: null
+    };
+  },
+  methods: {
+    store: function store() {
+      var _this = this;
+
+      if (!this.isValid) {
+        return;
+      }
+
+      this.processing = true;
+      this.error = null;
+      this.callback(_defineProperty({}, this.fieldname, this.value)).then(function (res) {
+        _this.editMode = false;
+        _this.error = null;
+
+        _this.$emit('updated', res.data.data);
+      })["catch"](function (err) {
+        _this.error = _this.extractResponseErrorMessage(err, _this.fieldname);
+      }).then(function () {
+        _this.processing = false;
+      });
+    }
+  },
+  watch: {
+    editMode: function editMode(val, oldVal) {
+      var _this2 = this;
+
+      if (val) {
+        this.$nextTick(function () {
+          return _this2.$refs.passport_id_number.focus();
+        });
+      } else {
+        this.error = null;
+        this.value = null;
+      }
+    }
+  },
+  computed: {
+    isValid: function isValid() {
+      return this.value != null && this.value.length > 0;
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./Resources/assets/js/components/TrueFalseIcon.vue?vue&type=script&lang=js&":
 /*!*******************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./Resources/assets/js/components/TrueFalseIcon.vue?vue&type=script&lang=js& ***!
@@ -3920,10 +4091,11 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_VolunteerDetailItem_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/VolunteerDetailItem.vue */ "./Resources/assets/js/components/VolunteerDetailItem.vue");
-/* harmony import */ var _components_TrueFalseIcon_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/TrueFalseIcon.vue */ "./Resources/assets/js/components/TrueFalseIcon.vue");
-/* harmony import */ var _services_volunteers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../services/volunteers */ "./Resources/assets/js/services/volunteers.js");
-/* harmony import */ var _mixins_common_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../mixins/common.js */ "./Resources/assets/js/mixins/common.js");
-/* harmony import */ var _mixins_volunteers_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../mixins/volunteers.js */ "./Resources/assets/js/mixins/volunteers.js");
+/* harmony import */ var _components_QuickEditField_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/QuickEditField.vue */ "./Resources/assets/js/components/QuickEditField.vue");
+/* harmony import */ var _components_TrueFalseIcon_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/TrueFalseIcon.vue */ "./Resources/assets/js/components/TrueFalseIcon.vue");
+/* harmony import */ var _services_volunteers__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../services/volunteers */ "./Resources/assets/js/services/volunteers.js");
+/* harmony import */ var _mixins_common_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../mixins/common.js */ "./Resources/assets/js/mixins/common.js");
+/* harmony import */ var _mixins_volunteers_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../mixins/volunteers.js */ "./Resources/assets/js/mixins/volunteers.js");
 //
 //
 //
@@ -4091,36 +4263,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
 
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mixins: [_mixins_common_js__WEBPACK_IMPORTED_MODULE_3__["default"], _mixins_volunteers_js__WEBPACK_IMPORTED_MODULE_4__["default"]],
+  mixins: [_mixins_common_js__WEBPACK_IMPORTED_MODULE_4__["default"], _mixins_volunteers_js__WEBPACK_IMPORTED_MODULE_5__["default"]],
   components: {
     'volunteer-detail-item': _components_VolunteerDetailItem_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    'true-false-icon': _components_TrueFalseIcon_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+    'true-false-icon': _components_TrueFalseIcon_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    'quick-edit-field': _components_QuickEditField_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   data: function data() {
     return {
       volunteer: null,
       loaded: false,
-      error: null,
-      editPassportIdNumber: false,
-      passportIdNumberError: null,
-      passportIdNumberUpdate: false,
-      passport_id_number: null
+      error: null
     };
   },
   props: {
@@ -4138,7 +4298,7 @@ __webpack_require__.r(__webpack_exports__);
       this.loaded = false;
       this.error = null;
       this.volunteer = null;
-      _services_volunteers__WEBPACK_IMPORTED_MODULE_2__["default"].getVolunteer(this.volunteer_id).then(function (res) {
+      _services_volunteers__WEBPACK_IMPORTED_MODULE_3__["default"].getVolunteer(this.volunteer_id).then(function (res) {
         _this.volunteer = res.data.data;
       })["catch"](function (err) {
         _this.error = err;
@@ -4146,45 +4306,8 @@ __webpack_require__.r(__webpack_exports__);
         _this.loaded = true;
       });
     },
-    updatePassportIdNumber: function updatePassportIdNumber() {
-      var _this2 = this;
-
-      if (!this.validPasswordIdNumber) {
-        return;
-      }
-
-      this.passportIdNumberUpdate = true;
-      this.passportIdNumberError = null;
-      _services_volunteers__WEBPACK_IMPORTED_MODULE_2__["default"].updateVolunteer(this.volunteer_id, {
-        'passport_id_number': this.passport_id_number
-      }).then(function (res) {
-        _this2.editPassportIdNumber = false;
-        _this2.passportIdNumberError = null;
-        _this2.volunteer = res.data.data;
-      })["catch"](function (err) {
-        _this2.passportIdNumberError = _this2.extractResponseErrorMessage(err, 'passport_id_number');
-      }).then(function () {
-        _this2.passportIdNumberUpdate = false;
-      });
-    }
-  },
-  watch: {
-    editPassportIdNumber: function editPassportIdNumber(val, oldVal) {
-      var _this3 = this;
-
-      if (val) {
-        this.$nextTick(function () {
-          return _this3.$refs.passport_id_number.focus();
-        });
-      } else {
-        this.passportIdNumberError = null;
-        this.passport_id_number = null;
-      }
-    }
-  },
-  computed: {
-    validPasswordIdNumber: function validPasswordIdNumber() {
-      return this.passport_id_number != null && this.passport_id_number.length > 0;
+    storePassportIdNumber: function storePassportIdNumber(data) {
+      return _services_volunteers__WEBPACK_IMPORTED_MODULE_3__["default"].updateVolunteer(this.volunteer_id, data);
     }
   }
 });
@@ -4427,6 +4550,153 @@ var staticRenderFns = [
     ])
   }
 ]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./Resources/assets/js/components/QuickEditField.vue?vue&type=template&id=7f1c6c0c&":
+/*!************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./Resources/assets/js/components/QuickEditField.vue?vue&type=template&id=7f1c6c0c& ***!
+  \************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _vm.editMode
+        ? [
+            _c("div", { staticClass: "input-group" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.value,
+                    expression: "value"
+                  }
+                ],
+                ref: "passport_id_number",
+                staticClass: "form-control",
+                class: { "is-invalid": _vm.error != null },
+                attrs: {
+                  type: "text",
+                  disabled: _vm.processing,
+                  placeholder: _vm.placeholder
+                },
+                domProps: { value: _vm.value },
+                on: {
+                  keyup: [
+                    function($event) {
+                      if (
+                        !$event.type.indexOf("key") &&
+                        _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                      ) {
+                        return null
+                      }
+                      return _vm.store($event)
+                    },
+                    function($event) {
+                      if (
+                        !$event.type.indexOf("key") &&
+                        _vm._k($event.keyCode, "esc", 27, $event.key, [
+                          "Esc",
+                          "Escape"
+                        ])
+                      ) {
+                        return null
+                      }
+                      _vm.editMode = false
+                    }
+                  ],
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.value = $event.target.value
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "input-group-append",
+                  attrs: { id: "button-addon4" }
+                },
+                [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-outline-success",
+                      attrs: {
+                        type: "button",
+                        disabled: _vm.processing || !_vm.isValid
+                      },
+                      on: { click: _vm.store }
+                    },
+                    [_c("i", { staticClass: "fa fa-check" })]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-outline-secondary",
+                      attrs: { type: "button", disabled: _vm.processing },
+                      on: {
+                        click: function($event) {
+                          _vm.editMode = false
+                        }
+                      }
+                    },
+                    [_c("i", { staticClass: "fa fa-times-circle" })]
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _vm.error != null
+                ? _c("div", { staticClass: "invalid-feedback" }, [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(_vm.error) +
+                        "\n            "
+                    )
+                  ])
+                : _vm._e()
+            ])
+          ]
+        : [
+            _c("span", { staticClass: "text-warning" }, [_vm._v("Missing")]),
+            _vm._v("\n        ["),
+            _c(
+              "a",
+              {
+                attrs: { href: "javascript:;" },
+                on: {
+                  click: function($event) {
+                    _vm.editMode = true
+                  }
+                }
+              },
+              [_vm._v("Update")]
+            ),
+            _vm._v("]\n    ")
+          ]
+    ],
+    2
+  )
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -4679,151 +4949,18 @@ var render = function() {
                       )
                     ]
                   : [
-                      _vm.editPassportIdNumber
-                        ? [
-                            _c("div", { staticClass: "input-group" }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.passport_id_number,
-                                    expression: "passport_id_number"
-                                  }
-                                ],
-                                ref: "passport_id_number",
-                                staticClass: "form-control",
-                                class: {
-                                  "is-invalid":
-                                    _vm.passportIdNumberError != null
-                                },
-                                attrs: {
-                                  type: "text",
-                                  disabled: _vm.passportIdNumberUpdate,
-                                  placeholder: "Passport/ID number"
-                                },
-                                domProps: { value: _vm.passport_id_number },
-                                on: {
-                                  keyup: [
-                                    function($event) {
-                                      if (
-                                        !$event.type.indexOf("key") &&
-                                        _vm._k(
-                                          $event.keyCode,
-                                          "enter",
-                                          13,
-                                          $event.key,
-                                          "Enter"
-                                        )
-                                      ) {
-                                        return null
-                                      }
-                                      return _vm.updatePassportIdNumber($event)
-                                    },
-                                    function($event) {
-                                      if (
-                                        !$event.type.indexOf("key") &&
-                                        _vm._k(
-                                          $event.keyCode,
-                                          "esc",
-                                          27,
-                                          $event.key,
-                                          ["Esc", "Escape"]
-                                        )
-                                      ) {
-                                        return null
-                                      }
-                                      _vm.editPassportIdNumber = false
-                                    }
-                                  ],
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.passport_id_number = $event.target.value
-                                  }
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c(
-                                "div",
-                                {
-                                  staticClass: "input-group-append",
-                                  attrs: { id: "button-addon4" }
-                                },
-                                [
-                                  _c(
-                                    "button",
-                                    {
-                                      staticClass: "btn btn-outline-success",
-                                      attrs: {
-                                        type: "button",
-                                        disabled:
-                                          _vm.passportIdNumberUpdate ||
-                                          !_vm.validPasswordIdNumber
-                                      },
-                                      on: { click: _vm.updatePassportIdNumber }
-                                    },
-                                    [_c("i", { staticClass: "fa fa-check" })]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "button",
-                                    {
-                                      staticClass: "btn btn-outline-secondary",
-                                      attrs: {
-                                        type: "button",
-                                        disabled: _vm.passportIdNumberUpdate
-                                      },
-                                      on: {
-                                        click: function($event) {
-                                          _vm.editPassportIdNumber = false
-                                        }
-                                      }
-                                    },
-                                    [
-                                      _c("i", {
-                                        staticClass: "fa fa-times-circle"
-                                      })
-                                    ]
-                                  )
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _vm.passportIdNumberError != null
-                                ? _c(
-                                    "div",
-                                    { staticClass: "invalid-feedback" },
-                                    [
-                                      _vm._v(
-                                        "\n                            " +
-                                          _vm._s(_vm.passportIdNumberError) +
-                                          "\n                        "
-                                      )
-                                    ]
-                                  )
-                                : _vm._e()
-                            ])
-                          ]
-                        : [
-                            _c("span", { staticClass: "text-warning" }, [
-                              _vm._v("Missing")
-                            ]),
-                            _vm._v("\n                    ["),
-                            _c(
-                              "a",
-                              {
-                                attrs: { href: "javascript:;" },
-                                on: {
-                                  click: function($event) {
-                                    _vm.editPassportIdNumber = true
-                                  }
-                                }
-                              },
-                              [_vm._v("Add")]
-                            ),
-                            _vm._v("]\n                ")
-                          ]
+                      _c("quick-edit-field", {
+                        attrs: {
+                          callback: _vm.storePassportIdNumber,
+                          fieldname: "passport_id_number",
+                          placeholder: "Passport/ID number"
+                        },
+                        on: {
+                          updated: function($event) {
+                            _vm.volunteer = $event
+                          }
+                        }
+                      })
                     ]
               ],
               2

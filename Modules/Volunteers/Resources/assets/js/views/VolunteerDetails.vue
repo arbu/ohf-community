@@ -40,22 +40,12 @@
                     {{ volunteer.passport_id_number }}
                 </template>
                 <template v-else>
-                    <template v-if="editPassportIdNumber">
-                        <div class="input-group">
-                            <input type="text" class="form-control" :disabled="passportIdNumberUpdate" v-model="passport_id_number" :class="{ 'is-invalid': passportIdNumberError != null }" placeholder="Passport/ID number" ref="passport_id_number" @keyup.enter="updatePassportIdNumber" @keyup.esc="editPassportIdNumber = false">
-                            <div class="input-group-append" id="button-addon4">
-                                <button class="btn btn-outline-success" type="button" @click="updatePassportIdNumber" :disabled="passportIdNumberUpdate || !validPasswordIdNumber"><i class="fa fa-check"></i></button>
-                                <button class="btn btn-outline-secondary" type="button" @click="editPassportIdNumber = false" :disabled="passportIdNumberUpdate"><i class="fa fa-times-circle"></i></button>
-                            </div>
-                            <div class="invalid-feedback" v-if="passportIdNumberError != null">
-                                {{ passportIdNumberError }}
-                            </div>
-                        </div>
-                    </template>
-                    <template v-else>
-                        <span class="text-warning">Missing</span>
-                        [<a href="javascript:;" @click="editPassportIdNumber = true">Add</a>]
-                    </template>                    
+                    <quick-edit-field 
+                        @updated="volunteer = $event" 
+                        :callback="storePassportIdNumber"
+                        :fieldname="'passport_id_number'"
+                        :placeholder="'Passport/ID number'"
+                    ></quick-edit-field>
                 </template>
             </volunteer-detail-item>
 
@@ -177,6 +167,7 @@
 </template>
 <script>
     import VolunteerDetailItem from '../components/VolunteerDetailItem.vue';
+    import QuickEditField from '../components/QuickEditField.vue';
     import TrueFalseIcon from '../components/TrueFalseIcon.vue';
     import api from '../services/volunteers';
     import commonMixin from '../mixins/common.js';
@@ -186,16 +177,13 @@
         components: {
             'volunteer-detail-item': VolunteerDetailItem,
             'true-false-icon': TrueFalseIcon,
+            'quick-edit-field': QuickEditField,
         },
         data() {
             return {
                 volunteer: null,
                 loaded: false,
                 error: null,
-                editPassportIdNumber: false,
-                passportIdNumberError: null,     
-                passportIdNumberUpdate: false,
-                passport_id_number: null,
             }
         },
         props: {
@@ -222,42 +210,9 @@
                         this.loaded = true;
                     });
             },
-            updatePassportIdNumber() {
-                if (!this.validPasswordIdNumber) {
-                    return
-                }
-                this.passportIdNumberUpdate = true
-                this.passportIdNumberError = null
-                api.updateVolunteer(this.volunteer_id, {
-                    'passport_id_number': this.passport_id_number,
-                })
-                .then((res) => {
-                    this.editPassportIdNumber = false
-                    this.passportIdNumberError = null
-                    this.volunteer = res.data.data;
-                })
-                .catch(err => {
-                    this.passportIdNumberError = this.extractResponseErrorMessage(err, 'passport_id_number')
-                })
-                .then(() => {
-                    this.passportIdNumberUpdate = false
-                })
+            storePassportIdNumber(data) {
+                return api.updateVolunteer(this.volunteer_id, data)
             }
         },
-        watch: {
-            editPassportIdNumber(val, oldVal) {
-                if (val) {
-                    this.$nextTick(() => this.$refs.passport_id_number.focus())
-                } else {
-                    this.passportIdNumberError = null
-                    this.passport_id_number = null
-                }
-            }
-        },
-        computed: {
-            validPasswordIdNumber() {
-                return this.passport_id_number != null && this.passport_id_number.length > 0
-            },
-        }
     }
 </script>
