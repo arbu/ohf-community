@@ -37,7 +37,7 @@ $factory->define(Volunteer::class, function (Faker $faker) {
         'govt_reg_number' => $govtRegNr,
         'govt_reg_expiry' => $govtRegNr != null ? $faker->optional(0.2)->dateTimeBetween('now', '+ 3 months') : null,
         'languages' => $languages,
-        'criminal_record_received' => $faker->boolean(70),
+        'criminal_record_validated' => $faker->boolean(70),
         'has_driving_license' => $faker->optional(0.7)->boolean(70),
         'qualifications' => $faker->optional(0.5)->text,
         'previous_experience' => $faker->optional(0.5)->text,

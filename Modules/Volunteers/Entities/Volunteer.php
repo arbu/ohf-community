@@ -22,7 +22,7 @@ class Volunteer extends Model
         'govt_reg_number',
         'govt_reg_expiry',
         'languages',
-        'criminal_record_received',
+        'criminal_record_validated',
         'remarks',
     ];
 
@@ -33,7 +33,7 @@ class Volunteer extends Model
      */
     protected $casts = [
         'languages' => 'array',
-        'criminal_record_received' => 'boolean',
+        'criminal_record_validated' => 'boolean',
         'has_driving_license' => 'boolean',
     ];    
 

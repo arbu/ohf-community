@@ -65,8 +65,8 @@
             </volunteer-detail-item>
 
             <volunteer-detail-item>
-                <template v-slot:label>Criminal record received:</template>
-                <true-false-icon :value="volunteer.criminal_record_received"></true-false-icon>
+                <template v-slot:label>Criminal record validated:</template>
+                <true-false-icon :value="volunteer.criminal_record_validated"></true-false-icon>
             </volunteer-detail-item>
 
             <volunteer-detail-item>

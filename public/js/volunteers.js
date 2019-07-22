@@ -4863,7 +4863,7 @@ var render = function() {
                   {
                     key: "label",
                     fn: function() {
-                      return [_vm._v("Criminal record received:")]
+                      return [_vm._v("Criminal record validated:")]
                     },
                     proxy: true
                   }
@@ -4872,7 +4872,7 @@ var render = function() {
               [
                 _vm._v(" "),
                 _c("true-false-icon", {
-                  attrs: { value: _vm.volunteer.criminal_record_received }
+                  attrs: { value: _vm.volunteer.criminal_record_validated }
                 })
               ],
               1

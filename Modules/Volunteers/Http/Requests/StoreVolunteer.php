@@ -59,7 +59,7 @@ class StoreVolunteer extends FormRequest
                 'array',
                 'date',
             ],
-            'criminal_record_received' => [
+            'criminal_record_validated' => [
                 'boolean',
             ],
             'remarks' => [

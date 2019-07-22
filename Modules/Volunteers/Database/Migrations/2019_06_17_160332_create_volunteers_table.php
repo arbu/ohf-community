@@ -35,7 +35,7 @@ class CreateVolunteersTable extends Migration
             $table->string('govt_reg_number')->nullable();
             $table->date('govt_reg_expiry')->nullable();
             $table->string('languages')->nullable();
-            $table->boolean('criminal_record_received')->default(false);
+            $table->boolean('criminal_record_validated')->default(false);
             $table->boolean('has_driving_license')->nullable()->default(null);
             $table->string('driving_license_photo_front')->nullable();
             $table->string('driving_license_photo_back')->nullable();
