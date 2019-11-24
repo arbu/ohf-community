@@ -5,7 +5,7 @@
 </template>
 
 <script>
-    import { getAjaxErrorMessage } from '../../../../../../resources/js/utils'
+    import { getAjaxErrorMessage } from '../utils'
     import Icon from './Icon'
     export default {
         components: {

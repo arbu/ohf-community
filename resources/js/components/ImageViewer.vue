@@ -47,7 +47,7 @@
 </template>
 
 <script>
-    import { getAjaxErrorMessage } from '../../../../../../resources/js/utils'
+    import { getAjaxErrorMessage } from '../utils'
     import ActiveThumbnail from './ActiveThumbnail'
     import UploadFileButton from './UploadFileButton'
     import DeleteFileIconButton from './DeleteFileIconButton'
