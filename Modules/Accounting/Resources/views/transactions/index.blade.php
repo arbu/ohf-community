@@ -33,13 +33,13 @@
                 <tbody>
                     @foreach ($transactions as $transaction)
                         <tr>
-                            <td class="@if(empty($transaction->receipt_pictures) && isset($transaction->receipt_no)) table-warning receipt-picture-missing @endif text-center" data-transaction-id="{{ $transaction->id }}">
+                            <td class="@if(empty($transaction->receipt_pictures) && isset($transaction->receipt_no)) table-warning @endif text-center" data-transaction-id="{{ $transaction->id }}">
                                 {{ $transaction->receipt_no }}
                             </td>
                             <td class="fit">
-                                <a href="{{ route('accounting.transactions.show', $transaction) }}" 
-                                    data-url="{{ route('accounting.transactions.snippet', $transaction) }}" 
-                                    @can('update', $transaction) data-edit-url="{{ route('accounting.transactions.edit', $transaction) }}"@endcan 
+                                <a href="{{ route('accounting.transactions.show', $transaction) }}"
+                                    data-url="{{ route('accounting.transactions.snippet', $transaction) }}"
+                                    @can('update', $transaction) data-edit-url="{{ route('accounting.transactions.edit', $transaction) }}"@endcan
                                     class="details-link">
                                     {{ $transaction->date }}
                                 </a>
@@ -89,12 +89,6 @@
         <div style="overflow-x: auto">
             {{ $transactions->appends($filter)->links() }}
         </div>
-        @foreach ($transactions->filter(function($e){ return $e->receipt_no != null && empty($e->receipt_pictures); }) as $transaction)
-            <form action="{{ route('accounting.transactions.updateReceipt', $transaction) }}" method="post" enctype="multipart/form-data" class="d-none upload-receipt-form" id="receipt_upload_{{ $transaction->id }}">
-                {{ csrf_field() }}
-                {{ Form::file('img', [ 'accept' => 'image/*', 'class' => 'd-none' ]) }}
-            </form>
-        @endforeach
     @else
         @component('components.alert.info')
             @lang('accounting::accounting.no_transactions_found')
@@ -104,52 +98,6 @@
 
 @section('script')
     $(function(){
-        $('.receipt-picture-missing').on('click', function(){
-            var tr_id = $(this).data('transaction-id');
-            $('#receipt_upload_' + tr_id).find('input[type=file]').click();
-        });
-        $('.upload-receipt-form input[type="file"]').on('change', function(){
-            $(this).parents('form').submit();
-        });
-        $('.upload-receipt-form').on('submit', function(e){
-            e.preventDefault();
-            var tr_id = $(this).attr('id').substr('#receipt_upload_'.length - 1);
-            var td = $('.receipt-picture-missing[data-transaction-id="' + tr_id + '"]');
-            td.removeClass('table-warning')
-                .addClass('table-info')
-                .off('click');
-            $.ajax({
-                url: $(this).attr('action'),
-                type: "POST",
-                data:  new FormData(this),
-                contentType: false,
-                cache: false,
-                processData:false,
-                success: function() {
-                    td.removeClass('table-info receipt-picture-missing')
-                        .addClass('text-success');
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    td.removeClass('table-info').addClass('table-warning');
-                    var message;
-                    if (jqXHR.responseJSON.message) {
-                        if (jqXHR.responseJSON.errors) {
-                            message = "";
-                            var errors = jqXHR.responseJSON.errors;
-                            Object.keys(errors).forEach(function(key) {
-                                message += errors[key] + "\n";
-                            });
-                        } else {
-                            message = jqXHR.responseJSON.message;
-                        }
-                    } else {
-                        message = textStatus + ': ' + jqXHR.responseText;
-                    }
-                    alert(message);
-                }
-            });
-        });
-
         $('.details-link').on('click', function(e){
             e.preventDefault();
             var container = $('#detailsModal');

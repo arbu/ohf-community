@@ -19,8 +19,12 @@ Route::group(['middleware' => 'language'], function () {
             ->namespace('API')
             ->group(function(){
 
-                Route::post('transactions/{transaction}/receipt', 'MoneyTransactionsController@updateReceipt')
-                    ->name('transactions.updateReceipt');
+                Route::get('transactions/{transaction}/receipts', 'MoneyTransactionsController@listReceipts')
+                    ->name('transactions.listReceipts');
+                Route::post('transactions/{transaction}/receipts', 'MoneyTransactionsController@updateReceipts')
+                    ->name('transactions.updateReceipts');
+                Route::post('transactions/{transaction}/deleteReceipt', 'MoneyTransactionsController@deleteReceipt')
+                    ->name('transactions.deleteReceipt');
 
             });
     });

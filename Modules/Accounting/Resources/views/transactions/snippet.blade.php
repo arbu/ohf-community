@@ -8,7 +8,7 @@
                     </div>
                 </div>
             </li>
-        @endisset    
+        @endisset
         <li class="list-group-item">
             <div class="row">
                 <div class="col-sm-4"><strong>@lang('app.date')</strong></div>
@@ -71,7 +71,7 @@
                     </div>
                 </div>
             </li>
-        @endisset  
+        @endisset
         @isset($transaction->remarks)
             <li class="list-group-item">
                 <div class="row">
@@ -82,22 +82,6 @@
                 </div>
             </li>
         @endisset
-        @unless(empty($transaction->receipt_pictures))
-            <li class="list-group-item">
-                <div class="row">
-                    <div class="col-sm-4"><strong>@lang('accounting::accounting.receipt')</strong></div>
-                    <div class="col-sm">
-                        @foreach($transaction->receipt_pictures as $picture)
-                            <a href="{{ Storage::url($picture) }}" data-lity>
-                                @component('components.thumbnail', ['size' => 150])
-                                    {{ Storage::url($picture) }}
-                                @endcomponent
-                            </a>
-                        @endforeach
-                    </div>
-                </div>
-            </li>
-        @endunless
         @if($transaction->booked)
             <li class="list-group-item">
                 <div class="row">
@@ -108,7 +92,7 @@
                                 @php
                                     $url = $transaction->externalUrl;
                                 @endphp
-                                Webling: 
+                                Webling:
                                 @isset($url)
                                     <a href="{{ $url }}" target="_blank">{{ $transaction->external_id }}</a>
                                 @else
@@ -128,7 +112,7 @@
                     </div>
                 </div>
             </li>
-        @endif 
+        @endif
 
         <li class="list-group-item">
             <div class="row">

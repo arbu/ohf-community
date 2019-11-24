@@ -43,7 +43,7 @@ class MoneyTransaction extends Model implements Auditable
 
     /**
      * Gets the amount of the wallet
-     * 
+     *
      * @param \Carbon\Carbon $date optional end-date until which transactions should be considered
      */
     public static function currentWallet(Carbon $date = null): ?float
@@ -77,9 +77,9 @@ class MoneyTransaction extends Model implements Auditable
     {
         $qry = MoneyTransaction::selectRaw('SUM(amount) as sum')
             ->where('type', 'spending');
-        
+
         self::dateFilter($qry, $dateFrom, $dateTo);
-        
+
         return optional($qry->first())->sum;
     }
 
@@ -87,9 +87,9 @@ class MoneyTransaction extends Model implements Auditable
     {
         $qry = MoneyTransaction::selectRaw('SUM(amount) as sum')
             ->where('type', 'income');
-        
+
         self::dateFilter($qry, $dateFrom, $dateTo);
-        
+
         return optional($qry->first())->sum;
     }
 
@@ -129,8 +129,36 @@ class MoneyTransaction extends Model implements Auditable
         $image->save($file->getRealPath());
 
         $pictures = $this->receipt_pictures ?? [];
-        $pictures[] = $file->store(self::RECEIPT_PICTURE_PATH);
+        $path = $file->store(self::RECEIPT_PICTURE_PATH);
+        $pictures[] = $path;
         $this->receipt_pictures = $pictures;
+
+        return Storage::url($path);
+    }
+
+    public function getReceiptPictures(): array
+    {
+        return collect($this->receipt_pictures ?? [])
+            ->map(function($e){
+                return Storage::url($e);
+            })
+            ->toArray();
+    }
+
+    public function deleteReceiptPictureByUrl($url)
+    {
+        if (!empty($this->receipt_pictures)) {
+            $this->receipt_pictures = collect($this->receipt_pictures)
+                ->filter(function($file) use ($url) {
+                    if ($url == Storage::url($file)) {
+                        Storage::delete($file);
+                        return false;
+                    }
+                    return true;
+                })
+                ->values()
+                ->toArray();
+        }
     }
 
     public function deleteReceiptPictures()
@@ -142,4 +170,5 @@ class MoneyTransaction extends Model implements Auditable
         }
         $this->receipt_pictures = [];
     }
+
 }
