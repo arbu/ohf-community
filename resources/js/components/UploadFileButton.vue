@@ -1,7 +1,14 @@
 <template>
     <div>
         <input type="file" ref="files" multiple @change="handleFilesUpload()" :accept="accept" class="d-none"/>
-        <button :style="{ width: `${size}px`, height: `${size}px` }" class="btn" :class="dragOver && !uploading ? 'btn-dark' : 'btn-light'" @click="addFiles()" :disabled="uploading" ref="fileform">
+        <button
+            :style="{ width: `${size}px`, height: `${size}px` }"
+            class="btn"
+            :class="dragOver && !uploading ? 'btn-dark' : 'btn-light'"
+            @click="addFiles()"
+            :disabled="uploading"
+            ref="fileform"
+        >
             <icon :name="uploading ? 'spinner' : (dragOver ? 'upload' : 'plus-circle')" :spin="uploading"></icon>
             <template v-if="uploading">
                 {{ uploadStatus }}
