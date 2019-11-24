@@ -17,7 +17,7 @@ export function showSnackbar(text, actionText, actionClass, callback) {
 }
 
 export function getAjaxErrorMessage(err) {
-	var msg;
+	var msg = err;
 	if (err.response) {
 		if (err.response.data.message) {
 			msg = err.response.data.message;
@@ -29,8 +29,6 @@ export function getAjaxErrorMessage(err) {
 		} else if (err.response.data.error) {
 			msg = err.response.data.error;
 		}
-	} else {
-		msg = err
 	}
 	return msg;
 }
