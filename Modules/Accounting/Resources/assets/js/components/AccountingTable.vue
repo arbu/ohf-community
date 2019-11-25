@@ -45,21 +45,12 @@
         </b-table>
 
         <!-- Pagination -->
-        <b-row align-v="center" class="mb-3" v-if="totalRows > 0">
-            <b-col>
-                <b-pagination
-                    size="sm"
-                    v-model="currentPage"
-                    :total-rows="totalRows"
-                    :per-page="perPage"
-                    :aria-controls="id"
-                    class="mb-0"
-                ></b-pagination>
-            </b-col>
-            <b-col sm="auto" class="text-right">
-                <small>{{ ((currentPage - 1) * perPage) + 1 }} - {{ Math.min(currentPage * perPage, totalRows) }} / {{ totalRows }}</small>
-            </b-col>
-        </b-row>
+        <paginator
+            :for-id="id"
+            :total-rows="totalRows"
+            :per-page="perPage"
+            v-model="currentPage"
+        ></paginator>
 
     </div>
 </template>
@@ -67,11 +58,13 @@
 <script>
     import Icon from '../../../../../../resources/js/components/Icon'
     import DangerAlertWithReload from '../../../../../../resources/js/components/DangerAlertWithReload'
+    import Paginator from '../../../../../../resources/js/components/Paginator'
     import { getAjaxErrorMessage } from '../../../../../../resources/js/utils'
     export default {
         components: {
             Icon,
-            DangerAlertWithReload
+            DangerAlertWithReload,
+            Paginator
         },
         props: {
             id: {
@@ -193,7 +186,7 @@
                 totalRows: 0,
                 sortBy: sessionStorage.getItem(this.id + '.sortBy') ? sessionStorage.getItem(this.id + '.sortBy') : this.defaultSortBy,
                 sortDesc: sessionStorage.getItem(this.id + '.sortDesc') ? sessionStorage.getItem(this.id + '.sortDesc') == 'true' : this.defaultSortDesc,
-                currentPage: sessionStorage.getItem(this.id + '.currentPage') ? sessionStorage.getItem(this.id + '.currentPage') : 1,
+                currentPage: sessionStorage.getItem(this.id + '.currentPage') ? parseInt(sessionStorage.getItem(this.id + '.currentPage')) : 1,
                 errorText: null
             }
         },
