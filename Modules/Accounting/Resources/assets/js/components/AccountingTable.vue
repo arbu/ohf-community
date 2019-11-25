@@ -189,10 +189,7 @@
                 sortDesc: sessionStorage.getItem(this.id + '.sortDesc') ? sessionStorage.getItem(this.id + '.sortDesc') == 'true' : this.defaultSortDesc,
                 currentPage: sessionStorage.getItem(this.id + '.currentPage') ? parseInt(sessionStorage.getItem(this.id + '.currentPage')) : 1,
                 errorText: null,
-                filter: null,
-                filter: {
-                    'date_start': '2019-01-01'
-                }
+                filter: null
             }
         },
         methods: {
