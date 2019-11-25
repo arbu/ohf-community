@@ -38,23 +38,8 @@
             </div>
             <div class="col-sm">
                 {{ Form::bsText('description', null, [ 'required' ], __('app.description')) }}
-            </div>        
-        </div>
-        <div class="form-row">
-            <div class="col-sm">
-                <label>@lang('accounting::accounting.receipt')</label>
-                <div class="form-row">
-                    <div class="col-sm">
-                        {{ Form::bsFile('receipt_picture', [ 'accept' => 'image/*' ], __(!empty($transaction->receipt_pictures) ? 'accounting::accounting.change_picture_of_receipt' : 'accounting::accounting.choose_picture_of_receipt')) }}
-                    </div>
-                    @if(!empty($transaction->receipt_pictures))
-                        <div class="col-sm-auto">
-                            {{ Form::bsCheckbox('remove_receipt_picture', 1, null, __('accounting::accounting.remove_receipt_picture')) }}<br>
-                        </div>
-                    @endif
-                </div>
             </div>
-        </div>    
+        </div>
         <div class="form-row">
             <div class="col-sm-4">
                 {{ Form::bsText('wallet_owner', null, [ ], __('accounting::accounting.wallet_owner')) }}
@@ -63,7 +48,7 @@
                 {{ Form::bsText('remarks', null, [  ], __('app.remarks')) }}
             </div>
         </div>
-        
+
         <p>
             {{ Form::bsSubmitButton(__('app.update')) }}
         </p>

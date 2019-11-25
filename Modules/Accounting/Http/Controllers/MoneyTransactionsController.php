@@ -42,97 +42,83 @@ class MoneyTransactionsController extends Controller
     {
         $this->authorize('list', MoneyTransaction::class);
 
-        $request->validate([
-            'date_start' => [
-                'nullable',
-                'date',
-                'before_or_equal:' . Carbon::today(),
-            ],
-            'date_end' => [
-                'nullable',
-                'date',
-                'before_or_equal:' . Carbon::today(),
-            ],
-            'type' => [
-                'nullable',
-                Rule::in(['income', 'spending']),
-            ],
-            'month' => 'nullable|regex:/[0-1]?[1-9]/',
-            'year' => 'nullable|integer|min:2017|max:' . Carbon::today()->year,
-            'sortColumn' => 'nullable|in:date,created_at,category,project,beneficiary,receipt_no',
-            'sortOrder' => 'nullable|in:asc,desc',
-        ]);
+        // $request->validate([
+        //     'date_start' => [
+        //         'nullable',
+        //         'date',
+        //         'before_or_equal:' . Carbon::today(),
+        //     ],
+        //     'date_end' => [
+        //         'nullable',
+        //         'date',
+        //         'before_or_equal:' . Carbon::today(),
+        //     ],
+        //     'type' => [
+        //         'nullable',
+        //         Rule::in(['income', 'spending']),
+        //     ],
+        //     'month' => 'nullable|regex:/[0-1]?[1-9]/',
+        //     'year' => 'nullable|integer|min:2017|max:' . Carbon::today()->year,
+        // ]);
 
-        $sortColumns = [
-            'date' => __('app.date'),
-            'category' => __('app.category'),
-            'project' => __('app.project'),
-            'beneficiary'=> __('accounting::accounting.beneficiary'),
-            'receipt_no' => __('accounting::accounting.receipt'),
-            'created_at' => __('app.registered')
-        ];
-        $sortColumn = session('accounting.sortColumn', 'created_at');
-        $sortOrder = session('accounting.sortOrder', 'desc');
-        if (isset($request->sortColumn)) {
-            $sortColumn = $request->sortColumn;
-            session(['accounting.sortColumn' => $sortColumn]);
-        }
-        if (isset($request->sortOrder)) {
-            $sortOrder = $request->sortOrder;
-            session(['accounting.sortOrder' => $sortOrder]);
-        }
+        // if ($request->query('reset_filter') != null) {
+        //     session(['accounting.filter' => []]);
+        // }
+        // $filter = session('accounting.filter', []);
+        // foreach (Config::get('accounting.filter_columns') as $col) {
+        //     if (!empty($request->filter[$col])) {
+        //         $filter[$col] = $request->filter[$col];
+        //     } else if (isset($request->filter)) {
+        //         unset($filter[$col]);
+        //     }
+        // }
+        // if (!empty($request->filter['date_start'])) {
+        //     $filter['date_start'] = $request->filter['date_start'];
+        // } else if (isset($request->filter)) {
+        //     unset($filter['date_start']);
+        // }
+        // if (!empty($request->filter['date_end'])) {
+        //     $filter['date_end'] = $request->filter['date_end'];
+        // } else if (isset($request->filter)) {
+        //     unset($filter['date_end']);
+        // }
+        // session(['accounting.filter' => $filter]);
 
-        if ($request->query('reset_filter') != null) {
-            session(['accounting.filter' => []]);
-        }
-        $filter = session('accounting.filter', []);
-        foreach (Config::get('accounting.filter_columns') as $col) {
-            if (!empty($request->filter[$col])) {
-                $filter[$col] = $request->filter[$col];
-            } else if (isset($request->filter)) {
-                unset($filter[$col]);
-            }
-        }
-        if (!empty($request->filter['date_start'])) {
-            $filter['date_start'] = $request->filter['date_start'];
-        } else if (isset($request->filter)) {
-            unset($filter['date_start']);
-        }
-        if (!empty($request->filter['date_end'])) {
-            $filter['date_end'] = $request->filter['date_end'];
-        } else if (isset($request->filter)) {
-            unset($filter['date_end']);
-        }
-        session(['accounting.filter' => $filter]);
+        // $query = self::createIndexQuery($filter, $sortColumn, $sortOrder);
 
-        $query = self::createIndexQuery($filter, $sortColumn, $sortOrder);
-        
-        // Get results
-        $transactions = $query->paginate(250);
+        // // Get results
+        // $transactions = $query->paginate(250);
 
-        // Single receipt no. query
-        if ($transactions->count() == 1 && !empty($filter['receipt_no'])) {
-            session(['accounting.filter' => []]);
-            return redirect()->route('accounting.transactions.show', $transactions->first());
-        }
+        // // Single receipt no. query
+        // if ($transactions->count() == 1 && !empty($filter['receipt_no'])) {
+        //     session(['accounting.filter' => []]);
+        //     return redirect()->route('accounting.transactions.show', $transactions->first());
+        // }
 
         return view('accounting::transactions.index', [
-            'transactions' => $transactions,
-            'filter' => $filter,
-            'sortColumns' => $sortColumns,
-            'sortColumn' => $sortColumn,
-            'sortOrder' => $sortOrder,
-            'beneficiaries' => self::getBeneficiaries(),
-            'categories' => self::getCategories(true),
-            'fixed_categories' => Setting::has(self::CATEGORIES_SETTING_KEY),
-            'projects' => self::getProjects(true),
-            'fixed_projects' => Setting::has(self::PROJECTS_SETTING_KEY),
+            'labels' => [
+                'receipt' => __('accounting::accounting.receipt'),
+                'date' => __('app.date'),
+                'amount' => __('app.amount'),
+                'income' => __('accounting::accounting.income'),
+                'spending' => __('accounting::accounting.spending'),
+                'category' => __('app.category'),
+                'project' => __('app.project'),
+                'description' => __('app.description'),
+                'beneficiary' => __('accounting::accounting.beneficiary'),
+                'registered' => __('app.registered')
+            ]
+            // 'filter' => $filter,
+            // 'beneficiaries' => self::getBeneficiaries(),
+            // 'categories' => self::getCategories(true),
+            // 'fixed_categories' => Setting::has(self::CATEGORIES_SETTING_KEY),
+            // 'projects' => self::getProjects(true),
+            // 'fixed_projects' => Setting::has(self::PROJECTS_SETTING_KEY),
         ]);
     }
 
     private static function createIndexQuery($filter, $sortColumn, $sortOrder) {
-        $query = MoneyTransaction
-            ::orderBy($sortColumn, $sortOrder)
+        $query = MoneyTransaction::orderBy($sortColumn, $sortOrder)
             ->orderBy('created_at', 'DESC');
         self::applyFilterToQuery($filter, $query);
         return $query;
@@ -142,13 +128,13 @@ class MoneyTransactionsController extends Controller
         foreach (Config::get('accounting.filter_columns') as $col) {
             if (!empty($filter[$col])) {
                 if ($col == 'today') {
-                    $query->whereDate('created_at', Carbon::today()); 
-                } else if ($col == 'no_receipt') {  
+                    $query->whereDate('created_at', Carbon::today());
+                } else if ($col == 'no_receipt') {
                     $query->where(function($query){
                         $query->whereNull('receipt_no');
                         $query->orWhereNull('receipt_pictures');
                         $query->orWhere('receipt_pictures', '[]');
-                    }); 
+                    });
                 } else if ($col == 'beneficiary' || $col == 'description') {
                     $query->where($col, 'like', '%' . $filter[$col] . '%');
                 } else {
@@ -221,7 +207,7 @@ class MoneyTransactionsController extends Controller
                 })
                 ->sort()
                 ->toArray();
-        }        
+        }
         return MoneyTransaction::select('project')
             ->where('project', '!=', null)
             ->groupBy('project')
@@ -243,20 +229,7 @@ class MoneyTransactionsController extends Controller
         $this->authorize('create', MoneyTransaction::class);
 
         $transaction = new MoneyTransaction();
-        $transaction->date = $request->date;
-        $transaction->type = $request->type;
-        $transaction->amount = $request->amount;
-        $transaction->beneficiary = $request->beneficiary;
-        $transaction->category = $request->category;
-        $transaction->project = $request->project;
-        $transaction->description = $request->description;
-        $transaction->remarks = $request->remarks;
-        $transaction->wallet_owner = $request->wallet_owner;
-        
-        if (isset($request->receipt_picture)) {
-            $transaction->addReceiptPicture($request->file('receipt_picture'));
-        }
-
+        $transaction->fill($request->all());
         $transaction->save();
 
         return redirect()
@@ -338,24 +311,7 @@ class MoneyTransactionsController extends Controller
     {
         $this->authorize('update', $transaction);
 
-        $transaction->date = $request->date;
-        $transaction->type = $request->type;
-        $transaction->amount = $request->amount;
-        $transaction->beneficiary = $request->beneficiary;
-        $transaction->category = $request->category;
-        $transaction->project = $request->project;
-        $transaction->description = $request->description;
-        $transaction->remarks = $request->remarks;
-        $transaction->wallet_owner = $request->wallet_owner;
-
-        if (isset($request->remove_receipt_picture)) {
-            $transaction->deleteReceiptPictures();
-        }
-        else if (isset($request->receipt_picture)) {
-            $transaction->deleteReceiptPictures(); // TODO no need to clear pictures for multi picture support
-            $transaction->addReceiptPicture($request->file('receipt_picture'));
-        }
-
+        $transaction->fill($request->all());
         $transaction->save();
 
         return redirect()
@@ -471,7 +427,7 @@ class MoneyTransactionsController extends Controller
             ->get()
             ->mapWithKeys(function($e){
                 return [ $e->year => $e->year ];
-            })            
+            })
             ->prepend($currentMonth->format('Y'), $currentMonth->format('Y'))
             ->toArray();
 
@@ -526,15 +482,15 @@ class MoneyTransactionsController extends Controller
     {
         return [
             'columns' => [
-                'required', 
+                'required',
                 Rule::in(['all', 'webling']),
             ],
             'grouping' => [
-                'required', 
+                'required',
                 Rule::in(['none', 'monthly']),
             ],
             'selection' => [
-                'nullable', 
+                'nullable',
                 Rule::in(['all', 'filtered']),
             ],
         ];
@@ -560,7 +516,7 @@ class MoneyTransactionsController extends Controller
     public function undoBooking(MoneyTransaction $transaction)
     {
         $this->authorize('undoBooking', $transaction);
-        
+
         if ($transaction->external_id != null && Entrygroup::find($transaction->external_id) != null) {
             return redirect()
                 ->route('accounting.transactions.show', $transaction)

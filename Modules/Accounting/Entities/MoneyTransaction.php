@@ -36,6 +36,18 @@ class MoneyTransaction extends Model implements Auditable
         parent::boot();
     }
 
+    protected $fillable = [
+        'date',
+        'type',
+        'amount',
+        'beneficiary',
+        'category',
+        'project',
+        'description',
+        'remarks',
+        'wallet_owner',
+    ];
+
     protected $casts = [
         'booked' => 'boolean',
         'receipt_pictures' => 'array',

@@ -41,12 +41,6 @@
             </div>
         </div>
         <div class="form-row">
-            <div class="col-sm">
-                <label>@lang('accounting::accounting.receipt')</label>
-                {{ Form::bsFile('receipt_picture', [ 'accept' => 'image/*' ], __('accounting::accounting.choose_picture_of_receipt')) }}
-            </div>
-        </div>
-        <div class="form-row">
             <div class="col-sm-4">
                 {{ Form::bsText('wallet_owner', Auth::user()->name, [ ], __('accounting::accounting.wallet_owner')) }}
             </div>

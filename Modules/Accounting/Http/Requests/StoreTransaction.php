@@ -45,10 +45,6 @@ class StoreTransaction extends FormRequest
                 'required',
                 'min:0.05',
             ],
-            'receipt_picture' => [
-                'nullable',
-                'image',
-            ],
             'beneficiary' => [
                 'required',
             ],

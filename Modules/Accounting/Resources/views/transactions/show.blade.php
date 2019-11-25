@@ -12,10 +12,10 @@
             <h3>@lang('accounting::accounting.receipt')</h3>
             <div id="accounting-app">
                 <image-viewer
-                    list-url="{{ route('accounting.transactions.listReceipts', $transaction) }}"
+                    list-url="{{ route('api.accounting.transactions.listReceipts', $transaction) }}"
                     @can('update', $transaction)
-                    upload-url="{{ route('accounting.transactions.updateReceipts', $transaction) }}"
-                    delete-url="{{ route('accounting.transactions.deleteReceipt', $transaction) }}"
+                    upload-url="{{ route('api.accounting.transactions.updateReceipts', $transaction) }}"
+                    delete-url="{{ route('api.accounting.transactions.deleteReceipt', $transaction) }}"
                     @endcan
                 ></image-viewer>
             </div>

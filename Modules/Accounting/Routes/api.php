@@ -15,15 +15,18 @@ use Illuminate\Http\Request;
 Route::group(['middleware' => 'language'], function () {
     Route::group(['middleware' => ['auth']], function () {
         Route::prefix('accounting')
-            ->name('accounting.')
+            ->name('api.accounting.')
             ->namespace('API')
             ->group(function(){
 
-                Route::get('transactions/{transaction}/receipts', 'MoneyTransactionsController@listReceipts')
+                Route::get('transactions', 'MoneyTransactionsController@index')
+                    ->name('transactions.index');
+
+                Route::get('transactions/{transaction}/receipts', 'ReceiptsController@listReceipts')
                     ->name('transactions.listReceipts');
-                Route::post('transactions/{transaction}/receipts', 'MoneyTransactionsController@updateReceipts')
+                Route::post('transactions/{transaction}/receipts', 'ReceiptsController@updateReceipts')
                     ->name('transactions.updateReceipts');
-                Route::post('transactions/{transaction}/deleteReceipt', 'MoneyTransactionsController@deleteReceipt')
+                Route::post('transactions/{transaction}/deleteReceipt', 'ReceiptsController@deleteReceipt')
                     ->name('transactions.deleteReceipt');
 
             });

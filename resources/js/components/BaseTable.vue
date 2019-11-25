@@ -1,27 +1,16 @@
 <template>
   <div>
-    <b-alert variant="danger" :show="errorText != null">
-        <b-row align-v="center">
-            <b-col>
-                <i class="fa fa-times-circle"></i> Error: {{ errorText }}
-            </b-col>
-            <b-col sm="auto">
-                <b-button
-                    variant="danger"
-                    size="sm"
-                    @click="$root.$emit('bv::refresh::table', id)"
-                    class="float-right"
-                >
-                    <i class="fa fa-redo"></i> Reload
-                </b-button>
-            </b-col>
-        </b-row>
-    </b-alert>
+    <danger-alert-with-reload
+        v-if="errorText != null"
+        @reload="$root.$emit('bv::refresh::table', id)"
+    >
+        {{ errorText }}
+    </danger-alert-with-reload>
 
     <p v-if="Object.keys(tags).length > 0" class="mb-3">
         Tags:
-        <tag-select-button 
-            :label="tag_name" 
+        <tag-select-button
+            :label="tag_name"
             :value="tag_key"
             :toggled="tagSelected(tag_key)"
             @toggled="toggleTag"
@@ -102,10 +91,12 @@
 
 <script>
   import TagSelectButton from './TagSelectButton'
+  import DangerAlertWithReload from './DangerAlertWithReload'
   import { getAjaxErrorMessage } from '../utils'
   export default {
     components: {
-        'tag-select-button': TagSelectButton,
+        TagSelectButton,
+        DangerAlertWithReload
     },
     props: {
         id: {
@@ -119,7 +110,7 @@
         apiUrl: {
             required: true,
             type: String
-        },  
+        },
         defaultSortBy: {
             required: true,
             type: String
