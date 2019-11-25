@@ -29,6 +29,7 @@
             :empty-text="emptyText"
             :empty-filtered-text="emptyFilteredText"
             :no-sort-reset="true"
+            :filter="filter"
         >
             <!-- Link on date column -->
             <template v-slot:cell(date)="data">
@@ -187,14 +188,23 @@
                 sortBy: sessionStorage.getItem(this.id + '.sortBy') ? sessionStorage.getItem(this.id + '.sortBy') : this.defaultSortBy,
                 sortDesc: sessionStorage.getItem(this.id + '.sortDesc') ? sessionStorage.getItem(this.id + '.sortDesc') == 'true' : this.defaultSortDesc,
                 currentPage: sessionStorage.getItem(this.id + '.currentPage') ? parseInt(sessionStorage.getItem(this.id + '.currentPage')) : 1,
-                errorText: null
+                errorText: null,
+                filter: null,
+                filter: {
+                    'date_start': '2019-01-01'
+                }
             }
         },
         methods: {
             itemProvider(ctx) {
                 this.totalRows = 0
                 this.errorText = null
-                const params = '?page=' + ctx.currentPage + '&size=' + ctx.perPage + '&sortBy=' + ctx.sortBy + '&sortDesc=' + (ctx.sortDesc ? 1 : 0)
+                let params = '?page=' + ctx.currentPage
+                    + '&size=' + ctx.perPage
+                    + '&sortBy=' + ctx.sortBy
+                    + '&sortDesc=' + (ctx.sortDesc ? 1 : 0)
+                    + this.createFilterParamsString(ctx.filter)
+
                 return axios.get(ctx.apiUrl + params)
                     .then(res => {
                         // Retrieve data
@@ -216,6 +226,19 @@
                         this.errorText = getAjaxErrorMessage(err)
                         return []
                     })
+            },
+            createFilterParamsString(filter) {
+                let params = ''
+                if (typeof filter === 'object' && filter !== null) {
+                    for (var prop in filter) {
+                        if (Object.prototype.hasOwnProperty.call(filter, prop)) {
+                            params += '&filter[' + prop + ']=' + encodeURIComponent(filter[prop])
+                        }
+                    }
+                } else if (filter != null) {
+                    params += '&filter=' + encodeURIComponent(filter)
+                }
+                return params
             },
             refresh() {
 
