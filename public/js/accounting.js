@@ -45470,6 +45470,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -45479,6 +45480,11 @@ __webpack_require__.r(__webpack_exports__);
     DangerAlertWithReload: _resources_js_components_DangerAlertWithReload__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   props: {
+    id: {
+      type: String,
+      required: false,
+      "default": 'accounting.transactions.table'
+    },
     apiUrl: {
       type: String,
       required: true
@@ -45486,6 +45492,21 @@ __webpack_require__.r(__webpack_exports__);
     labels: {
       type: Object,
       required: true
+    },
+    defaultSortBy: {
+      required: false,
+      type: String,
+      "default": 'registered'
+    },
+    defaultSortDesc: {
+      required: false,
+      type: Boolean,
+      "default": true
+    },
+    itemsPerPage: {
+      required: false,
+      type: Number,
+      "default": 25
     },
     loadingText: {
       type: String,
@@ -45510,7 +45531,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      id: 'accountingTransactionsTable',
       fields: [{
         key: 'receipt_no',
         label: "".concat(this.labels['receipt'], " #"),
@@ -45568,11 +45588,11 @@ __webpack_require__.r(__webpack_exports__);
         sortable: true,
         "class": 'fit d-none d-md-table-cell'
       }],
-      currentPage: 1,
-      perPage: 25,
+      perPage: this.itemsPerPage,
       totalRows: 0,
-      sortBy: 'registered',
-      sortDesc: true,
+      sortBy: sessionStorage.getItem(this.id + '.sortBy') ? sessionStorage.getItem(this.id + '.sortBy') : this.defaultSortBy,
+      sortDesc: sessionStorage.getItem(this.id + '.sortDesc') ? sessionStorage.getItem(this.id + '.sortDesc') == 'true' : this.defaultSortDesc,
+      currentPage: sessionStorage.getItem(this.id + '.currentPage') ? sessionStorage.getItem(this.id + '.currentPage') : 1,
       errorText: null
     };
   },
@@ -45589,13 +45609,37 @@ __webpack_require__.r(__webpack_exports__);
 
         if (res.data.meta && res.data.meta.total) {
           _this.totalRows = res.data.meta.total;
-        }
+        } // Remember sorting and pagination
 
+
+        sessionStorage.setItem(_this.id + '.sortBy', ctx.sortBy);
+        sessionStorage.setItem(_this.id + '.sortDesc', ctx.sortDesc);
+        sessionStorage.setItem(_this.id + '.currentPage', ctx.currentPage);
         return items || [];
       })["catch"](function (err) {
         _this.errorText = Object(_resources_js_utils__WEBPACK_IMPORTED_MODULE_2__["getAjaxErrorMessage"])(err);
         return [];
       });
+    },
+    refresh: function refresh() {
+      // Reset cached state
+      sessionStorage.removeItem(this.id + '.sortBy');
+      sessionStorage.removeItem(this.id + '.sortDesc');
+      sessionStorage.removeItem(this.id + '.currentPage');
+      this.currentPage = 1;
+      this.sortBy = this.defaultSortBy;
+      this.sortDesc = this.defaultSortDesc; // No need to emit a refresh as sortBy and sortDesc are synced and will trigger a refresh when changed
+      // $root.$emit('bv::refresh::table', id)
+    }
+  },
+  watch: {
+    sortBy: function sortBy(val, oldVal) {
+      // Reset page chen changing order
+      this.currentPage = 1;
+    },
+    sortDesc: function sortDesc(val, oldVal) {
+      // Reset page chen changing order direction
+      this.currentPage = 1;
     }
   }
 });
@@ -47104,7 +47148,7 @@ var render = function() {
               attrs: { "reload-text": _vm.reloadText },
               on: {
                 reload: function($event) {
-                  return _vm.$root.$emit("bv::refresh::table", _vm.id)
+                  return _vm.refresh()
                 }
               }
             },
@@ -47130,7 +47174,8 @@ var render = function() {
           "sort-desc": _vm.sortDesc,
           "show-empty": true,
           "empty-text": _vm.emptyText,
-          "empty-filtered-text": _vm.emptyFilteredText
+          "empty-filtered-text": _vm.emptyFilteredText,
+          "no-sort-reset": true
         },
         on: {
           "update:sortBy": function($event) {

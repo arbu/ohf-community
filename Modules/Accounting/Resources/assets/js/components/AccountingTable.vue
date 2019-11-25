@@ -3,7 +3,7 @@
         <!-- Error alert -->
         <danger-alert-with-reload
             v-if="errorText != null"
-            @reload="$root.$emit('bv::refresh::table', id)"
+            @reload="refresh()"
             :reload-text="reloadText"
         >
             {{ errorText }}
@@ -28,6 +28,7 @@
             :show-empty="true"
             :empty-text="emptyText"
             :empty-filtered-text="emptyFilteredText"
+            :no-sort-reset="true"
         >
             <!-- Link on date column -->
             <template v-slot:cell(date)="data">
@@ -73,6 +74,11 @@
             DangerAlertWithReload
         },
         props: {
+            id: {
+                type: String,
+                required: false,
+                default: 'accounting.transactions.table'
+            },
             apiUrl: {
                 type: String,
                 required: true
@@ -80,6 +86,21 @@
             labels: {
                 type: Object,
                 required: true
+            },
+            defaultSortBy: {
+                required: false,
+                type: String,
+                default: 'registered'
+            },
+            defaultSortDesc: {
+                required: false,
+                type: Boolean,
+                default: true,
+            },
+            itemsPerPage: {
+                required: false,
+                type: Number,
+                default: 25
             },
             loadingText: {
                 type: String,
@@ -104,7 +125,6 @@
         },
         data() {
             return {
-                id: 'accountingTransactionsTable',
                 fields: [
                     {
                         key: 'receipt_no',
@@ -169,11 +189,11 @@
                         class: 'fit d-none d-md-table-cell'
                     },
                 ],
-                currentPage: 1,
-                perPage: 25,
+                perPage: this.itemsPerPage,
                 totalRows: 0,
-                sortBy: 'registered',
-                sortDesc: true,
+                sortBy: sessionStorage.getItem(this.id + '.sortBy') ? sessionStorage.getItem(this.id + '.sortBy') : this.defaultSortBy,
+                sortDesc: sessionStorage.getItem(this.id + '.sortDesc') ? sessionStorage.getItem(this.id + '.sortDesc') == 'true' : this.defaultSortDesc,
+                currentPage: sessionStorage.getItem(this.id + '.currentPage') ? sessionStorage.getItem(this.id + '.currentPage') : 1,
                 errorText: null
             }
         },
@@ -186,16 +206,47 @@
                     .then(res => {
                         // Retrieve data
                         const items = res.data.data
+
                         // Assign total rows value
                         if (res.data.meta && res.data.meta.total) {
                             this.totalRows = res.data.meta.total
                         }
+
+                        // Remember sorting and pagination
+                        sessionStorage.setItem(this.id + '.sortBy', ctx.sortBy)
+                        sessionStorage.setItem(this.id + '.sortDesc', ctx.sortDesc)
+                        sessionStorage.setItem(this.id + '.currentPage', ctx.currentPage)
+
                         return items || []
                     })
                     .catch(err => {
                         this.errorText = getAjaxErrorMessage(err)
                         return []
                     })
+            },
+            refresh() {
+
+                // Reset cached state
+                sessionStorage.removeItem(this.id + '.sortBy')
+                sessionStorage.removeItem(this.id + '.sortDesc')
+                sessionStorage.removeItem(this.id + '.currentPage')
+
+                this.currentPage = 1
+                this.sortBy = this.defaultSortBy
+                this.sortDesc = this.defaultSortDesc
+
+                // No need to emit a refresh as sortBy and sortDesc are synced and will trigger a refresh when changed
+                // $root.$emit('bv::refresh::table', id)
+            }
+        },
+        watch: {
+            sortBy(val, oldVal) {
+                // Reset page chen changing order
+                this.currentPage = 1
+            },
+            sortDesc(val, oldVal) {
+                // Reset page chen changing order direction
+                this.currentPage = 1
             }
         }
     }
