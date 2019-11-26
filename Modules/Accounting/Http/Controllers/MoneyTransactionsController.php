@@ -42,27 +42,21 @@ class MoneyTransactionsController extends Controller
     {
         $this->authorize('list', MoneyTransaction::class);
 
-        // // Single receipt no. query
-        // if ($transactions->count() == 1 && !empty($filter['receipt_no'])) {
-        //     session(['accounting.filter' => []]);
-        //     return redirect()->route('accounting.transactions.show', $transactions->first());
-        // }
-
         return view('accounting::transactions.index', [
             'beneficiaries' => self::getBeneficiaries(),
             'categories' => self::getCategories(true),
-            // 'fixed_categories' => Setting::has(self::CATEGORIES_SETTING_KEY),
+            'fixed_categories' => Setting::has(self::CATEGORIES_SETTING_KEY),
             'projects' => self::getProjects(true),
-            // 'fixed_projects' => Setting::has(self::PROJECTS_SETTING_KEY),
+            'fixed_projects' => Setting::has(self::PROJECTS_SETTING_KEY),
         ]);
     }
 
-    private static function createIndexQuery($filter, $sortColumn, $sortOrder) {
-        $query = MoneyTransaction::orderBy($sortColumn, $sortOrder)
-            ->orderBy('created_at', 'DESC');
-        self::applyFilterToQuery($filter, $query);
-        return $query;
-    }
+    // private static function createIndexQuery($filter, $sortColumn, $sortOrder) {
+    //     $query = MoneyTransaction::orderBy($sortColumn, $sortOrder)
+    //         ->orderBy('created_at', 'DESC');
+    //     self::applyFilterToQuery($filter, $query);
+    //     return $query;
+    // }
 
     public static function applyFilterToQuery($filter, &$query, $skipDates = false) {
         foreach (Config::get('accounting.filter_columns') as $col) {
@@ -187,27 +181,27 @@ class MoneyTransactionsController extends Controller
     {
         $this->authorize('view', $transaction);
 
-        $sortColumn = session('accounting.sortColumn', 'created_at');
-        $sortOrder = session('accounting.sortOrder', 'desc');
-        $filter = session('accounting.filter', []);
-        $query = self::createIndexQuery($filter, $sortColumn, $sortOrder);
-        // TODO: can this be optimized, e.g. with a cursor??
-        $res = $query->select('id')->get()->pluck('id')->toArray();
-        $prev_id = null;
-        $next_id = null;
-        $cnt = count($res);
-        for ($i = 0; $i < $cnt; $i++) {
-            $prev_id = $i > 0 ? $res[$i - 1] : null;
-            $next_id = $i < $cnt - 1 ? $res[$i + 1] : null;
-            if ($res[$i] == $transaction->id) {
-                break;
-            }
-        }
+        // $sortColumn = session('accounting.sortColumn', 'created_at');
+        // $sortOrder = session('accounting.sortOrder', 'desc');
+        // $filter = session('accounting.filter', []);
+        // $query = self::createIndexQuery($filter, $sortColumn, $sortOrder);
+        // // TODO: can this be optimized, e.g. with a cursor??
+        // $res = $query->select('id')->get()->pluck('id')->toArray();
+        // $prev_id = null;
+        // $next_id = null;
+        // $cnt = count($res);
+        // for ($i = 0; $i < $cnt; $i++) {
+        //     $prev_id = $i > 0 ? $res[$i - 1] : null;
+        //     $next_id = $i < $cnt - 1 ? $res[$i + 1] : null;
+        //     if ($res[$i] == $transaction->id) {
+        //         break;
+        //     }
+        // }
 
         return view('accounting::transactions.show', [
             'transaction' => $transaction,
-            'prev_id' => $prev_id,
-            'next_id' => $next_id,
+            // 'prev_id' => $prev_id,
+            // 'next_id' => $next_id,
         ]);
     }
 
