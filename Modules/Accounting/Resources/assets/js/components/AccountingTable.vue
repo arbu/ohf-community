@@ -9,6 +9,13 @@
             {{ errorText }}
         </danger-alert-with-reload>
 
+        <!-- Filter -->
+        <accounting-transaction-filter
+            :categories="categories"
+            :projects="projects"
+            @change="filter = $event"
+        ></accounting-transaction-filter>
+
         <!-- Table -->
         <b-table
             :id="id"
@@ -57,6 +64,7 @@
 </template>
 
 <script>
+    import AccountingTransactionFilter from './AccountingTransactionFilter'
     import Icon from '../../../../../../resources/js/components/Icon'
     import DangerAlertWithReload from '../../../../../../resources/js/components/DangerAlertWithReload'
     import Paginator from '../../../../../../resources/js/components/Paginator'
@@ -65,7 +73,8 @@
         components: {
             Icon,
             DangerAlertWithReload,
-            Paginator
+            Paginator,
+            AccountingTransactionFilter
         },
         props: {
             id: {
@@ -115,6 +124,14 @@
                 type: String,
                 required: false,
                 default: 'Reload'
+            },
+            categories: {
+                type: Array,
+                required: true,
+            },
+            projects: {
+                type: Array,
+                required: true,
             }
         },
         data() {
@@ -228,7 +245,7 @@
                 let params = ''
                 if (typeof filter === 'object' && filter !== null) {
                     for (var prop in filter) {
-                        if (Object.prototype.hasOwnProperty.call(filter, prop)) {
+                        if (Object.prototype.hasOwnProperty.call(filter, prop) && filter[prop] != null &&  filter[prop].length > 0) {
                             params += '&filter[' + prop + ']=' + encodeURIComponent(filter[prop])
                         }
                     }

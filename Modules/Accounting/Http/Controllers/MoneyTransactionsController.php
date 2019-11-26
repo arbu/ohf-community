@@ -42,53 +42,6 @@ class MoneyTransactionsController extends Controller
     {
         $this->authorize('list', MoneyTransaction::class);
 
-        // $request->validate([
-        //     'date_start' => [
-        //         'nullable',
-        //         'date',
-        //         'before_or_equal:' . Carbon::today(),
-        //     ],
-        //     'date_end' => [
-        //         'nullable',
-        //         'date',
-        //         'before_or_equal:' . Carbon::today(),
-        //     ],
-        //     'type' => [
-        //         'nullable',
-        //         Rule::in(['income', 'spending']),
-        //     ],
-        //     'month' => 'nullable|regex:/[0-1]?[1-9]/',
-        //     'year' => 'nullable|integer|min:2017|max:' . Carbon::today()->year,
-        // ]);
-
-        // if ($request->query('reset_filter') != null) {
-        //     session(['accounting.filter' => []]);
-        // }
-        // $filter = session('accounting.filter', []);
-        // foreach (Config::get('accounting.filter_columns') as $col) {
-        //     if (!empty($request->filter[$col])) {
-        //         $filter[$col] = $request->filter[$col];
-        //     } else if (isset($request->filter)) {
-        //         unset($filter[$col]);
-        //     }
-        // }
-        // if (!empty($request->filter['date_start'])) {
-        //     $filter['date_start'] = $request->filter['date_start'];
-        // } else if (isset($request->filter)) {
-        //     unset($filter['date_start']);
-        // }
-        // if (!empty($request->filter['date_end'])) {
-        //     $filter['date_end'] = $request->filter['date_end'];
-        // } else if (isset($request->filter)) {
-        //     unset($filter['date_end']);
-        // }
-        // session(['accounting.filter' => $filter]);
-
-        // $query = self::createIndexQuery($filter, $sortColumn, $sortOrder);
-
-        // // Get results
-        // $transactions = $query->paginate(250);
-
         // // Single receipt no. query
         // if ($transactions->count() == 1 && !empty($filter['receipt_no'])) {
         //     session(['accounting.filter' => []]);
@@ -107,12 +60,11 @@ class MoneyTransactionsController extends Controller
                 'description' => __('app.description'),
                 'beneficiary' => __('accounting::accounting.beneficiary'),
                 'registered' => __('app.registered')
-            ]
-            // 'filter' => $filter,
-            // 'beneficiaries' => self::getBeneficiaries(),
-            // 'categories' => self::getCategories(true),
+            ],
+            'beneficiaries' => self::getBeneficiaries(),
+            'categories' => self::getCategories(true),
             // 'fixed_categories' => Setting::has(self::CATEGORIES_SETTING_KEY),
-            // 'projects' => self::getProjects(true),
+            'projects' => self::getProjects(true),
             // 'fixed_projects' => Setting::has(self::PROJECTS_SETTING_KEY),
         ]);
     }

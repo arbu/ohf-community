@@ -7,11 +7,14 @@
     <div id="accounting-app">
         <accounting-table
             api-url="{{ route('api.accounting.transactions.index') }}"
-            :labels=@json($labels)
+            :labels='@json($labels)'
             loading-text="@lang('app.loading')"
             empty-text="@lang('app.no_records_to_show')"
             empty-filtered-text="@lang('app.no_records_matching_your_request')"
             reload-text="@lang('app.reload')"
+            :categories='@json(array_values($categories))'
+            :projects='@json(array_values($projects))'
+            :beneficiaries='@json(array_values($beneficiaries))'
         ></accounting-table>
     </div>
 
