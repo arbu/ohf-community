@@ -133,7 +133,7 @@ class MoneyTransactionsController extends Controller
                 }
             }
             foreach (['beneficiary', 'description'] as $key) {
-                if (isset($request->filter['receipt_no'])) {
+                if (isset($request->filter[$key])) {
                     $query->where($key, 'like', '%' . $request->filter[$key] . '%');
                 }
             }

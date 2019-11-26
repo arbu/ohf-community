@@ -245,7 +245,7 @@
                 let params = ''
                 if (typeof filter === 'object' && filter !== null) {
                     for (var prop in filter) {
-                        if (Object.prototype.hasOwnProperty.call(filter, prop) && filter[prop] != null &&  filter[prop].length > 0) {
+                        if (Object.prototype.hasOwnProperty.call(filter, prop) && filter[prop] != null && (filter[prop].length > 0 || filter[prop])) {
                             params += '&filter[' + prop + ']=' + encodeURIComponent(filter[prop])
                         }
                     }
