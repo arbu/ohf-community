@@ -27,23 +27,37 @@
                     <b-form-row>
 
                         <!-- Receipt Number -->
-                        <b-col cols="12" sm="6" md="3">
+                        <b-col cols="12" sm="6" md="1">
                             <b-form-group :label="labels.receipt_no">
                                 <b-form-input type="number" v-model="filter.receipt_no" size="sm" debounce="500" min="1" @keydown.esc="filter.receipt_no = null"></b-form-input>
                             </b-form-group>
                         </b-col>
 
                         <!-- Date start -->
-                        <b-col cols="12" sm="6" md="3">
+                        <b-col cols="12" sm="6" md="2">
                             <b-form-group :label="labels.date_from">
                                 <b-form-input type="date" v-model="filter.date_start" :max="todayDate" size="sm"></b-form-input>
                             </b-form-group>
                         </b-col>
 
                         <!-- Date end -->
-                        <b-col cols="12" sm="6" md="3">
+                        <b-col cols="12" sm="6" md="2">
                             <b-form-group :label="labels.date_to">
                                 <b-form-input type="date" v-model="filter.date_end" :max="todayDate" size="sm"></b-form-input>
+                            </b-form-group>
+                        </b-col>
+
+                        <!-- Amount from -->
+                        <b-col cols="12" sm="6" md="2">
+                            <b-form-group :label="labels.amount_from">
+                                <b-form-input type="number" v-model="filter.amount_from" size="sm" debounce="500" min="1" @keydown.esc="filter.amount_from = null"></b-form-input>
+                            </b-form-group>
+                        </b-col>
+
+                        <!-- Amount to -->
+                        <b-col cols="12" sm="6" md="2">
+                            <b-form-group :label="labels.amount_to">
+                                <b-form-input type="number" v-model="filter.amount_to" size="sm" debounce="500" min="1" @keydown.esc="filter.amount_to = null"></b-form-input>
                             </b-form-group>
                         </b-col>
 
@@ -121,6 +135,8 @@
         receipt_no: null,
         date_start: null,
         date_end: null,
+        amount_from: null,
+        amount_to: null,
         type: null,
         category: null,
         project: null,
@@ -131,6 +147,8 @@
     }
     const trimToNull = [
         'receipt_no',
+        'amount_from',
+        'amount_to',
         'description',
         'beneficiary'
     ]

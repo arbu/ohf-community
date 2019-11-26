@@ -106,6 +106,8 @@ return [
     'maintenance' => 'Maintenance',
     'transactions' => 'Transactions',
     'amount' => 'Amount',
+    'amount_from' => 'Amount from',
+    'amount_to' => 'Amount to',
     'file_format' => 'File format',
     'number_results_per_page' => 'Number of results per page',
     'current_settings' => 'Current settings',

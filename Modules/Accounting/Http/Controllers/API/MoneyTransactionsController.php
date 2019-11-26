@@ -75,6 +75,14 @@ class MoneyTransactionsController extends Controller
             'filter.year' => [
                 'integer',
                 'max:' . Carbon::today()->year
+            ],
+            'filter.amount_from' => [
+                'numeric',
+                'min:0'
+            ],
+            'filter.amount_to' => [
+                'numeric',
+                'min:0'
             ]
         ]);
 
@@ -126,6 +134,12 @@ class MoneyTransactionsController extends Controller
                     $query->orWhereNull('receipt_pictures');
                     $query->orWhere('receipt_pictures', '[]');
                 });
+            }
+            if (isset($request->filter['amount_from'])) {
+                $query->where('amount', '>=', $request->filter['amount_from']);
+            }
+            if (isset($request->filter['amount_to'])) {
+                $query->where('amount', '<=', $request->filter['amount_to']);
             }
             foreach (['receipt_no', 'type', 'category', 'project'] as $key) {
                 if (isset($request->filter[$key])) {

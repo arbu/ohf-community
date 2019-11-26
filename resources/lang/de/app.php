@@ -106,6 +106,8 @@ return [
     'maintenance' => 'Wartung',
     'transactions' => 'Transaktionen',
     'amount' => 'Betrag',
+    'amount_from' => 'Startbetrag',
+    'amount_to' => 'Endbetrag',
     'file_format' => 'Dateiformat',
     'number_results_per_page' => 'Anzahl Resultate pro Seite',
     'n_results_found' => ':num Resultate gefunden',

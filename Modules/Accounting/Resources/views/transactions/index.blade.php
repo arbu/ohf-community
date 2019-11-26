@@ -20,7 +20,9 @@
             'date_to' => __('app.end_date'),
             'type' => __('app.type'),
             'registered_today' => __('accounting::accounting.registered_today'),
-            'no_receipt' => __('accounting::accounting.no_receipt')
+            'no_receipt' => __('accounting::accounting.no_receipt'),
+            'amount_from' => __('app.amount_from'),
+            'amount_to' => __('app.amount_to'),
         ];
         $types = [
             [ 'value' => null, 'text' => __('app.any') ],
