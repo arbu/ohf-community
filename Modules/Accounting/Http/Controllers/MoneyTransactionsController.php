@@ -49,18 +49,6 @@ class MoneyTransactionsController extends Controller
         // }
 
         return view('accounting::transactions.index', [
-            'labels' => [
-                'receipt' => __('accounting::accounting.receipt'),
-                'date' => __('app.date'),
-                'amount' => __('app.amount'),
-                'income' => __('accounting::accounting.income'),
-                'spending' => __('accounting::accounting.spending'),
-                'category' => __('app.category'),
-                'project' => __('app.project'),
-                'description' => __('app.description'),
-                'beneficiary' => __('accounting::accounting.beneficiary'),
-                'registered' => __('app.registered')
-            ],
             'beneficiaries' => self::getBeneficiaries(),
             'categories' => self::getCategories(true),
             // 'fixed_categories' => Setting::has(self::CATEGORIES_SETTING_KEY),

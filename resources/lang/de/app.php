@@ -83,6 +83,7 @@ return [
     'filter' => 'Filter',
     'apply_filter' => 'Filter anwenden',
     'reset_filter' => 'Filter zurücksetzen',
+    'hide_filter' => 'Filter ausblenden',
     'search_message_text' => 'Nachrichtentext durchsuchen',
     'parameters' => 'Parameter',
     'emergency' => 'Notfall',

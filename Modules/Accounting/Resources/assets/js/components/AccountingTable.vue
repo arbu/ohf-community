@@ -11,9 +11,14 @@
 
         <!-- Filter -->
         <accounting-transaction-filter
+            :labels="labels"
+            :types="types"
             :categories="categories"
             :projects="projects"
             @change="filter = $event"
+            :filter-text="filterText"
+            :hide-filter-text="hideFilterText"
+            :reset-filter-text="resetFilterText"
         ></accounting-transaction-filter>
 
         <!-- Table -->
@@ -113,17 +118,18 @@
             emptyText: {
                 type: String,
                 required: false,
-                default: 'There are no records to show.'
             },
             emptyFilteredText: {
                 type: String,
                 required: false,
-                default: 'There are no records matching your request.'
             },
             reloadText: {
                 type: String,
                 required: false,
-                default: 'Reload'
+            },
+            types: {
+                type: Array,
+                required: true,
             },
             categories: {
                 type: Array,
@@ -132,6 +138,18 @@
             projects: {
                 type: Array,
                 required: true,
+            },
+            filterText: {
+                type: String,
+                required: false,
+            },
+            hideFilterText: {
+                type: String,
+                required: false,
+            },
+            resetFilterText: {
+                type: String,
+                required: false,
             }
         },
         data() {
@@ -139,63 +157,63 @@
                 fields: [
                     {
                         key: 'receipt_no',
-                        label: `${this.labels['receipt']} #`,
+                        label: this.labels.receipt_no,
                         sortable: true,
                         class: 'fit text-center',
                         tdClass: (value, key, item) => item.receipt_no != null && !item.has_receipt_pictures ? 'table-warning' : null
                     },
                     {
                         key: 'date',
-                        label: this.labels['date'],
+                        label: this.labels.date,
                         sortable: true,
                         class: 'fit'
                     },
                     {
                         key: 'amount',
-                        label: this.labels['amount'],
+                        label: this.labels.amount,
                         sortable: false,
                         class: 'fit d-table-cell d-sm-none text-right',
                         tdClass: (value, key, item) => item.type == 'income' ? 'text-success' : item.type == 'spending' ? 'text-danger' : null
                     },
                     {
                         key: 'income',
-                        label: this.labels['income'],
+                        label: this.labels.income,
                         sortable: false,
                         class: 'fit d-none d-sm-table-cell text-right',
                         tdClass: 'text-success'
                     },
                     {
                         key: 'spending',
-                        label: this.labels['spending'],
+                        label: this.labels.spending,
                         sortable: false,
                         class: 'fit d-none d-sm-table-cell text-right',
                         tdClass: 'text-danger'
                     },
                     {
                         key: 'category',
-                        label: this.labels['category'],
+                        label: this.labels.category,
                         sortable: true
                     },
                     {
                         key: 'project',
-                        label: this.labels['project'],
+                        label: this.labels.project,
                         sortable: true
                     },
                     {
                         key: 'description',
-                        label: this.labels['description'],
+                        label: this.labels.description,
                         sortable: true,
                         class: 'd-none d-sm-table-cell'
                     },
                     {
                         key: 'beneficiary',
-                        label: this.labels['beneficiary'],
+                        label: this.labels.beneficiary,
                         sortable: true,
                         class: 'd-none d-sm-table-cell'
                     },
                     {
                         key: 'registered',
-                        label: this.labels['registered'],
+                        label: this.labels.registered,
                         sortable: true,
                         class: 'fit d-none d-md-table-cell'
                     },

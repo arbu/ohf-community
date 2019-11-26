@@ -83,6 +83,7 @@ return [
     'filter' => 'Filter',
     'apply_filter' => 'Apply filter',
     'reset_filter' => 'Reset filter',
+    'hide_filter' => 'Hide filter',
     'search_message_text' => 'Search message text',
     'parameters' => 'Parameters',
     'emergency' => 'Emergency',
