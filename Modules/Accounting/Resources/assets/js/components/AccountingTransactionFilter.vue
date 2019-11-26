@@ -22,42 +22,34 @@
 
         <!-- Collapsible area -->
         <b-collapse v-model="visible" id="collapse-1">
-            <b-card body-class="pb-2">
+            <b-card>
                 <b-form>
                     <b-form-row>
                         <!-- Receipt Number -->
-                        <b-col cols="12" sm="4" lg="3">
+                        <b-col cols="12" sm="6" md="3">
                             <b-form-group label="Receipt No">
                                 <b-form-input type="number" v-model="filter.receipt_no" size="sm" debounce="500" min="1" @keydown.esc="filter.receipt_no = null"></b-form-input>
                             </b-form-group>
                         </b-col>
                         <!-- Date start -->
-                        <b-col cols="6" sm="4" lg="3">
+                        <b-col cols="12" sm="6" md="3">
                             <b-form-group label="Date from">
                                 <b-form-input type="date" v-model="filter.date_start" :max="todayDate" size="sm"></b-form-input>
                             </b-form-group>
                         </b-col>
                         <!-- Date end -->
-                        <b-col cols="6" sm="4" lg="3">
+                        <b-col cols="12" sm="6" md="3">
                             <b-form-group label="Date to">
                                 <b-form-input type="date" v-model="filter.date_end" :max="todayDate" size="sm"></b-form-input>
                             </b-form-group>
                         </b-col>
                         <!-- Type -->
-                        <b-col cols="6" lg="auto">
+                        <b-col cols="12" sm="6" md="3">
                             <b-form-group label="Type">
                                 <b-form-radio-group
                                     v-model="filter.type"
                                     :options="types"
-                                    stacked
                                 ></b-form-radio-group>
-                            </b-form-group>
-                        </b-col>
-                        <!-- "Registered today" and "no receipt" checks -->
-                        <b-col cols="6" lg="auto">
-                            <b-form-group label="Options">
-                                <b-form-checkbox v-model="filter.today">Registered today</b-form-checkbox>
-                                <b-form-checkbox v-model="filter.no_receipt">No receipt</b-form-checkbox>
                             </b-form-group>
                         </b-col>
                     </b-form-row>
@@ -93,6 +85,16 @@
                             <b-form-group label="Beneficiary">
                                 <b-form-input type="text" v-model="filter.beneficiary" size="sm" debounce="500" @keydown.esc="filter.beneficiary = null"></b-form-input>
                             </b-form-group>
+                        </b-col>
+                    </b-form-row>
+                    <b-form-row>
+                        <!-- "Registered today" -->
+                        <b-col cols="auto">
+                            <b-form-checkbox v-model="filter.today">Registered today</b-form-checkbox>
+                        </b-col>
+                         <!-- "No receipt" -->
+                        <b-col cols="auto">
+                            <b-form-checkbox v-model="filter.no_receipt">No receipt</b-form-checkbox>
                         </b-col>
                     </b-form-row>
                 </b-form>
