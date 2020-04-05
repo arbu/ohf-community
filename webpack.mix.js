@@ -28,6 +28,7 @@ mix.mergeManifest();
 mix.options({ processCssUrls: false })
     .js('resources/js/app.js', 'public/js')
     .js('resources/js/fundraising.js', 'public/js')
+    .js('resources/js/user_management.js', 'public/js')
     .js('resources/js/calendar.js', 'public/js')
     .js('resources/js/tasks.js', 'public/js')
     .js('resources/js/people.js', 'public/js')
