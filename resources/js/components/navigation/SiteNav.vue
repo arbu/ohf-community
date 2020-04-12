@@ -73,39 +73,14 @@
                 @toggle="toggleMenu"
             />
 
-            <template v-if="authorized">
-                <div class="position-relative d-none d-md-inline-block">
-                    <button class="context-nav-toggle btn btn-link text-light px-3">
-                        <img
-                            :src="avatarImage"
-                            alt="Gravatar"
-                            class="bg-white rounded-circle"
-                            style="width: 30px; height: 30px;"
-                        >
-                    </button>
-                    <ul class="context-nav userprofile-nav">
-                        <li>
-                            <a
-                                :href="userprofileUrl"
-                                class="btn btn-dark btn-block"
-                            >
-                                <font-awesome-icon icon="user" class="mr-1"/>
-                                {{ $t('userprofile.profile') }}
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="javascript:;"
-                                class="btn btn-dark btn-block"
-                                @click="logout"
-                            >
-                                <font-awesome-icon icon="sign-out-alt" class="mr-1"/>
-                                {{ $t('app.logout') }}
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </template>
+            <!-- Current user -->
+            <userprofile-nav-menu
+                v-if="authorized"
+                :avatar-image="avatarImage"
+                :userprofile-url="userprofileUrl"
+                :logout-url="logoutUrl"
+                open
+            />
             <template v-else>
                 <a :href="loginUrl" class="btn btn-secondary d-none d-md-inline-block">
                     <font-awesome-icon icon="sign-in-alt" /> {{ $t('app.login') }}
@@ -124,10 +99,12 @@
 <script>
 import SiteNavButton from './SiteNavButton'
 import SiteNavMenu from './SiteNavMenu'
+import UserprofileNavMenu from './UserprofileNavMenu'
 export default {
     components: {
         SiteNavButton,
-        SiteNavMenu
+        SiteNavMenu,
+        UserprofileNavMenu
     },
     props: {
         authorized: Boolean,
@@ -186,9 +163,6 @@ export default {
         menuOpen: Boolean
     },
     methods: {
-        logout() {
-            postRequest(this.logoutUrl, {});
-        },
         toggleDrawer() {
             this.$emit('toggleDrawer')
         },
@@ -228,11 +202,5 @@ export default {
     padding: 0.5em 4em 0.5em 1.5em;
     text-align: left;
     white-space: nowrap;
-}
-
-.userprofile-nav.userprofile-nav {
-    top: 50px;
-    box-shadow: none;
-    right: -15px;
 }
 </style>

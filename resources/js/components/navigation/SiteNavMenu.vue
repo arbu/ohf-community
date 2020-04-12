@@ -7,7 +7,10 @@
             <font-awesome-icon icon="ellipsis-v" />
         </button>
         <transition name="fade">
-            <ul class="context-nav" v-if="open">
+            <ul
+                v-if="open"
+                class="context-nav"
+            >
                 <site-nav-menu-item
                     v-for="(item, idx) in items"
                     :key="idx"
