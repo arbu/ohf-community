@@ -152,14 +152,8 @@ Vue.component('pie-chart', PieChart);
 import FontAwesomeIcon from './components/common/FontAwesomeIcon'
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
-import SiteNav from './components/navigation/SiteNav.vue';
-Vue.component('site-nav', SiteNav);
-
-import AppDrawer from './components/navigation/AppDrawer.vue';
-Vue.component('app-drawer', AppDrawer);
-
-import ActionButton from './components/navigation/ActionButton.vue';
-Vue.component('action-button', ActionButton);
+import AppRoot from './components/AppRoot.vue';
+Vue.component('app-root', AppRoot);
 
 import i18n from './i18n'
 
