@@ -6,8 +6,16 @@
     >
         <font-awesome-icon :icon="button.icon" />
         {{ button.caption }}
-        <!-- TODO {{ Form::button('<i class="fa fa-' . $button['icon'] .'"></i>', [ 'type' => 'submit', 'class' => 'btn btn-link text-light d-md-none delete-confirmation', 'data-confirmation' => $button['confirmation'] ]) }} -->
     </button>
+    <!--  TODO
+    <button
+        v-if="name == 'delete'"
+        class="btn btn-link text-light d-md-none"
+        @click="deleteAction"
+    >
+        <font-awesome-icon :icon="button.icon" />
+    </button>
+    -->
     <a
         v-else-if="name == 'action'"
         :href="button.url"
@@ -45,12 +53,13 @@
         <font-awesome-icon :icon="button.icon" />
         {{ button.caption }}
     </a>
-    <!-- <a
-        TODO
+    <!-- TODO
+    <a
+        v-else
         :href="button.url"
         class="btn text-light d-md-none"
         :title="button.caption"
-
+        :target="name == 'help' ? '_blank' : null"
     >
         <font-awesome-icon :icon="button.icon" />
     </a> -->
