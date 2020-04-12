@@ -39,9 +39,7 @@
                         :logout-url="logoutUrl"
                         :buttons="buttons"
                         :menu="menu"
-                        :menuOpen="contextMenuOpen"
                         @toggleDrawer="toggleDrawer()"
-                        @toggleMenu="toggleContextMenu()"
                     ></site-nav>
                 </header>
 
@@ -60,16 +58,16 @@
                 </article>
 
                 <div
-                    v-if="contextMenuOpen"
+                    v-if="overlayEnabled"
                     class="overlay position-absolute h-100 w-100"
-                    @click="hideContextMenu"
+                    @click="overlayClick()"
                 ></div>
 
                 <transition name="fade">
                     <div
                         v-if="showDrawer"
                         class="overlay-dark position-absolute h-100 w-100"
-                        @click="hideDrawer"
+                        @click="hideDrawer()"
                     ></div>
                 </transition>
             </main>
@@ -78,6 +76,7 @@
 </template>
 
 <script>
+import { EventBus } from '@/event-bus'
 import AppDrawer from '@/components/navigation/AppDrawer'
 import SiteNav from '@/components/navigation/SiteNav'
 import ActionButton from '@/components/navigation/ActionButton';
@@ -183,8 +182,13 @@ export default {
     data() {
         return {
             showDrawer: false,
-            contextMenuOpen: false
+            overlayEnabled: false
         }
+    },
+    mounted() {
+        EventBus.$on('menu-opened', () => {
+            this.overlayEnabled = true
+        });
     },
     methods: {
         toggleDrawer() {
@@ -193,11 +197,9 @@ export default {
         hideDrawer() {
             this.showDrawer = false
         },
-        toggleContextMenu() {
-            this.contextMenuOpen = ! this.contextMenuOpen
-        },
-        hideContextMenu() {
-            this.contextMenuOpen = false
+        overlayClick() {
+            this.overlayEnabled = false
+            EventBus.$emit('overlay-clicked');
         }
     }
 }

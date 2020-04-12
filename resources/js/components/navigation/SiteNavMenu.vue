@@ -2,7 +2,7 @@
     <div class="position-relative d-inline-block">
         <button
             class="btn btn-link text-light px-3"
-            @click="toggleMenu"
+            @click="toggleMenu()"
         >
             <font-awesome-icon icon="ellipsis-v" />
         </button>
@@ -23,20 +23,18 @@
 
 <script>
 import SiteNavMenuItem from './SiteNavMenuItem'
+import overlayMenuMixin from './overlayMenuMixin'
 export default {
     components: {
         SiteNavMenuItem
     },
+    mixins: [
+        overlayMenuMixin
+    ],
     props: {
         items: {
             type: Object,
             required: true
-        },
-        open: Boolean
-    },
-    methods: {
-        toggleMenu() {
-            this.$emit('toggle')
         }
     }
 }

@@ -2,7 +2,7 @@
     <div class="position-relative d-none d-md-inline-block">
         <button
             class="btn btn-link text-light px-3"
-            @click="toggleMenu"
+            @click="toggleMenu()"
         >
             <img
                 :src="avatarImage"
@@ -34,10 +34,14 @@
 
 <script>
 import UserprofileNavMenuItem from './UserprofileNavMenuItem'
+import overlayMenuMixin from './overlayMenuMixin'
 export default {
     components: {
         UserprofileNavMenuItem
     },
+    mixins: [
+        overlayMenuMixin
+    ],
     props: {
         avatarImage: {
             type: String,
@@ -52,16 +56,12 @@ export default {
         logoutUrl: {
             type: String,
             required: true
-        },
-        open: Boolean
+        }
     },
     methods: {
-        toggleMenu() {
-            this.$emit('toggle')
-        },
         logout() {
             postRequest(this.logoutUrl, {});
-        },
+        }
     }
 }
 </script>

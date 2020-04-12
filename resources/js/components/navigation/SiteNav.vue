@@ -16,7 +16,7 @@
                     v-else
                     href="javascript:;"
                     class="btn btn-link text-light toggle-button"
-                    @click="toggleDrawer"
+                    @click="toggleDrawer()"
                 >
                     <font-awesome-icon icon="bars" />
                 </a>
@@ -25,7 +25,7 @@
             <a
                 href="javascript:;"
                 class="btn btn-link text-light toggle-button d-none d-md-inline-block ml-3"
-                @click="toggleDrawer"
+                @click="toggleDrawer()"
             >
                 <font-awesome-icon icon="bars" />
             </a>
@@ -69,8 +69,6 @@
             <site-nav-menu
                 v-if="menu && Object.keys(menu).length > 0"
                 :items="menu"
-                :open="menuOpen"
-                @toggle="toggleMenu"
             />
 
             <!-- Current user -->
@@ -79,7 +77,6 @@
                 :avatar-image="avatarImage"
                 :userprofile-url="userprofileUrl"
                 :logout-url="logoutUrl"
-                open
             />
             <template v-else>
                 <a :href="loginUrl" class="btn btn-secondary d-none d-md-inline-block">
@@ -159,15 +156,11 @@ export default {
             type: Object,
             required: false,
             default: () => {}
-        },
-        menuOpen: Boolean
+        }
     },
     methods: {
         toggleDrawer() {
             this.$emit('toggleDrawer')
-        },
-        toggleMenu() {
-            this.$emit('toggleMenu')
         }
     }
 }
