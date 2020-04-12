@@ -3,7 +3,7 @@
     @include('layouts.include.head')
     <body class="h-100 d-flex flex-column">
 
-        <div class="site-wrapper h-100">
+        <div class="site-wrapper h-100" id="app">
 
             <div class="site-canvas h-100">
 
@@ -17,7 +17,20 @@
 
                     {{-- Site header --}}
                     <header class="site-header">
-                        @include('layouts.include.site-header')
+                        <site-nav
+                            @auth authorized @endauth
+                            @auth avatar-image="{{ Auth::user()->avatarUrl('site_header') }}" @endauth
+                            login-url="{{ route('login') }}"
+                            userprofile-url="{{ route('userprofile') }}"
+                            @if(View::hasSection('title')) title="@yield('title')" @endif
+                            home-url="{{ route('home') }}"
+                            @isset($signet_url) signet-url="{{ $signet_url }}" @endisset
+                            app-name="{{ config('app.name') }}"
+                            @if(isset($buttons['back']) && $buttons['back']['authorized']) back-url="{{ $buttons['back']['url'] }}" @endif
+                            logout-url="{{ route('logout') }}"
+                            @if (isset($buttons) && sizeof($buttons) > 0) :buttons='@json(collect($buttons)->filter(fn ($b) => $b['authorized']))' @endif
+                            @if (isset($menu) && sizeof($menu) > 0) :menu='@json(collect($menu)->filter(fn ($b) => $b['authorized']))' @endif
+                        ></site-nav>
                     </header>
 
                     {{-- Content --}}
@@ -47,13 +60,6 @@
                         @if (count($errors) > 0)
                             <div class="alert alert-danger alert-dismissible fade show">
                                 @icon(exclamation-triangle) @lang('app.validation_failed')
-{{--
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                                --}}
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>

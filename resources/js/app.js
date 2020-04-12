@@ -149,8 +149,17 @@ Vue.component('horizontal-bar-chart', HorizontalBarChart);
 import PieChart from './components/PieChart.vue';
 Vue.component('pie-chart', PieChart);
 
+import FontAwesomeIcon from './components/common/FontAwesomeIcon'
+Vue.component('font-awesome-icon', FontAwesomeIcon)
+
+import SiteNav from './components/navigation/SiteNav.vue';
+Vue.component('site-nav', SiteNav);
+
+import i18n from './i18n'
+
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    i18n
 });
 
 //
@@ -277,18 +286,21 @@ $(document).ready(function () {
  * Method for sending post request
  */
 window.postRequest = function(path, params, method) {
-    method = method || "post"; // Set method to post by default if not specified.
+    // method = method || "post"; // Set method to post by default if not specified.
 
     // The rest of this code assumes you are not using a library.
     // It can be made less wordy if you use one.
     var form = document.createElement("form");
-    form.setAttribute("method", method);
+    form.setAttribute("method", 'post');
     form.setAttribute("action", path);
 
     // CSRF token
     let token = document.head.querySelector('meta[name="csrf-token"]');
     if (token) {
         params._token = token.content;
+    }
+    if (method) {
+        params._method = method;
     }
 
     for(var key in params) {
