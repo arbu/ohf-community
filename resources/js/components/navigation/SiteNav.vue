@@ -15,7 +15,8 @@
                 <a
                     v-else
                     href="javascript:;"
-                    class="toggle-nav btn btn-link text-light toggle-button"
+                    class="btn btn-link text-light toggle-button"
+                    @click="toggleDrawer"
                 >
                     <font-awesome-icon icon="bars" />
                 </a>
@@ -23,7 +24,8 @@
 
             <a
                 href="javascript:;"
-                class="toggle-nav btn btn-link text-light toggle-button d-none d-md-inline-block ml-3"
+                class="btn btn-link text-light toggle-button d-none d-md-inline-block ml-3"
+                @click="toggleDrawer"
             >
                 <font-awesome-icon icon="bars" />
             </a>
@@ -183,6 +185,9 @@ export default {
     methods: {
         logout() {
             postRequest(this.logoutUrl, {});
+        },
+        toggleDrawer() {
+            this.$emit('toggleDrawer')
         }
     }
 }

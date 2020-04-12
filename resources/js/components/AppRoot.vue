@@ -1,63 +1,76 @@
 <template>
-    <div class="site-wrapper h-100">
-    <div class="site-canvas h-100">
-        <!-- Side navigation -->
-        <app-drawer
-            v-if="authorized"
-            :signet-url="signetUrl"
-            :app-name="appName"
-            :userprofile-url="userprofileUrl"
-            :user-name="userName"
-            :render-time="renderTime"
-            :product-name="productName"
-            :app-version="appVersion"
-            :changelog-url="changelogUrl"
-            :product-url="productUrl"
-            :logout-url="logoutUrl"
-            :avatar-image="avatarImage"
-            :nav-items="navItems"
-        ></app-drawer>
+    <div
+        class="site-wrapper h-100"
+        :class="{ 'show-nav': showDrawer }"
+    >
+        <div class="site-canvas h-100">
+            <!-- Side navigation -->
+            <app-drawer
+                v-if="authorized"
+                :signet-url="signetUrl"
+                :app-name="appName"
+                :userprofile-url="userprofileUrl"
+                :user-name="userName"
+                :render-time="renderTime"
+                :product-name="productName"
+                :app-version="appVersion"
+                :changelog-url="changelogUrl"
+                :product-url="productUrl"
+                :logout-url="logoutUrl"
+                :avatar-image="avatarImage"
+                :nav-items="navItems"
+            ></app-drawer>
 
-        <!-- Main -->
-        <main class="d-flex flex-column h-100">
+            <!-- Main -->
+            <main class="d-flex flex-column h-100">
 
-            <!-- Site header -->
-            <header class="site-header">
-                <site-nav
-                    :authorized="authorized"
-                    :avatar-image="avatarImageHeader"
-                    :login-url="logoutUrl"
-                    :userprofile-url="userprofileUrl"
-                    :title="title"
-                    :home-url="homeUrl"
-                    :signet-url="signetUrl"
-                    :app-name="appName"
-                    :back-url="backUrl"
-                    :logout-url="loginUrl"
-                    :buttons="buttons"
-                    :menu="menu"
-                ></site-nav>
-            </header>
+                <!-- Site header -->
+                <header class="site-header">
+                    <site-nav
+                        :authorized="authorized"
+                        :avatar-image="avatarImageHeader"
+                        :login-url="logoutUrl"
+                        :userprofile-url="userprofileUrl"
+                        :title="title"
+                        :home-url="homeUrl"
+                        :signet-url="signetUrl"
+                        :app-name="appName"
+                        :back-url="backUrl"
+                        :logout-url="loginUrl"
+                        :buttons="buttons"
+                        :menu="menu"
+                        @toggleDrawer="toggleDrawer()"
+                    ></site-nav>
+                </header>
 
-            <!-- Content -->
-            <article class="site-content container-fluid" :class="contentPaddingClass" >
+                <!-- Content -->
+                <article class="site-content container-fluid" :class="contentPaddingClass" >
 
-                <slot></slot>
+                    <slot></slot>
 
-                <!-- Floating action button -->
-                <action-button
-                    v-if="buttons && buttons.action"
-                    :url="buttons.action.url"
-                    :icon="buttons.action.icon_floating"
-                ></action-button>
+                    <!-- Floating action button -->
+                    <action-button
+                        v-if="buttons && buttons.action"
+                        :url="buttons.action.url"
+                        :icon="buttons.action.icon_floating"
+                    ></action-button>
 
-            </article>
+                </article>
 
-            <div id="overlay" class="position-absolute h-100 w-100"></div>
+                <div
+                    id="overlay"
+                    class="position-absolute h-100 w-100"
+                ></div>
 
-            <div id="overlay_dark" class="position-absolute h-100 w-100"></div>
-        </main>
-    </div>
+                <transition name="fade">
+                    <div
+                        v-if="showDrawer"
+                        class="overlay-dark position-absolute h-100 w-100"
+                        @click="hideDrawer"
+                    ></div>
+                </transition>
+            </main>
+        </div>
     </div>
 </template>
 
@@ -163,6 +176,32 @@ export default {
             required: false,
             default: 'pt-3'
         }
+    },
+    data() {
+        return {
+            showDrawer: false
+        }
+    },
+    methods: {
+        toggleDrawer() {
+            this.showDrawer = !this.showDrawer
+        },
+        hideDrawer() {
+            this.showDrawer = false
+        }
     }
 }
 </script>
+
+<style scoped>
+.overlay-dark {
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.3);
+}
+.fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to {
+    opacity: 0;
+}
+</style>

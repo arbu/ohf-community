@@ -7,45 +7,6 @@ var palette = require('google-palette');
 // http://google.github.io/palette.js/
 window.colorPalette = palette('tol', 12);
 
-/*====================================
-=            ON DOM READY            =
-====================================*/
-$(function() {
-    $('.toggle-nav').click(function() {
-        toggleNav();
-    });
-});
-
-/*========================================
-=            CUSTOM FUNCTIONS            =
-========================================*/
-
-function showNavigation() {
-    $('.site-wrapper').addClass('show-nav');
-    var overlay = $('#overlay_dark');
-    overlay.fadeIn('fast');
-    overlay.on('click', function(){
-        hideNavigation();
-    });
-}
-
-function hideNavigation() {
-    $('.site-wrapper').removeClass('show-nav');
-    var overlay = $('#overlay_dark');
-    overlay.fadeOut('fast');
-    overlay.off('click');
-}
-
-function toggleNav() {
-    if ($('.site-wrapper').hasClass('show-nav')) {
-        // Do things on Nav Close
-        hideNavigation();
-    } else {
-        // Do things on Nav Open
-        showNavigation();
-    }
-}
-
 $(function(){
 
     // Delete confirmation method
