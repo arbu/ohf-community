@@ -84,7 +84,10 @@
 
                         {{-- Floating action button --}}
                         @if(isset($buttons['action']) && $buttons['action']['authorized'] )
-                            @include('components.action-button', [ 'route' => $buttons['action']['url'], 'icon' => $buttons['action']['icon_floating'] ])
+                            <action-button
+                                url="{{ $buttons['action']['url'] }}"
+                                icon="{{ $buttons['action']['icon_floating'] }}"
+                            ></action-button>
                         @endif
 
                     </article>

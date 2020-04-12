@@ -158,6 +158,9 @@ Vue.component('site-nav', SiteNav);
 import AppDrawer from './components/navigation/AppDrawer.vue';
 Vue.component('app-drawer', AppDrawer);
 
+import ActionButton from './components/navigation/ActionButton.vue';
+Vue.component('action-button', ActionButton);
+
 import i18n from './i18n'
 
 const app = new Vue({
