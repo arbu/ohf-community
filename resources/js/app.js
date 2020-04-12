@@ -7,15 +7,6 @@ var palette = require('google-palette');
 // http://google.github.io/palette.js/
 window.colorPalette = palette('tol', 12);
 
-$(function(){
-
-    // Delete confirmation method
-    $( '.delete-confirmation' ).on('click', function(){
-        return confirm( $(this).attr( 'data-confirmation' ) );
-    });
-
-});
-
 // Elements with the selector class gain focus and have their cursor set to the end
 $(function(){
     $('.focus-tail').each(function(){
