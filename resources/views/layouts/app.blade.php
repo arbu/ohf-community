@@ -8,9 +8,22 @@
             <div class="site-canvas h-100">
 
                 {{-- Side navigation --}}
-                <nav class="site-navigation bg-light">
-                    @include('layouts.include.side-nav')
-                </nav>
+                @auth
+                    <app-drawer
+                        @isset($signet_url) signet-url="{{ $signet_url }}" @endisset
+                        app-name="{{ config('app.name') }}"
+                        userprofile-url="{{ route('userprofile') }}"
+                        user-name="{{ Auth::user()->name }}"
+                        render-time="{{ round((microtime(true) - LARAVEL_START)*1000) }}"
+                        product-name="{{ config('app.product_name') }}"
+                        app-version="{{ $app_version }}"
+                        changelog-url="{{ route('changelog') }}"
+                        product-url="{{ config('app.product_url') }}"
+                        logout-url="{{ route('logout') }}"
+                        avatar-image="{{ Auth::user()->avatarUrl() }}"
+                        :nav-items='@json($nav)'
+                    ></app-drawer>
+                @endauth
 
                 {{-- Main --}}
                 <main class="d-flex flex-column h-100">
@@ -28,8 +41,8 @@
                             app-name="{{ config('app.name') }}"
                             @if(isset($buttons['back']) && $buttons['back']['authorized']) back-url="{{ $buttons['back']['url'] }}" @endif
                             logout-url="{{ route('logout') }}"
-                            @if (isset($buttons) && sizeof($buttons) > 0) :buttons='@json(collect($buttons)->filter(fn ($b) => $b['authorized']))' @endif
-                            @if (isset($menu) && sizeof($menu) > 0) :menu='@json(collect($menu)->filter(fn ($b) => $b['authorized']))' @endif
+                            @if (isset($buttons) && sizeof($buttons) > 0) :buttons='@json($buttons)' @endif
+                            @if (isset($menu) && sizeof($menu) > 0) :menu='@json($menu)' @endif
                         ></site-nav>
                     </header>
 

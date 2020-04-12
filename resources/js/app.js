@@ -155,6 +155,9 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 import SiteNav from './components/navigation/SiteNav.vue';
 Vue.component('site-nav', SiteNav);
 
+import AppDrawer from './components/navigation/AppDrawer.vue';
+Vue.component('app-drawer', AppDrawer);
+
 import i18n from './i18n'
 
 const app = new Vue({

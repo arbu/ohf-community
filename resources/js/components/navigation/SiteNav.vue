@@ -37,7 +37,10 @@
                 class="navbar-brand d-none d-md-inline-block"
                 :href="homeUrl"
             >
-                <img v-if="signetUrl" :src="signetUrl" />
+                <img
+                    v-if="signetUrl"
+                    :src="signetUrl"
+                />
                 {{ appName }}
             </a>
 
