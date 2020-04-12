@@ -39,7 +39,9 @@
                         :logout-url="loginUrl"
                         :buttons="buttons"
                         :menu="menu"
+                        :menuOpen="contextMenuOpen"
                         @toggleDrawer="toggleDrawer()"
+                        @toggleMenu="toggleContextMenu()"
                     ></site-nav>
                 </header>
 
@@ -58,8 +60,9 @@
                 </article>
 
                 <div
-                    id="overlay"
-                    class="position-absolute h-100 w-100"
+                    v-if="contextMenuOpen"
+                    class="overlay position-absolute h-100 w-100"
+                    @click="hideContextMenu"
                 ></div>
 
                 <transition name="fade">
@@ -179,15 +182,22 @@ export default {
     },
     data() {
         return {
-            showDrawer: false
+            showDrawer: false,
+            contextMenuOpen: false
         }
     },
     methods: {
         toggleDrawer() {
-            this.showDrawer = !this.showDrawer
+            this.showDrawer = ! this.showDrawer
         },
         hideDrawer() {
             this.showDrawer = false
+        },
+        toggleContextMenu() {
+            this.contextMenuOpen = ! this.contextMenuOpen
+        },
+        hideContextMenu() {
+            this.contextMenuOpen = false
         }
     }
 }
@@ -225,13 +235,17 @@ export default {
   -webkit-overflow-scrolling: touch;
 }
 
+.overlay {
+    z-index: 100;
+}
+
 .overlay-dark {
     z-index: 100;
     background: rgba(0, 0, 0, 0.3);
 }
 
 .fade-enter-active, .fade-leave-active {
-    transition: opacity .5s;
+    transition: opacity .4s;
 }
 
 .fade-enter, .fade-leave-to {

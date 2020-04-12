@@ -69,6 +69,8 @@
             <site-nav-menu
                 v-if="menu && Object.keys(menu).length > 0"
                 :items="menu"
+                :open="menuOpen"
+                @toggle="toggleMenu"
             />
 
             <template v-if="authorized">
@@ -180,7 +182,8 @@ export default {
             type: Object,
             required: false,
             default: () => {}
-        }
+        },
+        menuOpen: Boolean
     },
     methods: {
         logout() {
@@ -188,6 +191,9 @@ export default {
         },
         toggleDrawer() {
             this.$emit('toggleDrawer')
+        },
+        toggleMenu() {
+            this.$emit('toggleMenu')
         }
     }
 }
@@ -214,7 +220,6 @@ export default {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    display: none;
     box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.5);
     z-index: 200;
 }

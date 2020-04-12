@@ -1,15 +1,20 @@
  <template>
     <div class="position-relative d-inline-block">
-        <button class="context-nav-toggle btn btn-link text-light px-3">
+        <button
+            class="btn btn-link text-light px-3"
+            @click="toggleMenu"
+        >
             <font-awesome-icon icon="ellipsis-v" />
         </button>
-        <ul class="context-nav">
-            <site-nav-menu-item
-                v-for="(item, idx) in items"
-                :key="idx"
-                :item="item"
-            />
-        </ul>
+        <transition name="fade">
+            <ul class="context-nav" v-if="open">
+                <site-nav-menu-item
+                    v-for="(item, idx) in items"
+                    :key="idx"
+                    :item="item"
+                />
+            </ul>
+        </transition>
     </div>
 </template>
 
@@ -23,7 +28,23 @@ export default {
         items: {
             type: Object,
             required: true
+        },
+        open: Boolean
+    },
+    methods: {
+        toggleMenu() {
+            this.$emit('toggle')
         }
     }
 }
 </script>
+
+<style scoped>
+.fade-enter-active, .fade-leave-active {
+    transition: opacity .2s;
+}
+
+.fade-enter, .fade-leave-to {
+    opacity: 0;
+}
+</style>

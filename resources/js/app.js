@@ -14,25 +14,6 @@ $(function(){
         return confirm( $(this).attr( 'data-confirmation' ) );
     });
 
-    //  Context navigation
-    $('.context-nav-toggle').on('click', function(){
-        var nav = $(this).siblings('.context-nav');
-        var overlay = $('#overlay');
-        if (nav.is(":visible")) {
-            nav.fadeOut('fast');
-            overlay.fadeOut('fast');
-        } else {
-            nav.fadeIn('fast');
-            overlay.fadeIn('fast');
-            overlay.on('click', function(){
-                if ($('.context-nav').is(":visible")) {
-                    nav.fadeOut('fast');
-                    overlay.fadeOut('fast');
-                }
-            });
-        }
-    });
-
 });
 
 // Elements with the selector class gain focus and have their cursor set to the end
