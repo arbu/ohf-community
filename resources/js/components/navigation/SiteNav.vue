@@ -192,3 +192,42 @@ export default {
     }
 }
 </script>
+
+<style>
+.navbar .btn {
+    border: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+.navbar .btn + .btn,
+.navbar form + .btn,
+.navbar .btn + form {
+    margin-left: 0.5em;
+}
+
+.context-nav {
+    position: absolute;
+    top: 0;
+    right: 0;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: none;
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.5);
+    z-index: 200;
+}
+
+.context-nav li a {
+    padding: 0.5em 4em 0.5em 1.5em;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.userprofile-nav.userprofile-nav {
+    top: 50px;
+    box-shadow: none;
+    right: -15px;
+}
+</style>

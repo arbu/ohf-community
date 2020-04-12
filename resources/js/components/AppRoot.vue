@@ -194,13 +194,46 @@ export default {
 </script>
 
 <style scoped>
+.site-wrapper {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+.site-canvas {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    -webkit-transition: .3s ease all;
+    transition: .3s ease all;
+}
+
+.site-wrapper.show-nav .site-canvas {
+    -webkit-transform: translateX(230px);
+    transform: translateX(230px);
+}
+
+.site-header {
+  flex: 0 0 auto;
+}
+
+.site-content {
+  flex: 1;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 .overlay-dark {
     z-index: 100;
     background: rgba(0, 0, 0, 0.3);
 }
+
 .fade-enter-active, .fade-leave-active {
     transition: opacity .5s;
 }
+
 .fade-enter, .fade-leave-to {
     opacity: 0;
 }

@@ -130,3 +130,27 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.site-navigation {
+    width: 230px;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: -230px;
+    overflow-y: auto;
+}
+
+.side-nav-header {
+    flex: 1;
+}
+
+.side-nav-footer {
+    flex: 0 0 auto;
+}
+
+.side-nav-footer .copyright {
+    font-size: 11px;
+    line-height: 12px;
+}
+</style>
