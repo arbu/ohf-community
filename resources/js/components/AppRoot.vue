@@ -1,4 +1,5 @@
 <template>
+    <div class="site-wrapper h-100">
     <div class="site-canvas h-100">
         <!-- Side navigation -->
         <app-drawer
@@ -56,6 +57,7 @@
 
             <div id="overlay_dark" class="position-absolute h-100 w-100"></div>
         </main>
+    </div>
     </div>
 </template>
 
