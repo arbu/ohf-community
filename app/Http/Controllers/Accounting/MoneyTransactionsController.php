@@ -11,6 +11,7 @@ use App\Http\Requests\Accounting\StoreTransaction;
 use App\Models\Accounting\MoneyTransaction;
 use App\Models\Accounting\Wallet;
 use App\Services\Accounting\CurrentWalletService;
+use App\Services\Accounting\TransactionRepository;
 use App\Support\Accounting\Webling\Entities\Entrygroup;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -20,6 +21,13 @@ use Setting;
 class MoneyTransactionsController extends Controller
 {
     use ExportableActions;
+
+    private TransactionRepository $repository;
+
+    public function __construct(TransactionRepository $repository)
+    {
+        $this->repository = $repository;
+    }
 
     /**
      * Display a listing of the resource.
@@ -111,7 +119,7 @@ class MoneyTransactionsController extends Controller
         }
         session(['accounting.filter' => $filter]);
 
-        $query = self::createIndexQuery($filter, $sortColumn, $sortOrder);
+        $query = $this->repository->createIndexQuery($filter, $sortColumn, $sortOrder);
 
         // Get results
         $transactions = $query->paginate(250);
@@ -129,28 +137,19 @@ class MoneyTransactionsController extends Controller
             'sortColumn' => $sortColumn,
             'sortOrder' => $sortOrder,
             'beneficiaries' => MoneyTransaction::beneficiaries(),
-            'categories' => self::getCategories(true),
+            'categories' => $this->repository->getCategories(true),
             'fixed_categories' => Setting::has('accounting.transactions.categories'),
-            'secondary_categories' => self::useSecondaryCategories() ? self::getSecondaryCategories(true) : null,
+            'secondary_categories' => $this->repository->useSecondaryCategories() ? $this->repository->getSecondaryCategories(true) : null,
             'fixed_secondary_categories' => Setting::has('accounting.transactions.secondary_categories'),
-            'projects' => self::getProjects(true),
+            'projects' => $this->repository->getProjects(true),
             'fixed_projects' => Setting::has('accounting.transactions.projects'),
-            'locations' => self::useLocations() ? self::getLocations(true) : null,
+            'locations' => $this->repository->useLocations() ? $this->repository->getLocations(true) : null,
             'fixed_locations' => Setting::has('accounting.transactions.locations'),
-            'cost_centers' => self::useCostCenters() ? self::getCostCenters(true) : null,
+            'cost_centers' => $this->repository->useCostCenters() ? $this->repository->getCostCenters(true) : null,
             'fixed_cost_centers' => Setting::has('accounting.transactions.cost_centers'),
             'wallet' => $wallet,
             'has_multiple_wallets' => Wallet::count() > 1,
         ]);
-    }
-
-    private static function createIndexQuery(array $filter, string $sortColumn, string $sortOrder)
-    {
-        return MoneyTransaction::query()
-            ->forWallet(resolve(CurrentWalletService::class)->get())
-            ->forFilter($filter)
-            ->orderBy($sortColumn, $sortOrder)
-            ->orderBy('created_at', 'DESC');
     }
 
     /**
@@ -168,7 +167,7 @@ class MoneyTransactionsController extends Controller
             ->map(fn ($wallet) => [
                 'id' => $wallet->id,
                 'name' => $wallet->name,
-                'new_receipt_no' => self::getNextFreeReceiptNo($wallet),
+                'new_receipt_no' => $this->repository->getNextFreeReceiptNo($wallet),
             ]);
         if ($wallets->isEmpty()) {
             return redirect()->route('accounting.wallets.change');
@@ -177,92 +176,19 @@ class MoneyTransactionsController extends Controller
 
         return view('accounting.transactions.create', [
             'beneficiaries' => MoneyTransaction::beneficiaries(),
-            'categories' => self::getCategories(),
+            'categories' => $this->repository->getCategories(),
             'fixed_categories' => Setting::has('accounting.transactions.categories'),
-            'secondary_categories' => self::useSecondaryCategories() ? self::getSecondaryCategories() : null,
+            'secondary_categories' => $this->repository->useSecondaryCategories() ? $this->repository->getSecondaryCategories() : null,
             'fixed_secondary_categories' => Setting::has('accounting.transactions.secondary_categories'),
-            'projects' => self::getProjects(),
+            'projects' => $this->repository->getProjects(),
             'fixed_projects' => Setting::has('accounting.transactions.projects'),
-            'locations' => self::useLocations() ? self::getLocations() : null,
+            'locations' => $this->repository->useLocations() ? $this->repository->getLocations() : null,
             'fixed_locations' => Setting::has('accounting.transactions.locations'),
-            'cost_centers' => self::useCostCenters() ? self::getCostCenters() : null,
+            'cost_centers' => $this->repository->useCostCenters() ? $this->repository->getCostCenters() : null,
             'fixed_cost_centers' => Setting::has('accounting.transactions.cost_centers'),
             'wallet' => $wallet,
             'wallets' => $wallets,
         ]);
-    }
-
-    private static function getNextFreeReceiptNo(?Wallet $wallet = null)
-    {
-        return optional(MoneyTransaction::selectRaw('MAX(receipt_no) as val')
-            ->when($wallet !== null, fn ($qry) => $qry->forWallet($wallet))
-            ->first())
-            ->val + 1;
-    }
-
-    private static function getCategories(?bool $onlyExisting = false): array
-    {
-        if (! $onlyExisting && Setting::has('accounting.transactions.categories')) {
-            return collect(Setting::get('accounting.transactions.categories'))
-                ->sort()
-                ->toArray();
-        }
-        return MoneyTransaction::categories();
-    }
-
-    private static function useSecondaryCategories(): bool
-    {
-        return Setting::get('accounting.transactions.use_secondary_categories') ?? false;
-    }
-
-    private static function getSecondaryCategories(?bool $onlyExisting = false): array
-    {
-        if (! $onlyExisting && Setting::has('accounting.transactions.secondary_categories')) {
-            return collect(Setting::get('accounting.transactions.secondary_categories'))
-                ->sort()
-                ->toArray();
-        }
-        return MoneyTransaction::secondaryCategories();
-    }
-
-    private static function getProjects(?bool $onlyExisting = false): array
-    {
-        if (! $onlyExisting && Setting::has('accounting.transactions.projects')) {
-            return collect(Setting::get('accounting.transactions.projects'))
-                ->sort()
-                ->toArray();
-        }
-        return MoneyTransaction::projects();
-    }
-
-    private static function useLocations(): bool
-    {
-        return Setting::get('accounting.transactions.use_locations') ?? false;
-    }
-
-    private static function getLocations(?bool $onlyExisting = false): array
-    {
-        if (! $onlyExisting && Setting::has('accounting.transactions.locations')) {
-            return collect(Setting::get('accounting.transactions.locations'))
-                ->sort()
-                ->toArray();
-        }
-        return MoneyTransaction::locations();
-    }
-
-    private static function useCostCenters(): bool
-    {
-        return Setting::get('accounting.transactions.use_cost_centers') ?? false;
-    }
-
-    private static function getCostCenters(?bool $onlyExisting = false): array
-    {
-        if (! $onlyExisting && Setting::has('accounting.transactions.cost_centers')) {
-            return collect(Setting::get('accounting.transactions.cost_centers'))
-                ->sort()
-                ->toArray();
-        }
-        return MoneyTransaction::costCenters();
     }
 
     /**
@@ -282,14 +208,14 @@ class MoneyTransactionsController extends Controller
         $transaction->amount = $request->amount;
         $transaction->beneficiary = $request->beneficiary;
         $transaction->category = $request->category;
-        if (self::useSecondaryCategories()) {
+        if ($this->repository->useSecondaryCategories()) {
             $transaction->secondary_category = $request->secondary_category;
         }
         $transaction->project = $request->project;
-        if (self::useLocations()) {
+        if ($this->repository->useLocations()) {
             $transaction->location = $request->location;
         }
-        if (self::useCostCenters()) {
+        if ($this->repository->useCostCenters()) {
             $transaction->cost_center = $request->cost_center;
         }
         $transaction->description = $request->description;
@@ -327,7 +253,7 @@ class MoneyTransactionsController extends Controller
         $sortColumn = session('accounting.sortColumn', 'created_at');
         $sortOrder = session('accounting.sortOrder', 'desc');
         $filter = session('accounting.filter', []);
-        $query = self::createIndexQuery($filter, $sortColumn, $sortOrder);
+        $query = $this->repository->createIndexQuery($filter, $sortColumn, $sortOrder);
         // TODO: can this be optimized, e.g. with a cursor??
         $res = $query->select('id')->get()->pluck('id')->toArray();
         $prev_id = null;
@@ -370,15 +296,15 @@ class MoneyTransactionsController extends Controller
         return view('accounting.transactions.edit', [
             'transaction' => $transaction,
             'beneficiaries' => MoneyTransaction::beneficiaries(),
-            'categories' => self::getCategories(),
+            'categories' => $this->repository->getCategories(),
             'fixed_categories' => Setting::has('accounting.transactions.categories'),
-            'secondary_categories' => self::useSecondaryCategories() ? self::getSecondaryCategories() : null,
+            'secondary_categories' => $this->repository->useSecondaryCategories() ? $this->repository->getSecondaryCategories() : null,
             'fixed_secondary_categories' => Setting::has('accounting.transactions.secondary_categories'),
-            'projects' => self::getProjects(),
+            'projects' => $this->repository->getProjects(),
             'fixed_projects' => Setting::has('accounting.transactions.projects'),
-            'locations' => self::useLocations() ? self::getLocations() : null,
+            'locations' => $this->repository->useLocations() ? $this->repository->getLocations() : null,
             'fixed_locations' => Setting::has('accounting.transactions.locations'),
-            'cost_centers' => self::useCostCenters() ? self::getCostCenters() : null,
+            'cost_centers' => $this->repository->useCostCenters() ? $this->repository->getCostCenters() : null,
             'fixed_cost_centers' => Setting::has('accounting.transactions.cost_centers'),
         ]);
     }
@@ -400,14 +326,14 @@ class MoneyTransactionsController extends Controller
         $transaction->amount = $request->amount;
         $transaction->beneficiary = $request->beneficiary;
         $transaction->category = $request->category;
-        if (self::useSecondaryCategories()) {
+        if ($this->repository->useSecondaryCategories()) {
             $transaction->secondary_category = $request->secondary_category;
         }
         $transaction->project = $request->project;
-        if (self::useLocations()) {
+        if ($this->repository->useLocations()) {
             $transaction->location = $request->location;
         }
-        if (self::useCostCenters()) {
+        if ($this->repository->useCostCenters()) {
             $transaction->cost_center = $request->cost_center;
         }
         $transaction->description = $request->description;
