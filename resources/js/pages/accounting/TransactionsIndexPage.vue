@@ -2,6 +2,8 @@
     <div v-if="loaded">
 
         <div class="d-flex justify-content-between align-items-center">
+
+            <!-- Wallet selection -->
             <div class="mb-3">
                 <font-awesome-icon icon="wallet" />
                 <span class="d-none d-sm-inline">
@@ -28,28 +30,27 @@
                     </a>
                 </template>
             </div>
+
+            <!-- Filter -->
             <div class="text-right">
-                <b-button
-                    v-if="filter.length > 0"
-                    :href="`${route('accounting.transactions.index')}?reset_filter=1`"
-                    size="sm"
-                    variant="primary"
-                    class="mb-3"
-                >
-                    <font-awesome-icon icon="eraser" />
-                    {{ $t('app.reset_filter') }}
-                </b-button>
-                <b-button
-                    size="sm"
-                    variant="secondary"
-                    class="mb-3"
-                    data-toggle="modal"
-                     data-target="#filterModal"
-                >
-                    <font-awesome-icon icon="search" />
-                    {{ $t(filter.length > 0 ? 'app.edit_filter' : 'app.filter_results') }}
-                </b-button>
+                <filter-form-modal
+                    :value="filter"
+                    :fixed_categories="fixed_categories"
+                    :categories="categories"
+                    :fixed_secondary_categories="fixed_secondary_categories"
+                    :secondary_categories="secondary_categories"
+                    :fixed_projects="fixed_projects"
+                    :projects="projects"
+                    :fixed_locations="fixed_locations"
+                    :locations="locations"
+                    :fixed_cost_centers="fixed_cost_centers"
+                    :cost_centers="cost_centers"
+                    :beneficiaries="beneficiaries"
+                    @submit="applyFilter"
+                    @reset="resetFilter"
+                />
             </div>
+
         </div>
 
         <!-- Receipt picture upload input -->
@@ -156,7 +157,7 @@
 
             <!-- Footer -->
             <template v-slot:custom-foot="data">
-                <template v-if="filter.length > 0 && (sum_income > 0 || sum_spending > 0)">
+                <template v-if="isFilterActive && (sum_income > 0 || sum_spending > 0)">
                     <b-tr>
                         <b-td colspan="2" rowspan="2" class="align-middle">
                             {{ $t('app.total') }}
@@ -203,13 +204,17 @@ import numeral from 'numeral'
 import moment from 'moment'
 import { showSnackbar } from '@/utils'
 import transactionsApi from '@/api/accounting/transactions'
+import FilterFormModal from '@/components/accounting/FilterFormModal'
 export default {
+    components: {
+        FilterFormModal
+    },
     data () {
         return {
             loaded: false,
             wallet: null,
             has_multiple_wallets: null,
-            filter: null,
+            filter: {},
             transactions: null,
             selectedTransaction: null,
             busyTransactions: []
@@ -313,6 +318,11 @@ export default {
                     sortDirection: 'desc'
                 }
             ]
+        },
+        isFilterActive () {
+            return Object.values(this.filter)
+                .filter(e => e != null && e != '')
+                .length > 0
         }
     },
     created () {
@@ -321,15 +331,25 @@ export default {
     methods: {
         async fetchData () {
             let data = await transactionsApi.list()
+
             this.wallet = data.wallet
             this.has_multiple_wallets = data.has_multiple_wallets
             this.filter = data.filter
             this.transactions = data.transactions.data
-            this.secondary_categories = data.secondary_categories
-            this.locations = data.locations
-            this.cost_centers = data.cost_centers
             this.sum_income = data.sum_income
             this.sum_spending = data.sum_spending
+            this.fixed_categories = data.fixed_categories
+            this.categories = data.categories
+            this.fixed_secondary_categories = data.fixed_secondary_categories
+            this.secondary_categories = data.secondary_categories
+            this.fixed_projects = data.fixed_projects
+            this.projects = data.projects
+            this.fixed_locations = data.fixed_locations
+            this.locations = data.locations
+            this.fixed_cost_centers = data.fixed_cost_centers
+            this.cost_centers = data.cost_centers
+            this.beneficiaries = data.beneficiaries
+
             this.loaded = true
         },
         numberFormat (value) {
@@ -362,6 +382,17 @@ export default {
                 alert(err)
             }
             this.busyTransactions = this.busyTransactions.filter(e => e != transaction.id)
+        },
+        async applyFilter (bvModalEvt, data) {
+            alert(JSON.stringify(data))
+            this.filter = { ...data }
+
+            // Form::open(['route' => ['accounting.transactions.index' ], 'method' => 'get'])
+            // bvModalEvt.preventDefault()
+        },
+        async resetFilter () {
+            this.filter = {}
+            // <!-- :href="`${route('accounting.transactions.index')}?reset_filter=1`" -->
         }
     }
 }

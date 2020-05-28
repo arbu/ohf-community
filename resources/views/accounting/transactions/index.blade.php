@@ -114,24 +114,7 @@
 @section('content-footer')
     {!! Form::open(['route' => ['accounting.transactions.index' ], 'method' => 'get']) !!}
         @component('components.modal', [ 'id' => 'filterModal' ])
-            @slot('title', __('app.filter'))
 
-            <div class="form-row">
-                <div class="col-sm mb-3">
-                    {{ Form::bsRadioList('filter[type]', [ 'income' => __('accounting.income'), 'spending' => __('accounting.spending'), null => __('app.any') ], $filter['type'] ?? null, __('app.type')) }}
-                </div>
-                <div class="col-sm">
-                    {{ Form::bsNumber('filter[receipt_no]', $filter['receipt_no'] ?? null, [ 'min' => 1 ], __('accounting.receipt') . ' #') }}
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="col-sm">
-                    {{ Form::bsDate('filter[date_start]', $filter['date_start'] ?? null, [], __('app.from')) }}
-                </div>
-                <div class="col-sm">
-                    {{ Form::bsDate('filter[date_end]', $filter['date_end'] ?? null, [], __('app.to')) }}
-                </div>
-            </div>
             <div class="form-row">
                 <div class="col-sm">
                     @if($fixed_categories)
@@ -142,7 +125,7 @@
                 </div>
                 @if($secondary_categories !== null)
                     <div class="col-sm">
-                        @if($fixed_categories)
+                        @if($fixed_secondary_categories)
                             {{ Form::bsSelect('filter[secondary_category]', collect($secondary_categories)->mapWithKeys(fn ($e) => [ $e => $e ]), $filter['secondary_category'] ?? null, [ 'placeholder' => '- ' . __('app.secondary_category') . ' -' ], __('app.category')) }}
                         @else
                             {{ Form::bsText('filter[secondary_category]', $filter['secondary_category'] ?? null, [ 'list' => $secondary_categories ], __('app.secondary_category')) }}

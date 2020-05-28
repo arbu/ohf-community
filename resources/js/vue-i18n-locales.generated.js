@@ -467,7 +467,10 @@ export default {
             "week": "Woche",
             "month": "Monat",
             "no_data": "Keine Daten",
-            "retry": "Erneut versuchen"
+            "retry": "Erneut versuchen",
+            "no_date": "Kein Datum",
+            "no_date_selected": "Kein Datum ausgewählt",
+            "apply": "Anwenden"
         },
         "auth": {
             "failed": "Diese Kombination aus Zugangsdaten wurden nicht in unserer Datenbank gefunden.",
@@ -1621,7 +1624,10 @@ export default {
             "week": "Week",
             "month": "Month",
             "no_data": "No data",
-            "retry": "Retry"
+            "retry": "Retry",
+            "no_date": "No date",
+            "no_date_selected": "No date selected",
+            "apply": "Apply"
         },
         "auth": {
             "failed": "These credentials do not match our records.",

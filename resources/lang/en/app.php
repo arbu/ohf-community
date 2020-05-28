@@ -400,4 +400,7 @@ return [
     'month' => 'Month',
     'no_data' => 'No data',
     'retry' => 'Retry',
+    'no_date' => 'No date',
+    'no_date_selected' => 'No date selected',
+    'apply' => 'Apply',
  ];
