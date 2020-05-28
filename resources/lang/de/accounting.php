@@ -23,6 +23,7 @@ return [
     'choose_picture_of_receipt' => 'Beleg-Bild auswählen',
     'change_picture_of_receipt' => 'Beleg-Bild ändern',
     'remove_receipt_picture' => 'Beleg-Bild entfernen',
+    'receipt_picture_added' => 'Beleg-Bild wurde hinzugefügt.',
     'registered_today' => 'Heute registriert',
     'no_receipt' => 'Kein Beleg',
     'difference' => 'Differenz',

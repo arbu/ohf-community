@@ -3,38 +3,13 @@
 @section('title', __('accounting.accounting'))
 
 @section('content')
-
-    <div class="d-flex justify-content-between align-items-center">
-        <div class="mb-3">
-            @icon(wallet)
-            <span class="d-none d-sm-inline">
-                @if($has_multiple_wallets)
-                    {{ $wallet->name }}:
-                @else
-                    @lang('accounting.wallet'):
-                @endif
-            </span>
-            <u>{{ number_format($wallet->amount, 2) }}</u>
-            @if($has_multiple_wallets)
-                <a href="{{ route('accounting.wallets.change') }}" class="d-none d-sm-inline">
-                    @lang('app.change')
-                </a>
-                <a href="{{ route('accounting.wallets.change') }}" class="d-inline d-sm-none btn btn-sm">
-                    @icon(folder-open)
-                </a>
-            @endif
-        </div>
-        <div class="text-right">
-            @if(count($filter) > 0)
-                <a href="{{ route('accounting.transactions.index') }}?reset_filter=1" class="btn btn-sm btn-primary mb-3">@icon(eraser) @lang('app.reset_filter')</a>
-            @endif
-            <button type="button" class="btn btn-sm btn-secondary mb-3" data-toggle="modal" data-target="#filterModal">
-                @icon(search) @lang(count($filter) > 0 ? 'app.edit_filter' : 'app.filter_results')
-            </button>
-        </div>
+    <div id="accounting-app">
+        <transactions-index-page>
+            @lang('app.loading')
+        </transactions-index-page>
     </div>
 
-    @if(! $transactions->isEmpty())
+    {{-- @if(! $transactions->isEmpty())
         <div class="table-responsive">
             <table class="table table-sm table-bordered table-striped table-hover">
                 <thead>
@@ -63,14 +38,11 @@
                 <tbody>
                     @foreach ($transactions as $transaction)
                         <tr>
-                            <td class="@if(empty($transaction->receipt_pictures) && isset($transaction->receipt_no)) table-warning receipt-picture-missing @endif text-center" data-transaction-id="{{ $transaction->id }}">
+                            <td class="@if(empty($transaction->receipt_pictures) && isset($transaction->receipt_no)) table-warning @endif text-center" data-transaction-id="{{ $transaction->id }}">
                                 {{ $transaction->receipt_no }}
                             </td>
                             <td class="fit">
-                                <a href="{{ route('accounting.transactions.show', $transaction) }}"
-                                    data-url="{{ route('accounting.transactions.snippet', $transaction) }}"
-                                    @can('update', $transaction) data-edit-url="{{ route('accounting.transactions.edit', $transaction) }}"@endcan
-                                    class="details-link">
+                                <a href="{{ route('accounting.transactions.show', $transaction) }}">
                                     {{ $transaction->date }}
                                 </a>
                             </td>
@@ -128,98 +100,15 @@
         <div style="overflow-x: auto">
             {{ $transactions->appends($filter)->links() }}
         </div>
-        @foreach ($transactions->filter(fn ($e) => $e->receipt_no != null && empty($e->receipt_pictures)) as $transaction)
-            <form action="{{ route('accounting.transactions.updateReceipt', $transaction) }}" method="post" enctype="multipart/form-data" class="d-none upload-receipt-form" id="receipt_upload_{{ $transaction->id }}">
-                {{ csrf_field() }}
-                {{ Form::file('img', [ 'accept' => 'image/*', 'class' => 'd-none' ]) }}
-            </form>
-        @endforeach
     @else
         @component('components.alert.info')
             @lang('accounting.no_transactions_found')
         @endcomponent
-    @endif
+    @endif --}}
 @endsection
 
-@section('script')
-    $(function () {
-        $('.receipt-picture-missing').on('click', function () {
-            var tr_id = $(this).data('transaction-id');
-            $('#receipt_upload_' + tr_id).find('input[type=file]').click();
-        });
-        $('.upload-receipt-form input[type="file"]').on('change', function () {
-            $(this).parents('form').submit();
-        });
-        $('.upload-receipt-form').on('submit', function (e) {
-            e.preventDefault();
-            var tr_id = $(this).attr('id').substr('#receipt_upload_'.length - 1);
-            var td = $('.receipt-picture-missing[data-transaction-id="' + tr_id + '"]');
-            td.removeClass('table-warning')
-                .addClass('table-info')
-                .off('click');
-            $.ajax({
-                url: $(this).attr('action'),
-                type: "POST",
-                data:  new FormData(this),
-                contentType: false,
-                cache: false,
-                processData:false,
-                success: function () {
-                    td.removeClass('table-info receipt-picture-missing')
-                        .addClass('text-success');
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    td.removeClass('table-info').addClass('table-warning');
-                    var message;
-                    if (jqXHR.responseJSON.message) {
-                        if (jqXHR.responseJSON.errors) {
-                            message = "";
-                            var errors = jqXHR.responseJSON.errors;
-                            Object.keys(errors).forEach(function (key) {
-                                message += errors[key] + "\n";
-                            });
-                        } else {
-                            message = jqXHR.responseJSON.message;
-                        }
-                    } else {
-                        message = textStatus + ': ' + jqXHR.responseText;
-                    }
-                    alert(message);
-                }
-            });
-        });
-
-        $('.details-link').on('click', function (e) {
-            e.preventDefault();
-            var container = $('#detailsModal');
-            var edit_url =  $(this).data('edit-url');
-            container.modal('show');
-            container.find('.modal-header')
-                .hide();
-            container.find('.modal-footer')
-                .hide();
-            container.find('.modal-body')
-                .removeClass('pb-0')
-                .removeClass('p-0')
-                .html('<div class="text-center p-4"><i class="fa fa-spin fa-spinner"></i> Loading...</div>');
-            $.get($(this).data('url'), function (result) {
-                container.find('.modal-header')
-                    .show();
-                container.find('.modal-body')
-                    .addClass('p-0')
-                    .html(result);
-                var footer_html = '';
-                if (edit_url) {
-                    footer_html += '<a href="' + edit_url +'" class="btn btn-secondary"><i class="fa fa-edit"></i> Edit</a>';
-                }
-                if (footer_html.length > 0) {
-                    container.find('.modal-footer')
-                        .html(footer_html)
-                        .show();
-                }
-            });
-        });
-    });
+@section('footer')
+    <script src="{{ asset('js/accounting.js') }}?v={{ $app_version }}"></script>
 @endsection
 
 @section('content-footer')

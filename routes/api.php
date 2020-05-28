@@ -176,11 +176,13 @@ Route::middleware(['auth.basic', 'can:accept-fundraising-webhooks'])
 
 Route::middleware(['language', 'auth'])
     ->prefix('accounting')
-    ->name('accounting.')
+    ->name('api.accounting.')
     ->namespace('Accounting\API')
     ->group(function () {
         Route::post('transactions/{transaction}/receipt', 'MoneyTransactionsController@updateReceipt')
             ->name('transactions.updateReceipt');
+        Route::resource('transactions', 'MoneyTransactionsController')
+            ->only('index');
     });
 
 //
