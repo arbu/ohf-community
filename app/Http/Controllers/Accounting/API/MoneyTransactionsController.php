@@ -72,8 +72,9 @@ class MoneyTransactionsController extends Controller
                     'receipt_no',
                 ]),
             ],
-            'sortDesc' => [
-                'boolean',
+            'sortDirection' => [
+                'nullable',
+                'in:asc,desc',
             ],
             'wallet_id' => [
                 'nullable',
@@ -86,7 +87,7 @@ class MoneyTransactionsController extends Controller
         $transactions = $this->repository->createIndexQuery(
             $request->input('filter', []),
             $request->input('sortBy', 'created_at'),
-            $request->input('sortDesc', 'desc')
+            $request->input('sortDirection', 'desc')
         )->paginate(intval($request->input('pageSize', 50)));
 
         return MoneyTransactionResource::collection($transactions)

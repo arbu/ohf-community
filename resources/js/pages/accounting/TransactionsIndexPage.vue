@@ -78,19 +78,17 @@
             hover
             responsive
             :fields="fields"
-            :items="fetchData"
-            :filter="filter"
-            :per-page="perPage"
-            :current-page="currentPage"
+            :items="items"
             :empty-text="$t('accounting.no_transactions_found')"
             :empty-filtered-text="$t('accounting.no_transactions_found')"
-            :busy.sync="isBusy"
+            :busy="isBusy"
             show-empty
             no-sort-reset
             no-footer-sorting
-            :sort-by="sortBy"
-            :sort-desc="sortDesc"
+            :sort-by.sync="sortBy"
+            :sort-desc.sync="sortDesc"
             :sort-null-last="true"
+            no-local-sorting
         >
             <div slot="table-busy" class="text-center my-2">
                 <b-spinner class="align-middle"></b-spinner>
@@ -111,7 +109,7 @@
                 </template>
                 <template v-else>
                     <b-button
-                        v-if="busyTransactions.indexOf(data.item.id) >= 0"
+                        v-if="busyItems.indexOf(data.item.id) >= 0"
                         disabled
                         size="sm"
                         variant="light"
@@ -234,14 +232,15 @@ export default {
             has_multiple_wallets: null,
             filter: {}, // TODO cache accounting.filter
             selectedTransaction: null,
-            isBusy: false,
-            busyTransactions: [],
+            isBusy: true,
+            items: null,
+            busyItems: [],
             sortBy: 'created_at', // TODO cache accounting.sortColumn
             sortDesc: true, // TODO cache accounting.sortOrder
             classifications: null,
             errorText: null,
             currentPage: 1,
-            perPage: 100,
+            perPage: 10,
             totalRows: 0,
         }
     },
@@ -350,10 +349,36 @@ export default {
                 .length > 0
         }
     },
+    watch: {
+        filter () {
+            this.refreshItems()
+        },
+        currentPage () {
+            this.refreshItems()
+        },
+        sortBy () {
+            this.refreshItems()
+        },
+        sortDesc () {
+            this.refreshItems()
+        }
+    },
     async created () {
         await this.fetchClassifications()
+        this.refreshItems()
     },
     methods: {
+        async refreshItems () {
+            this.isBusy = true
+            this.items = await this.fetchData({
+                filter: this.filter,
+                currentPage: this.currentPage,
+                perPage: this.perPage,
+                sortBy: this.sortBy,
+                sortDesc: this.sortDesc
+            })
+            this.isBusy = false
+        },
         async fetchData (ctx) {
             try {
                 const params = {
@@ -369,8 +394,6 @@ export default {
                 this.wallet = data.meta.wallet
                 this.has_multiple_wallets = data.meta.has_multiple_wallets
                 this.totalRows = data.meta.total
-                this.perPage = data.meta.per_page
-                this.currentPage = data.meta.current_page
                 return data.data
             } catch (err) {
                 this.errorText = err
@@ -389,27 +412,27 @@ export default {
         dateTimeFormat (value) {
             return moment(value).format('LLL')
         },
-        chooseReceiptForUpload (transaction) {
-            this.selectedTransaction = transaction
+        chooseReceiptForUpload (item) {
+            this.selectedItemId = item.id
             this.$refs.fileUpload.click()
         },
         onFileSelect (evt) {
             if (evt.target.files.length > 0) {
-                this.uploadReceiptPicture(this.selectedTransaction, evt.target.files[0])
+                this.uploadReceiptPicture(this.selectedItemId, evt.target.files[0])
             }
         },
-        async uploadReceiptPicture(transaction, file) {
-            this.busyTransactions.push(transaction.id)
+        async uploadReceiptPicture(itemId, file) {
+            this.busyItems.push(itemId)
             try {
-                let data = await transactionsApi.updateReceiptPicture(transaction.id, file)
+                let data = await transactionsApi.updateReceiptPicture(itemId, file)
                 showSnackbar(data.message)
-                let idx = this.transactions.findIndex(e => e.id == transaction.id)
-                this.transactions[idx].receipt_pictures = data.receipt_pictures
-                this.refresh()
+                let idx = this.items.findIndex(e => e.id == itemId)
+                this.items[idx].receipt_pictures = data.receipt_pictures
+                this.$refs.table.refresh()
             } catch (err) {
                 alert(err)
             }
-            this.busyTransactions = this.busyTransactions.filter(e => e != transaction.id)
+            this.busyItems = this.busyItems.filter(e => e != itemId)
         },
         applyFilter (bvModalEvt, data) {
             this.filter = { ...data }
@@ -420,7 +443,7 @@ export default {
             // TODO remove cached value
         },
         refresh () {
-            this.$refs.table.refresh()
+            this.refreshItems()
         }
     }
 }
