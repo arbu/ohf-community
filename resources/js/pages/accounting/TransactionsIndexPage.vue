@@ -175,7 +175,7 @@
 
             <!-- Footer -->
             <template v-slot:custom-foot="data">
-                <template v-if="isFilterActive && (sum_income > 0 || sum_spending > 0)">
+                <template v-if="!isBusy && isFilterActive && (sum_income > 0 || sum_spending > 0)">
                     <b-tr>
                         <b-td colspan="3" rowspan="2" class="align-middle">
                             {{ $t('app.total') }}
