@@ -1,20 +1,26 @@
 <template>
-    <div v-if="loaded">
+    <div>
+        <alert-with-retry
+            :value="errorText"
+            @retry="refresh"
+        />
 
         <div class="d-flex justify-content-between align-items-center">
 
             <!-- Wallet selection -->
             <div class="mb-3">
-                <font-awesome-icon icon="wallet" />
-                <span class="d-none d-sm-inline">
-                    <template v-if="has_multiple_wallets">
-                        {{ wallet.name }}:
-                    </template>
-                    <template v-else>
-                        {{ $t('accounting.wallet') }}:
-                    </template>
-                </span>
-                <u>{{ numberFormat(wallet.amount) }}</u>
+                <template v-if="wallet">
+                    <font-awesome-icon icon="wallet" />
+                    <span class="d-none d-sm-inline">
+                        <template v-if="has_multiple_wallets">
+                            {{ wallet.name }}:
+                        </template>
+                        <template v-else>
+                            {{ $t('accounting.wallet') }}:
+                        </template>
+                    </span>
+                    <u>{{ numberFormat(wallet.amount) }}</u>
+                </template>
                 <template v-if="has_multiple_wallets">
                     <a
                         :href="route('accounting.wallets.change')"
@@ -34,18 +40,19 @@
             <!-- Filter -->
             <div class="text-right">
                 <filter-form-modal
+                    v-if="classifications"
                     :value="filter"
-                    :fixed_categories="fixed_categories"
-                    :categories="categories"
-                    :fixed_secondary_categories="fixed_secondary_categories"
-                    :secondary_categories="secondary_categories"
-                    :fixed_projects="fixed_projects"
-                    :projects="projects"
-                    :fixed_locations="fixed_locations"
-                    :locations="locations"
-                    :fixed_cost_centers="fixed_cost_centers"
-                    :cost_centers="cost_centers"
-                    :beneficiaries="beneficiaries"
+                    :fixed_categories="classifications.fixed_categories"
+                    :categories="classifications.categories"
+                    :fixed_secondary_categories="classifications.fixed_secondary_categories"
+                    :secondary_categories="classifications.secondary_categories"
+                    :fixed_projects="classifications.fixed_projects"
+                    :projects="classifications.projects"
+                    :fixed_locations="classifications.fixed_locations"
+                    :locations="classifications.locations"
+                    :fixed_cost_centers="classifications.fixed_cost_centers"
+                    :cost_centers="classifications.cost_centers"
+                    :beneficiaries="classifications.beneficiaries"
                     @submit="applyFilter"
                     @reset="resetFilter"
                 />
@@ -71,12 +78,18 @@
             hover
             responsive
             :fields="fields"
-            :items="transactions"
+            :items="fetchData"
+            :filter="filter"
+            :per-page="perPage"
+            :current-page="currentPage"
             :empty-text="$t('accounting.no_transactions_found')"
+            :empty-filtered-text="$t('accounting.no_transactions_found')"
+            :busy.sync="isBusy"
+            show-empty
             no-sort-reset
             no-footer-sorting
-            sort-by="created_at"
-            :sort-desc="true"
+            :sort-by="sortBy"
+            :sort-desc="sortDesc"
             :sort-null-last="true"
         >
             <!-- Receipt picture column -->
@@ -159,7 +172,7 @@
             <template v-slot:custom-foot="data">
                 <template v-if="isFilterActive && (sum_income > 0 || sum_spending > 0)">
                     <b-tr>
-                        <b-td colspan="2" rowspan="2" class="align-middle">
+                        <b-td colspan="3" rowspan="2" class="align-middle">
                             {{ $t('app.total') }}
                         </b-td>
                         <b-td class="text-right d-none d-sm-table-cell">
@@ -177,7 +190,7 @@
                             <template v-if="sum_spending > 0"><u class="text-danger">{{ numberFormat(sum_spending) }}</u></template>
                             <u>{{ numberFormat(sum_income - sum_spending) }}</u>
                         </b-td>
-                        <b-td :colspan="data.columns - 5" rowspan="2"></b-td>
+                        <b-td :colspan="data.columns - 6" rowspan="2"></b-td>
                     </b-tr>
                     <b-tr class="d-none d-sm-table-row">
                         <b-td colspan="2" class="text-center">
@@ -187,16 +200,13 @@
                 </template>
             </template>
         </b-table>
-        <!-- TODO
-        <div style="overflow-x: auto">
-            {{ $transactions->appends($filter)->links() }}
-        </div>
-        -->
-
+        <table-pagination
+            v-model="currentPage"
+            :total-rows="totalRows"
+            :per-page="perPage"
+            :disabled="isBusy"
+        />
     </div>
-    <p v-else>
-        {{ $t('app.loading') }}
-    </p>
 </template>
 
 <script>
@@ -205,19 +215,29 @@ import moment from 'moment'
 import { showSnackbar } from '@/utils'
 import transactionsApi from '@/api/accounting/transactions'
 import FilterFormModal from '@/components/accounting/FilterFormModal'
+import AlertWithRetry from '@/components/alerts/AlertWithRetry'
+import TablePagination from '@/components/table/TablePagination'
 export default {
     components: {
-        FilterFormModal
+        FilterFormModal,
+        AlertWithRetry,
+        TablePagination
     },
     data () {
         return {
-            loaded: false,
             wallet: null,
             has_multiple_wallets: null,
-            filter: {},
-            transactions: null,
+            filter: {}, // TODO cache accounting.filter
             selectedTransaction: null,
-            busyTransactions: []
+            isBusy: false,
+            busyTransactions: [],
+            sortBy: 'created_at', // TODO cache accounting.sortColumn
+            sortDesc: true, // TODO cache accounting.sortOrder
+            classifications: null,
+            errorText: null,
+            currentPage: 1,
+            perPage: 100,
+            totalRows: 0,
         }
     },
     computed: {
@@ -325,32 +345,35 @@ export default {
                 .length > 0
         }
     },
-    created () {
-        this.fetchData()
+    async created () {
+        await this.fetchClassifications()
     },
     methods: {
-        async fetchData () {
-            let data = await transactionsApi.list()
-
-            this.wallet = data.wallet
-            this.has_multiple_wallets = data.has_multiple_wallets
-            this.filter = data.filter
-            this.transactions = data.transactions.data
-            this.sum_income = data.sum_income
-            this.sum_spending = data.sum_spending
-            this.fixed_categories = data.fixed_categories
-            this.categories = data.categories
-            this.fixed_secondary_categories = data.fixed_secondary_categories
-            this.secondary_categories = data.secondary_categories
-            this.fixed_projects = data.fixed_projects
-            this.projects = data.projects
-            this.fixed_locations = data.fixed_locations
-            this.locations = data.locations
-            this.fixed_cost_centers = data.fixed_cost_centers
-            this.cost_centers = data.cost_centers
-            this.beneficiaries = data.beneficiaries
-
-            this.loaded = true
+        async fetchData (ctx) {
+            try {
+                const params = {
+                    filter: ctx.filter,
+                    page: ctx.currentPage,
+                    pageSize: ctx.perPage,
+                    sortBy: ctx.sortBy,
+                    sortDirection: ctx.sortDesc ? 'desc' : 'asc'
+                }
+                let data = await transactionsApi.list(params)
+                this.sum_income = data.meta.sum_income
+                this.sum_spending = data.meta.sum_spending
+                this.wallet = data.meta.wallet
+                this.has_multiple_wallets = data.meta.has_multiple_wallets
+                this.totalRows = data.meta.total
+                this.perPage = data.meta.per_page
+                this.currentPage = data.meta.current_page
+                return data.data
+            } catch (err) {
+                this.errorText = err
+                return []
+            }
+        },
+        async fetchClassifications () {
+            this.classifications = await transactionsApi.filterClassifications()
         },
         numberFormat (value) {
             return numeral(value).format('0,0.00')
@@ -377,22 +400,22 @@ export default {
                 showSnackbar(data.message)
                 let idx = this.transactions.findIndex(e => e.id == transaction.id)
                 this.transactions[idx].receipt_pictures = data.receipt_pictures
-                this.$refs.table.refresh()
+                this.refresh()
             } catch (err) {
                 alert(err)
             }
             this.busyTransactions = this.busyTransactions.filter(e => e != transaction.id)
         },
-        async applyFilter (bvModalEvt, data) {
-            alert(JSON.stringify(data))
+        applyFilter (bvModalEvt, data) {
             this.filter = { ...data }
-
-            // Form::open(['route' => ['accounting.transactions.index' ], 'method' => 'get'])
-            // bvModalEvt.preventDefault()
+            // TODO update chached value
         },
-        async resetFilter () {
+        resetFilter () {
             this.filter = {}
-            // <!-- :href="`${route('accounting.transactions.index')}?reset_filter=1`" -->
+            // TODO remove cached value
+        },
+        refresh () {
+            this.$refs.table.refresh()
         }
     }
 }

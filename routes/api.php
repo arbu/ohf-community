@@ -183,6 +183,8 @@ Route::middleware(['language', 'auth'])
             ->name('transactions.updateReceipt');
         Route::resource('transactions', 'MoneyTransactionsController')
             ->only('index');
+        Route::get('filterClassifications', 'MoneyTransactionsController@filterClassifications')
+            ->name('transactions.filterClassifications');
     });
 
 //

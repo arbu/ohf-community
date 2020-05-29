@@ -4,6 +4,10 @@ export default {
         const url = route('api.accounting.transactions.index', params)
         return await api.get(url)
     },
+    async filterClassifications () {
+        const url = route('api.accounting.transactions.filterClassifications')
+        return await api.get(url)
+    },
     async updateReceiptPicture (transactionId, file) {
         const url = route('api.accounting.transactions.updateReceipt', transactionId)
         const formData = new FormData();
