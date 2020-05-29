@@ -92,6 +92,11 @@
             :sort-desc="sortDesc"
             :sort-null-last="true"
         >
+            <div slot="table-busy" class="text-center my-2">
+                <b-spinner class="align-middle"></b-spinner>
+                <strong>{{ $t('app.loading') }}</strong>
+            </div>
+
             <!-- Receipt picture column -->
             <template v-slot:cell(receipt_pictures)="data">
                 <template v-if="data.value">

@@ -101,7 +101,7 @@
                 >
                     <b-form-group :label="$t('app.secondary_category')">
                         <b-form-select
-                            v-if="fixedSecondaryCategories"
+                            v-if="fixed_secondary_categories"
                             v-model="form.secondaryCategory"
                             :options="secondary_categories"
                         >

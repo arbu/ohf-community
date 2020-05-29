@@ -87,7 +87,7 @@ class MoneyTransactionsController extends Controller
             $request->input('filter', []),
             $request->input('sortBy', 'created_at'),
             $request->input('sortDesc', 'desc')
-        )->paginate($request->input('pageSize', 50));
+        )->paginate(intval($request->input('pageSize', 50)));
 
         return MoneyTransactionResource::collection($transactions)
             ->additional([
