@@ -60,15 +60,6 @@
 
         </div>
 
-        <!-- Receipt picture upload input -->
-        <input
-            ref="fileUpload"
-            type="file"
-            accept="image/*"
-            class="d-none"
-            @change="onFileSelect"
-        />
-
         <!-- Table -->
         <b-table
             ref="table"
@@ -97,34 +88,10 @@
 
             <!-- Receipt picture column -->
             <template v-slot:cell(receipt_pictures)="data">
-                <template v-if="data.value">
-                    <b-button
-                        :href="data.value[0]"
-                        size="sm"
-                        variant="secondary"
-                        data-lity
-                    >
-                        <font-awesome-icon icon="image" />
-                    </b-button>
-                </template>
-                <template v-else>
-                    <b-button
-                        v-if="busyItems.indexOf(data.item.id) >= 0"
-                        disabled
-                        size="sm"
-                        variant="light"
-                    >
-                        <font-awesome-icon icon="spinner" spin />
-                    </b-button>
-                    <b-button
-                        v-else
-                        size="sm"
-                        variant="warning"
-                        @click="chooseReceiptForUpload(data.item)"
-                    >
-                        <font-awesome-icon icon="plus-circle" />
-                    </b-button>
-                </template>
+                <receipt-picture-button
+                    :id="data.item.id"
+                    :value="data.value"
+                />
             </template>
 
             <!-- Date column -->
@@ -215,14 +182,15 @@
 <script>
 import numeral from 'numeral'
 import moment from 'moment'
-import { showSnackbar } from '@/utils'
 import transactionsApi from '@/api/accounting/transactions'
 import FilterFormModal from '@/components/accounting/FilterFormModal'
+import ReceiptPictureButton from '@/components/accounting/ReceiptPictureButton'
 import AlertWithRetry from '@/components/alerts/AlertWithRetry'
 import TablePagination from '@/components/table/TablePagination'
 export default {
     components: {
         FilterFormModal,
+        ReceiptPictureButton,
         AlertWithRetry,
         TablePagination
     },
@@ -240,7 +208,7 @@ export default {
             classifications: null,
             errorText: null,
             currentPage: 1,
-            perPage: 10,
+            perPage: 50,
             totalRows: 0,
         }
     },
@@ -411,28 +379,6 @@ export default {
         },
         dateTimeFormat (value) {
             return moment(value).format('LLL')
-        },
-        chooseReceiptForUpload (item) {
-            this.selectedItemId = item.id
-            this.$refs.fileUpload.click()
-        },
-        onFileSelect (evt) {
-            if (evt.target.files.length > 0) {
-                this.uploadReceiptPicture(this.selectedItemId, evt.target.files[0])
-            }
-        },
-        async uploadReceiptPicture(itemId, file) {
-            this.busyItems.push(itemId)
-            try {
-                let data = await transactionsApi.updateReceiptPicture(itemId, file)
-                showSnackbar(data.message)
-                let idx = this.items.findIndex(e => e.id == itemId)
-                this.items[idx].receipt_pictures = data.receipt_pictures
-                this.$refs.table.refresh()
-            } catch (err) {
-                alert(err)
-            }
-            this.busyItems = this.busyItems.filter(e => e != itemId)
         },
         applyFilter (bvModalEvt, data) {
             this.filter = { ...data }
