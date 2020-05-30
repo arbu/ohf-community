@@ -346,7 +346,7 @@ export default {
                     sortBy: ctx.sortBy,
                     sortDirection: ctx.sortDesc ? 'desc' : 'asc'
                 }
-                let data = await transactionsApi.list(params)
+                let data = await transactionsApi.list(this.wallet.id, params)
 
                 this.sum_income = data.meta.sum_income
                 this.sum_spending = data.meta.sum_spending

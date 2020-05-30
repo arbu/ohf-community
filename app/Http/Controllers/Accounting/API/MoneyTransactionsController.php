@@ -29,7 +29,7 @@ class MoneyTransactionsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, CurrentWalletService $currentWallet)
+    public function index(Request $request)
     {
         $this->authorize('viewAny', MoneyTransaction::class);
 
@@ -78,16 +78,18 @@ class MoneyTransactionsController extends Controller
                 'in:asc,desc',
             ],
             'wallet_id' => [
-                'nullable',
+                'required',
                 'exists:accounting_wallets,id',
             ],
         ]);
+
+        $wallet = Wallet::findOrFail($request->input('wallet_id'));
+        $this->authorize('view', $wallet);
 
         $filter = $request->input('filter', []);
         $sortColumn = $request->input('sortBy', 'created_at');
         $sortOrder = $request->input('sortDirection', 'desc');
         $pageSize = intval($request->input('pageSize', 50));
-        $wallet = $currentWallet->get();
         $transactions = MoneyTransaction::query()
             ->forWallet($wallet)
             ->forFilter($filter)
