@@ -53,6 +53,7 @@
         <!-- Table -->
         <b-table
             ref="table"
+            :id="id"
             small
             bordered
             striped
@@ -193,17 +194,27 @@ export default {
         TablePagination
     },
     data () {
+        const id = 'accountingTransactionsTable'
         return {
+            id: id,
             wallet: null,
             has_multiple_wallets: null,
             use_secondary_categories: false,
             use_locations: false,
             use_cost_centers: false,
             isBusy: false,
-            filter: {}, // TODO cache accounting.filter
-            sortBy: 'created_at', // TODO cache accounting.sortBy
-            sortDesc: true, // TODO cache accounting.sortDesc
-            currentPage: 1, // TODO cache accounting.currentPage
+            filter: sessionStorage.getItem(id + '.filter')
+                ? JSON.parse(sessionStorage.getItem(id + '.filter'))
+                : {},
+            sortBy: sessionStorage.getItem(id + '.sortBy')
+                ? sessionStorage.getItem(id + '.sortBy')
+                :'created_at',
+            sortDesc: sessionStorage.getItem(id + '.sortDesc')
+                ? sessionStorage.getItem(id + '.sortDesc') == 'true'
+                : true,
+            currentPage: sessionStorage.getItem(id + '.currentPage')
+                ? parseInt(sessionStorage.getItem(id + '.currentPage'))
+                : 1,
             errorText: null,
             perPage: 100,
             totalRows: 0,
@@ -336,12 +347,27 @@ export default {
                     sortDirection: ctx.sortDesc ? 'desc' : 'asc'
                 }
                 let data = await transactionsApi.list(params)
+
                 this.sum_income = data.meta.sum_income
                 this.sum_spending = data.meta.sum_spending
                 this.totalRows = data.meta.total
+
+                // Cache parameters
+                sessionStorage.setItem(this.id + '.sortBy', ctx.sortBy)
+                sessionStorage.setItem(this.id + '.sortDesc', ctx.sortDesc)
+                sessionStorage.setItem(this.id + '.currentPage', ctx.currentPage)
+                sessionStorage.setItem(this.id + '.filter', JSON.stringify(ctx.filter))
+
                 return data.data
             } catch (err) {
                 this.errorText = err
+
+                // Reset cached parameters
+                sessionStorage.removeItem(this.id + '.sortBy')
+                sessionStorage.removeItem(this.id + '.sortDesc')
+                sessionStorage.removeItem(this.id + '.currentPage')
+                sessionStorage.removeItem(this.id + '.filter')
+
                 return []
             }
         },
@@ -356,11 +382,9 @@ export default {
         },
         applyFilter (bvModalEvt, data) {
             this.filter = { ...data }
-            // TODO update chached value
         },
         resetFilter () {
             this.filter = {}
-            // TODO remove cached value
         },
         refresh () {
             this.$refs.table.refresh()
