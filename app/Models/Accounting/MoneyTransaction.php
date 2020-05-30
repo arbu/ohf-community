@@ -138,6 +138,12 @@ class MoneyTransaction extends Model implements Auditable
 
     public function addReceiptPicture($file)
     {
+        // Convert from PDF
+        if ($file->extension() == 'pdf') {
+            $pdf = new \Spatie\PdfToImage\Pdf($file->getRealPath());
+            $pdf->saveImage($file->getRealPath());
+        }
+
         // Resize image
         $image = new ImageResize($file->getRealPath());
         $image->resizeToBestFit(1024, 1024);

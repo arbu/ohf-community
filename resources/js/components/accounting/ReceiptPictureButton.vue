@@ -12,7 +12,7 @@
         <input
             ref="fileUpload"
             type="file"
-            accept="image/*"
+            accept="image/*,application/pdf"
             class="d-none"
             @change="onFileSelect"
         />

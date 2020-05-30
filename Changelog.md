@@ -3,6 +3,9 @@
 ## NEXT
 
 * Removed unused tasks module
+* Added PDF support for uploading accounting receipts
+* Better error handling when uploading accouning receipts
+* Simpler sorting of accounting receipts table
 
 ## 2.21.0
 
