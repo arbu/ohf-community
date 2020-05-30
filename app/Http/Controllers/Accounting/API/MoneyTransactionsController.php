@@ -29,7 +29,7 @@ class MoneyTransactionsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, CurrentWalletService $currentWallet)
     {
         $this->authorize('viewAny', MoneyTransaction::class);
 
@@ -83,11 +83,17 @@ class MoneyTransactionsController extends Controller
             ],
         ]);
 
-        $transactions = $this->repository->createIndexQuery(
-            $request->input('filter', []),
-            $request->input('sortBy', 'created_at'),
-            $request->input('sortDirection', 'desc')
-        )->paginate(intval($request->input('pageSize', 50)));
+        $filter = $request->input('filter', []);
+        $sortColumn = $request->input('sortBy', 'created_at');
+        $sortOrder = $request->input('sortDirection', 'desc');
+        $pageSize = intval($request->input('pageSize', 50));
+        $wallet = $currentWallet->get();
+        $transactions = MoneyTransaction::query()
+            ->forWallet($wallet)
+            ->forFilter($filter)
+            ->orderBy($sortColumn, $sortOrder)
+            ->orderBy('created_at', 'desc')
+            ->paginate($pageSize);
 
         return MoneyTransactionResource::collection($transactions)
             ->additional([

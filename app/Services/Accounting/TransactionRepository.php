@@ -8,15 +8,6 @@ use Setting;
 
 class TransactionRepository
 {
-    public function createIndexQuery(array $filter, string $sortColumn, string $sortOrder)
-    {
-        return MoneyTransaction::query()
-            ->forWallet(resolve(CurrentWalletService::class)->get())
-            ->forFilter($filter)
-            ->orderBy($sortColumn, $sortOrder)
-            ->orderBy('created_at', 'DESC');
-    }
-
     public function getNextFreeReceiptNo(?Wallet $wallet = null)
     {
         return optional(MoneyTransaction::selectRaw('MAX(receipt_no) as val')
