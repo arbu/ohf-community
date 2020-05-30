@@ -16,20 +16,27 @@
             >
                 {{ transaction.receipt_no }}
                 <div
-                    v-if="transaction.receipt_pictures"
                     class="mt-2"
                 >
-                    <a
-                        v-for="picture_url in transaction.receipt_pictures"
-                        :key="picture_url"
-                        :href="picture_url"
-                        data-lity
-                    >
-                        <thumbnail-image
-                            :src="picture_url"
-                            :size="150"
-                        />
-                    </a>
+                    <template v-if="transaction.receipt_pictures">
+                        <a
+                            v-for="picture_url in transaction.receipt_pictures"
+                            :key="picture_url"
+                            :href="picture_url"
+                            data-lity
+                        >
+                            <thumbnail-image
+                                :src="picture_url"
+                                :size="150"
+                            />
+                        </a>
+                    </template>
+                    <receipt-picture-button
+                        v-else
+                        v-model="transaction.receipt_pictures"
+                        :id="transaction.id"
+                        show-lables
+                    />
                 </div>
             </two-col-list-group-item>
             <two-col-list-group-item
@@ -56,6 +63,7 @@
                 :text="transaction.secondary_category"
             />
             <two-col-list-group-item
+                v-if="transaction.project"
                 :title="$t('app.project')"
                 :text="transaction.project"
             />
@@ -143,12 +151,14 @@ import moment from 'moment'
 import transactionsApi from '@/api/accounting/transactions'
 import AlertWithRetry from '@/components/alerts/AlertWithRetry'
 import TwoColListGroupItem from '@/components/ui/TwoColListGroupItem'
+import ReceiptPictureButton from '@/components/accounting/ReceiptPictureButton'
 import ThumbnailImage from '@/components/ui/ThumbnailImage'
 import showSnackbar from '@/snackbar'
 export default {
     components: {
         AlertWithRetry,
         TwoColListGroupItem,
+        ReceiptPictureButton,
         ThumbnailImage
     },
     props: {

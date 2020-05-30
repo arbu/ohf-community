@@ -23,6 +23,9 @@
             variant="light"
         >
             <font-awesome-icon icon="spinner" spin />
+            <template v-if="showLables">
+                {{ $t('app.please_wait') }}
+            </template>
         </b-button>
         <b-button
             v-else
@@ -31,6 +34,9 @@
             @click="openFileSelector"
         >
             <font-awesome-icon icon="plus-circle" />
+            <template v-if="showLables">
+                {{ $t('accounting.choose_picture_of_receipt') }}
+            </template>
         </b-button>
     </span>
 </template>
@@ -46,7 +52,8 @@ export default {
         },
         value: {
             required: false
-        }
+        },
+        showLables: Boolean
     },
     data () {
         return {
@@ -68,6 +75,7 @@ export default {
             try {
                 let data = await transactionsApi.updateReceiptPicture(this.id, file)
                 this.receiptPictures = data.receipt_pictures
+                this.$emit('input', data.receipt_pictures)
                 showSnackbar(data.message)
             } catch (err) {
                 alert(err)
