@@ -179,12 +179,19 @@ Route::middleware(['language', 'auth'])
     ->name('api.accounting.')
     ->namespace('Accounting\API')
     ->group(function () {
+        // Update receipt picture
         Route::post('transactions/{transaction}/receipt', 'MoneyTransactionsController@updateReceipt')
             ->name('transactions.updateReceipt');
+
+        // Transactions
         Route::resource('transactions', 'MoneyTransactionsController')
             ->only('index');
+
+        // Current wallet data
         Route::get('currentWallet', 'MoneyTransactionsController@currentWallet')
             ->name('transactions.currentWallet');
+
+        // Classifications for filter
         Route::get('filterClassifications', 'MoneyTransactionsController@filterClassifications')
             ->name('transactions.filterClassifications');
     });
