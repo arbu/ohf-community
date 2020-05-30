@@ -12,7 +12,7 @@
         <input
             ref="fileUpload"
             type="file"
-            accept="image/*,application/pdf"
+            accept="image/*"
             class="d-none"
             @change="onFileSelect"
         />
@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import Compressor from 'compressorjs'
 import { showSnackbar } from '@/utils'
 import transactionsApi from '@/api/accounting/transactions'
 export default {
@@ -58,7 +59,8 @@ export default {
     data () {
         return {
             receiptPictures: this.value,
-            isBusy: false
+            isBusy: false,
+            maxSize: 1024
         }
     },
     methods: {
@@ -66,12 +68,23 @@ export default {
             this.$refs.fileUpload.click()
         },
         onFileSelect (evt) {
-            if (evt.target.files.length > 0) {
-                this.uploadFile(evt.target.files[0])
+            this.isBusy = true
+            const file = evt.target.files[0]
+            if (!file) {
+                return
             }
+            new Compressor(file, {
+                quality: 0.9,
+                maxWidth: this.maxSize,
+                maxHeight: this.maxSize,
+                success: this.uploadFile,
+                error: (err) => {
+                    alert(err)
+                    this.isBusy = false
+                }
+            })
         },
         async uploadFile(file) {
-            this.isBusy = true
             try {
                 let data = await transactionsApi.updateReceiptPicture(this.id, file)
                 this.receiptPictures = data.receipt_pictures

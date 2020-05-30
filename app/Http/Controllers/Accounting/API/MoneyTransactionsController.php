@@ -146,7 +146,7 @@ class MoneyTransactionsController extends Controller
         $request->validate([
             'img' => [
                 'file',
-                'mimetypes:image/*,application/pdf',
+                'mimes:jpeg,png,gif,webp',
             ],
         ]);
 

@@ -7,6 +7,7 @@ use App\Support\Accounting\Webling\Exceptions\ConnectionException;
 use Carbon\Carbon;
 use Gumlet\ImageResize;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -136,18 +137,18 @@ class MoneyTransaction extends Model implements Auditable
         return null;
     }
 
-    public function addReceiptPicture($file)
+    public function addReceiptPicture(UploadedFile $file)
     {
-        // Convert from PDF
-        if ($file->extension() == 'pdf') {
-            $pdf = new \Spatie\PdfToImage\Pdf($file->getRealPath());
-            $pdf->saveImage($file->getRealPath());
-        }
-
         // Resize image
-        $image = new ImageResize($file->getRealPath());
-        $image->resizeToBestFit(1024, 1024);
-        $image->save($file->getRealPath());
+        if (in_array($file->extension(), [
+            'jpg', 'jpeg', 'png', 'gif', 'webp'
+        ])) {
+            $image = new ImageResize($file->getRealPath());
+            $image->resizeToBestFit(1024, 1024);
+            $image->save($file->getRealPath());
+        } else {
+            abort('Unsupported file type');
+        }
 
         $pictures = $this->receipt_pictures ?? [];
         $pictures[] = $file->store(self::RECEIPT_PICTURE_PATH);

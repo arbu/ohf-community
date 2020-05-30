@@ -3,7 +3,7 @@
 ## NEXT
 
 * Removed unused tasks module
-* Added PDF support for uploading accounting receipts
+* Cleint-side receipt picture resize before upload
 * Better error handling when uploading accouning receipts
 * Simpler sorting of accounting receipts table
 
