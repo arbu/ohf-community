@@ -5,6 +5,10 @@ export default {
         const url = route('api.accounting.transactions.index', params)
         return await api.get(url)
     },
+    async find (id) {
+        const url = route('api.accounting.transactions.show', id)
+        return await api.get(url)
+    },
     async fetchCurrentWallet () {
         const url = route('api.accounting.transactions.currentWallet')
         return await api.get(url)
@@ -18,5 +22,9 @@ export default {
         const formData = new FormData();
         formData.append('img', file)
         return await api.postFormData(url, formData)
+    },
+    async undoExternalBooking (transactionId) {
+        const url = route('api.accounting.transactions.undoBooking', transactionId)
+        return await api.put(url)
     }
 }

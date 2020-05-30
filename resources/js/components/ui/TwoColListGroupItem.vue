@@ -5,7 +5,7 @@
                 <strong>{{ title }}</strong>
             </b-col>
             <b-col sm>
-                <slot></slot>
+                <slot>{{ text }}</slot>
             </b-col>
         </b-row>
     </b-list-group-item>
@@ -23,6 +23,9 @@ export default {
         title: {
             type: String,
             required: true
+        },
+        text: {
+            required: false
         }
     }
 }

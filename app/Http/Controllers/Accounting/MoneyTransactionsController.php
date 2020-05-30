@@ -309,23 +309,4 @@ class MoneyTransactionsController extends Controller
         }
         return new MoneyTransactionsExport($filter);
     }
-
-    public function undoBooking(MoneyTransaction $transaction)
-    {
-        $this->authorize('undoBooking', $transaction);
-
-        if ($transaction->external_id != null && Entrygroup::find($transaction->external_id) != null) {
-            return redirect()
-                ->route('accounting.transactions.show', $transaction)
-                ->with('error', __('accounting.transaction_not_updated_external_record_still_exists'));
-        }
-
-        $transaction->booked = false;
-        $transaction->external_id = null;
-        $transaction->save();
-
-        return redirect()
-            ->route('accounting.transactions.show', $transaction)
-            ->with('info', __('accounting.transactions_updated'));
-    }
 }

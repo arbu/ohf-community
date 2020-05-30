@@ -20,6 +20,7 @@ Vue.config.productionTip = false
 
 // import AccountingApp from '@/app/AccountingApp'
 import TransactionsIndexPage from '@/pages/accounting/TransactionsIndexPage'
+import TransactionShowPage from '@/pages/accounting/TransactionShowPage'
 
 new Vue({
     el: '#accounting-app',
@@ -28,6 +29,7 @@ new Vue({
     i18n,
     components: {
         // AccountingApp
-        TransactionsIndexPage
+        TransactionsIndexPage,
+        TransactionShowPage
     }
 });

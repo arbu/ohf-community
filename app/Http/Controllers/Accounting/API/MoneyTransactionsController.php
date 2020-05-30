@@ -9,8 +9,10 @@ use App\Models\Accounting\MoneyTransaction;
 use App\Models\Accounting\Wallet;
 use App\Services\Accounting\CurrentWalletService;
 use App\Services\Accounting\TransactionRepository;
+use App\Support\Accounting\Webling\Entities\Entrygroup;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Setting;
@@ -149,5 +151,38 @@ class MoneyTransactionsController extends Controller
             'message' => __('accounting.receipt_picture_added'),
             'receipt_pictures' => collect($transaction->receipt_pictures)->map(fn ($p) => Storage::url($p)),
         ]);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Accounting\MoneyTransaction  $transaction
+     * @return \Illuminate\Http\Response
+     */
+    public function show(MoneyTransaction $transaction)
+    {
+        $this->authorize('view', $transaction);
+
+        return new MoneyTransactionResource($transaction);
+    }
+
+    public function undoBooking(MoneyTransaction $transaction)
+    {
+        $this->authorize('undoBooking', $transaction);
+
+        if ($transaction->external_id != null && Entrygroup::find($transaction->external_id) != null) {
+            return response()->json([
+                'message' => __('accounting.transaction_not_updated_external_record_still_exists'),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $transaction->booked = false;
+        $transaction->external_id = null;
+        $transaction->save();
+
+        return (new MoneyTransactionResource($transaction))
+            ->additional([
+                'message' => __('accounting.transactions_updated'),
+            ]);
     }
 }

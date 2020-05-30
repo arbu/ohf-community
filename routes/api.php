@@ -183,9 +183,13 @@ Route::middleware(['language', 'auth'])
         Route::post('transactions/{transaction}/receipt', 'MoneyTransactionsController@updateReceipt')
             ->name('transactions.updateReceipt');
 
+        // Undo external booking
+        Route::put('transactions/{transaction}/undoBooking', 'MoneyTransactionsController@undoBooking')
+            ->name('transactions.undoBooking');
+
         // Transactions
-        Route::resource('transactions', 'MoneyTransactionsController')
-            ->only('index');
+        Route::apiResource('transactions', 'MoneyTransactionsController')
+            ->only('index', 'show');
 
         // Current wallet data
         Route::get('currentWallet', 'MoneyTransactionsController@currentWallet')
