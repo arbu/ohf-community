@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Accounting\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Accounting\StoreTransaction;
 use App\Http\Resources\Accounting\MoneyTransaction as MoneyTransactionResource;
 use App\Http\Resources\Accounting\Wallet as WalletResource;
 use App\Models\Accounting\MoneyTransaction;
@@ -191,5 +192,51 @@ class MoneyTransactionsController extends Controller
             ->additional([
                 'message' => __('accounting.transactions_updated'),
             ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Accounting\MoneyTransaction  $transaction
+     * @return \Illuminate\Http\Response
+     */
+    public function update(StoreTransaction $request, MoneyTransaction $transaction)
+    {
+        $this->authorize('update', $transaction);
+
+        $transaction->date = $request->date;
+        $transaction->receipt_no = $request->receipt_no;
+        $transaction->type = $request->type;
+        $transaction->amount = $request->amount;
+        $transaction->beneficiary = $request->beneficiary;
+        $transaction->category = $request->category;
+        if ($this->repository->useSecondaryCategories()) {
+            $transaction->secondary_category = $request->secondary_category;
+        }
+        $transaction->project = $request->project;
+        if ($this->repository->useLocations()) {
+            $transaction->location = $request->location;
+        }
+        if ($this->repository->useCostCenters()) {
+            $transaction->cost_center = $request->cost_center;
+        }
+        $transaction->description = $request->description;
+        $transaction->remarks = $request->remarks;
+        $transaction->wallet_owner = $request->wallet_owner;
+
+        // if (isset($request->remove_receipt_picture)) {
+        //     $transaction->deleteReceiptPictures();
+        // }
+        // elseif (isset($request->receipt_picture)) {
+        //     $transaction->deleteReceiptPictures(); // TODO no need to clear pictures for multi picture support
+        //     $transaction->addReceiptPicture($request->file('receipt_picture'));
+        // }
+
+        $transaction->save();
+
+        return response()->json([
+            'message' => __('accounting.transactions_updated'),
+        ]);
     }
 }

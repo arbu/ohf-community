@@ -21,6 +21,7 @@ Vue.config.productionTip = false
 // import AccountingApp from '@/app/AccountingApp'
 import TransactionsIndexPage from '@/pages/accounting/TransactionsIndexPage'
 import TransactionShowPage from '@/pages/accounting/TransactionShowPage'
+import TransactionEditPage from '@/pages/accounting/TransactionEditPage'
 
 new Vue({
     el: '#accounting-app',
@@ -30,6 +31,7 @@ new Vue({
     components: {
         // AccountingApp
         TransactionsIndexPage,
-        TransactionShowPage
+        TransactionShowPage,
+        TransactionEditPage
     }
 });

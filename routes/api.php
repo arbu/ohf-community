@@ -189,7 +189,7 @@ Route::middleware(['language', 'auth'])
 
         // Transactions
         Route::apiResource('transactions', 'MoneyTransactionsController')
-            ->only('index', 'show');
+            ->only('index', 'show', 'update');
 
         // Current wallet data
         Route::get('currentWallet', 'MoneyTransactionsController@currentWallet')

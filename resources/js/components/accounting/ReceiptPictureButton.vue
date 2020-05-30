@@ -14,6 +14,7 @@
             type="file"
             accept="image/*"
             class="d-none"
+            multiple
             @change="onFileSelect"
         />
         <b-button
