@@ -8,25 +8,31 @@
             @click="reset"
         >
             <font-awesome-icon icon="eraser" />
-            {{ $t('app.reset_filter') }}
+            <span class="d-none d-sm-inline">{{ $t('app.reset_filter') }}</span>
         </b-button>
         <b-button
             size="sm"
             variant="secondary"
             class="mb-3"
-            v-b-modal.filterModal
+            @click="showModal"
         >
-            <font-awesome-icon icon="search" />
-            {{ $t(isFilterActive ? 'app.edit_filter' : 'app.filter_results') }}
+            <font-awesome-icon
+                v-if="isBusy"
+                icon="spinner"
+                spin
+            />
+            <font-awesome-icon
+                v-else
+                icon="search"
+            />
+            <span class="d-none d-sm-inline">{{ $t(isFilterActive ? 'app.edit_filter' : 'app.filter_results') }}</span>
         </b-button>
         <b-modal
-            id="filterModal"
+            :id="modalId"
             centered
             ok-only
-            lazy
             :title="$t('app.filter')"
             :ok-title="$t('app.apply')"
-            @show="form = {...value}"
             @ok="submit"
         >
             <b-form-row>
@@ -54,6 +60,7 @@
                     <b-form-group :label="$t('app.from')">
                         <b-form-datepicker
                             v-model="form.date_start"
+                            :max="form.date_end ? form.date_end: today"
                             reset-button
                             :label-reset-button="$t('app.reset')"
                             :label-no-date-selected="$t('app.no_date')"
@@ -64,6 +71,8 @@
                     <b-form-group :label="$t('app.to')">
                         <b-form-datepicker
                             v-model="form.date_end"
+                            :min="form.date_start"
+                            :max="today"
                             reset-button
                             :label-reset-button="$t('app.reset')"
                             :label-no-date-selected="$t('app.no_date')"
@@ -240,6 +249,7 @@
     </div>
 </template>
 <script>
+import moment from 'moment'
 import transactionsApi from '@/api/accounting/transactions'
 export default {
     props: {
@@ -249,6 +259,9 @@ export default {
     },
     data () {
         return {
+            modalId: 'filterModal',
+            isLoaded: false,
+            isBusy: false,
             form: {
                 type: null,
                 receipt_no: null,
@@ -295,28 +308,36 @@ export default {
             return Object.values(this.value)
                 .filter(e => e != null && e != '')
                 .length > 0
+        },
+        today () {
+            return moment().format(moment.HTML5_FMT.DATE)
         }
     },
-    created () {
-        this.fetchClassifications()
-    },
     methods: {
-        async fetchClassifications () {
+        async showModal() {
+            this.form = { ...this.value }
             try {
-                let classifications = await transactionsApi.fetchfilterClassifications()
-                this.fixed_categories = classifications.fixed_categories
-                this.categories = classifications.categories
-                this.fixed_secondary_categories = classifications.fixed_secondary_categories
-                this.secondary_categories = classifications.secondary_categories
-                this.fixed_projects = classifications.fixed_projects
-                this.projects = classifications.projects
-                this.fixed_locations = classifications.fixed_locations
-                this.locations = classifications.locations
-                this.fixed_cost_centers = classifications.fixed_cost_centers
-                this.cost_centers = classifications.cost_centers
-                this.beneficiaries = classifications.beneficiaries
+                if (!this.isLoaded) {
+                    this.isBusy = true
+                    let classifications = await transactionsApi.fetchfilterClassifications()
+                    this.fixed_categories = classifications.fixed_categories
+                    this.categories = classifications.categories
+                    this.fixed_secondary_categories = classifications.fixed_secondary_categories
+                    this.secondary_categories = classifications.secondary_categories
+                    this.fixed_projects = classifications.fixed_projects
+                    this.projects = classifications.projects
+                    this.fixed_locations = classifications.fixed_locations
+                    this.locations = classifications.locations
+                    this.fixed_cost_centers = classifications.fixed_cost_centers
+                    this.cost_centers = classifications.cost_centers
+                    this.beneficiaries = classifications.beneficiaries
+                    this.isBusy = false
+                    this.isLoaded = true
+                }
+                this.$bvModal.show(this.modalId)
             } catch (err) {
                 alert(err)
+                this.isBusy = false
             }
         },
         submit (bvModalEvt) {

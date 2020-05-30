@@ -83,13 +83,17 @@ class MoneyTransaction extends Model implements Auditable
         foreach (config('accounting.filter_columns') as $col) {
             if (! empty($filter[$col])) {
                 if ($col == 'today') {
-                    $query->whereDate('created_at', Carbon::today());
+                    if ($filter[$col] !== 'false') {
+                        $query->whereDate('created_at', Carbon::today());
+                    }
                 } elseif ($col == 'no_receipt') {
-                    $query->where(function ($query) {
-                        $query->whereNull('receipt_no');
-                        $query->orWhereNull('receipt_pictures');
-                        $query->orWhere('receipt_pictures', '[]');
-                    });
+                    if ($filter[$col] !== 'false') {
+                        $query->where(function ($query) {
+                            $query->whereNull('receipt_no');
+                            $query->orWhereNull('receipt_pictures');
+                            $query->orWhere('receipt_pictures', '[]');
+                        });
+                    }
                 } elseif ($col == 'beneficiary' || $col == 'description') {
                     $query->where($col, 'like', '%' . $filter[$col] . '%');
                 } else {

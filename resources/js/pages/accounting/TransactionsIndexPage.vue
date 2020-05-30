@@ -1,5 +1,7 @@
 <template>
     <div v-if="wallet">
+
+        <!-- Alert  -->
         <alert-with-retry
             :value="errorText"
             @retry="refresh"
@@ -63,14 +65,14 @@
             :busy.sync="isBusy"
             :filter="filter"
             :currentPage="currentPage"
+            :per-page="perPage"
             show-empty
             no-sort-reset
             no-footer-sorting
             :sort-by="sortBy"
             :sort-desc="sortDesc"
-            :sort-null-last="true"
-            no-local-sorting
         >
+            <!-- Busy  -->
             <div slot="table-busy" class="text-center my-2">
                 <b-spinner class="align-middle"></b-spinner>
                 <strong>{{ $t('app.loading') }}</strong>
@@ -160,12 +162,15 @@
                 </template>
             </template>
         </b-table>
+
+        <!-- Pagination -->
         <table-pagination
             v-model="currentPage"
             :total-rows="totalRows"
             :per-page="perPage"
             :disabled="isBusy"
         />
+
     </div>
     <p v-else>
         {{ $t('app.loading') }}
@@ -194,16 +199,13 @@ export default {
             use_secondary_categories: false,
             use_locations: false,
             use_cost_centers: false,
-            filter: {}, // TODO cache accounting.filter
-            selectedTransaction: null,
             isBusy: false,
-            items: null,
-            busyItems: [],
-            sortBy: 'created_at', // TODO cache accounting.sortColumn
-            sortDesc: true, // TODO cache accounting.sortOrder
+            filter: {}, // TODO cache accounting.filter
+            sortBy: 'created_at', // TODO cache accounting.sortBy
+            sortDesc: true, // TODO cache accounting.sortDesc
+            currentPage: 1, // TODO cache accounting.currentPage
             errorText: null,
-            currentPage: 1,
-            perPage: 50,
+            perPage: 100,
             totalRows: 0,
         }
     },
@@ -312,23 +314,8 @@ export default {
                 .length > 0
         }
     },
-    // watch: {
-    //     filter () {
-    //         this.refreshItems()
-    //     },
-    //     currentPage () {
-    //         this.refreshItems()
-    //     },
-    //     sortBy () {
-    //         this.refreshItems()
-    //     },
-    //     sortDesc () {
-    //         this.refreshItems()
-    //     }
-    // },
     async created () {
         this.fetchWallet()
-        // this.refreshItems()
     },
     methods: {
         async fetchWallet () {
@@ -339,17 +326,6 @@ export default {
             this.use_locations = data.meta.use_locations
             this.use_cost_centers = data.meta.use_cost_centers
         },
-        // async refreshItems () {
-        //     this.isBusy = true
-        //     this.items = await this.fetchData({
-        //         filter: this.filter,
-        //         currentPage: this.currentPage,
-        //         perPage: this.perPage,
-        //         sortBy: this.sortBy,
-        //         sortDesc: this.sortDesc
-        //     })
-        //     this.isBusy = false
-        // },
         async fetchData (ctx) {
             try {
                 const params = {

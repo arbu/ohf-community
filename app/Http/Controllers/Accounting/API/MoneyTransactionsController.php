@@ -34,30 +34,31 @@ class MoneyTransactionsController extends Controller
         $this->authorize('viewAny', MoneyTransaction::class);
 
         $request->validate([
-            'date_start' => [
+            'filter.date_start' => [
                 'nullable',
                 'date',
                 'before_or_equal:' . Carbon::today(),
             ],
-            'date_end' => [
+            'filter.date_end' => [
                 'nullable',
                 'date',
                 'before_or_equal:' . Carbon::today(),
             ],
-            'type' => [
+            'filter.type' => [
                 'nullable',
                 Rule::in(['income', 'spending']),
             ],
-            'month' => [
-                'nullable',
-                'regex:/[0-1]?[1-9]/',
-            ],
-            'year' => [
-                'nullable',
-                'integer',
-                'min:2017',
-                'max:' . Carbon::today()->year,
-            ],
+            // TODO
+            // 'month' => [
+            //     'nullable',
+            //     'regex:/[0-1]?[1-9]/',
+            // ],
+            // 'year' => [
+            //     'nullable',
+            //     'integer',
+            //     'min:2017',
+            //     'max:' . Carbon::today()->year,
+            // ],
             'sortBy' => [
                 'nullable',
                 Rule::in([
