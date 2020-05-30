@@ -15,6 +15,8 @@ Requirements
 * Composer
 * MySQL Database
 
+For PDF to image conversion, Imagick and Ghostscript must be installed, and PHP's `exec` command must be allowed in `php.ini`.
+
 Installation
 ------------
 
