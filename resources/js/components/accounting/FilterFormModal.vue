@@ -208,7 +208,7 @@
                         />
                         <b-form-datalist
                             id="beneficiary-list"
-                            :options="beneficiary"
+                            :options="beneficiaries"
                         />
                     </b-form-group>
                 </b-col>
@@ -240,22 +240,12 @@
     </div>
 </template>
 <script>
+import transactionsApi from '@/api/accounting/transactions'
 export default {
     props: {
         value: {
             required: true
-        },
-        fixed_categories: Boolean,
-        categories: Array,
-        fixed_secondary_categories: Boolean,
-        secondary_categories: Array,
-        fixed_projects: Boolean,
-        projects: Array,
-        fixed_locations: Boolean,
-        locations: Array,
-        fixed_cost_centers: Boolean,
-        cost_centers: Array,
-        beneficiary: Array
+        }
     },
     data () {
         return {
@@ -286,7 +276,18 @@ export default {
                     value: 'spending',
                     text: this.$t('accounting.spending')
                 }
-            ]
+            ],
+            fixed_categories: false,
+            categories: [],
+            fixed_secondary_categories: false,
+            secondary_categories: [],
+            fixed_projects: false,
+            projects: [],
+            fixed_locations: false,
+            locations: [],
+            fixed_cost_centers: false,
+            cost_centers: [],
+            beneficiaries: []
         }
     },
     computed: {
@@ -296,7 +297,28 @@ export default {
                 .length > 0
         }
     },
+    created () {
+        this.fetchClassifications()
+    },
     methods: {
+        async fetchClassifications () {
+            try {
+                let classifications = await transactionsApi.fetchfilterClassifications()
+                this.fixed_categories = classifications.fixed_categories
+                this.categories = classifications.categories
+                this.fixed_secondary_categories = classifications.fixed_secondary_categories
+                this.secondary_categories = classifications.secondary_categories
+                this.fixed_projects = classifications.fixed_projects
+                this.projects = classifications.projects
+                this.fixed_locations = classifications.fixed_locations
+                this.locations = classifications.locations
+                this.fixed_cost_centers = classifications.fixed_cost_centers
+                this.cost_centers = classifications.cost_centers
+                this.beneficiaries = classifications.beneficiaries
+            } catch (err) {
+                alert(err)
+            }
+        },
         submit (bvModalEvt) {
             this.$emit('submit', bvModalEvt, this.form)
         },

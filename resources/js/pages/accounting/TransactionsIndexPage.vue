@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="wallet">
         <alert-with-retry
             :value="errorText"
             @retry="refresh"
@@ -9,7 +9,7 @@
 
             <!-- Wallet selection -->
             <div class="mb-3">
-                <template v-if="wallet">
+                <template>
                     <font-awesome-icon icon="wallet" />
                     <span class="d-none d-sm-inline">
                         <template v-if="has_multiple_wallets">
@@ -40,19 +40,7 @@
             <!-- Filter -->
             <div class="text-right">
                 <filter-form-modal
-                    v-if="classifications"
                     :value="filter"
-                    :fixed_categories="classifications.fixed_categories"
-                    :categories="classifications.categories"
-                    :fixed_secondary_categories="classifications.fixed_secondary_categories"
-                    :secondary_categories="classifications.secondary_categories"
-                    :fixed_projects="classifications.fixed_projects"
-                    :projects="classifications.projects"
-                    :fixed_locations="classifications.fixed_locations"
-                    :locations="classifications.locations"
-                    :fixed_cost_centers="classifications.fixed_cost_centers"
-                    :cost_centers="classifications.cost_centers"
-                    :beneficiaries="classifications.beneficiaries"
                     @submit="applyFilter"
                     @reset="resetFilter"
                 />
@@ -69,15 +57,17 @@
             hover
             responsive
             :fields="fields"
-            :items="items"
+            :items="fetchData"
             :empty-text="$t('accounting.no_transactions_found')"
             :empty-filtered-text="$t('accounting.no_transactions_found')"
-            :busy="isBusy"
+            :busy.sync="isBusy"
+            :filter="filter"
+            :currentPage="currentPage"
             show-empty
             no-sort-reset
             no-footer-sorting
-            :sort-by.sync="sortBy"
-            :sort-desc.sync="sortDesc"
+            :sort-by="sortBy"
+            :sort-desc="sortDesc"
             :sort-null-last="true"
             no-local-sorting
         >
@@ -177,6 +167,9 @@
             :disabled="isBusy"
         />
     </div>
+    <p v-else>
+        {{ $t('app.loading') }}
+    </p>
 </template>
 
 <script>
@@ -198,14 +191,16 @@ export default {
         return {
             wallet: null,
             has_multiple_wallets: null,
+            use_secondary_categories: false,
+            use_locations: false,
+            use_cost_centers: false,
             filter: {}, // TODO cache accounting.filter
             selectedTransaction: null,
-            isBusy: true,
+            isBusy: false,
             items: null,
             busyItems: [],
             sortBy: 'created_at', // TODO cache accounting.sortColumn
             sortDesc: true, // TODO cache accounting.sortOrder
-            classifications: null,
             errorText: null,
             currentPage: 1,
             perPage: 50,
@@ -264,7 +259,7 @@ export default {
                 {
                     key: 'secondary_category',
                     label: this.$t('app.secondary_category'),
-                    class: this.secondary_categories == null ? 'd-none' : null,
+                    class: !this.use_secondary_categories ? 'd-none' : null,
                     tdClass: 'align-middle',
                     sortable: true
                 },
@@ -277,14 +272,14 @@ export default {
                 {
                     key: 'location',
                     label: this.$t('app.location'),
-                    class: this.locations == null ? 'd-none' : null,
+                    class: !this.use_locations ? 'd-none' : null,
                     tdClass: 'align-middle',
                     sortable: true
                 },
                 {
                     key: 'cost_center',
                     label: this.$t('accounting.cost_center'),
-                    class: this.cost_centers == null ? 'd-none' : null,
+                    class: !this.use_cost_centers ? 'd-none' : null,
                     tdClass: 'align-middle',
                     sortable: true
                 },
@@ -317,36 +312,44 @@ export default {
                 .length > 0
         }
     },
-    watch: {
-        filter () {
-            this.refreshItems()
-        },
-        currentPage () {
-            this.refreshItems()
-        },
-        sortBy () {
-            this.refreshItems()
-        },
-        sortDesc () {
-            this.refreshItems()
-        }
-    },
+    // watch: {
+    //     filter () {
+    //         this.refreshItems()
+    //     },
+    //     currentPage () {
+    //         this.refreshItems()
+    //     },
+    //     sortBy () {
+    //         this.refreshItems()
+    //     },
+    //     sortDesc () {
+    //         this.refreshItems()
+    //     }
+    // },
     async created () {
-        await this.fetchClassifications()
-        this.refreshItems()
+        this.fetchWallet()
+        // this.refreshItems()
     },
     methods: {
-        async refreshItems () {
-            this.isBusy = true
-            this.items = await this.fetchData({
-                filter: this.filter,
-                currentPage: this.currentPage,
-                perPage: this.perPage,
-                sortBy: this.sortBy,
-                sortDesc: this.sortDesc
-            })
-            this.isBusy = false
+        async fetchWallet () {
+            let data = await transactionsApi.fetchCurrentWallet()
+            this.wallet = data.data
+            this.has_multiple_wallets = data.meta.has_multiple_wallets
+            this.use_secondary_categories = data.meta.use_secondary_categories
+            this.use_locations = data.meta.use_locations
+            this.use_cost_centers = data.meta.use_cost_centers
         },
+        // async refreshItems () {
+        //     this.isBusy = true
+        //     this.items = await this.fetchData({
+        //         filter: this.filter,
+        //         currentPage: this.currentPage,
+        //         perPage: this.perPage,
+        //         sortBy: this.sortBy,
+        //         sortDesc: this.sortDesc
+        //     })
+        //     this.isBusy = false
+        // },
         async fetchData (ctx) {
             try {
                 const params = {
@@ -359,17 +362,12 @@ export default {
                 let data = await transactionsApi.list(params)
                 this.sum_income = data.meta.sum_income
                 this.sum_spending = data.meta.sum_spending
-                this.wallet = data.meta.wallet
-                this.has_multiple_wallets = data.meta.has_multiple_wallets
                 this.totalRows = data.meta.total
                 return data.data
             } catch (err) {
                 this.errorText = err
                 return []
             }
-        },
-        async fetchClassifications () {
-            this.classifications = await transactionsApi.filterClassifications()
         },
         numberFormat (value) {
             return numeral(value).format('0,0.00')
@@ -389,7 +387,7 @@ export default {
             // TODO remove cached value
         },
         refresh () {
-            this.refreshItems()
+            this.$refs.table.refresh()
         }
     }
 }

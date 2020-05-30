@@ -29,7 +29,7 @@ class MoneyTransactionsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, CurrentWalletService $currentWallet)
+    public function index(Request $request)
     {
         $this->authorize('viewAny', MoneyTransaction::class);
 
@@ -82,8 +82,6 @@ class MoneyTransactionsController extends Controller
             ],
         ]);
 
-        $wallet = $currentWallet->get();
-
         $transactions = $this->repository->createIndexQuery(
             $request->input('filter', []),
             $request->input('sortBy', 'created_at'),
@@ -93,10 +91,22 @@ class MoneyTransactionsController extends Controller
         return MoneyTransactionResource::collection($transactions)
             ->additional([
                 'meta' => [
-                    'wallet' => (new WalletResource($wallet))->resolve(),
-                    'has_multiple_wallets' => Wallet::count() > 1,
                     'sum_income' => round($transactions->where('type', 'income')->sum('amount'), 2),
                     'sum_spending' => round($transactions->where('type', 'spending')->sum('amount'), 2),
+                ],
+            ]);
+    }
+
+    public function currentWallet(CurrentWalletService $currentWallet)
+    {
+        $wallet = $currentWallet->get();
+        return (new WalletResource($wallet))
+            ->additional([
+                'meta' => [
+                    'has_multiple_wallets' => Wallet::count() > 1,
+                    'use_secondary_categories' => $this->repository->useSecondaryCategories(),
+                    'use_locations' => $this->repository->useLocations(),
+                    'use_cost_centers' => $this->repository->useCostCenters(),
                 ],
             ]);
     }
