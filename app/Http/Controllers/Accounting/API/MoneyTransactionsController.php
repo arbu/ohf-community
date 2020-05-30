@@ -239,4 +239,21 @@ class MoneyTransactionsController extends Controller
             'message' => __('accounting.transactions_updated'),
         ]);
     }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Accounting\MoneyTransaction  $transaction
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(MoneyTransaction $transaction)
+    {
+        $this->authorize('delete', $transaction);
+
+        $transaction->delete();
+
+        return response()->json([
+            'message' => __('accounting.transactions_deleted'),
+        ]);
+    }
 }

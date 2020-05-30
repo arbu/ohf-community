@@ -13,6 +13,10 @@ export default {
         const url = route('api.accounting.transactions.update', id)
         return await api.put(url, data)
     },
+    async delete (id) {
+        const url = route('api.accounting.transactions.destroy', id)
+        return await api.delete(url)
+    },
     async fetchCurrentWallet () {
         const url = route('api.accounting.transactions.currentWallet')
         return await api.get(url)

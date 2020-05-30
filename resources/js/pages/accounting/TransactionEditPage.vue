@@ -7,7 +7,9 @@
     <div v-else-if="transaction">
         <transaction-form
             :transaction="transaction"
+            :disabled="isBusy"
             @submit="updateDonation"
+            @delete="deleteDonation"
         />
     </div>
     <p v-else>
@@ -16,8 +18,6 @@
 </template>
 
 <script>
-import numeral from 'numeral'
-import moment from 'moment'
 import transactionsApi from '@/api/accounting/transactions'
 import AlertWithRetry from '@/components/alerts/AlertWithRetry'
 import TransactionForm from '@/components/accounting/TransactionForm'
@@ -62,14 +62,16 @@ export default {
             }
             this.isBusy = false
         },
-        numberFormat (value) {
-            return numeral(value).format('0,0.00')
-        },
-        dateFormat (value) {
-            return moment(value).format('LL')
-        },
-        dateTimeFormat (value) {
-            return moment(value).format('LLL')
+        async deleteDonation () {
+            this.isBusy = true
+            try {
+                let data = await transactionsApi.delete(this.id)
+                showSnackbar(data.message)
+                window.document.location = this.route('accounting.transactions.index')
+            } catch (err) {
+                alert(err)
+            }
+            this.isBusy = false
         }
     }
 }

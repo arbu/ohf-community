@@ -434,6 +434,8 @@
             </b-form-row>
 
             <p class="d-flex justify-content-between align-items-start">
+
+                <!-- Submit -->
                 <b-button
                     type="submit"
                     variant="primary"
@@ -442,6 +444,18 @@
                     <font-awesome-icon icon="check" />
                     {{ transaction ? $t('app.update') : $t('app.add') }}
                 </b-button>
+
+                <!-- Delete -->
+                <b-button
+                    v-if="transaction && transaction.can_delete"
+                    variant="link"
+                    :disabled="disabled"
+                    class="text-danger"
+                    @click="onDelete"
+                >
+                    {{ $t('app.delete') }}
+                </b-button>
+
             </p>
         </b-form>
         <p v-else>
@@ -549,6 +563,11 @@ export default {
         },
         onSubmit () {
             this.$emit('submit', this.form)
+        },
+        onDelete () {
+            if (confirm(this.$t('accounting.confirm_delete_transaction'))) {
+                this.$emit('delete')
+            }
         }
     }
 }

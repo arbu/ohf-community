@@ -35,6 +35,7 @@ class MoneyTransaction extends JsonResource
             'created_at' => $this->created_at,
             'audit_user_name' => isset($audit) ? $audit->getMetadata()['user_name'] : null,
             'can_update' => $request->user()->can('update', $this->resource),
+            'can_delete' => $request->user()->can('delete', $this->resource),
             'booked' => $this->booked,
             'external_id' => $this->external_id,
             'external_url' => $this->when($this->external_id, fn () => $this->externalUrl),
