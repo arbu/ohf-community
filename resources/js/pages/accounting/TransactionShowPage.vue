@@ -173,8 +173,6 @@ export default {
             isBusy: false
         }
     },
-    computed: {
-    },
     async created () {
         this.fethData()
     },
