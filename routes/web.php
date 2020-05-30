@@ -164,7 +164,8 @@ Route::middleware(['language', 'auth'])
         Route::get('transactions/summary', 'SummaryController@summary')
             ->name('transactions.summary');
 
-        Route::resource('transactions', 'MoneyTransactionsController');
+        Route::resource('transactions', 'MoneyTransactionsController')
+            ->except('store', 'update', 'destroy');
 
         Route::get('wallets/change', 'WalletController@change')
             ->name('wallets.change');

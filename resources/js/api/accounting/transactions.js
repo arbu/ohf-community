@@ -9,6 +9,10 @@ export default {
         const url = route('api.accounting.transactions.show', id)
         return await api.get(url)
     },
+    async store (data) {
+        const url = route('api.accounting.transactions.store')
+        return await api.post(url, data)
+    },
     async update (id, data) {
         const url = route('api.accounting.transactions.update', id)
         return await api.put(url, data)

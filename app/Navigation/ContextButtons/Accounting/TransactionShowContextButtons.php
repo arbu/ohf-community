@@ -4,7 +4,6 @@ namespace App\Navigation\ContextButtons\Accounting;
 
 use App\Models\Accounting\MoneyTransaction;
 use App\Navigation\ContextButtons\ContextButtons;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class TransactionShowContextButtons implements ContextButtons
@@ -18,20 +17,20 @@ class TransactionShowContextButtons implements ContextButtons
                 'caption' => __('app.edit'),
                 'icon' => 'edit',
                 'icon_floating' => 'pencil-alt',
-                'authorized' => Auth::user()->can('update', $transaction),
+                'authorized' => request()->user()->can('update', $transaction),
             ],
-            'delete' => [
-                'url' => route('accounting.transactions.destroy', $transaction),
-                'caption' => __('app.delete'),
-                'icon' => 'trash',
-                'authorized' => Auth::user()->can('delete', $transaction),
-                'confirmation' => __('accounting.confirm_delete_transaction'),
-            ],
+            // 'delete' => [
+            //     'url' => route('accounting.transactions.destroy', $transaction),
+            //     'caption' => __('app.delete'),
+            //     'icon' => 'trash',
+            //     'authorized' => Auth::user()->can('delete', $transaction),
+            //     'confirmation' => __('accounting.confirm_delete_transaction'),
+            // ],
             'back' => [
                 'url' => route('accounting.transactions.index'),
                 'caption' => __('app.close'),
                 'icon' => 'times-circle',
-                'authorized' => Auth::user()->can('viewAny', MoneyTransaction::class),
+                'authorized' => request()->user()->can('viewAny', MoneyTransaction::class),
             ],
         ];
     }

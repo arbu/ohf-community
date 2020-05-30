@@ -14,6 +14,7 @@ use App\Support\Accounting\Webling\Entities\Entrygroup;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Setting;
@@ -137,6 +138,7 @@ class MoneyTransactionsController extends Controller
             'fixed_locations' => Setting::has('accounting.transactions.locations'),
             'cost_centers' => $this->repository->useCostCenters() ? $this->repository->getCostCenters(true) : null,
             'fixed_cost_centers' => Setting::has('accounting.transactions.cost_centers'),
+            'auth_user_name' => Auth::user()->name,
         ]);
     }
 
@@ -158,6 +160,56 @@ class MoneyTransactionsController extends Controller
         return response([
             'message' => __('accounting.receipt_picture_added'),
             'receipt_pictures' => collect($transaction->receipt_pictures)->map(fn ($p) => Storage::url($p)),
+        ]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \App\Http\Requests\Accounting\StoreTransaction  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(StoreTransaction $request, CurrentWalletService $currentWallet)
+    {
+        $this->authorize('create', MoneyTransaction::class);
+
+        $transaction = new MoneyTransaction();
+        $transaction->date = $request->date;
+        $transaction->receipt_no = $request->receipt_no;
+        $transaction->type = $request->type;
+        $transaction->amount = $request->amount;
+        $transaction->beneficiary = $request->beneficiary;
+        $transaction->category = $request->category;
+        if ($this->repository->useSecondaryCategories()) {
+            $transaction->secondary_category = $request->secondary_category;
+        }
+        $transaction->project = $request->project;
+        if ($this->repository->useLocations()) {
+            $transaction->location = $request->location;
+        }
+        if ($this->repository->useCostCenters()) {
+            $transaction->cost_center = $request->cost_center;
+        }
+        $transaction->description = $request->description;
+        $transaction->remarks = $request->remarks;
+        $transaction->wallet_owner = $request->wallet_owner;
+
+        $transaction->wallet()->associate($request->input('wallet_id'));
+        $this->authorize('view', $transaction->wallet);
+
+        // TODO
+        // if (isset($request->receipt_picture)) {
+        //     $transaction->addReceiptPicture($request->file('receipt_picture'));
+        // }
+
+        $transaction->save();
+
+        if ($transaction->wallet->id !== optional($currentWallet->get())->id) {
+            $currentWallet->set($transaction->wallet);
+        }
+
+        return response()->json([
+            'message' => __('accounting.transactions_registered'),
         ]);
     }
 
@@ -225,6 +277,7 @@ class MoneyTransactionsController extends Controller
         $transaction->remarks = $request->remarks;
         $transaction->wallet_owner = $request->wallet_owner;
 
+        // TODO
         // if (isset($request->remove_receipt_picture)) {
         //     $transaction->deleteReceiptPictures();
         // }

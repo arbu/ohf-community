@@ -188,8 +188,7 @@ Route::middleware(['language', 'auth'])
             ->name('transactions.undoBooking');
 
         // Transactions
-        Route::apiResource('transactions', 'MoneyTransactionsController')
-            ->only('index', 'show', 'update', 'destroy');
+        Route::apiResource('transactions', 'MoneyTransactionsController');
 
         // Current wallet data
         Route::get('currentWallet', 'MoneyTransactionsController@currentWallet')

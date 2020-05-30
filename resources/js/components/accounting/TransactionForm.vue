@@ -9,6 +9,20 @@
             @submit.stop.prevent="handleSubmit(onSubmit)"
         >
 
+            <!-- Wallet -->
+            <div v-if="!transaction && wallets.length > 1">
+                <b-form-group
+                    :label="$t('accounting.receipt_no')"
+                >
+                    <b-form-select
+                        v-model="form.wallet_id"
+                        :options="walletOptions"
+                        required
+                        @change="setNewReceiptNumber"
+                    />
+                </b-form-group>
+            </div>
+
             <b-form-row>
 
                 <!-- Receipt No -->
@@ -469,6 +483,8 @@ import transactionsApi from '@/api/accounting/transactions'
 import moment from 'moment'
 export default {
     props: {
+        wallets: Array,
+        wallet: Object,
         transaction: {
             type: Object,
             required: false
@@ -493,7 +509,7 @@ export default {
                     wallet_owner: this.transaction.wallet_owner,
                     remarks: this.transaction.remarks,
                 } : {
-                    receipt_no: null,
+                    receipt_no: this.wallets.length == 1 ? this.wallets[0].new_receipt_no : null,
                     date: moment().format(moment.HTML5_FMT.DATE),
                     type: null,
                     amount: null,
@@ -506,6 +522,7 @@ export default {
                     description: null,
                     wallet_owner: null,
                     remarks: null,
+                    wallet_id: this.wallets.length > 1 ? (this.wallet ? this.wallet.id : null) : this.wallets[0].id
             },
             types: [
                 {
@@ -533,10 +550,18 @@ export default {
     computed: {
         today () {
             return moment().format(moment.HTML5_FMT.DATE)
+        },
+        walletOptions () {
+            return this.wallets.map(w => ({ value: w.id, text: w.name }))
         }
     },
     created () {
         this.fetchClassifications()
+    },
+    mounted () {
+        if (!this.transaction && this.wallets.length > 1) {
+            this.setNewReceiptNumber()
+        }
     },
     methods: {
         async fetchClassifications () {
@@ -553,6 +578,9 @@ export default {
                 this.fixed_cost_centers = classifications.fixed_cost_centers
                 this.cost_centers = classifications.cost_centers
                 this.beneficiaries = classifications.beneficiaries
+                if (this.form.wallet_owner == null) {
+                    this.form.wallet_owner = classifications.auth_user_name
+                }
                 this.loaded = true
             } catch (err) {
                 alert(err)
@@ -568,6 +596,11 @@ export default {
             if (confirm(this.$t('accounting.confirm_delete_transaction'))) {
                 this.$emit('delete')
             }
+        },
+        setNewReceiptNumber() {
+            const walletId = this.form.wallet_id
+            const wallet = this.wallets.filter(w => w.id == walletId)[0]
+            this.form.receipt_no = wallet.new_receipt_no
         }
     }
 }
