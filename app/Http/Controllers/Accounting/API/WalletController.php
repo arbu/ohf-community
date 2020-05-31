@@ -39,7 +39,7 @@ class WalletController extends Controller
     {
         $wallet = new Wallet();
         $wallet->fill($request->all());
-        $wallet->is_default = isset($request->is_default);
+        $wallet->is_default = isset($request->is_default) && $request->is_default;
         $wallet->save();
 
         if ($request->user()->can('viewAny', Role::class)) {
@@ -59,7 +59,7 @@ class WalletController extends Controller
      */
     public function show(Wallet $wallet)
     {
-        return new WalletResource($wallet);
+        return new WalletResource($wallet->load('roles'));
     }
 
     /**
@@ -72,7 +72,7 @@ class WalletController extends Controller
     public function update(StoreWallet $request, Wallet $wallet)
     {
         $wallet->fill($request->all());
-        $wallet->is_default = isset($request->is_default);
+        $wallet->is_default = isset($request->is_default) && $request->is_default;
         $wallet->save();
 
         if ($request->user()->can('viewAny', Role::class)) {

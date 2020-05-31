@@ -1,41 +1,42 @@
 <template>
-    <div>
-        <b-table
-            :fields="fields"
-            :items="fetchData"
-            small
-            bordered
-            striped
-            hover
-            responsive
-            :empty-text="$t('accounting.no_wallets_found')"
-            :busy.sync="isBusy"
-            show-empty
-        >
-            <!-- Busy  -->
-            <div slot="table-busy" class="text-center my-2">
-                <b-spinner class="align-middle"></b-spinner>
-                <strong>{{ $t('app.loading') }}</strong>
-            </div>
+    <b-table
+        :fields="fields"
+        :items="fetchData"
+        small
+        bordered
+        striped
+        hover
+        responsive
+        :empty-text="$t('accounting.no_wallets_found')"
+        :busy.sync="isBusy"
+        show-empty
+    >
+        <!-- Busy  -->
+        <div slot="table-busy" class="text-center my-2">
+            <b-spinner class="align-middle"></b-spinner>
+            <strong>{{ $t('app.loading') }}</strong>
+        </div>
 
-            <template v-slot:cell(name)="data">
-                <b-link
-                    :href="route('accounting.wallets.edit', data.item.id)"
-                >
-                    {{ data.value }}
-                </b-link>
-            </template>
+        <!-- Name -->
+        <template v-slot:cell(name)="data">
+            <b-link
+                :href="data.item.can_update ? route('accounting.wallets.edit', data.item.id) : null"
+            >
+                {{ data.value }}
+            </b-link>
+        </template>
 
-            <template v-slot:cell(is_default)="data">
-                <font-awesome-icon :icon="data.value ? 'check' : 'times'" />
-            </template>
+        <!-- Is default -->
+        <template v-slot:cell(is_default)="data">
+            <font-awesome-icon :icon="data.value ? 'check' : 'times'" />
+        </template>
 
-            <template v-slot:cell(is_restricted)="data">
-                <font-awesome-icon :icon="data.value ? 'check' : 'times'" />
-            </template>
+        <!-- Is restricted -->
+        <template v-slot:cell(is_restricted)="data">
+            <font-awesome-icon :icon="data.item.roles.length > 0 ? 'check' : 'times'" />
+        </template>
 
-        </b-table>
-    </div>
+    </b-table>
 </template>
 
 <script>
@@ -71,7 +72,7 @@ export default {
                 {
                     key: 'is_restricted',
                     label: this.$t('app.restricted'),
-                    class: 'fit text-center'
+                    class: 'fit text-center',
                 },
                 {
                     key: 'latest_activity',
