@@ -38,5 +38,9 @@ export default {
     async undoExternalBooking (transactionId) {
         const url = route('api.accounting.transactions.undoBooking', transactionId)
         return await api.put(url)
-    }
+    },
+    async fetchSummary (params = {}) {
+        const url = route('api.accounting.transactions.summary', params)
+        return await api.get(url)
+    },
 }

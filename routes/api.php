@@ -187,6 +187,10 @@ Route::middleware(['language', 'auth'])
         Route::put('transactions/{transaction}/undoBooking', 'MoneyTransactionsController@undoBooking')
             ->name('transactions.undoBooking');
 
+        // Summary
+        Route::get('transactions/summary', 'SummaryController@summary')
+            ->name('transactions.summary');
+
         // Transactions
         Route::apiResource('transactions', 'MoneyTransactionsController');
 
