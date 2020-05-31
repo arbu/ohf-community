@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Accounting;
 
-use App\Exceptions\ConfigurationException;
 use App\Http\Controllers\Controller;
 use App\Models\Accounting\MoneyTransaction;
 use App\Services\Accounting\CurrentWalletService;
@@ -13,70 +12,24 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Collection;
 
 class WeblingApiController extends Controller
 {
     /**
      * Display a listing of the resource.
+     *
      * @return Response
      */
     public function index()
     {
         $this->authorize('book-accounting-transactions-externally');
 
-        setlocale(LC_TIME, \App::getLocale());
-
-        try {
-            $periods = Period::all()
-                ->where('state', 'open')
-                ->mapWithKeys(fn ($period) => [
-                    $period->id => (object) [
-                        'title' => $period->title,
-                        'from' => $period->from,
-                        'to' => $period->to,
-                        'months' => self::getMonthsForPeriod($period->from, $period->to),
-                    ],
-                ]);
-        } catch (ConnectionException|ConfigurationException $e) {
-            session()->now('error', $e->getMessage());
-            $periods = collect();
-        }
-        return view('accounting.webling.index', [
-            'periods' => $periods,
-        ]);
-    }
-
-    private static function getMonthsForPeriod($from, $to): Collection
-    {
-        $wallet = resolve(CurrentWalletService::class)->get();
-        $monthsWithTransactions = MoneyTransaction::query()
-            ->forWallet($wallet)
-            ->forDateRange($from, $to)
-            ->notBooked()
-            ->selectRaw('MONTH(date) as month')
-            ->selectRaw('YEAR(date) as year')
-            ->groupByRaw('MONTH(date)')
-            ->groupByRaw('YEAR(date)')
-            ->orderBy('year', 'asc')
-            ->orderBy('month', 'asc')
-            ->get();
-
-        return $monthsWithTransactions->map(function ($e) use ($wallet) {
-                $date = Carbon::createFromDate($e->year, $e->month, 1);
-                return (object) [
-                    'transactions' => MoneyTransaction::query()
-                        ->forWallet($wallet)
-                        ->forDateRange($date, $date->clone()->endOfMonth())
-                        ->notBooked()
-                        ->count(),
-                    'date' => $date,
-                ];
-        });
+        return view('accounting.webling.index');
     }
 
     /**
      * Display a listing of the resource.
+     *
      * @return Response
      */
     public function prepare(Request $request, CurrentWalletService $currentWallet)

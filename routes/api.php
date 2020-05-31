@@ -210,6 +210,16 @@ Route::middleware(['language', 'auth'])
 
         // Wallets
         Route::apiResource('wallets', 'WalletController');
+
+        // Webling
+        Route::get('webling', 'WeblingApiController@index')
+            ->name('webling.index');
+        // Route::get('webling/prepare', 'WeblingApiController@prepare')
+        //     ->name('webling.prepare');
+        // Route::post('webling', 'WeblingApiController@store')
+        //     ->name('webling.store');
+        // Route::get('webling/sync', 'WeblingApiController@sync')
+        //     ->name('webling.sync');
     });
 
 //
