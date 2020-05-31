@@ -77,6 +77,7 @@ class WeblingApiController extends Controller
 
     /**
      * Display a listing of the resource.
+     *
      * @return Response
      */
     public function prepare(Request $request, CurrentWalletService $currentWallet)
@@ -101,17 +102,10 @@ class WeblingApiController extends Controller
 
         return response()->json([
             'period' => $period,
-            'from' => new Carbon($request->from),
-            'to' => new Carbon($request->to),
             'transactions' => $transactions,
             'assetsSelect' => $hasTransactions ? $this->getAccountSelectArray($accountGroups, 'assets') : [],
             'incomeSelect' => $hasTransactions ? $this->getAccountSelectArray($accountGroups, 'income') : [],
             'expenseSelect' => $hasTransactions ? $this->getAccountSelectArray($accountGroups, 'expense') : [],
-            'actions' => [
-                'ignore' => __('app.ignore'),
-                'book' => __('accounting.book'),
-            ],
-            'defaultAction' => 'ignore',
         ]);
     }
 
@@ -133,7 +127,7 @@ class WeblingApiController extends Controller
                 'integer',
                 function ($attribute, $value, $fail) {
                     $period = Period::find($value);
-                    if ($period == null) {
+                    if ($period === null) {
                         return $fail('Period does not exist.');
                     }
                     if ($period->state != 'open') {

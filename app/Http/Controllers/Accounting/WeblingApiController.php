@@ -32,50 +32,17 @@ class WeblingApiController extends Controller
      *
      * @return Response
      */
-    public function prepare(Request $request, CurrentWalletService $currentWallet)
+    public function prepare(Request $request)
     {
         $this->authorize('book-accounting-transactions-externally');
 
         $this->validateRequest($request);
 
-        $period = Period::find($request->period);
-
-        $transactions = MoneyTransaction::query()
-            ->forWallet($currentWallet->get())
-            ->forDateRange($request->from, $request->to)
-            ->forDateRange($period->from, $period->to)
-            ->notBooked()
-            ->orderBy('date', 'asc')
-            ->get();
-        $hasTransactions = ! $transactions->isEmpty();
-        if ($hasTransactions) {
-            $accountGroups = $period->accountGroups();
-        }
-
         return view('accounting.webling.prepare', [
-            'period' => $period,
-            'from' => new Carbon($request->from),
-            'to' => new Carbon($request->to),
-            'transactions' => $transactions,
-            'assetsSelect' => $hasTransactions ? $this->getAccountSelectArray($accountGroups, 'assets') : [],
-            'incomeSelect' => $hasTransactions ? $this->getAccountSelectArray($accountGroups, 'income') : [],
-            'expenseSelect' => $hasTransactions ? $this->getAccountSelectArray($accountGroups, 'expense') : [],
-            'actions' => [
-                'ignore' => __('app.ignore'),
-                'book' => __('accounting.book'),
-            ],
-            'defaultAction' => 'ignore',
+            'period_id' => $request->period,
+            'from' => $request->from,
+            'to' => $request->to,
         ]);
-    }
-
-    private function getAccountSelectArray($accountGroups, $type)
-    {
-        return $accountGroups->where('type', $type)
-            ->mapWithKeys(fn ($accountGroup) => [
-                $accountGroup->title => $accountGroup->accounts()
-                    ->mapWithKeys(fn ($account) => [ $account->id => $account->title ])
-                    ->toArray(),
-            ]);
     }
 
     private function validateRequest($request)
@@ -86,7 +53,7 @@ class WeblingApiController extends Controller
                 'integer',
                 function ($attribute, $value, $fail) {
                     $period = Period::find($value);
-                    if ($period == null) {
+                    if ($period === null) {
                         return $fail('Period does not exist.');
                     }
                     if ($period->state != 'open') {

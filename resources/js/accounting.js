@@ -29,6 +29,7 @@ import WalletIndexPage from '@/pages/accounting/WalletIndexPage'
 import WalletEditPage from '@/pages/accounting/WalletEditPage'
 import WalletCreatePage from '@/pages/accounting/WalletCreatePage'
 import WeblingIndexPage from '@/pages/accounting/WeblingIndexPage'
+import WeblingPreparePage from '@/pages/accounting/WeblingPreparePage'
 
 new Vue({
     el: '#accounting-app',
@@ -46,6 +47,7 @@ new Vue({
         WalletIndexPage,
         WalletEditPage,
         WalletCreatePage,
-        WeblingIndexPage
+        WeblingIndexPage,
+        WeblingPreparePage
     }
 });
