@@ -159,8 +159,6 @@ Route::middleware(['language', 'auth'])
         // Transactions
         Route::get('transactions/export', 'MoneyTransactionsController@export')
             ->name('transactions.export');
-        Route::post('transactions/doExport', 'MoneyTransactionsController@doExport')
-            ->name('transactions.doExport');
         Route::get('transactions/summary', 'SummaryController@summary')
             ->name('transactions.summary');
 

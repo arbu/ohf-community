@@ -43,4 +43,8 @@ export default {
         const url = route('api.accounting.transactions.summary', params)
         return await api.get(url)
     },
+    async fetchExportData () {
+        const url = route('api.accounting.export')
+        return await api.get(url)
+    }
 }

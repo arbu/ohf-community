@@ -201,6 +201,12 @@ Route::middleware(['language', 'auth'])
         // Classifications for filter
         Route::get('filterClassifications', 'MoneyTransactionsController@filterClassifications')
             ->name('transactions.filterClassifications');
+
+        // Export
+        Route::get('export', 'ExportController@export')
+            ->name('export');
+        Route::post('export', 'ExportController@doExport')
+            ->name('doExport');
     });
 
 //
