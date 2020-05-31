@@ -207,6 +207,9 @@ Route::middleware(['language', 'auth'])
             ->name('export');
         Route::post('export', 'ExportController@doExport')
             ->name('doExport');
+
+        // Wallets
+        Route::apiResource('wallets', 'WalletController');
     });
 
 //

@@ -25,6 +25,7 @@ import TransactionEditPage from '@/pages/accounting/TransactionEditPage'
 import TransactionCreatePage from '@/pages/accounting/TransactionCreatePage'
 import TransactionSummaryPage from '@/pages/accounting/TransactionSummaryPage'
 import ExportPage from '@/pages/accounting/ExportPage'
+import WalletIndexPage from '@/pages/accounting/WalletIndexPage'
 
 new Vue({
     el: '#accounting-app',
@@ -38,6 +39,7 @@ new Vue({
         TransactionEditPage,
         TransactionCreatePage,
         TransactionSummaryPage,
-        ExportPage
+        ExportPage,
+        WalletIndexPage
     }
 });
