@@ -1,13 +1,11 @@
 <template>
     <div v-if="period">
 
-        <p>
-            {{ $t('accounting.the_following_transactions_in_period_can_be_booked', {
+        <p v-html="$t('accounting.the_following_transactions_in_period_can_be_booked', {
                 from: toDateString(from),
                 to: toDateString(to),
                 title: period.title
-            }) }}
-        </p>
+        })"></p>
         <template v-if="transactions.length > 0">
             <b-form @submit.stop.prevent="onSubmit">
                 <b-table-simple
@@ -34,8 +32,10 @@
                         <b-tr
                             v-for="transaction in transactions"
                             :key="transaction.id"
+                            :class="rowClass(transaction)"
                         >
-                            <b-td class="fit">
+                            <!-- Date -->
+                            <b-td class="fit align-middle">
                                 <a
                                     :href="route('accounting.transactions.show', transaction.id)"
                                     target="_blank"
@@ -44,28 +44,33 @@
                                     {{ transaction.date }}
                                 </a>
                             </b-td>
-                            <b-td class="text-success text-right fit">
+                            <!-- Amount -->
+                            <b-td class="text-success text-right fit align-middle">
                                 <template v-if="transaction.type == 'income'">
                                     {{ numberFormat(transaction.amount) }}
                                 </template>
                             </b-td>
-                            <b-td class="text-danger text-right fit">
+                            <b-td class="text-danger text-right fit align-middle">
                                 <template v-if="transaction.type == 'spending'">
                                     {{ numberFormat(transaction.amount) }}
                                 </template>
                             </b-td>
-                            <b-td>
+                            <!-- Posting test -->
+                            <b-td class="align-middle">
                                 <b-form-input
-                                     :name="`posting_text[${transaction.id}]`"
-                                     :value="postingText(transaction)"
-                                     :placeholder="$t('accounting.posting_text')"
+                                    v-model="transaction.posting_text"
+                                    :placeholder="$t('accounting.posting_text')"
+                                    trim
                                 />
                             </b-td>
-                            <b-td style="max-width: 8em">
+                            <!-- Debit side -->
+                            <b-td
+                                class="align-middle"
+                                style="max-width: 8em"
+                            >
                                 <b-form-select
-                                    v-model="selected"
                                     :options="transaction.type == 'income' ? assetsSelect : expenseSelect"
-                                    :name="`debit_side[${transaction.id}]`"
+                                    v-model="transaction.debit_side"
                                 >
                                     <template v-slot:first>
                                         <b-form-select-option :value="null">
@@ -74,11 +79,14 @@
                                     </template>
                                 </b-form-select>
                             </b-td>
-                            <b-td style="max-width: 8em">
+                            <!-- Credit side -->
+                            <b-td
+                                class="align-middle"
+                                style="max-width: 8em"
+                            >
                                 <b-form-select
-                                    v-model="selected"
                                     :options="transaction.type == 'income' ? incomeSelect : assetsSelect"
-                                    :name="`credit_side[${transaction.id}]`"
+                                    v-model="transaction.credit_side"
                                 >
                                     <template v-slot:first>
                                         <b-form-select-option :value="null">
@@ -87,16 +95,25 @@
                                     </template>
                                 </b-form-select>
                             </b-td>
-                            <b-td class="fit">
+                            <!-- Receipt no -->
+                            <b-td class="fit align-middle">
                                 {{ transaction.receipt_no }}
                             </b-td>
-                            <b-td class="fit">
-                                <b-form-radio-group
-                                    :options="action"
-                                    :Value="defaultAction"
-                                    stacked
-                                    :name="`action[${transaction.id}]`"
-                                />
+                            <!-- Action -->
+                            <b-td class="fit align-middle">
+                                <b-form-radio
+                                    v-model="transaction.action"
+                                    value="ignore"
+                                >
+                                    {{ $t('app.ignore') }}
+                                </b-form-radio>
+                                <b-form-radio
+                                    v-model="transaction.action"
+                                    value="book"
+                                    :disabled="!transaction.debit_side || !transaction.credit_side || !transaction.posting_text"
+                                >
+                                    {{ $t('accounting.book') }}
+                                </b-form-radio>
                             </b-td>
                         </b-tr>
                     </b-tbody>
@@ -105,7 +122,7 @@
                     <b-button
                         type="submit"
                         variant="primary"
-                        :disabled="isBusy"
+                        :disabled="isBusy || transactions.filter(t => t.action == 'book').length == 0"
                     >
                         <font-awesome-icon icon="check" />
                         {{ $t('app.submit') }}
@@ -130,6 +147,7 @@
 import moment from 'moment'
 import numeral from 'numeral'
 import weblingApi from '@/api/accounting/webling'
+import showSnackbar from '@/snackbar'
 export default {
     props: {
         periodId: {
@@ -150,16 +168,6 @@ export default {
             assetsSelect: [],
             expenseSelect: [],
             incomeSelect: [],
-            actions: [
-                {
-                    value: 'ignore',
-                    text: this.$t('app.ignore')
-                },
-                {
-                    value: 'book',
-                    text: this.$t('app.book')
-                }
-            ],
             defaultAction: 'ignore',
         }
     },
@@ -171,31 +179,37 @@ export default {
             try {
                 let data = await weblingApi.fetchPrepare(this.periodId, this.from, this.to)
                 this.period = data.period
-                this.transactions = data.transactions
-                this.assetsSelect = data.assetsSelect.map(e => {
-
+                this.transactions = data.transactions.map(t => {
+                    t.posting_text = this.postingText(t)
+                    t.debit_side = null
+                    t.credit_side = null
+                    t.action = this.defaultAction
+                    return t
                 })
-                this.expenseSelect = data.expenseSelect.map(e => ({
-
+                this.assetsSelect = Object.entries(data.assetsSelect).map(e => ({
+                    label: e[0],
+                    options: Object.entries(e[1]).map(f => ({
+                        value: f[0],
+                        text: f[1]
+                    }))
                 }))
-                this.incomeSelect = data.incomeSelect.map(e => ({
-
+                this.expenseSelect = Object.entries(data.expenseSelect).map(e => ({
+                    label: e[0],
+                    options: Object.entries(e[1]).map(f => ({
+                        value: f[0],
+                        text: f[1]
+                    }))
+                }))
+                this.incomeSelect = Object.entries(data.incomeSelect).map(e => ({
+                    label: e[0],
+                    options: Object.entries(e[1]).map(f => ({
+                        value: f[0],
+                        text: f[1]
+                    }))
                 }))
             } catch (err) {
                 alert(err)
             }
-        },
-        toDateString(value) {
-            return moment(value).format(moment.HTML5_FMT.DATE)
-        },
-        onSubmit() {
-            // route('accounting.webling.store')
-            // {{ Form::hidden('period', $period->id) }}
-            // {{ Form::hidden('from', $from->toDateString()) }}
-            // {{ Form::hidden('to', $to->toDateString()) }}
-        },
-        numberFormat (value) {
-            return numeral(value).format('0,0.00')
         },
         postingText (transaction) {
             let posting_text = `${transaction.category} - `
@@ -204,6 +218,50 @@ export default {
             }
             posting_text += transaction.description
             return posting_text
+        },
+        toDateString(value) {
+            return moment(value).format(moment.HTML5_FMT.DATE)
+        },
+        numberFormat (value) {
+            return numeral(value).format('0,0.00')
+        },
+        rowClass(transaction) {
+            if (transaction.action == 'book') {
+                if (transaction.posting_text != '' && transaction.debit_side != null && transaction.credit_side != null) {
+                    return 'table-success'
+                } else {
+                    return 'table-warning'
+                }
+            } else {
+                if (transaction.posting_text != '' && transaction.debit_side != null && transaction.credit_side != null) {
+                    return 'table-secondary'
+                }
+            }
+            return null
+        },
+        async onSubmit() {
+            let selectedTransactions = this.transactions.filter(t => t.action == 'book'
+                && t.debit_side != null
+                && t.credit_side != null
+                && t.posting_text.length > 0)
+            if (selectedTransactions.length > 0) {
+                let payload = selectedTransactions.map(t => ({
+                    id: t.id,
+                    action: t.action,
+                    posting_text: t.posting_text,
+                    debit_side: t.debit_side,
+                    credit_side: t.credit_side
+                }))
+                try {
+                    let data = await weblingApi.store(this.periodId, payload)
+                    showSnackbar(data.message)
+                    document.location.href = this.route('accounting.webling.index')
+                } catch (err) {
+                    alert(err)
+                }
+            } else {
+                alert(this.$t('accounting.no_transactions_selected'))
+            }
         }
     }
 }

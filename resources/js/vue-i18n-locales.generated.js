@@ -67,7 +67,8 @@ export default {
             "cost_centers": "Kostenstellen",
             "no_cost_center": "Keine Kostenstelle",
             "invalid_cost_center_x": "Ungültige Kostenstelle '{cost_center}'",
-            "use_cost_centers": "Kostenstellen verwenden"
+            "use_cost_centers": "Kostenstellen verwenden",
+            "no_transactions_selected": "Keine Transaktionen ausgewählt."
         },
         "app": {
             "validation_failed": "Validierung fehlgeschlagen, es wurden ungültige Werte eingegeben!",
@@ -1224,7 +1225,8 @@ export default {
             "cost_centers": "Cost Centers",
             "no_cost_center": "No cost center",
             "invalid_cost_center_x": "Invalid cost center '{cost_center}'",
-            "use_cost_centers": "Use cost centers"
+            "use_cost_centers": "Use cost centers",
+            "no_transactions_selected": "No transaction selected."
         },
         "app": {
             "validation_failed": "Validation failed, you have entered invalid values!",

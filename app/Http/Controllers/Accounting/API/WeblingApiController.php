@@ -14,6 +14,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 
 class WeblingApiController extends Controller
 {
@@ -84,7 +85,29 @@ class WeblingApiController extends Controller
     {
         $this->authorize('book-accounting-transactions-externally');
 
-        $this->validateRequest($request);
+        $request->validate([
+            'period' => [
+                'required',
+                'integer',
+                function ($attribute, $value, $fail) {
+                    $period = Period::find($value);
+                    if ($period === null) {
+                        return $fail('Period does not exist.');
+                    }
+                    if ($period->state != 'open') {
+                        return $fail('Period \'' . $period->title . '\' is not open.');
+                    }
+                },
+            ],
+            'from' => [
+                'required',
+                'date',
+            ],
+            'to' => [
+                'required',
+                'date',
+            ],
+        ]);
 
         $period = Period::find($request->period);
 
@@ -119,8 +142,10 @@ class WeblingApiController extends Controller
             ]);
     }
 
-    private function validateRequest($request)
+    public function store(Request $request)
     {
+        $this->authorize('book-accounting-transactions-externally');
+
         $request->validate([
             'period' => [
                 'required',
@@ -135,33 +160,20 @@ class WeblingApiController extends Controller
                     }
                 },
             ],
-            'from' => [
-                'required',
-                'date',
-            ],
-            'to' => [
-                'required',
-                'date',
-            ],
         ]);
-    }
-
-    public function store(Request $request)
-    {
-        $this->authorize('book-accounting-transactions-externally');
-
-        $this->validateRequest($request);
 
         $period = Period::find($request->period);
 
-        $preparedTransactions = collect($request->input('action', []))
-            ->filter(fn ($v, $id) => $v == 'book'
-                && ! empty($request->get('posting_text')[$id])
-                && ! empty($request->get('debit_side')[$id])
-                && ! empty($request->get('credit_side')[$id])
+        ;
+
+        $preparedTransactions = collect($request->json()->all())
+            ->filter(fn ($data) => $data['action'] == 'book'
+                && $data['id'] != null
+                && ! empty($data['posting_text'])
+                && ! empty($data['debit_side'])
+                && ! empty($data['credit_side'])
             )
-            ->keys()
-            ->map(fn ($id) => self::mapTransactionById($id, $request, $period))
+            ->map(fn ($data) => self::mapTransaction($data, $period))
             ->filter();
 
             $bookedTransactions = [];
@@ -174,27 +186,28 @@ class WeblingApiController extends Controller
                     $transaction->save();
                     $bookedTransactions[] = $transaction->id;
                 } catch (Exception $e) {
-                    return redirect()->back()
-                        ->withInput()
-                        ->with('error', $e->getMessage());
+                    Log::error($e);
+                    return response()->json([
+                        'message', $e->getMessage(),
+                    ], Response::HTTP_INTERNAL_SERVER_ERROR);
                 }
             }
 
-        return redirect()
-            ->route('accounting.webling.index')
-            ->with('info', __('accounting.num_transactions_booked', ['num' => count($bookedTransactions)]));
+        return response()->json([
+            'message' => __('accounting.num_transactions_booked', ['num' => count($bookedTransactions)]),
+        ]);
     }
 
-    private static function mapTransactionById(int $id, Request $request, Period $period)
+    private static function mapTransaction($data, Period $period)
     {
-        $transaction = MoneyTransaction::find($id);
+        $transaction = MoneyTransaction::find($data['id']);
         if ($transaction != null) {
             return [
                 'transaction' => $transaction,
                 'request' => [
                     'properties' => [
                         'date' => $transaction->date,
-                        'title' => $request->get('posting_text')[$id],
+                        'title' => $data['posting_text'],
                     ],
                     'children' => [
                         'entry' => [
@@ -205,10 +218,10 @@ class WeblingApiController extends Controller
                                 ],
                                 'links' => [
                                     'credit' => [
-                                        $request->get('credit_side')[$id],
+                                        $data['credit_side'],
                                     ],
                                     'debit' => [
-                                        $request->get('debit_side')[$id],
+                                        $data['debit_side'],
                                     ],
                                 ],
                             ],
@@ -221,60 +234,5 @@ class WeblingApiController extends Controller
             ];
         }
         return null;
-    }
-
-    public function sync(Request $request, CurrentWalletService $currentWallet)
-    {
-        $this->authorize('book-accounting-transactions-externally');
-
-        $request->validate([
-            'period' => [
-                'required',
-                'integer',
-                function ($attribute, $value, $fail) {
-                    $period = Period::find($value);
-                    if ($period == null) {
-                        return $fail('Period does not exist.');
-                    }
-                },
-            ],
-        ]);
-
-        $synced = 0;
-        try {
-            $period = Period::find($request->period);
-            $entryGroups = $period->entryGroups();
-            $entryGroups = collect($entryGroups)
-                // ->slice(0, 3)
-                ->map(function ($entryGroup) {
-                    $entryGroup->entries = $entryGroup->entries();
-                    return $entryGroup;
-                });
-
-            foreach ($entryGroups as $entryGroup) {
-                foreach ($entryGroup->entries as $entry) {
-                    $transaction = MoneyTransaction::query()
-                        ->whereDate('date', $entryGroup->date)
-                        ->forWallet($currentWallet->get())
-                        ->notBooked()
-                        ->where('receipt_no', $entry->receipt)
-                        ->first();
-                    if ($transaction != null) {
-                        $transaction->booked = true;
-                        $transaction->external_id = $entryGroup->id;
-                        $transaction->save();
-                        $synced++;
-                    }
-                }
-            }
-
-        } catch (ConnectionException $e) {
-            session()->now('error', $e->getMessage());
-            // $transactions = [];
-        }
-
-        return redirect()
-            ->route('accounting.webling.index')
-            ->with('info', __('accounting.num_transactions_synced', ['num' => $synced]));
     }
 }

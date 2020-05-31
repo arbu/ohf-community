@@ -68,4 +68,5 @@ return [
     'no_cost_center' => 'Keine Kostenstelle',
     'invalid_cost_center_x' => 'Ungültige Kostenstelle \':cost_center\'',
     'use_cost_centers' => 'Kostenstellen verwenden',
+    'no_transactions_selected' => 'Keine Transaktionen ausgewählt.',
 ];

@@ -216,10 +216,8 @@ Route::middleware(['language', 'auth'])
             ->name('webling.index');
         Route::get('webling/prepare', 'WeblingApiController@prepare')
             ->name('webling.prepare');
-        // Route::post('webling', 'WeblingApiController@store')
-        //     ->name('webling.store');
-        // Route::get('webling/sync', 'WeblingApiController@sync')
-        //     ->name('webling.sync');
+        Route::post('webling', 'WeblingApiController@store')
+            ->name('webling.store');
     });
 
 //

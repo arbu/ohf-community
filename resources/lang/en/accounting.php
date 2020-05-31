@@ -68,4 +68,5 @@ return [
     'no_cost_center' => 'No cost center',
     'invalid_cost_center_x' => 'Invalid cost center \':cost_center\'',
     'use_cost_centers' => 'Use cost centers',
+    'no_transactions_selected' => 'No transaction selected.',
 ];
