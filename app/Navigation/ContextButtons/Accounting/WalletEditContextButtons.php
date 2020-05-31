@@ -13,13 +13,14 @@ class WalletEditContextButtons implements ContextButtons
     {
         $wallet = $view->getData()['wallet'];
         return [
-            'delete' => [
-                'url' => route('accounting.wallets.destroy', $wallet),
-                'caption' => __('app.delete'),
-                'icon' => 'trash',
-                'authorized' => Auth::user()->can('delete', $wallet),
-                'confirmation' => __('accounting.confirm_delete_wallet'),
-            ],
+            // TODO
+            // 'delete' => [
+            //     'url' => route('accounting.wallets.destroy', $wallet),
+            //     'caption' => __('app.delete'),
+            //     'icon' => 'trash',
+            //     'authorized' => Auth::user()->can('delete', $wallet),
+            //     'confirmation' => __('accounting.confirm_delete_wallet'),
+            // ],
             'back' => [
                 'url' => route('accounting.wallets.index'),
                 'caption' => __('app.cancel'),

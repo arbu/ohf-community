@@ -169,7 +169,8 @@ Route::middleware(['language', 'auth'])
             ->name('wallets.change');
         Route::get('wallets/change/{wallet}', 'WalletController@doChange')
             ->name('wallets.doChange');
-        Route::resource('wallets', 'WalletController');
+        Route::resource('wallets', 'WalletController')
+            ->only('index', 'create', 'edit');
 
         // Webling
         Route::get('webling', 'WeblingApiController@index')
