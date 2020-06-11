@@ -69,6 +69,11 @@
 import transactionsApi from '@/api/accounting/transactions'
 import { postRequest } from '@/utils/form'
 export default {
+    props: {
+        walletId: {
+            required: true
+        }
+    },
     data () {
         return {
             loaded: false,
@@ -87,7 +92,7 @@ export default {
     },
     async created () {
         try {
-            let data = await transactionsApi.fetchExportData()
+            let data = await transactionsApi.fetchExportData(this.walletId)
             this.form.format = data.format
             this.form.columns = data.columns
             this.form.grouping = data.grouping
@@ -117,7 +122,7 @@ export default {
         async onSubmit () {
             this.isBusy = true
             try {
-                postRequest(this.route('api.accounting.doExport'), this.form)
+                postRequest(this.route('api.accounting.wallets.transactions.doExport', this.walletId), this.form)
             } catch (err) {
                 alert(err)
             }

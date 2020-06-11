@@ -10,7 +10,7 @@ class TransactionEditContextButtons implements ContextButtons
 {
     public function getItems(View $view): array
     {
-        // $transaction = $view->getData()['transaction'];
+        $transaction = $view->getData()['transaction'];
         return [
             // TODO
             // 'delete' => [
@@ -21,7 +21,7 @@ class TransactionEditContextButtons implements ContextButtons
             //     'confirmation' => __('accounting.confirm_delete_transaction'),
             // ],
             'back' => [
-                'url' => route('accounting.transactions.index'),
+                'url' => route('accounting.transactions.show', $transaction),
                 'caption' => __('app.cancel'),
                 'icon' => 'times-circle',
                 'authorized' => request()->user()->can('viewAny', MoneyTransaction::class),

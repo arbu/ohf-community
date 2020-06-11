@@ -19,12 +19,12 @@ class WalletChangeContextButtons implements ContextButtons
                 'icon' => 'cogs',
                 'authorized' => Gate::allows('configure-accounting'),
             ],
-            'back' => [
-                'url' => route('accounting.transactions.index'),
-                'caption' => __('app.cancel'),
-                'icon' => 'times-circle',
-                'authorized' => Auth::user()->can('viewAny', MoneyTransaction::class),
-            ],
+            // 'back' => [
+            //     'url' => route('accounting.transactions.index'),
+            //     'caption' => __('app.cancel'),
+            //     'icon' => 'times-circle',
+            //     'authorized' => Auth::user()->can('viewAny', MoneyTransaction::class),
+            // ],
         ];
     }
 

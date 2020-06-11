@@ -77,6 +77,13 @@ class Wallet extends Model
         return $this->calculatedSum() ?? 0;
     }
 
+    public function getNextFreeReceiptNumberAttribute()
+    {
+        return $this->transactions()
+            ->selectRaw('MAX(receipt_no) AS max_val')
+            ->value('max_val') + 1;
+    }
+
     public function getLatestActivityAttribute(): ?Carbon
     {
         return optional($this->transactions()

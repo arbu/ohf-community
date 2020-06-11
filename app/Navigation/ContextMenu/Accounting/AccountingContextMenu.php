@@ -3,13 +3,14 @@
 namespace App\Navigation\ContextMenu\Accounting;
 
 use App\Navigation\ContextMenu\ContextMenu;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\View\View;
 
 class AccountingContextMenu implements ContextMenu
 {
-    public function getItems(): array
+    public function getItems(View $view): array
     {
+        $wallet = $view->getData()['wallet'];
         return [
             'wallets' => [
                 'url' => route('accounting.wallets.index'),
@@ -18,10 +19,10 @@ class AccountingContextMenu implements ContextMenu
                 'authorized' => Gate::allows('configure-accounting'),
             ],
             'book' => [
-                'url' => route('accounting.webling.index'),
+                'url' => route('accounting.webling.index', $wallet),
                 'caption' => __('accounting.book_to_webling'),
                 'icon' => 'cloud-upload-alt',
-                'authorized' => Auth::user()->can('book-accounting-transactions-externally'),
+                'authorized' => request()->user()->can('book-accounting-transactions-externally'),
             ],
         ];
     }

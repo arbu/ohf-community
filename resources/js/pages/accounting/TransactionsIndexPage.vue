@@ -1,5 +1,5 @@
 <template>
-    <div v-if="wallet">
+    <div v-if="wallet && settings">
 
         <!-- Alert  -->
         <alert-with-retry
@@ -11,32 +11,23 @@
 
             <!-- Wallet selection -->
             <div class="mb-3">
-                <template>
-                    <font-awesome-icon icon="wallet" />
-                    <span class="d-none d-sm-inline">
-                        <template v-if="has_multiple_wallets">
-                            {{ wallet.name }}:
-                        </template>
-                        <template v-else>
-                            {{ $t('accounting.wallet') }}:
-                        </template>
-                    </span>
-                    <u>{{ numberFormat(wallet.amount) }}</u>
-                </template>
-                <template v-if="has_multiple_wallets">
-                    <a
-                        :href="route('accounting.wallets.change')"
-                        class="d-none d-sm-inline"
-                    >
-                        {{ $t('app.change') }}
-                    </a>
-                    <a
-                        :href="route('accounting.wallets.change')"
-                        class="d-inline d-sm-none btn btn-sm"
-                    >
-                        <font-awesome-icon icon="folder-open" />
-                    </a>
-                </template>
+                <font-awesome-icon icon="wallet" />
+                <span class="d-none d-sm-inline">
+                    {{ $t('accounting.wallet') }}: {{ wallet.name }}:
+                </span>
+                <u>{{ numberFormat(wallet.amount) }}</u>
+                <a
+                    :href="route('accounting.wallets.change')"
+                    class="d-none d-sm-inline"
+                >
+                    {{ $t('app.change') }}
+                </a>
+                <a
+                    :href="route('accounting.wallets.change')"
+                    class="d-inline d-sm-none btn btn-sm"
+                >
+                    <font-awesome-icon icon="folder-open" />
+                </a>
             </div>
 
             <!-- Filter -->
@@ -182,6 +173,7 @@
 import numeral from 'numeral'
 import moment from 'moment'
 import transactionsApi from '@/api/accounting/transactions'
+import walletsApi from '@/api/accounting/wallets'
 import FilterFormModal from '@/components/accounting/FilterFormModal'
 import ReceiptPictureButton from '@/components/accounting/ReceiptPictureButton'
 import AlertWithRetry from '@/components/alerts/AlertWithRetry'
@@ -193,15 +185,17 @@ export default {
         AlertWithRetry,
         TablePagination
     },
+    props: {
+        walletId: {
+            required: true
+        }
+    },
     data () {
         const id = 'accountingTransactionsTable'
         return {
             id: id,
             wallet: null,
-            has_multiple_wallets: null,
-            use_secondary_categories: false,
-            use_locations: false,
-            use_cost_centers: false,
+            settings: null,
             isBusy: false,
             filter: sessionStorage.getItem(id + '.filter')
                 ? JSON.parse(sessionStorage.getItem(id + '.filter'))
@@ -272,7 +266,7 @@ export default {
                 {
                     key: 'secondary_category',
                     label: this.$t('app.secondary_category'),
-                    class: !this.use_secondary_categories ? 'd-none' : null,
+                    class: !this.settings.use_secondary_categories ? 'd-none' : null,
                     tdClass: 'align-middle',
                     sortable: true
                 },
@@ -285,14 +279,14 @@ export default {
                 {
                     key: 'location',
                     label: this.$t('app.location'),
-                    class: !this.use_locations ? 'd-none' : null,
+                    class: !this.settings.use_locations ? 'd-none' : null,
                     tdClass: 'align-middle',
                     sortable: true
                 },
                 {
                     key: 'cost_center',
                     label: this.$t('accounting.cost_center'),
-                    class: !this.use_cost_centers ? 'd-none' : null,
+                    class: !this.settings.use_cost_centers ? 'd-none' : null,
                     tdClass: 'align-middle',
                     sortable: true
                 },
@@ -330,12 +324,11 @@ export default {
     },
     methods: {
         async fetchWallet () {
-            let data = await transactionsApi.fetchCurrentWallet()
+            let data = await walletsApi.find(this.walletId)
             this.wallet = data.data
-            this.has_multiple_wallets = data.meta.has_multiple_wallets
-            this.use_secondary_categories = data.meta.use_secondary_categories
-            this.use_locations = data.meta.use_locations
-            this.use_cost_centers = data.meta.use_cost_centers
+
+            let settings = await transactionsApi.fetchSettings()
+            this.settings = settings
         },
         async fetchData (ctx) {
             try {

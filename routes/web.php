@@ -157,25 +157,27 @@ Route::middleware(['language', 'auth'])
     ->group(function () {
 
         // Transactions
-        Route::get('transactions/export', 'MoneyTransactionsController@export')
-            ->name('transactions.export');
-        Route::get('transactions/summary', 'SummaryController@summary')
-            ->name('transactions.summary');
+        Route::get('wallets/{wallet}/transactions/export', 'MoneyTransactionsController@export')
+            ->name('wallets.transactions.export');
 
+        Route::get('wallets/{wallet}/transactions/summary', 'MoneyTransactionsController@summary')
+            ->name('wallets.transactions.summary');
+
+        Route::resource('wallets.transactions', 'MoneyTransactionsController')
+            ->only('index', 'create');
         Route::resource('transactions', 'MoneyTransactionsController')
-            ->except('store', 'update', 'destroy');
+            ->only('show', 'edit');
 
-        Route::get('wallets/change', 'WalletController@change')
-            ->name('wallets.change');
-        Route::get('wallets/change/{wallet}', 'WalletController@doChange')
-            ->name('wallets.doChange');
+        Route::get('transactions', 'WalletController@change')
+            ->name('transactions.index');
+
         Route::resource('wallets', 'WalletController')
             ->only('index', 'create', 'edit');
 
         // Webling
-        Route::get('webling', 'WeblingApiController@index')
+        Route::get('wallets/{wallet}/transactions/webling', 'WeblingApiController@index')
             ->name('webling.index');
-        Route::get('webling/prepare', 'WeblingApiController@prepare')
+        Route::get('wallets/{wallet}/transactions/webling/prepare', 'WeblingApiController@prepare')
             ->name('webling.prepare');
     });
 

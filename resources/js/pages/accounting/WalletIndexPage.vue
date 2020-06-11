@@ -26,6 +26,15 @@
             </b-link>
         </template>
 
+        <!-- Name -->
+        <template v-slot:cell(num_transactions)="data">
+            <b-link
+                :href="data.item.can_update ? route('accounting.wallets.transactions.index', data.item.id) : null"
+            >
+                {{ data.value }}
+            </b-link>
+        </template>
+
         <!-- Is default -->
         <template v-slot:cell(is_default)="data">
             <font-awesome-icon :icon="data.value ? 'check' : 'times'" />

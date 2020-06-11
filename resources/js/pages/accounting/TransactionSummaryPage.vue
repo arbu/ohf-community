@@ -6,9 +6,7 @@
             <b-col sm>
                 <h2 class="mb-4">
                     {{ $t('accounting.summary') }} {{ heading }}
-                    <small v-if="has_multiple_wallets">
-                        {{ wallet.name }}
-                    </small>
+                    <small>{{ wallet.name }}</small>
                 </h2>
             </b-col>
 
@@ -163,10 +161,14 @@ import transactionsApi from '@/api/accounting/transactions'
 import numeral from 'numeral'
 import moment from 'moment'
 export default {
+    props: {
+        walletId: {
+            required: true
+        }
+    },
     data () {
         return {
             loaded: false,
-            has_multiple_wallets: false,
             wallet: {},
             months: [],
             years: {},
@@ -236,8 +238,7 @@ export default {
     methods: {
         async fetchData (params = {}) {
             try {
-                let data = await transactionsApi.fetchSummary(params)
-                this.has_multiple_wallets = data.has_multiple_wallets
+                let data = await transactionsApi.fetchSummary(this.walletId, params)
                 this.wallet = data.wallet
                 this.months = data.months
                 this.years = data.years
@@ -287,7 +288,8 @@ export default {
         },
         indexFilterUrl (key, value) {
             if (this.can_view_transactions) {
-                return this.route('accounting.transactions.index', {
+                return this.route('accounting.wallets.transactions.index', {
+                    wallet: this.walletId,
                     filter: {
                         [key]: value !== null ? value : '',
                         date_start: this.filterDateStart,

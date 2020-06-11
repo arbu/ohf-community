@@ -8,8 +8,8 @@
         <transaction-form
             :transaction="transaction"
             :disabled="isBusy"
-            @submit="updateDonation"
-            @delete="deleteDonation"
+            @submit="updateItem"
+            @delete="deleteItem"
         />
     </div>
     <p v-else>
@@ -51,7 +51,7 @@ export default {
                 this.errorText = err
             }
         },
-        async updateDonation (formData) {
+        async updateItem (formData) {
             this.isBusy = true
             try {
                 let data = await transactionsApi.update(this.id, formData)
@@ -62,12 +62,12 @@ export default {
             }
             this.isBusy = false
         },
-        async deleteDonation () {
+        async deleteItem () {
             this.isBusy = true
             try {
                 let data = await transactionsApi.delete(this.id)
                 showSnackbar(data.message)
-                window.document.location = this.route('accounting.transactions.index')
+                window.document.location = this.route('accounting.wallets.transactions.index', data.wallet_id)
             } catch (err) {
                 alert(err)
             }

@@ -5,38 +5,22 @@ namespace App\Http\Controllers\Accounting;
 use App\Http\Controllers\Controller;
 use App\Models\Accounting\MoneyTransaction;
 use App\Models\Accounting\Wallet;
-use App\Services\Accounting\CurrentWalletService;
-use App\Services\Accounting\TransactionRepository;
-use Illuminate\Http\Request;
 
 class MoneyTransactionsController extends Controller
 {
-    private TransactionRepository $repository;
-
-    public function __construct(TransactionRepository $repository)
-    {
-        $this->repository = $repository;
-    }
-
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, CurrentWalletService $currentWallet)
+    public function index(Wallet $wallet)
     {
+        $this->authorize('view', $wallet);
         $this->authorize('viewAny', MoneyTransaction::class);
 
-        if ($request->has('wallet_id')) {
-            $wallet = Wallet::find($request->input('wallet_id'));
-            $this->authorize('view', $wallet);
-            $currentWallet->set($wallet);
-        }
-        if ($currentWallet->get() === null) {
-            return redirect()->route('accounting.wallets.change');
-        }
-
-        return view('accounting.transactions.index');
+        return view('accounting.transactions.index', [
+            'wallet' => $wallet,
+        ]);
     }
 
     /**
@@ -44,26 +28,13 @@ class MoneyTransactionsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(CurrentWalletService $currentWallet)
+    public function create(Wallet $wallet)
     {
+        $this->authorize('view', $wallet);
         $this->authorize('create', MoneyTransaction::class);
-
-        $wallets = Wallet::orderBy('name')
-            ->get()
-            ->filter(fn ($wallet) => request()->user()->can('view', $wallet))
-            ->map(fn ($wallet) => [
-                'id' => $wallet->id,
-                'name' => $wallet->name,
-                'new_receipt_no' => $this->repository->getNextFreeReceiptNo($wallet),
-            ]);
-        if ($wallets->isEmpty()) {
-            return redirect()->route('accounting.wallets.change');
-        }
-        $wallet = $currentWallet->get();
 
         return view('accounting.transactions.create', [
             'wallet' => $wallet,
-            'wallets' => $wallets,
         ]);
     }
 
@@ -75,9 +46,11 @@ class MoneyTransactionsController extends Controller
      */
     public function show(MoneyTransaction $transaction)
     {
+        $this->authorize('view', $transaction->wallet);
         $this->authorize('view', $transaction);
 
         return view('accounting.transactions.show', [
+            'wallet' => $transaction->wallet,
             'transaction' => $transaction,
         ]);
     }
@@ -90,10 +63,28 @@ class MoneyTransactionsController extends Controller
      */
     public function edit(MoneyTransaction $transaction)
     {
+        $this->authorize('view', $transaction->wallet);
         $this->authorize('update', $transaction);
 
         return view('accounting.transactions.edit', [
+            'wallet' => $transaction->wallet,
             'transaction' => $transaction,
+        ]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function summary(Wallet $wallet)
+    {
+        $this->authorize('view', $wallet);
+        $this->authorize('view-accounting-summary');
+
+        return view('accounting.transactions.summary', [
+            'wallet' => $wallet,
         ]);
     }
 
@@ -102,10 +93,13 @@ class MoneyTransactionsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function export()
+    public function export(Wallet $wallet)
     {
+        $this->authorize('view', $wallet);
         $this->authorize('viewAny', MoneyTransaction::class);
 
-        return view('accounting.transactions.export');
+        return view('accounting.transactions.export', [
+            'wallet' => $wallet,
+        ]);
     }
 }

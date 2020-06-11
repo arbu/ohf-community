@@ -17,6 +17,7 @@
                         v-for="month in period.months"
                         :key="month.date"
                         :href="route('accounting.webling.prepare', {
+                            wallet: walletId,
                             period: period.id,
                             from: montStartDate(month.date),
                             to: monthEndDate(month.date)
@@ -53,6 +54,11 @@
 import moment from 'moment'
 import weblingApi from '@/api/accounting/webling'
 export default {
+    props: {
+        walletId: {
+            required: true
+        }
+    },
     data() {
         return {
             periods: null
@@ -64,7 +70,7 @@ export default {
     methods: {
         async fetchData () {
             try {
-                let data = await weblingApi.listPeriods()
+                let data = await weblingApi.listPeriods(this.walletId)
                 this.periods = data.periods
             } catch (err) {
                 alert(err)

@@ -150,6 +150,9 @@ import weblingApi from '@/api/accounting/webling'
 import showSnackbar from '@/snackbar'
 export default {
     props: {
+        walletId: {
+            required: true
+        },
         periodId: {
             required: true
         },
@@ -177,7 +180,7 @@ export default {
     methods: {
         async fetchData () {
             try {
-                let data = await weblingApi.fetchPrepare(this.periodId, this.from, this.to)
+                let data = await weblingApi.fetchPrepare(this.walletId, this.periodId, this.from, this.to)
                 this.period = data.period
                 this.transactions = data.transactions.map(t => {
                     t.posting_text = this.postingText(t)
@@ -253,7 +256,7 @@ export default {
                     credit_side: t.credit_side
                 }))
                 try {
-                    let data = await weblingApi.store(this.periodId, payload)
+                    let data = await weblingApi.store(this.walletId, this.periodId, payload)
                     showSnackbar(data.message)
                     document.location.href = this.route('accounting.webling.index')
                 } catch (err) {

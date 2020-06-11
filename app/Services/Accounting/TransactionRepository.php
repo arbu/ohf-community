@@ -8,14 +8,6 @@ use Setting;
 
 class TransactionRepository
 {
-    public function getNextFreeReceiptNo(?Wallet $wallet = null)
-    {
-        return optional(MoneyTransaction::selectRaw('MAX(receipt_no) as val')
-            ->when($wallet !== null, fn ($qry) => $qry->forWallet($wallet))
-            ->first())
-            ->val + 1;
-    }
-
     public function getCategories(?bool $onlyExisting = false): array
     {
         if (! $onlyExisting && Setting::has('accounting.transactions.categories')) {

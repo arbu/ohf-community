@@ -8,21 +8,6 @@
             v-if="loaded"
             @submit.stop.prevent="handleSubmit(onSubmit)"
         >
-
-            <!-- Wallet -->
-            <div v-if="!transaction && wallets.length > 1">
-                <b-form-group
-                    :label="$t('accounting.receipt_no')"
-                >
-                    <b-form-select
-                        v-model="form.wallet_id"
-                        :options="walletOptions"
-                        required
-                        @change="setNewReceiptNumber"
-                    />
-                </b-form-group>
-            </div>
-
             <b-form-row>
 
                 <!-- Receipt No -->
@@ -483,11 +468,14 @@ import transactionsApi from '@/api/accounting/transactions'
 import moment from 'moment'
 export default {
     props: {
-        wallets: Array,
-        wallet: Object,
         transaction: {
             type: Object,
             required: false
+        },
+        newReceiptNumber: {
+            type: Number,
+            required: false,
+            default: null
         },
         disabled: Boolean
     },
@@ -507,9 +495,9 @@ export default {
                     cost_center: this.transaction.cost_center,
                     description: this.transaction.description,
                     wallet_owner: this.transaction.wallet_owner,
-                    remarks: this.transaction.remarks,
+                    remarks: this.transaction.remarks
                 } : {
-                    receipt_no: this.wallets.length == 1 ? this.wallets[0].new_receipt_no : null,
+                    receipt_no: this.newReceiptNumber,
                     date: moment().format(moment.HTML5_FMT.DATE),
                     type: null,
                     amount: null,
@@ -521,8 +509,7 @@ export default {
                     cost_center: null,
                     description: null,
                     wallet_owner: null,
-                    remarks: null,
-                    wallet_id: this.wallets.length > 1 ? (this.wallet ? this.wallet.id : null) : this.wallets[0].id
+                    remarks: null
             },
             types: [
                 {
@@ -550,18 +537,10 @@ export default {
     computed: {
         today () {
             return moment().format(moment.HTML5_FMT.DATE)
-        },
-        walletOptions () {
-            return this.wallets.map(w => ({ value: w.id, text: w.name }))
         }
     },
     created () {
         this.fetchClassifications()
-    },
-    mounted () {
-        if (!this.transaction && this.wallets.length > 1) {
-            this.setNewReceiptNumber()
-        }
     },
     methods: {
         async fetchClassifications () {
@@ -596,11 +575,6 @@ export default {
             if (confirm(this.$t('accounting.confirm_delete_transaction'))) {
                 this.$emit('delete')
             }
-        },
-        setNewReceiptNumber() {
-            const walletId = this.form.wallet_id
-            const wallet = this.wallets.filter(w => w.id == walletId)[0]
-            this.form.receipt_no = wallet.new_receipt_no
         }
     }
 }

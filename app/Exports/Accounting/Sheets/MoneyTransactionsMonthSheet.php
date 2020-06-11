@@ -4,11 +4,16 @@ namespace App\Exports\Accounting\Sheets;
 
 use App\Exports\Accounting\BaseMoneyTransactionsExport;
 use App\Models\Accounting\MoneyTransaction;
-use App\Services\Accounting\CurrentWalletService;
+use App\Models\Accounting\Wallet;
 use Carbon\Carbon;
 
 class MoneyTransactionsMonthSheet extends BaseMoneyTransactionsExport
 {
+    /**
+     * Wallet
+     */
+    private Wallet $wallet;
+
     /**
      * Month date
      */
@@ -21,8 +26,9 @@ class MoneyTransactionsMonthSheet extends BaseMoneyTransactionsExport
      */
     private array $filter;
 
-    public function __construct(Carbon $month, ?array $filter = [])
+    public function __construct(Wallet $wallet, Carbon $month, ?array $filter = [])
     {
+        $this->wallet = $wallet;
         $this->month = $month;
         $this->filter = $filter;
     }
@@ -33,7 +39,7 @@ class MoneyTransactionsMonthSheet extends BaseMoneyTransactionsExport
         $dateTo = (clone $dateFrom)->endOfMonth();
 
         return MoneyTransaction::query()
-            ->forWallet(resolve(CurrentWalletService::class)->get())
+            ->forWallet($this->wallet)
             ->forFilter($this->filter, true)
             ->orderBy('date', 'ASC')
             ->orderBy('created_at', 'ASC')

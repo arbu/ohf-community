@@ -4,7 +4,9 @@
 
 @section('content')
     <div id="accounting-app">
-        <transaction-summary-page>
+        <transaction-summary-page
+            :wallet-id="{{ $wallet->id }}"
+        >
             @lang('app.loading')
         </transaction-summary-page>
     </div>

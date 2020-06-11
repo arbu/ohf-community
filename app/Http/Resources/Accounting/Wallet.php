@@ -21,6 +21,7 @@ class Wallet extends JsonResource
             'is_default' => $this->is_default,
             'num_transactions' => $this->whenLoaded('transactions', fn () => $this->transactions()->count()),
             'latest_activity' => $this->whenLoaded('transactions', fn () => $this->latestActivity),
+            'next_free_receipt_number' => $this->nextFreeReceiptNumber,
             'roles' => $this->whenLoaded('roles', fn () => $this->roles()->pluck('roles.id')),
             'can_update' => $request->user()->can('update', $this->resource),
             'can_delete' => $request->user()->can('delete', $this->resource),

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Accounting\API;
 use App\Exceptions\ConfigurationException;
 use App\Http\Controllers\Controller;
 use App\Models\Accounting\MoneyTransaction;
-use App\Services\Accounting\CurrentWalletService;
+use App\Models\Accounting\Wallet;
 use App\Support\Accounting\Webling\Entities\Entrygroup;
 use App\Support\Accounting\Webling\Entities\Period;
 use App\Support\Accounting\Webling\Exceptions\ConnectionException;
@@ -20,10 +20,12 @@ class WeblingApiController extends Controller
 {
     /**
      * Display a listing of the resource.
+     *
      * @return Response
      */
-    public function index()
+    public function index(Wallet $wallet)
     {
+        $this->authorize('view', $wallet);
         $this->authorize('book-accounting-transactions-externally');
 
         setlocale(LC_TIME, \App::getLocale());
@@ -36,7 +38,7 @@ class WeblingApiController extends Controller
                         'title' => $period->title,
                         'from' => $period->from,
                         'to' => $period->to,
-                        'months' => self::getMonthsForPeriod($period->from, $period->to),
+                        'months' => self::getMonthsForPeriod($wallet, $period->from, $period->to),
                 ])
                 ->values();
         } catch (ConnectionException|ConfigurationException $e) {
@@ -48,9 +50,8 @@ class WeblingApiController extends Controller
         ]);
     }
 
-    private static function getMonthsForPeriod($from, $to): Collection
+    private static function getMonthsForPeriod(Wallet $wallet, $from, $to): Collection
     {
-        $wallet = resolve(CurrentWalletService::class)->get();
         $monthsWithTransactions = MoneyTransaction::query()
             ->forWallet($wallet)
             ->forDateRange($from, $to)
@@ -81,8 +82,9 @@ class WeblingApiController extends Controller
      *
      * @return Response
      */
-    public function prepare(Request $request, CurrentWalletService $currentWallet)
+    public function prepare(Wallet $wallet, Request $request)
     {
+        $this->authorize('view', $wallet);
         $this->authorize('book-accounting-transactions-externally');
 
         $request->validate([
@@ -112,7 +114,7 @@ class WeblingApiController extends Controller
         $period = Period::find($request->period);
 
         $transactions = MoneyTransaction::query()
-            ->forWallet($currentWallet->get())
+            ->forWallet($wallet)
             ->forDateRange($request->from, $request->to)
             ->forDateRange($period->from, $period->to)
             ->notBooked()
@@ -142,8 +144,9 @@ class WeblingApiController extends Controller
             ]);
     }
 
-    public function store(Request $request)
+    public function store(Wallet $wallet, Request $request)
     {
+        $this->authorize('view', $wallet);
         $this->authorize('book-accounting-transactions-externally');
 
         $request->validate([
@@ -163,8 +166,6 @@ class WeblingApiController extends Controller
         ]);
 
         $period = Period::find($request->period);
-
-        ;
 
         $preparedTransactions = collect($request->json()->all())
             ->filter(fn ($data) => $data['action'] == 'book'

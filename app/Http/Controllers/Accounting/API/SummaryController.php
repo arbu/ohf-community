@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Accounting\MoneyTransaction;
 use App\Models\Accounting\SignedMoneyTransaction;
 use App\Models\Accounting\Wallet;
-use App\Services\Accounting\CurrentWalletService;
+use App\Http\Resources\Accounting\Wallet as WalletResource;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -19,8 +19,9 @@ class SummaryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function summary(Request $request, CurrentWalletService $currentWallet)
+    public function summary(Wallet $wallet, Request $request)
     {
+        $this->authorize('view', $wallet);
         $this->authorize('view-accounting-summary');
 
         setlocale(LC_TIME, \App::getLocale());
@@ -31,11 +32,6 @@ class SummaryController extends Controller
             'month' => 'nullable|integer|min:1|max:12',
             'year' => 'nullable|integer|min:2000|max:' . Carbon::today()->year,
         ]);
-
-        $wallet = $currentWallet->get();
-        if ($wallet === null) {
-            return redirect()->route('accounting.wallets.change');
-        }
 
         if ($request->filled('year') && $request->filled('month')) {
             $year = $request->year;
@@ -109,8 +105,7 @@ class SummaryController extends Controller
             'wallet_amount' => $wallet->calculatedSum($dateTo),
             'spending' => $spending,
             'income' => $income,
-            'wallet' => $wallet,
-            'has_multiple_wallets' => Wallet::count() > 1,
+            'wallet' => (new WalletResource($wallet))->resolve(),
             'can_view_transactions' => $request->user()->can('viewAny', MoneyTransaction::class),
         ]);
     }

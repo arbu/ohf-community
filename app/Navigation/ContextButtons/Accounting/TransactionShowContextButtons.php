@@ -10,6 +10,7 @@ class TransactionShowContextButtons implements ContextButtons
 {
     public function getItems(View $view): array
     {
+        $wallet = $view->getData()['wallet'];
         $transaction = $view->getData()['transaction'];
         return [
             'action' => [
@@ -27,7 +28,7 @@ class TransactionShowContextButtons implements ContextButtons
             //     'confirmation' => __('accounting.confirm_delete_transaction'),
             // ],
             'back' => [
-                'url' => route('accounting.transactions.index'),
+                'url' => route('accounting.wallets.transactions.index', $wallet),
                 'caption' => __('app.close'),
                 'icon' => 'times-circle',
                 'authorized' => request()->user()->can('viewAny', MoneyTransaction::class),

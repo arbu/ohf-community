@@ -3,10 +3,15 @@
 namespace App\Exports\Accounting;
 
 use App\Models\Accounting\MoneyTransaction;
-use App\Services\Accounting\CurrentWalletService;
+use App\Models\Accounting\Wallet;
 
 class MoneyTransactionsExport extends BaseMoneyTransactionsExport
 {
+    /**
+     * Wallet
+     */
+    private Wallet $wallet;
+
     /**
      * Filter conditions
      *
@@ -14,8 +19,9 @@ class MoneyTransactionsExport extends BaseMoneyTransactionsExport
      */
     private array $filter;
 
-    public function __construct(array $filter = [])
+    public function __construct(Wallet $wallet, array $filter = [])
     {
+        $this->wallet = $wallet;
         $this->filter = $filter;
         $this->orientation = 'landscape';
     }
@@ -23,7 +29,7 @@ class MoneyTransactionsExport extends BaseMoneyTransactionsExport
     public function query(): \Illuminate\Database\Eloquent\Builder
     {
         return MoneyTransaction::query()
-            ->forWallet(resolve(CurrentWalletService::class)->get())
+            ->forWallet($this->wallet)
             ->forFilter($this->filter)
             ->orderBy('date', 'ASC')
             ->orderBy('created_at', 'ASC');

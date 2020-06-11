@@ -5,10 +5,8 @@ namespace App\Http\Controllers\Accounting\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Accounting\StoreTransaction;
 use App\Http\Resources\Accounting\MoneyTransaction as MoneyTransactionResource;
-use App\Http\Resources\Accounting\Wallet as WalletResource;
 use App\Models\Accounting\MoneyTransaction;
 use App\Models\Accounting\Wallet;
-use App\Services\Accounting\CurrentWalletService;
 use App\Services\Accounting\TransactionRepository;
 use App\Support\Accounting\Webling\Entities\Entrygroup;
 use Carbon\Carbon;
@@ -33,8 +31,9 @@ class MoneyTransactionsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Wallet $wallet, Request $request)
     {
+        $this->authorize('view', $wallet);
         $this->authorize('viewAny', MoneyTransaction::class);
 
         $request->validate([
@@ -80,15 +79,8 @@ class MoneyTransactionsController extends Controller
             'sortDirection' => [
                 'nullable',
                 'in:asc,desc',
-            ],
-            'wallet_id' => [
-                'required',
-                'exists:accounting_wallets,id',
-            ],
+            ]
         ]);
-
-        $wallet = Wallet::findOrFail($request->input('wallet_id'));
-        $this->authorize('view', $wallet);
 
         $filter = $request->input('filter', []);
         $sortColumn = $request->input('sortBy', 'created_at');
@@ -110,67 +102,15 @@ class MoneyTransactionsController extends Controller
             ]);
     }
 
-    public function currentWallet(CurrentWalletService $currentWallet)
-    {
-        $wallet = $currentWallet->get();
-        return (new WalletResource($wallet))
-            ->additional([
-                'meta' => [
-                    'has_multiple_wallets' => Wallet::count() > 1,
-                    'use_secondary_categories' => $this->repository->useSecondaryCategories(),
-                    'use_locations' => $this->repository->useLocations(),
-                    'use_cost_centers' => $this->repository->useCostCenters(),
-                ],
-            ]);
-    }
-
-    public function filterClassifications()
-    {
-        return response()->json([
-            'beneficiaries' => MoneyTransaction::beneficiaries(),
-            'categories' => $this->repository->getCategories(true),
-            'fixed_categories' => Setting::has('accounting.transactions.categories'),
-            'secondary_categories' => $this->repository->useSecondaryCategories() ? $this->repository->getSecondaryCategories(true) : null,
-            'fixed_secondary_categories' => Setting::has('accounting.transactions.secondary_categories'),
-            'projects' => $this->repository->getProjects(true),
-            'fixed_projects' => Setting::has('accounting.transactions.projects'),
-            'locations' => $this->repository->useLocations() ? $this->repository->getLocations(true) : null,
-            'fixed_locations' => Setting::has('accounting.transactions.locations'),
-            'cost_centers' => $this->repository->useCostCenters() ? $this->repository->getCostCenters(true) : null,
-            'fixed_cost_centers' => Setting::has('accounting.transactions.cost_centers'),
-            'auth_user_name' => Auth::user()->name,
-        ]);
-    }
-
-    public function updateReceipt(Request $request, MoneyTransaction $transaction)
-    {
-        $this->authorize('update', $transaction);
-
-        $request->validate([
-            'img' => [
-                'file',
-                'mimes:jpeg,png,gif,webp',
-            ],
-        ]);
-
-        $transaction->deleteReceiptPictures(); // TODO no need to clear pictures for multi picture support
-        $transaction->addReceiptPicture($request->file('img'));
-        $transaction->save();
-
-        return response([
-            'message' => __('accounting.receipt_picture_added'),
-            'receipt_pictures' => collect($transaction->receipt_pictures)->map(fn ($p) => Storage::url($p)),
-        ]);
-    }
-
     /**
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\Accounting\StoreTransaction  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreTransaction $request, CurrentWalletService $currentWallet)
+    public function store(Wallet $wallet, StoreTransaction $request)
     {
+        $this->authorize('view', $wallet);
         $this->authorize('create', MoneyTransaction::class);
 
         $transaction = new MoneyTransaction();
@@ -194,19 +134,9 @@ class MoneyTransactionsController extends Controller
         $transaction->remarks = $request->remarks;
         $transaction->wallet_owner = $request->wallet_owner;
 
-        $transaction->wallet()->associate($request->input('wallet_id'));
-        $this->authorize('view', $transaction->wallet);
-
-        // TODO
-        // if (isset($request->receipt_picture)) {
-        //     $transaction->addReceiptPicture($request->file('receipt_picture'));
-        // }
+        $transaction->wallet()->associate($wallet);
 
         $transaction->save();
-
-        if ($transaction->wallet->id !== optional($currentWallet->get())->id) {
-            $currentWallet->set($transaction->wallet);
-        }
 
         return response()->json([
             'message' => __('accounting.transactions_registered'),
@@ -221,29 +151,10 @@ class MoneyTransactionsController extends Controller
      */
     public function show(MoneyTransaction $transaction)
     {
+        $this->authorize('view', $transaction->wallet);
         $this->authorize('view', $transaction);
 
         return new MoneyTransactionResource($transaction);
-    }
-
-    public function undoBooking(MoneyTransaction $transaction)
-    {
-        $this->authorize('undoBooking', $transaction);
-
-        if ($transaction->external_id != null && Entrygroup::find($transaction->external_id) != null) {
-            return response()->json([
-                'message' => __('accounting.transaction_not_updated_external_record_still_exists'),
-            ], Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
-
-        $transaction->booked = false;
-        $transaction->external_id = null;
-        $transaction->save();
-
-        return (new MoneyTransactionResource($transaction))
-            ->additional([
-                'message' => __('accounting.transactions_updated'),
-            ]);
     }
 
     /**
@@ -253,8 +164,9 @@ class MoneyTransactionsController extends Controller
      * @param  \App\Models\Accounting\MoneyTransaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreTransaction $request, MoneyTransaction $transaction)
+    public function update(MoneyTransaction $transaction, StoreTransaction $request)
     {
+        $this->authorize('view', $transaction->wallet);
         $this->authorize('update', $transaction);
 
         $transaction->date = $request->date;
@@ -277,15 +189,6 @@ class MoneyTransactionsController extends Controller
         $transaction->remarks = $request->remarks;
         $transaction->wallet_owner = $request->wallet_owner;
 
-        // TODO
-        // if (isset($request->remove_receipt_picture)) {
-        //     $transaction->deleteReceiptPictures();
-        // }
-        // elseif (isset($request->receipt_picture)) {
-        //     $transaction->deleteReceiptPictures(); // TODO no need to clear pictures for multi picture support
-        //     $transaction->addReceiptPicture($request->file('receipt_picture'));
-        // }
-
         $transaction->save();
 
         return response()->json([
@@ -301,12 +204,108 @@ class MoneyTransactionsController extends Controller
      */
     public function destroy(MoneyTransaction $transaction)
     {
+        $wallet = $transaction->wallet;
+        $this->authorize('view', $wallet);
         $this->authorize('delete', $transaction);
 
         $transaction->delete();
 
         return response()->json([
             'message' => __('accounting.transactions_deleted'),
+            'wallet_id' => $wallet->id,
+        ]);
+    }
+
+    /**
+     * Update receipt
+     *
+     * @param MoneyTransaction $transaction
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function updateReceipt(MoneyTransaction $transaction, Request $request)
+    {
+        $this->authorize('view', $transaction->wallet);
+        $this->authorize('update', $transaction);
+
+        $request->validate([
+            'img' => [
+                'file',
+                'mimes:jpeg,png,gif,webp',
+            ],
+        ]);
+
+        $transaction->deleteReceiptPictures(); // TODO no need to clear pictures for multi picture support
+        $transaction->addReceiptPicture($request->file('img'));
+        $transaction->save();
+
+        return response([
+            'message' => __('accounting.receipt_picture_added'),
+            'receipt_pictures' => collect($transaction->receipt_pictures)->map(fn ($p) => Storage::url($p)),
+        ]);
+    }
+
+    /**
+     * Undo external booking
+     *
+     * @param MoneyTransaction $transaction
+     * @return \Illuminate\Http\Response
+     */
+    public function undoBooking(MoneyTransaction $transaction)
+    {
+        $this->authorize('view', $transaction->wallet);
+        $this->authorize('undoBooking', $transaction);
+
+        if ($transaction->external_id != null && Entrygroup::find($transaction->external_id) != null) {
+            return response()->json([
+                'message' => __('accounting.transaction_not_updated_external_record_still_exists'),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $transaction->booked = false;
+        $transaction->external_id = null;
+        $transaction->save();
+
+        return (new MoneyTransactionResource($transaction))
+            ->additional([
+                'message' => __('accounting.transactions_updated'),
+            ]);
+    }
+
+    /**
+     * Get settings
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function settings()
+    {
+        return [
+            'use_secondary_categories' => $this->repository->useSecondaryCategories(),
+            'use_locations' => $this->repository->useLocations(),
+            'use_cost_centers' => $this->repository->useCostCenters(),
+        ];
+    }
+
+    /**
+     * Get classifications for filter
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function filterClassifications()
+    {
+        return response()->json([
+            'beneficiaries' => MoneyTransaction::beneficiaries(),
+            'categories' => $this->repository->getCategories(true),
+            'fixed_categories' => Setting::has('accounting.transactions.categories'),
+            'secondary_categories' => $this->repository->useSecondaryCategories() ? $this->repository->getSecondaryCategories(true) : null,
+            'fixed_secondary_categories' => Setting::has('accounting.transactions.secondary_categories'),
+            'projects' => $this->repository->getProjects(true),
+            'fixed_projects' => Setting::has('accounting.transactions.projects'),
+            'locations' => $this->repository->useLocations() ? $this->repository->getLocations(true) : null,
+            'fixed_locations' => Setting::has('accounting.transactions.locations'),
+            'cost_centers' => $this->repository->useCostCenters() ? $this->repository->getCostCenters(true) : null,
+            'fixed_cost_centers' => Setting::has('accounting.transactions.cost_centers'),
+            'auth_user_name' => Auth::user()->name,
         ]);
     }
 }

@@ -129,7 +129,8 @@ Route::middleware(['language', 'auth'])
             ->name('donations.export');
         Route::post('donations/import', 'DonationController@import')
             ->name('donations.import');
-        Route::apiResource('donations', 'DonationController');
+        Route::apiResource('donations', 'DonationController')
+            ->except('store');
 
         // Report
         Route::prefix('report')
@@ -179,6 +180,20 @@ Route::middleware(['language', 'auth'])
     ->name('api.accounting.')
     ->namespace('Accounting\API')
     ->group(function () {
+        // Summary
+        Route::get('wallets/{wallet}/transactions/summary', 'SummaryController@summary')
+            ->name('wallets.transactions.summary');
+
+        // Export
+        Route::get('wallets/{wallet}/transactions/export', 'ExportController@export')
+            ->name('wallets.transactions.export');
+        Route::post('wallets/{wallet}/transactions/export', 'ExportController@doExport')
+            ->name('wallets.transactions.doExport');
+
+        // Transactions
+        Route::apiResource('wallets.transactions', 'MoneyTransactionsController')
+            ->only('index', 'store');
+
         // Update receipt picture
         Route::post('transactions/{transaction}/receipt', 'MoneyTransactionsController@updateReceipt')
             ->name('transactions.updateReceipt');
@@ -187,36 +202,27 @@ Route::middleware(['language', 'auth'])
         Route::put('transactions/{transaction}/undoBooking', 'MoneyTransactionsController@undoBooking')
             ->name('transactions.undoBooking');
 
-        // Summary
-        Route::get('transactions/summary', 'SummaryController@summary')
-            ->name('transactions.summary');
-
         // Transactions
-        Route::apiResource('transactions', 'MoneyTransactionsController');
+        Route::apiResource('transactions', 'MoneyTransactionsController')
+            ->except('index', 'store');
 
-        // Current wallet data
-        Route::get('currentWallet', 'MoneyTransactionsController@currentWallet')
-            ->name('transactions.currentWallet');
+        // Settings
+        Route::get('settings', 'MoneyTransactionsController@settings')
+            ->name('transactions.settings');
 
         // Classifications for filter
         Route::get('filterClassifications', 'MoneyTransactionsController@filterClassifications')
             ->name('transactions.filterClassifications');
 
-        // Export
-        Route::get('export', 'ExportController@export')
-            ->name('export');
-        Route::post('export', 'ExportController@doExport')
-            ->name('doExport');
-
         // Wallets
         Route::apiResource('wallets', 'WalletController');
 
         // Webling
-        Route::get('webling', 'WeblingApiController@index')
+        Route::get('wallets/{wallet}/transactions/webling', 'WeblingApiController@index')
             ->name('webling.index');
-        Route::get('webling/prepare', 'WeblingApiController@prepare')
+        Route::get('wallets/{wallet}/transactions/webling/prepare', 'WeblingApiController@prepare')
             ->name('webling.prepare');
-        Route::post('webling', 'WeblingApiController@store')
+        Route::post('wallets/{wallet}/transactions/webling', 'WeblingApiController@store')
             ->name('webling.store');
     });
 

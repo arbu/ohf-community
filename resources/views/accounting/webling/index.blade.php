@@ -4,7 +4,9 @@
 
 @section('content')
     <div id="accounting-app">
-        <webling-index-page>
+        <webling-index-page
+            :wallet-id="{{ $wallet->id }}"
+        >
             @lang('app.loading')
         </webling-index-page>
     </div>

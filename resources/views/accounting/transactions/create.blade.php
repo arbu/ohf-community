@@ -5,8 +5,7 @@
 @section('content')
     <div id="accounting-app">
         <transaction-create-page
-            :wallet='@json($wallet)'
-            :wallets='@json($wallets)'
+            :wallet-id="{{ $wallet->id }}"
         >
             @lang('app.loading')
         </transaction-create-page>

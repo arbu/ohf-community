@@ -5,6 +5,7 @@
 @section('content')
     <div id="accounting-app">
         <webling-prepare-page
+            :wallet-id="{{ $wallet->id }}"
             period-id="{{ $period_id }}"
             from="{{ $from }}"
             to="{{ $to }}"

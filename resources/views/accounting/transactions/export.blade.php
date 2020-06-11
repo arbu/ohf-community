@@ -4,7 +4,9 @@
 
 @section('content')
     <div id="accounting-app">
-        <export-page>
+        <export-page
+            :wallet-id="{{ $wallet->id }}"
+        >
             @lang('app.loading')
         </v-page>
     </div>

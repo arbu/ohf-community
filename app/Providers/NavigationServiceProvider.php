@@ -31,7 +31,7 @@ class NavigationServiceProvider extends ServiceProvider
         'people.index'           => \App\Navigation\ContextMenu\People\PeopleContextMenu::class,
         'bank.withdrawal.search' => \App\Navigation\ContextMenu\Bank\BankWithdrawalContextMenu::class,
         'cmtyvol.index'   => \App\Navigation\ContextMenu\CommunityVolunteers\CommunityVolunteersContextMenu::class,
-        'accounting.transactions.index'       => \App\Navigation\ContextMenu\Accounting\AccountingContextMenu::class,
+        'accounting.wallets.transactions.index'       => \App\Navigation\ContextMenu\Accounting\AccountingContextMenu::class,
     ];
 
     protected $contextButtons = [
@@ -53,10 +53,10 @@ class NavigationServiceProvider extends ServiceProvider
 
         'badges.selection'  => \App\Navigation\ContextButtons\Badges\BadgeSelectionContextButtons::class,
 
-        'accounting.transactions.index'   => \App\Navigation\ContextButtons\Accounting\TransactionIndexContextButtons::class,
-        'accounting.transactions.summary' => \App\Navigation\ContextButtons\Accounting\TransactionSummaryContextButtons::class,
-        'accounting.transactions.create'  => \App\Navigation\ContextButtons\Accounting\TransactionReturnToIndexContextButtons::class,
-        'accounting.transactions.export'  => \App\Navigation\ContextButtons\Accounting\TransactionReturnToIndexContextButtons::class,
+        'accounting.wallets.transactions.index'   => \App\Navigation\ContextButtons\Accounting\TransactionIndexContextButtons::class,
+        'accounting.wallets.transactions.summary' => \App\Navigation\ContextButtons\Accounting\TransactionSummaryContextButtons::class,
+        'accounting.wallets.transactions.create'  => \App\Navigation\ContextButtons\Accounting\TransactionReturnToIndexContextButtons::class,
+        'accounting.wallets.transactions.export'  => \App\Navigation\ContextButtons\Accounting\TransactionReturnToIndexContextButtons::class,
         'accounting.transactions.show'    => \App\Navigation\ContextButtons\Accounting\TransactionShowContextButtons::class,
         'accounting.transactions.edit'    => \App\Navigation\ContextButtons\Accounting\TransactionEditContextButtons::class,
         'accounting.webling.index'        => \App\Navigation\ContextButtons\Accounting\WeblingIndexContextButtons::class,

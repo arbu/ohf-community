@@ -1,11 +1,12 @@
 import { api, route } from '@/api/baseApi'
 export default {
-    async listPeriods () {
-        const url = route('api.accounting.webling.index')
+    async listPeriods (walletId) {
+        const url = route('api.accounting.webling.index', walletId)
         return await api.get(url)
     },
-    async fetchPrepare (periodId, from, to) {
+    async fetchPrepare (walletId, periodId, from, to) {
         const params = {
+            wallet: walletId,
             period: periodId,
             from: from,
             to: to
@@ -13,8 +14,9 @@ export default {
         const url = route('api.accounting.webling.prepare', params)
         return await api.get(url)
     },
-    async store (periodId, payload) {
+    async store (walletId, periodId, payload) {
         const params = {
+            wallet: walletId,
             period: periodId,
         }
         const url = route('api.accounting.webling.store', params)

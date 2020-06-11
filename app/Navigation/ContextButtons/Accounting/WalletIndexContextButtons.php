@@ -20,12 +20,12 @@ class WalletIndexContextButtons implements ContextButtons
                 'icon_floating' => 'plus',
                 'authorized' => Auth::user()->can('create', Wallet::class),
             ],
-            'back' => [
-                'url' => route('accounting.transactions.index'),
-                'caption' => __('app.close'),
-                'icon' => 'times-circle',
-                'authorized' => Auth::user()->can('viewAny', MoneyTransaction::class),
-            ],
+            // 'back' => [
+            //     'url' => route('accounting.transactions.index'),
+            //     'caption' => __('app.close'),
+            //     'icon' => 'times-circle',
+            //     'authorized' => Auth::user()->can('viewAny', MoneyTransaction::class),
+            // ],
         ];
     }
 

@@ -28,10 +28,6 @@ class StoreTransaction extends FormRequest
     public function rules()
     {
         return [
-            'wallet_id' => [
-                isset($this->transaction) ? 'nullable' : 'required',
-                'exists:accounting_wallets,id',
-            ],
             'receipt_no' => [
                 'required',
                 'integer',
@@ -41,7 +37,7 @@ class StoreTransaction extends FormRequest
                         ->when($this->transaction,
                             fn ($qry) => $qry->where('wallet_id', $this->transaction->wallet_id)
                                 ->where('id', '!=', $this->transaction->id),
-                            fn ($qry) => $qry->where('wallet_id', $this->wallet_id),
+                            fn ($qry) => $qry->where('wallet_id', $this->wallet->id),
                         )
                         ->where('receipt_no', $value)
                         ->exists();

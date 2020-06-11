@@ -6,10 +6,7 @@
 
     <div class="list-group">
         @forelse($wallets as $wallet)
-            <a href="{{ route('accounting.wallets.doChange', $wallet) }}" class="list-group-item list-group-item-action">
-                @if($wallet->id == optional($active)->id)
-                    <span class="text-success">@icon(check)</span>
-                @endif
+            <a href="{{ route('accounting.wallets.transactions.index', $wallet) }}" class="list-group-item list-group-item-action">
                 {{ $wallet->name }}
                 @if($wallet->is_default)
                     <b>(@lang('app.default'))</b>
