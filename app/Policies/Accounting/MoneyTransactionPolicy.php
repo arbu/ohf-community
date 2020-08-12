@@ -82,6 +82,17 @@ class MoneyTransactionPolicy
     }
 
     /**
+     * Determine whether the user can import transactions.
+     *
+     * @param  \App\User  $user
+     * @return mixed
+     */
+    public function import(User $user)
+    {
+        return $user->hasPermission('accounting.transactions.create') && $user->hasPermission('accounting.transactions.update');
+    }
+
+    /**
      * Determine whether the user can mark a booked transaction as unbooked again.
      *
      * @param  \App\User  $user

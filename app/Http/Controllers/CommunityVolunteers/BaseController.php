@@ -177,6 +177,7 @@ abstract class BaseController extends Controller
                 'form_name' => 'date_of_birth',
                 'form_placeholder' => 'YYYY-MM-DD',
                 'form_validate' => 'required|date',
+                'format' => 'date',
             ],
             [
                 'label_key' => 'people.age',

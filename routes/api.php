@@ -194,6 +194,10 @@ Route::middleware(['language', 'auth'])
             ->name('transactions.markControlled');
         Route::delete('transactions/{transaction}/controlled', 'ControllingController@undoControlled')
             ->name('transactions.undoControlled');
+
+        Route::post('getHeaderMappings', '\App\Http\Controllers\Accounting\TransactionsImportController@getHeaderMappings')
+            ->name('getHeaderMappings')
+            ->middleware('can:import,App\Models\Accounting\MoneyTransaction');
     });
 
 //

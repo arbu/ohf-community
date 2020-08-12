@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Imports\CommunityVolunteers;
+namespace App\Imports;
 
 use Maatwebsite\Excel\HeadingRowImport as ExcelHeadingRowImport;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;

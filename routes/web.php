@@ -169,6 +169,14 @@ Route::middleware(['language', 'auth'])
             ->name('transactions.snippet');
         Route::put('transactions/{transaction}/undoBooking', 'MoneyTransactionsController@undoBooking')
             ->name('transactions.undoBooking');
+
+        Route::get('transactions/import', 'TransactionsImportController@import')
+            ->name('transactions.import')
+            ->middleware('can:import,App\Models\Accounting\MoneyTransaction');
+        Route::post('transactions/import', 'TransactionsImportController@doImport')
+            ->name('transactions.doImport')
+            ->middleware('can:import,App\Models\Accounting\MoneyTransaction');
+
         Route::resource('transactions', 'MoneyTransactionsController');
 
         Route::get('wallets/change', 'WalletController@change')
