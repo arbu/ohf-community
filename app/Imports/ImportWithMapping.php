@@ -18,11 +18,19 @@ abstract class ImportWithMapping implements ToCollection, WithHeadingRow
 
     protected $fields;
 
+    public $stats;
+
     public function __construct(Collection $fields)
     {
         HeadingRowFormatter::default('none');
 
         $this->fields = $fields;
+
+        $this ->stats = [
+            'created' => 0,
+            'updated' => 0,
+            'skipped' => 0,
+        ];
     }
 
     abstract protected static function getModelIdentifier();
@@ -127,5 +135,17 @@ abstract class ImportWithMapping implements ToCollection, WithHeadingRow
         return collect(language()->allowed())
             ->keys()
             ->map(fn ($lk) => __($key, [], $lk));
+    }
+
+    protected function created($amount = 1) {
+        $this->stats['created'] += $amount;
+    }
+
+    protected function updated($amount = 1) {
+        $this->stats['updated'] += $amount;
+    }
+
+    protected function skipped($amount = 1) {
+        $this->stats['skipped'] += $amount;
     }
 }

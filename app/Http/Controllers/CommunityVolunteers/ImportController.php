@@ -34,7 +34,7 @@ class ImportController extends BaseController
 
         return redirect()
             ->route('cmtyvol.index')
-            ->with('success', __('app.import_successful'));
+            ->with('success', __('app.import_successful', $importer->stats));
     }
 
     public function getHeaderMappings(Request $request)

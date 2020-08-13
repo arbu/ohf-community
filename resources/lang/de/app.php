@@ -207,7 +207,7 @@ return [
     'choose_file' => 'Datei wählen...',
     'remove_file' => 'Datei entfernen',
     'view_file' => 'Datei anzeigen',
-    'import_successful' => 'Import erfolgreich.',
+    'import_successful' => 'Import erfolgreich: :created neu, :updated aktualisiert, :skipped ausgelassen',
     'imported_num_records' => ':num Datensätze importiert.',
     'select_status' => 'Status wählen...',
     'unspecified' => 'Nicht spezifiziert',

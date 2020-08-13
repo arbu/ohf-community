@@ -57,7 +57,14 @@ class TransactionsImport extends ImportWithMapping
                 && isset($transaction->type)
                 && isset($transaction->amount)
                 && isset($transaction->description)) {
+                if ($transaction->id == null) {
+                    $this->created();
+                } else {
+                    $this->updated();
+                }
                 $transaction->save();
+            } else {
+                $this->skipped();
             }
         }
     }

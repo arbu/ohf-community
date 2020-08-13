@@ -209,7 +209,7 @@ return [
     'choose_file' => 'Choose file...',
     'remove_file' => 'Remove file',
     'view_file' => 'View file',
-    'import_successful' => 'Import successful.',
+    'import_successful' => 'Import successful: :created created, :updated updated, :skipped skipped',
     'imported_num_records' => 'Imported :num records.',
     'select_status' => 'Select status...',
     'unspecified' => 'Unspecified',

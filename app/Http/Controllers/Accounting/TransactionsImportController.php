@@ -48,7 +48,7 @@ class TransactionsImportController extends Controller
 
         return redirect()
             ->route('accounting.transactions.index')
-            ->with('success', __('app.import_successful'));
+            ->with('success', __('app.import_successful', $importer->stats));
     }
 
     public function getHeaderMappings(Request $request)

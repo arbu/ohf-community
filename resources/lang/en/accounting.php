@@ -79,4 +79,6 @@ return [
     'intermediate_balance' => 'Intermediate balance',
     'show_intermediate_balances' => 'Calculate intermediate balances, when sorted by receipt number',
     'import_transaction_data' => 'Import transaction data',
+    'missing_column' => 'A column for :column needs to be present in the import file',
+    'missing_amount_column' => 'Either of Income, Spending or Amount and Type need to be present in the import file',
 ];

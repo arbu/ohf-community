@@ -55,6 +55,9 @@ class CommunityVolunteersImport extends ImportWithMapping
                     $this->assignImportedValues($row, $existing_cmtyvol,
                         fn ($object, $field, $value) => $field['key'] == 'app.responsibilities');
                     $cmtyvol = $existing_cmtyvol;
+                    $this->updated();
+                } else {
+                    $this->created();
                 }
 
                 $cmtyvol->save();
@@ -80,6 +83,8 @@ class CommunityVolunteersImport extends ImportWithMapping
                         }
                     }
                 }
+            } else {
+                $this->skipped();
             }
         }
     }

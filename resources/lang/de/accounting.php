@@ -79,4 +79,6 @@ return [
     'intermediate_balance' => 'Zwischensaldo',
     'show_intermediate_balances' => 'Zwischensalden berechnen, wenn nach Belegnummer sortiert',
     'import_transaction_data' => 'Transaktions-Daten importieren',
+    'missing_column' => 'Eine Spalte für :column muss in der Eingabedatei vorhanden sein',
+    'missing_amount_column' => 'Entweder Einnahme, Ausgabe oder Betrag und Typ müssen in der Eingabedatei vorhanden sein',
 ];
