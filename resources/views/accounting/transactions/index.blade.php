@@ -72,6 +72,7 @@
                             <td class="fit">
                                 <a href="{{ route('accounting.transactions.show', $transaction) }}"
                                     data-url="{{ route('accounting.transactions.snippet', $transaction) }}"
+                                    data-print-url="{{ route('accounting.transactions.print', $transaction) }}"
                                     @can('update', $transaction) data-edit-url="{{ route('accounting.transactions.edit', $transaction) }}"@endcan
                                     class="details-link">
                                     {{ $transaction->date }}
@@ -198,6 +199,7 @@
         $('.details-link').on('click', function (e) {
             e.preventDefault();
             var container = $('#detailsModal');
+            var print_url =  $(this).data('print-url');
             var edit_url =  $(this).data('edit-url');
             container.modal('show');
             container.find('.modal-header')
@@ -215,6 +217,9 @@
                     .addClass('p-0')
                     .html(result);
                 var footer_html = '';
+                if (print_url) {
+                    footer_html += '<a href="' + print_url +'" class="btn btn-secondary"><i class="fa fa-print"></i> @lang('app.print')</a>';
+                }
                 if (edit_url) {
                     footer_html += '<a href="' + edit_url +'" class="btn btn-secondary"><i class="fa fa-edit"></i> Edit</a>';
                 }

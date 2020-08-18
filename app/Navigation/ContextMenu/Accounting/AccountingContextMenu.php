@@ -30,6 +30,12 @@ class AccountingContextMenu implements ContextMenu
                 'icon' => 'upload',
                 'authorized' => Auth::user()->can('import', MoneyTransaction::class),
             ],
+            'print' => [
+                'url' => route('accounting.transactions.printMultiple'),
+                'caption' => __('app.print'),
+                'icon' => 'print',
+                'authorized' => Auth::user()->can('viewAny', MoneyTransaction::class),
+            ],
         ];
     }
 }

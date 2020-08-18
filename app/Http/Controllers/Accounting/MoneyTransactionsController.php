@@ -13,8 +13,13 @@ use App\Models\Accounting\Wallet;
 use App\Services\Accounting\CurrentWalletService;
 use App\Support\Accounting\Webling\Entities\Entrygroup;
 use Carbon\Carbon;
+use Dompdf\Dompdf;
+use Gumlet\ImageResize;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Setting;
 
 class MoneyTransactionsController extends Controller
@@ -561,5 +566,167 @@ class MoneyTransactionsController extends Controller
         }
 
         return $intermediate_balances;
+    }
+
+    public function print(MoneyTransaction $transaction)
+    {
+        $title = __('accounting.pdf_title') . ' ' . $transaction->receipt_no;
+        $html = $this->renderPrintReceipts(collect([$transaction]), $title);
+
+        $filename = mb_ereg_replace("([^\w\d\-_~,\[\]\(\).])", '_', $title);
+        return $this->toPdf($html, $filename);
+    }
+
+    public function printMultiple()
+    {
+        return view('accounting.transactions.print_multiple', [
+            'ranges' => MoneyTransaction::query()
+                ->selectRaw('MIN(date) as date_min, MAX(date) as date_max, MIN(receipt_no) as receipt_min, MAX(receipt_no) as receipt_max')
+                ->forWallet(resolve(CurrentWalletService::class)->get())
+                ->first(),
+        ]);
+    }
+
+    public function doPrintMultiple(Request $request)
+    {
+        $request->validate([
+            'format' => 'required|in:table,receipts',
+            'range_type' => 'required|in:receipt,date,all',
+            'receipt_from' => 'required_if:range_type,receipt|int',
+            'receipt_to' => 'required_if:range_type,receipt|int',
+            'date_from' => 'required_if:range_type,date|date',
+            'date_to' => 'required_if:range_type,date|date',
+        ]);
+
+        // This query meight exceed the default excecution time limit of 30 seconds
+        set_time_limit(300);
+
+        $wallet = resolve(CurrentWalletService::class)->get();
+
+        $transactions = MoneyTransaction::query()
+            ->forWallet($wallet)
+            ->when($request->range_type == 'receipt',
+                fn ($q) => $q->whereBetween('receipt_no', [ $request->receipt_from, $request->receipt_to ]))
+            ->when($request->range_type == 'date',
+                fn ($q) => $q->whereBetween('date', [ $request->date_from, $request->date_to ]))
+            ->orderBy('receipt_no')
+            ->get();
+
+        if (count($transactions) === 0) {
+            throw ValidationException::withMessages([
+                'range_type' => __('accounting.no_transactions_found_for_range')
+            ]);
+        }
+
+        $title = __('accounting.pdf_title_multiple');
+        if ($request->range_type == 'receipt') {
+            $title .= ' ' . $request->receipt_from . ' - ' . $request->receipt_to;
+        } else if ($request->range_type == 'date') {
+            $title .= ' ' . $request->date_from . ' - ' . $request->date_to;
+        }
+        $title .= ' ' . $wallet->name;
+
+        if ($request->format == 'table') {
+            $html = $this->renderPrintTable($transactions, $title, $wallet);
+        } else {
+            $html = $this->renderPrintReceipts($transactions, $title, isset($request->duplex_align));
+        }
+
+        $filename = mb_ereg_replace("([^\w\d\-_~,\[\]\(\).])", '_', $title);
+        return $this->toPdf($html, $filename, $request->format == 'table' ? 'landscape' : 'portrait');
+    }
+
+    public function toPdf($html, $filename, $orientation = 'portrait')
+    {
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+
+        $dompdf->setPaper('A4', $orientation);
+        $dompdf->set_option('dpi', 300);
+        $dompdf->set_option('isPhpEnabled', true);
+
+        $dompdf->render();
+
+        return new Response($dompdf->output(), 200, array(
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' =>  'inline; filename="'.$filename.'.pdf"',
+        ));
+    }
+
+    private function renderPrintReceipts($transactions, $title, $duplex_align = false) {
+        $receipts = $transactions->map(fn ($transaction) => [
+            'transaction' => $transaction,
+            'title' => __('accounting.receipt')
+                    . ' ' . $transaction->receipt_no
+                    . ' - ' . $transaction->wallet()->first()->name,
+            'receipt_pictures' => collect($transaction->receipt_pictures)->map(function ($picture) {
+                if (Storage::mimeType($picture) == "application/pdf") {
+                    $path = Storage::path(self::pdfToImage($picture));
+                } else {
+                    $path = Storage::path($picture);
+                }
+
+                // check wheter image dimensions are taller or wider then the page dimensions
+                $size = getimagesize($path);
+                if ($size[0] * 706 / 527 < $size[1]) {
+                    $scale = 'scale-height';
+                } else {
+                    $scale = 'scale-width';
+                }
+
+                return [
+                    'path' => $path,
+                    'scale' => $scale,
+                ];
+            }),
+        ]);
+
+        return view('accounting.transactions.receipt_pdf', [
+            'receipts' => $receipts,
+            'title' => $title,
+            'duplex_align' => $duplex_align,
+        ])->render();
+    }
+
+    private function renderPrintTable($transactions, $title, $wallet)
+    {
+        $intermediate_balances = self::getIntermediateBalances($wallet);
+
+        $preceding_transaction = MoneyTransaction::forWallet($wallet)
+            ->where('receipt_no', '<', $transactions->pluck('receipt_no')->min())
+            ->orderBy('receipt_no', 'DESC')
+            ->first();
+        if ($preceding_transaction !== null) {
+            $start_balance = $intermediate_balances[$preceding_transaction->id];
+        } else {
+            $start_balance = 0;
+        }
+
+        return view('accounting.transactions.table_pdf', [
+            'transactions' => $transactions,
+            'intermediate_balances' => $intermediate_balances,
+            'start_balance' => $start_balance,
+            'end_balance' => count($transactions) > 0 ? $intermediate_balances[$transactions->last()->id] : 0,
+            'title' => $title,
+            'use_secondary_categories' => self::useSecondaryCategories(),
+            'use_locations' => self::useLocations(),
+            'use_cost_centers' => self::useCostCenters(),
+        ])->render();
+    }
+
+    private function pdfToImage(string $pdf)
+    {
+        $pi = pathinfo($pdf);
+        $cached_image = $pi['dirname'] . DIRECTORY_SEPARATOR . $pi['filename'] . '.jpeg';
+
+        if (!Storage::exists($cached_image)) {
+            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                Ghostscript::setGsPath("C:\Program Files\gs\gs9.52\bin\gswin64c.exe");
+            }
+            $pdf = new \Spatie\PdfToImage\Pdf(Storage::path($pdf));
+            $pdf->saveImage(Storage::path($cached_image));
+        }
+
+        return $cached_image;
     }
 }

@@ -410,4 +410,6 @@ return [
     'field_in_database' => 'Field in database',
     'dont_import' => 'don\'t import',
     'add_to_existing_values' => 'Add to existing values',
+    'print' => 'Print',
+    'page' => 'Page',
  ];

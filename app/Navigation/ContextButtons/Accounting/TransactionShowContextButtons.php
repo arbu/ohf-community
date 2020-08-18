@@ -20,6 +20,12 @@ class TransactionShowContextButtons implements ContextButtons
                 'icon_floating' => 'pencil-alt',
                 'authorized' => Auth::user()->can('update', $transaction),
             ],
+            'print' => [
+                'url' => route('accounting.transactions.print', $transaction),
+                'caption' => __('app.print'),
+                'icon' => 'print',
+                'authorized' => Auth::user()->can('view', $transaction),
+            ],
             'delete' => [
                 'url' => route('accounting.transactions.destroy', $transaction),
                 'caption' => __('app.delete'),

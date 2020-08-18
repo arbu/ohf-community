@@ -61,6 +61,7 @@ class NavigationServiceProvider extends ServiceProvider
         'accounting.transactions.import'        => \App\Navigation\ContextButtons\Accounting\TransactionReturnToIndexContextButtons::class,
         'accounting.transactions.show'          => \App\Navigation\ContextButtons\Accounting\TransactionShowContextButtons::class,
         'accounting.transactions.edit'          => \App\Navigation\ContextButtons\Accounting\TransactionEditContextButtons::class,
+        'accounting.transactions.print'         => \App\Navigation\ContextButtons\Accounting\TransactionReturnToIndexContextButtons::class,
         'accounting.webling.index'              => \App\Navigation\ContextButtons\Accounting\WeblingIndexContextButtons::class,
         'accounting.webling.prepare'            => \App\Navigation\ContextButtons\Accounting\WeblingPrepareContextButtons::class,
         'accounting.wallets.change'             => \App\Navigation\ContextButtons\Accounting\WalletChangeContextButtons::class,

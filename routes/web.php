@@ -169,6 +169,8 @@ Route::middleware(['language', 'auth'])
             ->name('transactions.snippet');
         Route::put('transactions/{transaction}/undoBooking', 'MoneyTransactionsController@undoBooking')
             ->name('transactions.undoBooking');
+        Route::get('transactions/{transaction}/print', 'MoneyTransactionsController@print')
+            ->name('transactions.print');
 
         Route::get('transactions/import', 'TransactionsImportController@import')
             ->name('transactions.import')
@@ -176,6 +178,10 @@ Route::middleware(['language', 'auth'])
         Route::post('transactions/import', 'TransactionsImportController@doImport')
             ->name('transactions.doImport')
             ->middleware('can:import,App\Models\Accounting\MoneyTransaction');
+        Route::get('transactions/print', 'MoneyTransactionsController@printMultiple')
+            ->name('transactions.printMultiple');
+        Route::post('transactions/print', 'MoneyTransactionsController@doPrintMultiple')
+            ->name('transactions.doPrintMultiple');
 
         Route::resource('transactions', 'MoneyTransactionsController');
 
