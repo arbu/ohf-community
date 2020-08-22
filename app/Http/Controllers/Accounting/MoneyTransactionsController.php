@@ -661,11 +661,13 @@ class MoneyTransactionsController extends Controller
                     . ' - ' . $transaction->wallet()->first()->name,
             'receipt_pictures' => collect($transaction->receipt_pictures)->map(function ($picture) {
                 if (Storage::mimeType($picture) == "application/pdf") {
-                    $path = Storage::path(self::pdfToImage($picture));
+                    return self::pdfToImage($picture);
                 } else {
-                    $path = Storage::path($picture);
+                    return [ Storage::path($picture) ];
                 }
-
+            })
+            ->collapse()
+            ->map(function ($path) {
                 // check wheter image dimensions are taller or wider then the page dimensions
                 $size = getimagesize($path);
                 if ($size[0] * 706 / 527 < $size[1]) {
@@ -716,17 +718,19 @@ class MoneyTransactionsController extends Controller
 
     private function pdfToImage(string $pdf)
     {
-        $pi = pathinfo($pdf);
-        $cached_image = $pi['dirname'] . DIRECTORY_SEPARATOR . $pi['filename'] . '.jpeg';
+        $dir = Storage::path(pathinfo($pdf)['dirname']);
+        $prefix = pathinfo($pdf)['filename'] . '_page';
+        $extension = 'jpeg';
 
-        if (!Storage::exists($cached_image)) {
-            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-                Ghostscript::setGsPath("C:\Program Files\gs\gs9.52\bin\gswin64c.exe");
-            }
-            $pdf = new \Spatie\PdfToImage\Pdf(Storage::path($pdf));
-            $pdf->saveImage(Storage::path($cached_image));
+        $cached_images = glob("{$dir}/{$prefix}*.{$extension}");
+
+        if (is_array($cached_images) && count($cached_images) > 0) {
+            return $cached_images;
         }
 
-        return $cached_image;
+        $pdf = new \Spatie\PdfToImage\Pdf(Storage::path($pdf));
+        $pdf->setOutputFormat($extension);
+
+        return $pdf->saveAllPagesAsImages($dir, $prefix);
     }
 }

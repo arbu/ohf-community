@@ -222,6 +222,16 @@ class MoneyTransaction extends Model implements Auditable
     {
         if (!empty($this->receipt_pictures)) {
             foreach ($this->receipt_pictures as $file) {
+                if (Storage::exists($file) && Storage::mimeType($file) == "application/pdf") {
+                    $pi = pathinfo(Storage::path($file));
+                    $cached_pages = glob("{$pi['dirname']}/{$pi['filename']}_page*.jpeg");
+
+                    if (is_array($cached_pages)) {
+                        foreach ($cached_pages as $page) {
+                            @unlink($page);
+                        }
+                    }
+                }
                 Storage::delete($file);
                 Storage::delete(thumb_path($file));
                 Storage::delete(thumb_path($file, 'jpeg'));
