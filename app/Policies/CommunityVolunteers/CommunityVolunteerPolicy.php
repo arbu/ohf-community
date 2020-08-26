@@ -120,4 +120,15 @@ class CommunityVolunteerPolicy
     {
         return $user->hasPermission('cmtyvol.manage');
     }
+
+    /**
+     * Determine whether the user can mass delete community volunteers.
+     *
+     * @param  \App\User  $user
+     * @return mixed
+     */
+    public function maintenance(User $user)
+    {
+        return $user->hasPermission('cmtyvol.manage');
+    }
 }

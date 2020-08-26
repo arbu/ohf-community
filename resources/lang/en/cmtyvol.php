@@ -22,4 +22,8 @@ return [
     'deleted' => 'Community volunteer deleted.',
     'register' => 'Register Community Volunteer',
     'registered' => 'Community volunteer registered.',
+    'remove_alumni_since_n_months' => 'Remove alumni not active since :months months (:num)',
+    'remove_all_alumni' => 'Remove all alumni (:num)',
+    'remove_future' => 'Remove all future community volunteers (:num)',
+    'remove_all' => 'Remove *all* community volunteers (:num)',
 ];

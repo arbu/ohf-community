@@ -403,6 +403,14 @@ Route::middleware(['auth', 'language'])
                 // Responsibilities resource
                 Route::resource('responsibilities', 'ResponsibilitiesController')
                     ->except('show');
+
+                // Maintenance
+                Route::get('maintenance', 'MaintenanceController@maintenance')
+                    ->name('maintenance')
+                    ->middleware('can:maintenance,App\Models\CommunityVolunteers\CommunityVolunteer');
+                Route::post('maintenance', 'MaintenanceController@doMaintenance')
+                    ->name('doMaintenance')
+                    ->middleware('can:maintenance,App\Models\CommunityVolunteers\CommunityVolunteer');
             });
 
         // Community volunteers resource

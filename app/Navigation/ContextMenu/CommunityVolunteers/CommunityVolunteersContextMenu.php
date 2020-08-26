@@ -25,6 +25,12 @@ class CommunityVolunteersContextMenu implements ContextMenu
                 'icon' => 'upload',
                 'authorized' => Auth::user()->can('import', CommunityVolunteer::class),
             ],
+            [
+                'url' => route('cmtyvol.maintenance'),
+                'caption' => __('app.maintenance'),
+                'icon' => 'eraser',
+                'authorized' => Auth::user()->can('maintenance', CommunityVolunteer::class),
+            ],
             'responsibilities' => [
                 'url' => route('cmtyvol.responsibilities.index'),
                 'caption' => __('responsibilities.responsibilities'),
